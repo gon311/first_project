@@ -98,8 +98,19 @@ ChatGPT API를 활용하여 **이력서·자기소개서를 자동 분석하고 
 ---
 
 ## 6. 시스템 아키텍처
-
----
+```
+Client (Browser)
+   ↓
+Controller (Spring MVC)
+   ↓
+Service
+   ↓
+DAO / Mapper
+   ↓
+MySQL Database
+   ↘
+   ChatGPT API
+```
 
 ## 7. 설계 산출물
 

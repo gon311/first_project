@@ -9,14 +9,10 @@
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
 		<!-- 자바(JRE)의 기본 버전을 속성으로 관리 -->
-<!-- 		<java-version>1.6</java-version> -->
 		<java-version>11</java-version>
 		<!-- 스프링 기본 버전을 속성으로 관리 -->
-<!-- 		<org.springframework-version>3.1.1.RELEASE</org.springframework-version> -->
-		<!-- @GetMapping 어노테이션 등이 최소 4.3 이상의 스프링 버전을 필요로 함 -->
 		<org.springframework-version>5.3.39</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
-<!-- 		<org.slf4j-version>1.6.6</org.slf4j-version> -->
 		<!-- Log4j2 버전 관리를 위한 프로퍼티 -->
 		<log4j2-version>2.25.3</log4j2-version>
 	</properties>
@@ -41,14 +37,8 @@
 		</dependency>
 		
 		<!-- ================================================================================= -->
-		<!-- 
-		개발자가 별도로 필요한 라이브러리(의존성 라이브러리)를 추가해야할 경우
-		<dependencies> 태그 내에 <dependency> 태그로 각 라이브러리 추가/관리
-		=> 필요한 라이브러리는 Maven Repository 웹 사이트에서 검색 가능
-		=> 추가된 모든 라이브러리는 [ 프로젝트 - Maven Dependencies ] 항목에서 확인 가능
-		-->
+		
 		<!-- 롬복(Lombok) 라이브러리 -->
-		<!-- 주의! 프로젝트 내에서 라이브러리 사용과 별개로 이클립스에서도 인식되게 하려면 이클립스 폴더에 lombok.jar 설치 필요 -->
 		<!-- Source: https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 		    <groupId>org.projectlombok</groupId>
@@ -77,8 +67,6 @@
 		</dependency>
 		
 		<!-- 3. 커넥션 풀을 관리하는 HikariCP 라이브러리 추가(Tomcat DBCP 대용으로 사용 가능) -->
-		<!-- Tomcat DBCP 에 비해 가볍고, 빠르고, 안정적인 처리가 가능 -->
-		<!-- Java 11+ maven artifact: 7.x 버전 사용(2026.01 version) -->
 		<!-- Source: https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
 		<dependency>
 		    <groupId>com.zaxxer</groupId>
@@ -96,8 +84,6 @@
 		</dependency>
 
 		<!-- 4-2) MyBatis - Spring 연동 라이브러리 -->
-		<!-- 주의! 3.x.x 버전 사용 시 JDK 11 에서 오류 발생함(지원되지 않음) -->	
-		<!-- 자바 클래스 파일 버전 구글링해서 맞춰줘야 함 -->
 		<!-- Source: https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
 		<dependency>
 		    <groupId>org.mybatis</groupId>
@@ -173,9 +159,6 @@
 		    <version>${log4j2-version}</version>
 		    <scope>compile</scope>
 		</dependency>
-		
-		
-		
 				
 		<!-- ================================================================================= -->
 		<!-- AspectJ -->
@@ -238,24 +221,6 @@
 		</dependency>
 				
 		<!-- Servlet -->
-		<!-- 기본 서블릿 버전이 2.5 로 설정되어 있음 -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>javax.servlet</groupId> -->
-<!-- 			<artifactId>servlet-api</artifactId> -->
-<!-- 			<version>2.5</version> -->
-<!-- 			<scope>provided</scope> -->
-<!-- 		</dependency> -->
-		<!-- 톰캣 웹사이트에서 톰캣 버전별 사용 가능한 서블릿 버전 확인 가능(https://tomcat.apache.org/whichversion.html) -->
-		<!-- 톰캣 10.x 이상에서는 서블릿 버전 5.x 또는 6.x 버전 사용 가능 -->
-		<!-- 단, 패키지명이 javax.servlet.xxx -> jakarta.servlet.xxx 패키지로 변경됨 -->
-		<!-- Source: https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
-<!-- 		<dependency> -->
-<!-- 		    <groupId>jakarta.servlet</groupId> -->
-<!-- 		    <artifactId>jakarta.servlet-api</artifactId> -->
-<!-- 		    <version>6.1.0</version> -->
-<!-- 		    <scope>provided</scope> -->
-<!-- 		</dependency> -->
-		
 		<!-- 톰캣 9.x 버전에서는 서블릿 버전 4.x 사용 -->
 		<!-- Source: https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
 		<dependency>
@@ -266,22 +231,6 @@
 		</dependency>
 		
 		<!-- JSP 버전 -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>javax.servlet.jsp</groupId> -->
-<!-- 			<artifactId>jsp-api</artifactId> -->
-<!-- 			<version>2.1</version> -->
-<!-- 			<scope>provided</scope> -->
-<!-- 		</dependency> -->
-		
-		<!-- Tomcat 10.x 이상에서는 JSP 버전 4.x 이상 사용 가능 -->
-		<!-- Source: https://mvnrepository.com/artifact/jakarta.servlet.jsp/jakarta.servlet.jsp-api -->
-<!-- 		<dependency> -->
-<!-- 		    <groupId>jakarta.servlet.jsp</groupId> -->
-<!-- 		    <artifactId>jakarta.servlet.jsp-api</artifactId> -->
-<!-- 		    <version>4.0.0</version> -->
-<!-- 		    <scope>provided</scope> -->
-<!-- 		</dependency> -->
-		
 		<!-- 톰캣 9.x 버전에서는 JSP 버전 2.3 버전까지 사용 -->
 		<!-- Source: https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
 		<dependency>
@@ -292,7 +241,6 @@
 		</dependency>
 
 		<!-- JSTL 버전 -->
-		<!-- Tomcat 10.1 버전부터는 JSTL 2.x 사용 가능하나, Tomcat 9.x 에서는 JSTL 1.2 가 안정화된 마지막 버전이다! -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
@@ -328,16 +276,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.5.1</version>
                 <configuration>
-                	<!-- 자바(JRE) 버전 설정 위치 -->
-                	<!-- 기본값(1.6 버전) -->
-<!--                     <source>1.6</source> -->
-<!--                     <target>1.6</target> -->
-					<!-- 자바 버전 변경(변경 후에는 Maven Update - Alt + F5 수행해야 변경사항 적용됨) -->
-					<!-- 직접 변경 시 버전 직접 입력 -->
-<!--                     <source>11</source> -->
-<!--                     <target>11</target> -->
-					<!-- <properties> 태그에 정의된 자바 버전 속성값(11) 을 활용하여 변경 시 -->
-					<!-- 해당 프로퍼티 태그명을 ${} 사이에 기술 -->
                     <source>${java-version}</source>
                     <target>${java-version}</target>
                     <compilerArgument>-Xlint:all</compilerArgument>

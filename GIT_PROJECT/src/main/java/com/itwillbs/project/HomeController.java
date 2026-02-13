@@ -34,11 +34,8 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-<<<<<<< HEAD
 		return "admin/common/main";
-=======
-		return "main";
->>>>>>> refs/remotes/origin/main
+
 	}
 	
 }

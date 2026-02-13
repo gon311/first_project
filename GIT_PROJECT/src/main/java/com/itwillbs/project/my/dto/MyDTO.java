@@ -1,4 +1,4 @@
-package com.itwillbs.project.register.dto;
+package com.itwillbs.project.my.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-public class RegisterDTO {
+public class MyDTO {
 
 	// 
 

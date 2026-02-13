@@ -23,6 +23,11 @@
 	
 	<context:component-scan base-package="com.itwillbs.project" />
 	
-	
+	<!-- ========================================================== -->	
+	<!-- 스프링 파일 업로드 처리를 위한 설정 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10485760" /> <!-- 10mb -->
+		<beans:property name="defaultEncoding" value="UTF-8" />
+	</beans:bean>	
 	
 </beans:beans>

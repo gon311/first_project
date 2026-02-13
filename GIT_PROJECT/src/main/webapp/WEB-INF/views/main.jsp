@@ -14,6 +14,7 @@
 		<%-- main area --%>
 		<main>
 			<h1> Main Area</h1>
+			<h3><a href="<c:url value="/job/testJob" />">testJob</a></h3>
 		</main>
 		<%-- footer area --%>
 		<%@ include file="/WEB-INF/views/inc/footer.jspf" %>

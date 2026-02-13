@@ -1,0 +1,34 @@
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<header class="border-bottom">
+    <div class="d-flex justify-content-between align-items-center p-3 bg-white">
+        <h4 class="m-0 text-primary fw-bold">Main DashBoard</h4>
+        <div class="header-util">
+            <a href="/" class="btn btn-sm btn-outline-secondary">메인페이지</a>
+            <span class="badge bg-light text-dark mx-2">관리자 모드</span>
+            <a href="/logout" class="btn btn-sm btn-danger">로그아웃</a>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="adminNav">
+                <ul class="navbar-nav w-100 d-flex justify-content-around">
+                    <li class="nav-item"><a class="nav-link" href="/admin/users">사용자 관리</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/jobs">기업 공고 관리</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/payments">결제 관리</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/contents">컨텐츠 관리</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/banners">배너 관리</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/data">데이터 관리</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+</body>
+</html>

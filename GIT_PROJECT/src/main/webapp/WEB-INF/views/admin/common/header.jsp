@@ -1,5 +1,6 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <header class="border-bottom">
@@ -19,7 +20,7 @@
             </button>
             <div class="collapse navbar-collapse" id="adminNav">
                 <ul class="navbar-nav w-100 d-flex justify-content-around">
-                    <li class="nav-item"><a class="nav-link" href="/admin/users">사용자 관리</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/users" />">사용자 관리</a></li>
                     <li class="nav-item"><a class="nav-link" href="/admin/jobs">기업 공고 관리</a></li>
                     <li class="nav-item"><a class="nav-link" href="/admin/payments">결제 관리</a></li>
                     <li class="nav-item"><a class="nav-link" href="/admin/contents">컨텐츠 관리</a></li>

@@ -5,7 +5,7 @@
   
 <configuration>
 	<typeAliases>
-		<typeAlias type="com.itwillbs.project.register.dto.RegisterDTO" alias="regist"/>
+		<typeAlias type="com.itwillbs.project.user.dto.UserDTO" alias="regist"/>
 		
 	</typeAliases>
 </configuration>

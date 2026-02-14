@@ -29,6 +29,7 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
+	//=============================================================
 	// 구독자 관리 페이지
 	@GetMapping("/users")
 	public String userList(@RequestParam(value="tab", defaultValue="all") String tab
@@ -37,29 +38,19 @@ public class AdminController {
 		// tab 파라미터가 없으면 기본값 "all"로 설정됨
 	    model.addAttribute("activeTab", tab);
 	    
-//	    String user_name = null;
-//	    String user_type = null;
-//	    String status = null;
-//	    
-//	    if(searchDTO.getName() != null) {
-//	    	user_name = searchDTO.getName();
-//	    }
-//	    if(searchDTO.getType() != null) {
-//	    	user_type = searchDTO.getType();
-//	    }
-//	    if(searchDTO.getStatus() != null) {
-//	    	status = searchDTO.getStatus();
-//	    }
 	    
-	    
-	    
-	    if(searchDTO.getUser_name() != null || searchDTO.getUser_type() != null || searchDTO.getStatus() != null) {
+	    if(searchDTO.getUser_name() != null || 
+	    	searchDTO.getUser_type() != null || 
+	    	searchDTO.getStatus() != null) {
+	    	
 	    	List<MemberDTO> memberDTO = adminService.getUserFilter(searchDTO.getUser_name()
-	    			, searchDTO.getUser_type(), searchDTO.getStatus());
+	    															, searchDTO.getUser_type()
+	    															, searchDTO.getStatus());
 	    	
 	    	model.addAttribute("memberList", memberDTO);
 	   
 	    } else {
+	    	
 	    	List<MemberDTO> memberList = adminService.getUser();
 	    	model.addAttribute("memberList", memberList);
 	    }
@@ -67,21 +58,11 @@ public class AdminController {
     	 
     	return "admin/member/UserList";
 	    	
-	    
-	    
-//	    System.out.println("name === " + searchDTO.getUser_name());
-//	    System.out.println("type === " + searchDTO.getUser_type());
-//	    System.out.println("status === " + searchDTO.getStatus());
-	    
 	}
 	
-	// 조건별 검색
+	// 조건별 검색(구현중)
 	@PostMapping("/search")
 	public String userSearch(SearchDTO searchDTO, RedirectAttributes ra) {
-//		System.out.println("name11 === " + searchDTO.getUser_name());
-//	    System.out.println("type11 === " + searchDTO.getUser_type());
-//	    System.out.println("status11 === " + searchDTO.getStatus());
-		
 		ra.addAttribute("user_name", searchDTO.getUser_name());
 		ra.addAttribute("user_type", searchDTO.getUser_type());
 		ra.addAttribute("status", searchDTO.getStatus());
@@ -99,4 +80,32 @@ public class AdminController {
 		
 		return "admin/member/UserInfo";
 	}
+	
+	//===========================================================================
+	// 제출된 공고 관리
+	@GetMapping("/submits")
+	public String submitList() {
+		return "admin/submit/SubmitList";
+	}
+	
+	
+	//===========================================================================
+	// 결제 내역
+	@GetMapping("/payments")
+	public String payList() {
+		return "admin/pay/PayList"; 
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

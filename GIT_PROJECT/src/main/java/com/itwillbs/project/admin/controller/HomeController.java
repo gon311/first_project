@@ -9,7 +9,7 @@ public class HomeController {
 	@GetMapping("/")
 	public String main() {
 	    
-	    return "/admin/common/main"; // JSP 파일명
+	    return "/admin/common/main";
 	}
 	
 	

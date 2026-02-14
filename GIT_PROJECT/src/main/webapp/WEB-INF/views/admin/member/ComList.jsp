@@ -99,7 +99,21 @@
 							<th>상태</th>
 						</tr>
 					</thead>
-					<!-- tbody 필요 -->
+					<tbody>
+						<c:forEach var="com" varStatus="status" items="${comList}">
+							<%-- row 클릭 시 /student/info?idx=xxx 형식으로 해당 학생 정보 조회 요청 --%>
+							<tr class="clickable-row" onclick="location.href='info?idx=${com.id}'">
+								<td>${status.count}</td>
+								<td>${com.id}</td>
+								<td>${com.comName}</td>
+								<td>${com.email}</td>
+								<td>${com.comNum}</td>
+								<td>${com.phone}</td>
+								<td>${com.comType}</td>
+								<td>${com.status}</td>
+							</tr>
+						</c:forEach>
+					</tbody>
 		 
 
 				</table>

@@ -107,13 +107,13 @@
 							<c:forEach var="user" varStatus="status" items="${memberList}">
 								<%-- row 클릭 시 /student/info?idx=xxx 형식으로 해당 학생 정보 조회 요청 --%>
 								<tr class="clickable-row" onclick="location.href='info?idx=${user.user_id}'">
-									<td>${status.count }</td>
-									<td>${user.user_id }</td>
-									<td>${user.user_name }</td>
-									<td>${user.email }</td>
-									<td>${user.phone }</td>
-									<td>${user.user_type }</td>
-									<td>${user.status }</td>
+									<td>${status.count}</td>
+									<td>${user.user_id}</td>
+									<td>${user.user_name}</td>
+									<td>${user.email}</td>
+									<td>${user.phone}</td>
+									<td>${user.user_type}</td>
+									<td>${user.status}</td>
 								</tr>
 							</c:forEach>
 						</tbody>

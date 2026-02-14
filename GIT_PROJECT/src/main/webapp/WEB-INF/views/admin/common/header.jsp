@@ -20,12 +20,13 @@
             </button>
             <div class="collapse navbar-collapse" id="adminNav">
                 <ul class="navbar-nav w-100 d-flex justify-content-around">
+                	<!-- (변경사항) href 주소 변경 -->
                     <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/users" />">사용자 관리</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/admin/jobs">기업 공고 관리</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/admin/payments">결제 관리</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/admin/contents">컨텐츠 관리</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/admin/banners">배너 관리</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/admin/data">데이터 관리</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/submits" />">기업 공고 관리</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/payments" />">결제 관리</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/contents" />">컨텐츠 관리</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/banners" />">배너 관리</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/data" />">데이터 관리</a></li>
                 </ul>
             </div>
         </div>

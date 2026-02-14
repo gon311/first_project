@@ -22,14 +22,17 @@ public class AdminService{
 	public List<MemberDTO> getUser() {
 		return adminMapper.selectUser();
 	}
+	
+	// 구직자 목록 조회 필터링
+	public List<MemberDTO> getUserFilter(String user_name, String user_type, String status) {
+		return adminMapper.selectUserFilter(user_name, user_type, status);
+	}
 
 	// 구직자 상세 정보 조회
 	public MemberDTO getUserInfo(BigInteger id) {
 		return adminMapper.selectUserInfo(id);
 	}
+	
 
-	public List<MemberDTO> getUserFilter(String user_name, String user_type, String status) {
-		return adminMapper.selectUserFilter(user_name, user_type, status);
-	}
 
 }

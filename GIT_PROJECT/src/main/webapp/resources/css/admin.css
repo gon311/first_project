@@ -1,0 +1,7 @@
+@charset "UTF-8";
+
+/*dropdown hover 기능 추가*/
+.nav-item dropdown: hover. dropdown-menu {
+	display: block;
+	margin-top: 0; 
+}

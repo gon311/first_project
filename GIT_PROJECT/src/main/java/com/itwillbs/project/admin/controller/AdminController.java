@@ -18,6 +18,7 @@ import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.service.AdminService;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -36,28 +37,28 @@ public class AdminController {
 							, Model model
 							, SearchDTO searchDTO) {
 		// tab 파라미터가 없으면 기본값 "all"로 설정됨
-	    model.addAttribute("activeTab", tab);
-	    
-	    
-	    if(searchDTO.getUser_name() != null || 
-	    	searchDTO.getUser_type() != null || 
-	    	searchDTO.getStatus() != null) {
-	    	
-	    	List<MemberDTO> memberDTO = adminService.getUserFilter(searchDTO.getUser_name()
-	    															, searchDTO.getUser_type()
-	    															, searchDTO.getStatus());
-	    	
-	    	model.addAttribute("memberList", memberDTO);
+		model.addAttribute("activeTab", tab);
+		
+		
+		if(searchDTO.getUser_name() != null || 
+			searchDTO.getUser_type() != null || 
+			searchDTO.getStatus() != null) {
+			
+			List<MemberDTO> memberDTO = adminService.getUserFilter(searchDTO.getUser_name()
+																	, searchDTO.getUser_type()
+																	, searchDTO.getStatus());
+			
+			model.addAttribute("memberList", memberDTO);
 	   
-	    } else {
-	    	
-	    	List<MemberDTO> memberList = adminService.getUser();
-	    	model.addAttribute("memberList", memberList);
-	    }
-	    	
-    	 
-    	return "admin/member/UserList";
-	    	
+		} else {
+			
+			List<MemberDTO> memberList = adminService.getUser();
+			model.addAttribute("memberList", memberList);
+		}
+			
+		 
+		return "admin/member/UserList";
+			
 	}
 	
 	// 조건별 검색(구현중)
@@ -96,15 +97,15 @@ public class AdminController {
 		return "admin/pay/PayList"; 
 	}
 	
+	@GetMapping("/banners")
+	public String bannerList() {
+		return "admin/banner";
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	@GetMapping("/data")
+	public String dataList() {
+		return "admin/data";
+	}
 	
 	
 	

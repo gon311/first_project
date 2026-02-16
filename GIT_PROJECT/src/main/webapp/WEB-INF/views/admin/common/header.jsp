@@ -1,13 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<link href="<c:url value="/css/admin.css" />" rel="stylesheet">
 <header class="border-bottom">
     <div class="d-flex justify-content-between align-items-center p-3 bg-white">
-        <h4 class="m-0 text-primary fw-bold">Main DashBoard</h4>
+        <a href = "<c:url value ='/' />" class = "text-decoration-none">
+        	<h4 class="m-0 text-primary fw-bold">Main DashBoard</h4>
+        </a>
         <div class="header-util">
-            <a href="/" class="btn btn-sm btn-outline-secondary">메인페이지</a>
+            <a href="/" class="btn btn-sm btn-outline-secondary">사용자 페이지</a>
             <span class="badge bg-light text-dark mx-2">관리자 모드</span>
             <a href="/logout" class="btn btn-sm btn-danger">로그아웃</a>
         </div>
@@ -24,7 +26,19 @@
                     <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/users" />">사용자 관리</a></li>
                     <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/submits" />">기업 공고 관리</a></li>
                     <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/payments" />">결제 관리</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/contents" />">컨텐츠 관리</a></li>
+                    
+                    <!-- (변경사항) 26.02.16 SYC dropdownlist 정리 -->
+                    <li class="nav-item dropdown">
+                    	<a class="nav-link dropdown-toggle" href="#" id = "contentDrop" role = "button" data-bs-toggle="dropdown" aria-expanded="false">
+                    	컨텐츠 관리</a>
+                    	<ul class="dropdown-menu" aria-labelledby="contentDrop">
+		                    <li><a class="dropdown-item"href="<c:url value="/admin/contents/JobPost" />">채용공고 게시판 관리</a></li>
+		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/notice" />">공지사항 관리</a></li>
+		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/Board" />">커뮤니티 관리</a></li>
+		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/QnA" />">문의글 관리</a></li>
+		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/FnQ" />">FNQ 관리</a></li>
+                    	</ul>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/banners" />">배너 관리</a></li>
                     <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/data" />">데이터 관리</a></li>
                 </ul>

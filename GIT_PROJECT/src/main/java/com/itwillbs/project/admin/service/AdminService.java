@@ -41,8 +41,8 @@ public class AdminService{
 	}
 	
 	// 공지사항 상세 조회(DTO 리턴)
-	public NoticeDTO getNoticeDetail(int id) {
-		return adminMapper.getNoticeById(id);
+	public NoticeDTO getNoticeDetail(int notice_id) {
+		return adminMapper.getNoticeById(notice_id);
 	}
 
 

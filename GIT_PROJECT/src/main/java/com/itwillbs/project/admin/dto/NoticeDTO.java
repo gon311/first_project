@@ -1,5 +1,7 @@
 package com.itwillbs.project.admin.dto;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,13 +14,13 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class NoticeDTO {
-	private int id;
-	private String title;
-	private String content;
-	private String regDate;
-	private String status;
-	private String userType;
-	private int count;
+	private int notice_id;
+	private String notice_title;
+	private String notice_content;
+	private Date reg_date;
+	private Enum user_type;
+	private int readcount;
+	private Date update_time;
 	
 	//검색 기능 위한 필드 추가
 	private String searchType; //검색 조건

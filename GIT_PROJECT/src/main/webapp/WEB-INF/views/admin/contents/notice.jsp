@@ -49,7 +49,7 @@
                 <c:choose>
                 <%-- 검색 결과(데이터) 있을 때 --%>
                 <%-- 구분 필요함!! --%>
-                	<c:when test=""${not empty noticeList}">
+                	<c:when test="${not empty noticeList}">
                     <c:forEach items="${noticeList}" var="notice">
                         <tr>
                             <td>${notice.id}</td>

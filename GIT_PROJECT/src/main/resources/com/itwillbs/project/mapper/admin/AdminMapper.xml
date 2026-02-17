@@ -51,4 +51,16 @@
 		
 	</select>
 
+	<!-- 공지사항 리스트 조회 -->
+	<select id="getNoticeList" resultType="notice">
+		SELECT
+		 	notice_id
+		 	, notice_title
+		 	, notice_content
+		 	, reg_date
+		 	, readcount
+		 	, user_type
+		 	, update_date
+		 FROM notice
+	</select>
 </mapper>

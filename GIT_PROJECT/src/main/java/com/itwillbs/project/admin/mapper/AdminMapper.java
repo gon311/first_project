@@ -26,7 +26,7 @@ public interface AdminMapper {
 	List<NoticeDTO> getNoticeList(NoticeDTO noticeDTO);
 
 	// 공지사항 상세 조회
-	NoticeDTO getNoticeById(int id);
+	NoticeDTO getNoticeById(int notice_id);
 
  
 }

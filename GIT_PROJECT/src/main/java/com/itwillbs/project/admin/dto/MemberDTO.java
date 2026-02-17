@@ -13,15 +13,15 @@ import lombok.ToString;
 public class MemberDTO {
 	// 화면 출력 확인을 위해 임시로 만든 회원정보DTO
 	
-	private BigInteger user_id;
+	private BigInteger id;
 	private String email;
 	private String password;
 	private String phone;
-	private String user_name;
-	private char user_type;
+	private String name;
+	private char memberType;
 	private String status;
-	private LocalDateTime joined_at;
-	private LocalDateTime withdrawn_at;
+	private LocalDateTime joinedAt;
+	private LocalDateTime withdrawnAt;
 	
 	
 }

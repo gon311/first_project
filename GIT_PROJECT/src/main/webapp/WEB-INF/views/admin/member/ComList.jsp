@@ -19,13 +19,13 @@
 				        <!-- 제목 검색 -->
 				        <div class="col-md-4">
 				          <label for="keyword" class="form-label">제목</label>
-				          <input type="search" class="form-control" id="keyword" placeholder="키워드를 입력하세요">
+				          <input type="search" class="form-control" name="keyword" placeholder="키워드를 입력하세요">
 				        </div>
 				
 				        <!-- 구분 -->
 				        <div class="col-md-3">
 				          <label for="type" class="form-label">구분</label>
-				          <select class="form-select" id="type" onchange="selectType()">
+				          <select class="form-select" name="type" onchange="selectType()">
 				            <option value="all">전체</option>
 				            <option value="basic">일반</option>
 				            <option value="premium">프리미엄</option>
@@ -35,7 +35,7 @@
 				        <!-- 상태 -->
 				        <div class="col-md-3">
 				          <label for="status" class="form-label">상태</label>
-				          <select class="form-select" id="status" onchange="selectStatus()">
+				          <select class="form-select" name="status" onchange="selectStatus()">
 				            <option value="">전체</option>
 				            <option value="active">활성</option>
 				            <option value="block">차단</option>
@@ -100,19 +100,19 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="com" varStatus="status" items="${comList}">
-							<%-- row 클릭 시 /student/info?idx=xxx 형식으로 해당 학생 정보 조회 요청 --%>
-							<tr class="clickable-row" onclick="location.href='info?idx=${com.id}'">
-								<td>${status.count}</td>
-								<td>${com.id}</td>
-								<td>${com.comName}</td>
-								<td>${com.email}</td>
-								<td>${com.comNum}</td>
-								<td>${com.phone}</td>
-								<td>${com.comType}</td>
-								<td>${com.status}</td>
-							</tr>
-						</c:forEach>
+					<!-- 구현 예정 -->
+<%-- 						<c:forEach var="com" varStatus="status" items="${comList}"> --%>
+<%-- 							<tr class="clickable-row" onclick="location.href='info?idx=${com.id}'"> --%>
+<%-- 								<td>${status.count}</td> --%>
+<%-- 								<td>${com.id}</td> --%>
+<%-- 								<td>${com.name}</td> --%>
+<%-- 								<td>${com.email}</td> --%>
+<%-- 								<td>${com.comNum}</td> --%>
+<%-- 								<td>${com.phone}</td> --%>
+<%-- 								<td>${com.memberType}</td> --%>
+<%-- 								<td>${com.status}</td> --%>
+<!-- 							</tr> -->
+<%-- 						</c:forEach> --%>
 					</tbody>
 		 
 

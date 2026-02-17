@@ -31,55 +31,87 @@ public class AdminController {
 	private AdminService adminService;
 	
 	//=============================================================
+	// 조건별 검색(구현중)
+	@PostMapping("/users")
+	public String userSearch(SearchDTO searchDTO, RedirectAttributes ra) {
+		ra.addAttribute("keyword", searchDTO.getKeyword());
+		ra.addAttribute("type", searchDTO.getType());
+		ra.addAttribute("status", searchDTO.getStatus());
+		System.out.println("searchDTO : " + searchDTO);
+		
+		return "redirect:/admin/users";
+	}
+	
 	// 구독자 관리 페이지
 	@GetMapping("/users")
 	public String userList(@RequestParam(value="tab", defaultValue="all") String tab
 							, Model model
 							, SearchDTO searchDTO) {
 		// tab 파라미터가 없으면 기본값 "all"로 설정됨
-		model.addAttribute("activeTab", tab);
+		model.addAttribute("activeTab", tab); 
+		System.out.println("searchDTO 전송 : " + searchDTO);
+		List<MemberDTO> userList = adminService.getUserFilter(searchDTO.getKeyword()
+																, searchDTO.getType()
+																, searchDTO.getStatus());
+		model.addAttribute("userList", userList);
 		
-		
-		if(searchDTO.getUser_name() != null || 
-			searchDTO.getUser_type() != null || 
-			searchDTO.getStatus() != null) {
-			
-			List<MemberDTO> memberDTO = adminService.getUserFilter(searchDTO.getUser_name()
-																	, searchDTO.getUser_type()
-																	, searchDTO.getStatus());
-			
-			model.addAttribute("memberList", memberDTO);
-	   
-		} else {
-			
-			List<MemberDTO> memberList = adminService.getUser();
-			model.addAttribute("memberList", memberList);
-		}
-			
 		 
 		return "admin/member/UserList";
 			
 	}
 	
-	// 조건별 검색(구현중)
-	@PostMapping("/search")
-	public String userSearch(SearchDTO searchDTO, RedirectAttributes ra) {
-		ra.addAttribute("user_name", searchDTO.getUser_name());
-		ra.addAttribute("user_type", searchDTO.getUser_type());
-		ra.addAttribute("status", searchDTO.getStatus());
-		
-		return "redirect:/admin/users";
-	}
 	
 	// 구독자 상세정보
 	@GetMapping("/info")
-	public String userInfo(BigInteger idx, Model model, MemberDTO dto) {
-		dto.setUser_id(idx);
-		MemberDTO userDTO = adminService.getUserInfo(dto.getUser_id());
+	public String userInfo(Model model, MemberDTO dto) {
+		System.out.println("dto.getId : " + dto.getId());
+		MemberDTO userDTO = adminService.getUserInfo(dto.getId());
+		System.out.println("userDTO : " + userDTO);
 		
 		model.addAttribute("user", userDTO);
 		
 		return "admin/member/UserInfo";
+	}
+	
+	// 구독자 차단(구현중)
+	@GetMapping("/block")
+	public String userBlock(MemberDTO dto, RedirectAttributes ra) {
+		System.out.println("id : " + dto.getId());
+		adminService.blockUser(dto.getId(), dto.getStatus());
+		ra.addAttribute("id", dto.getId());
+		
+		return "redirect:/admin/info";
+	}
+	
+	//===========================================================================
+	// 기업회원 관리 페이지
+	@GetMapping("/coms")
+	public String comList(@RequestParam(value="tab", defaultValue="all") String tab
+							, Model model
+							, SearchDTO searchDTO) {
+		// tab 파라미터가 없으면 기본값 "all"로 설정됨
+		model.addAttribute("activeTab", tab);
+		
+		
+		if(searchDTO.getKeyword() != null || 
+			searchDTO.getType() != null || 
+			searchDTO.getStatus() != null) {
+			
+			List<MemberDTO> comDTO = adminService.getUserFilter(searchDTO.getKeyword()
+																	, searchDTO.getType()
+																	, searchDTO.getStatus());
+			
+			model.addAttribute("comList", comDTO);
+	   
+		} else {
+			
+			List<MemberDTO> comList = adminService.getUser();
+			model.addAttribute("comList", comList);
+		}
+			
+		 
+		return "admin/member/ComList";
+			
 	}
 	
 	//===========================================================================

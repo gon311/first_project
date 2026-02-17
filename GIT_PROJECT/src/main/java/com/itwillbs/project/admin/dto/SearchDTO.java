@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class SearchDTO {
 	// 조건별 검색 DTO(임시)
-	private String user_name;
-	private String user_type;
+	private String keyword;
+	private String type; 
 	private String status;
 }

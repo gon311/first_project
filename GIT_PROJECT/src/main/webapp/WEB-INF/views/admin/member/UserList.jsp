@@ -17,20 +17,20 @@
         <h5 class="card-title mb-3">검색</h5>
 			<div class="card">
 			    <div class="card-body">
-				      <form action="<c:url value="/admin/search" />" name="searchForm" method="post" class="row g-3 align-items-center">
+				      <form action="<c:url value="/admin/users" />" name="searchForm" method="post" class="row g-3 align-items-center">
 				        <!-- 이름 검색 -->
 				        <div class="col-md-4">
 				          <label for="keyword" class="form-label">이름</label>
-				          <input type="text" class="form-control" name="user_name" placeholder="이름을 입력하세요">
+				          <input type="text" class="form-control" name="keyword" placeholder="이름을 입력하세요">
 				        </div>
 				
 				        <!-- 구분 -->
 				        <div class="col-md-3">
 				          <label for="type" class="form-label">구분</label>
-				          <select class="form-select" name="user_type">
+				          <select class="form-select" name="type">
 				            <option value="" selected>전체</option>
 				            <option value="p">기본</option>
-				            <option value="10">10회권</option>
+				            <option value="c">10회권</option>
 				            <option value="30">30회권</option>
 				            <option value="60">60회권</option>
 				          </select>
@@ -42,7 +42,7 @@
 				          <select class="form-select" name="status">
 				            <option value="" selected>전체</option>
 				            <option value="active">활성</option>
-				            <option value="block">차단</option>
+				            <option value="suspended">차단</option>
 				          </select>
 				        </div>
 				
@@ -104,15 +104,14 @@
 						</thead>
 						<!-- tbody 필요 -->
 			 			<tbody>
-							<c:forEach var="user" varStatus="status" items="${memberList}">
-								<%-- row 클릭 시 /student/info?idx=xxx 형식으로 해당 학생 정보 조회 요청 --%>
-								<tr class="clickable-row" onclick="location.href='info?idx=${user.user_id}'">
+							<c:forEach var="user" varStatus="status" items="${userList}">
+								<tr class="clickable-row" onclick="location.href='info?id=${user.id}'">
 									<td>${status.count}</td>
-									<td>${user.user_id}</td>
-									<td>${user.user_name}</td>
+									<td>${user.id}</td>
+									<td>${user.name}</td>
 									<td>${user.email}</td>
 									<td>${user.phone}</td>
-									<td>${user.user_type}</td>
+									<td>${user.memberType}</td>
 									<td>${user.status}</td>
 								</tr>
 							</c:forEach>

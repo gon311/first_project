@@ -9,8 +9,11 @@ public class HomeController {
 	@GetMapping("/")
 	public String main() {
 	    
-	    return "/admin/common/main";
+	    return "/main";
 	}
 	
-	
+	@GetMapping("/admin/main")
+	public String adminMain() {
+		return "admin/common/main";
+	}
 }

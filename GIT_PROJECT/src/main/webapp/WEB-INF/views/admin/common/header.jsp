@@ -5,11 +5,11 @@
 <link href="<c:url value="/css/admin.css" />" rel="stylesheet">
 <header class="border-bottom">
     <div class="d-flex justify-content-between align-items-center p-3 bg-white">
-        <a href = "<c:url value ='/' />" class = "text-decoration-none">
+        <a href = "<c:url value ='/admin/main '/>" class = "text-decoration-none">
         	<h4 class="m-0 text-primary fw-bold">Main DashBoard</h4>
         </a>
         <div class="header-util">
-            <a href="/" class="btn btn-sm btn-outline-secondary">사용자 페이지</a>
+            <a href="/project/" class="btn btn-sm btn-outline-secondary">사용자 페이지</a>
             <span class="badge bg-light text-dark mx-2">관리자 모드</span>
             <a href="/logout" class="btn btn-sm btn-danger">로그아웃</a>
         </div>

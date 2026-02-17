@@ -1,21 +1,53 @@
 package com.itwillbs.project.admin.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.itwillbs.project.admin.dto.NoticeDTO;
+import com.itwillbs.project.admin.service.AdminService;
 
 @Controller
 @RequestMapping("/admin/contents")
 public class AdminContentController {
 
+	@Autowired
+	private AdminService adminService;
+	
 	@GetMapping("/notice")
-	public String noticeList(Model model) {
-		model.addAttribute("pageTitle", "공지사항 관리");
+	public String noticeList(@RequestParam(value="page", defaultValue="1") int page,
+			NoticeDTO noticeDTO,
+			Model model) {
 		
+		List<NoticeDTO> list = adminService.getNoticeList(noticeDTO);
+		model.addAttribute("noticeList", list);
+		model.addAttribute("noticeDTO", noticeDTO); //검색 조건 유지용?
+//		List<NoticeDTO> list = noticeService.getNoticeList(page, searchType, keyword)
+		// 서비스 단 페이징과 검색 조건 처리 필요 
 		//DB에서 공지사항 리스트 로직 가져오는 로직 추가 필요.
 		return "admin/contents/notice";
 	}
+	
+	@GetMapping("/noticeWrite")
+	public String noticeWrite(Model model) {
+		model.addAttribute("pageTitle", "공지사항 작성");
+		return "admin/contents/noticeWrite";
+	}
+	
+	@PostMapping("/noticeSave")
+	public String noticeSave(@RequestParam Map<String, String> params) {
+		
+		//noticeService.save(params) 실제 저장 로직, 서비스 호출 필요. 
+		return "redirect:/admin/contents/notcie";
+	}
+		
 	
 	@GetMapping("/JobPost")
 	public String jobPostList() {

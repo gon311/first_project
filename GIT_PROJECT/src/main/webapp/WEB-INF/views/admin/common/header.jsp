@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="<c:url value="/css/admin.css" />" rel="stylesheet">
 <header class="border-bottom">
     <div class="d-flex justify-content-between align-items-center p-3 bg-white">
         <a href = "<c:url value ='/admin/main '/>" class = "text-decoration-none">
@@ -29,10 +26,10 @@
                     
                     <!-- (변경사항) 26.02.16 SYC dropdownlist 정리 -->
                     <li class="nav-item dropdown">
-                    	<a class="nav-link dropdown-toggle" href="#" id = "contentDrop" role = "button" data-bs-toggle="dropdown" aria-expanded="false">
-                    	컨텐츠 관리</a>
+                    	<a class="nav-link dropdown-toggle" href="#" id="contentDrop" role="button" 
+                    	data-bs-toggle="dropdown" aria-expanded="false">컨텐츠 관리</a>
                     	<ul class="dropdown-menu" aria-labelledby="contentDrop">
-		                    <li><a class="dropdown-item"href="<c:url value="/admin/contents/JobPost" />">채용공고 게시판 관리</a></li>
+		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/JobPost" />">채용공고 게시판 관리</a></li>
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/notice" />">공지사항 관리</a></li>
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/Board" />">커뮤니티 관리</a></li>
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/QnA" />">문의글 관리</a></li>
@@ -46,5 +43,3 @@
         </div>
     </nav>
 </header>
-</body>
-</html>

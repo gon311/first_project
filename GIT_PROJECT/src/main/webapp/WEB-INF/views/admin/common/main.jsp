@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자 페이지</title>
+<%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/admin/common/header.jsp" />

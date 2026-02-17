@@ -2,7 +2,6 @@ package com.itwillbs.project.admin.service;
 
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +43,10 @@ public class AdminService{
 	public NoticeDTO getNoticeDetail(int notice_id) {
 		return adminMapper.getNoticeById(notice_id);
 	}
-
+	
+	// 공지사항 저장
+	public void insertNotice(NoticeDTO noticeDTO) {
+		adminMapper.insertNotice(noticeDTO);
+	}
 
 }

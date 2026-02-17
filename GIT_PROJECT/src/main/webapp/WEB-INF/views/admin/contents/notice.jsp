@@ -19,10 +19,10 @@
 	                <form class="d-inline-flex gap-2">
 	                    <select class="form-select form-select-sm" style="width: 150px;">
 	                        <option value="all">전체</option>
-	                        <option value="title">공지사항 명</option>
-	                        <option value="date">게시 일자</option>
+	                        <option value="notice_title">공지사항 명</option>
+	                        <option value="reg_date">게시 일자</option>
 	                        <option value="status">게시 상태</option>
-	                        <option value="type">회원 유형</option>
+	                        <option value="user_type">회원 유형</option>
 	                    </select>
 	                    <div class="input-group input-group-sm" style="width: 300px;">
 	                        <span class="input-group-text">
@@ -52,16 +52,18 @@
 	                	<c:when test="${not empty noticeList}">
 	                    <c:forEach items="${noticeList}" var="notice">
 	                        <tr>
-	                            <td>${notice.id}</td>
+	                            <td>${notice.notice_id}</td>
 	                            <td class="text-start">
-	                                <a href="<c:url value='/admin/contents/noticeDetail?id=${notice.id}' />" class="text-decoration-none text-dark">
-	                                    ${notice.title}
+	                                <a href="<c:url value='/admin/contents/noticeDetail?id=${notice.notice_id}' />" class="text-decoration-none text-dark">
+	                                    ${notice.notice_title}
 	                                </a>
 	                            </td>
-	                            <td>${notice.regDate}</td>
-	                            <td><span class="badge ${notice.status == '게시' ? 'bg-success' : 'bg-warning'}">${notice.status}</span></td>
-	                            <td>${notice.userType}</td>
+	                            <td>${notice.reg_date}</td>
+	                            <td><span class="badge ${notice.status == 'Y' ? '게시 중' : '임시저장'}">${notice.status}</span></td>
+	                            <td>${notice.user_type}</td>
 	                        </tr>
+	                        
+
 	                    </c:forEach>
 	                    </c:when>
 	                    <%-- 검색 결과 없는 경우 --%>

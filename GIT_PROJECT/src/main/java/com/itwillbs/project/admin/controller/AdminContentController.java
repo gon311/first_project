@@ -1,12 +1,12 @@
 package com.itwillbs.project.admin.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,10 +42,11 @@ public class AdminContentController {
 	}
 	
 	@PostMapping("/noticeSave")
-	public String noticeSave(@RequestParam Map<String, String> params) {
-		
-		//noticeService.save(params) 실제 저장 로직, 서비스 호출 필요. 
-		return "redirect:/admin/contents/notcie";
+	public String noticeSave(@ModelAttribute NoticeDTO noticeDTO) {
+		System.out.println("데이터 바인딩 결과: " + noticeDTO.toString());
+	    System.out.println("제목 값: " + noticeDTO.getNotice_title());
+		adminService.insertNotice(noticeDTO);
+		return "redirect:/admin/contents/notice";
 	}
 		
 	

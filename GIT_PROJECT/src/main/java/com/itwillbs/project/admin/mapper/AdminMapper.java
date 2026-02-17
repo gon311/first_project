@@ -27,6 +27,9 @@ public interface AdminMapper {
 
 	// 공지사항 상세 조회
 	NoticeDTO getNoticeById(int notice_id);
+	
+	// 공지사항 저장
+	void insertNotice(NoticeDTO noticeDTO);
 
  
 }

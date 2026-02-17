@@ -61,6 +61,26 @@
 		 	, readcount
 		 	, user_type
 		 	, update_date
+		 	, status
 		 FROM notice
 	</select>
+	
+	<insert id ="insertNotice" parameterType="notice">
+		INSERT INTO notice (
+			notice_title
+			, notice_content
+			, reg_date
+			, readcount
+			, user_type
+			, status
+		) VALUES (
+			#{notice_title}
+			, #{notice_content}
+			, NOW()
+			,0
+			, #{user_type}
+			, #{status}
+		)
+	</insert>
+	
 </mapper>

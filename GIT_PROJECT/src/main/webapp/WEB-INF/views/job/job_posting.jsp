@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -12,11 +11,20 @@
     .form-group { display: flex; align-items: flex-start; margin-bottom: 20px; }
     .label-box { width: 150px; font-weight: bold; padding-top: 10px; }
     .input-box { flex: 1; }
-    input[type="text"], textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+    input[type="text"], input[type="date"], textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
     .badge-input { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
     .file-upload-area { background: #e9ecef; padding: 20px; border: 2px dashed #ccc; text-align: center; border-radius: 5px; margin: 10px 0; }
     .info-box { background: #f0f7ff; padding: 15px; border-radius: 5px; font-size: 0.9em; color: #0066cc; }
     .btn-submit { background: #333; color: #fff; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; display: block; margin: 20px auto; }
+
+    /* 직업 선택기 전용 스타일 */
+    .job-selector-wrapper { display: flex; border: 1px solid #ddd; border-radius: 5px; height: 250px; margin-top: 10px; overflow: hidden; }
+    .main-cat-list { width: 30%; background: #f1f3f5; border-right: 1px solid #ddd; overflow-y: auto; list-style: none; padding: 0; margin: 0; }
+    .sub-cat-list { width: 70%; background: #fff; overflow-y: auto; list-style: none; padding: 10px; margin: 0; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; }
+    .main-cat-list li { padding: 12px 15px; cursor: pointer; border-bottom: 1px solid #e9ecef; font-size: 0.95em; }
+    .main-cat-list li:hover, .main-cat-list li.active { background: #333; color: #fff; }
+    .sub-job-item { padding: 6px 12px; border: 1px solid #dee2e6; border-radius: 20px; cursor: pointer; font-size: 0.85em; background: #fff; transition: 0.2s; }
+    .sub-job-item:hover, .sub-job-item.selected { background: #007bff; color: #fff; border-color: #007bff; }
 </style>
 </head>
 <body>
@@ -31,7 +39,15 @@
 
         <div class="form-group">
             <div class="label-box">모집분야명 <span style="color:red">*</span></div>
-            <div class="input-box"><input type="text" name="category" placeholder="웹디자이너 채용"></div>
+            <div class="input-box">
+                <div class="job-selector-wrapper">
+                    <ul class="main-cat-list" id="mainCatList"></ul>
+                    <ul class="sub-cat-list" id="subCatList">
+                        <li style="color:#999; font-size:0.9em; width:100%; text-align:center; margin-top:80px;">대분류를 선택해주세요.</li>
+                    </ul>
+                </div>
+                <input type="text" name="category" id="selectedJobInput" readonly placeholder="직무를 선택하면 자동 입력됩니다." style="margin-top:10px; background:#f8f9fa;">
+            </div>
         </div>
 
         <div class="form-group">
@@ -54,8 +70,8 @@
         <div class="form-group">
 		    <div class="label-box">경력 <span style="color:red">*</span></div>
 		    <div class="input-box">
-		        <label><input type="checkbox" name="exp_type" value="new"> 신입</label>
-		        <label style="margin-right: 15px;"><input type="checkbox" name="exp_type" value="career" checked> 경력</label>
+		        <label><input type="checkbox" name="exp_type" value="new" class="exp-check"> 신입</label>
+		        <label style="margin-right: 15px;"><input type="checkbox" name="exp_type" value="career" class="exp-check" checked> 경력</label>
 		
 		        <select name="min_exp" id="min_exp" style="width: 140px; display:inline-block;">
 		            <option value="0">1년 미만</option>
@@ -64,9 +80,7 @@
 		            <option value="5">5년 이상</option>
 		            <option value="10">10년 이상</option>
 		        </select>
-		        
 		        <span style="margin: 0 5px;">~</span>
-		
 		        <select name="max_exp" id="max_exp" style="width: 140px; display:inline-block;">
 		            <option value="3">3년 이하</option>
 		            <option value="5">5년 이하</option>
@@ -74,9 +88,8 @@
 		            <option value="10">10년 이하</option>
 		            <option value="99">제한 없음</option>
 		        </select>
-		
 		        <label style="margin-left: 15px;">
-		            <input type="checkbox" name="exp_none"> 경력무관
+		            <input type="checkbox" name="exp_none" id="exp_none"> 경력무관
 		        </label>
 		    </div>
 		</div>
@@ -86,6 +99,9 @@
             <div class="input-box">
                 <select name="education">
                     <option>학력무관</option>
+                    <option>고등학교 졸업</option>
+                    <option>대학교(2,3년) 졸업</option>
+                    <option>대학교(4년) 졸업</option>
                 </select>
                 <input type="checkbox"> 졸업 예정자 가능
             </div>
@@ -96,6 +112,7 @@
             <div class="input-box">
                 <select name="salary">
                     <option>면접 후 결정</option>
+                    <option>회사내규에 따름</option>
                 </select>
                 <div class="info-box" style="margin-top:10px;">
                     ⓘ 2025년 기준 최저시급 10,030원<br>
@@ -115,8 +132,8 @@
         <div class="form-group">
             <div class="label-box">접수기간 <span style="color:red">*</span></div>
             <div class="input-box">
-                <input type="date" style="width: 200px; display:inline-block;"> ~ 
-                <input type="date" style="width: 200px; display:inline-block;">
+                <input type="date" name="start_date" style="width: 200px; display:inline-block;"> ~ 
+                <input type="date" name="end_date" style="width: 200px; display:inline-block;">
             </div>
         </div>
 
@@ -130,27 +147,97 @@
         <button type="submit" class="btn-submit">공고 등록하기</button>
     </form>
 </div>
+
 <script>
+// 직업 데이터
+const jobData = {
+    "기획·전략": ["경영기획", "전략기획", "사업개발", "서비스기획", "데이터분석"],
+    "마케팅·홍보": ["브랜드마케팅", "퍼포먼스마케팅", "광고AE", "SNS마케팅", "홍보(PR)"],
+    "IT개발": ["백엔드", "프론트엔드", "앱개발", "게임개발", "AI·인공지능", "임베디드", "보안"],
+    "디자인": ["UI·UX디자인", "웹디자인", "그래픽디자인", "영상편집", "제품디자인"],
+    "교육": ["초중고교사", "대학교수", "전문강사", "학습지교사", "입시강사", "외국어강사", "교직원"],
+    "영업·고객상담": ["IT영업", "기술영업", "영업관리", "고객상담(CS)", "인바운드"],
+    "의료·보건": ["의사", "간호사", "물리치료사", "임상병리", "약사", "의료코디네이터"]
+};
+
 document.addEventListener("DOMContentLoaded", function() {
+    const mainUl = document.getElementById('mainCatList');
+    const subUl = document.getElementById('subCatList');
+    const jobInput = document.getElementById('selectedJobInput');
+
+    // 대분류 렌더링
+    Object.keys(jobData).forEach(cat => {
+        const li = document.createElement('li');
+        li.textContent = cat;
+        li.onclick = function() {
+            document.querySelectorAll('.main-cat-list li').forEach(el => el.classList.remove('active'));
+            this.classList.add('active');
+            subUl.innerHTML = '';
+            jobData[cat].forEach(sub => {
+                const subBtn = document.createElement('li');
+                subBtn.className = 'sub-job-item';
+                subBtn.textContent = sub;
+                subBtn.onclick = function() {
+                    jobInput.value = sub;
+                    document.querySelectorAll('.sub-job-item').forEach(el => el.classList.remove('selected'));
+                    this.classList.add('selected');
+                };
+                subUl.appendChild(subBtn);
+            });
+        };
+        mainUl.appendChild(li);
+    });
+    
+    
+
+    // 기존 경력 관련 스크립트 로직 복구
     const minSelect = document.getElementById('min_exp');
     const maxSelect = document.getElementById('max_exp');
-
-    if(minSelect && maxSelect) { // 요소가 존재하는지 확인
-        minSelect.addEventListener('change', function() {
-            const minVal = this.value;
-
-            if (minVal === "0" || minVal === "1") {
-                maxSelect.value = "3";
-            } else if (minVal === "3") {
-                maxSelect.value = "5";
-            } else if (minVal === "5") {
-                maxSelect.value = "8";
-            } else if (minVal === "10") {
-                maxSelect.value = "99";
+    const noneCheck = document.getElementById('exp_none');
+    const expChecks = document.querySelectorAll('.exp-check');
+	
+ // 최소 경력 선택 시 최대 경력 자동 설정 로직 추가
+    minSelect.addEventListener('change', function() {
+	    const minVal = parseInt(this.value);
+	    
+	    if (minVal === 0) {
+	        maxSelect.value = "3";  // 1년 미만 -> 3년 이하
+	    } else if (minVal === 1) {
+	        maxSelect.value = "3";  // 1년 이상 -> 5년 이하
+	    } else if (minVal === 3) {
+	        maxSelect.value = "5";  // 3년 이상 -> 8년 이하
+	    } else if (minVal === 5) {
+	        maxSelect.value = "8"; // 5년 이상 -> 10년 이하
+	    } else if (minVal === 10) {
+	        maxSelect.value = "99"; // 10년 이상 -> 제한 없음
+	    }
+	});
+    
+    expChecks.forEach(check => {
+        check.addEventListener('click', function() {
+            expChecks.forEach(cb => cb.checked = false);
+            this.checked = true;
+            if(this.value === 'new') {
+                minSelect.disabled = true;
+                maxSelect.disabled = true;
+            } else {
+                if(!noneCheck.checked) {
+                    minSelect.disabled = false;
+                    maxSelect.disabled = false;
+                }
             }
+        });
+    });
+
+    if(noneCheck) {
+        noneCheck.addEventListener('change', function() {
+            minSelect.disabled = this.checked;
+            maxSelect.disabled = this.checked;
         });
     }
 });
+
+
 </script>
 </body>
 </html>

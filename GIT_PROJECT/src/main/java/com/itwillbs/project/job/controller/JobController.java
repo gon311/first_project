@@ -19,5 +19,11 @@ public class JobController {
 		return "/job/job_posting";
 	}
 	
+	@GetMapping("/testJob2")
+	public String posting2() {
+		
+		return "/job/job_posting2";
+	}
+	
 	
 }

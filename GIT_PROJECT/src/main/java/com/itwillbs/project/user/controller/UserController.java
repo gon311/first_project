@@ -16,4 +16,11 @@ public class UserController {
 		
 		return "/user/login_form";
 	}
+	
+	@GetMapping("/regist")
+	public String regist() {
+		
+		return "/user/regist_form";
+	}
+	
 }

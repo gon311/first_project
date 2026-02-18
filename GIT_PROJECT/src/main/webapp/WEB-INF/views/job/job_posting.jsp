@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <meta charset="UTF-8">
 <title>채용공고 등록</title>
 <style>
@@ -115,34 +116,35 @@
                     <option>회사내규에 따름</option>
                 </select>
                 <div class="info-box" style="margin-top:10px;">
-                    ⓘ 2025년 기준 최저시급 10,030원<br>
+                    ⓘ 2026년 기준 최저시급 10,320원<br>
                     당사는 최저 임금법을 준수하며, 최저임금 미만의 공고는 강제 마감될 수 있습니다.
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            <div class="label-box">근무지 <span style="color:red">*</span></div>
-            <div class="input-box">
-                <input type="text" name="address" placeholder="서울 강서구 공항대로 165">
-                <input type="checkbox"> 재택근무 가능
-            </div>
-        </div>
+		    <div class="label-box">근무지 <span style="color:red">*</span></div>
+		    <div class="input-box">
+		        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+		            <input type="text" name="zipcode" id="zipcode" placeholder="우편번호" style="width: 120px;" readonly>
+		            <button type="button" onclick="execDaumPostcode()" style="padding: 10px; cursor: pointer; background: #333; color: #fff; border: none; border-radius: 5px;">주소 검색</button>
+		        </div>
+		        <input type="text" name="address" id="address" placeholder="기본 주소" style="margin-bottom: 10px;" readonly>
+		        <input type="text" name="address_detail" id="address_detail" placeholder="상세 주소 (예: 101동 202호)">
+		        
+		        <label style="margin-top: 10px; display: block;">
+		            <input type="checkbox" name="remote_work"> 재택근무 가능 
+		        </label>
+		    </div>
+		</div>
 
         <div class="form-group">
-            <div class="label-box">접수기간 <span style="color:red">*</span></div>
-            <div class="input-box">
-                <input type="date" name="start_date" style="width: 200px; display:inline-block;"> ~ 
-                <input type="date" name="end_date" style="width: 200px; display:inline-block;">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="label-box">채용절차</div>
-            <div class="input-box">
-                서류전형 > 1차면접 > 2차면접 > 최종합격 [ + ]
-            </div>
-        </div>
+		    <div class="label-box">접수기간 <span style="color:red">*</span></div>
+		    <div class="input-box">
+		        <input type="date" name="start_date" id="start_date" style="width: 200px; display:inline-block;"> ~ 
+		        <input type="date" name="end_date" id="end_date" style="width: 200px; display:inline-block;">
+		    </div>
+		</div>
 
         <button type="submit" class="btn-submit">공고 등록하기</button>
     </form>
@@ -237,6 +239,62 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+function execDaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+            let addr = ''; // 주소 변수
+            let extraAddr = ''; // 참고항목 변수
+
+            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                addr = data.roadAddress;
+            } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                addr = data.jibunAddress;
+            }
+
+            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            document.getElementById('zipcode').value = data.zonecode;
+            document.getElementById("address").value = addr;
+            
+            // 커서를 상세주소 필드로 이동한다.
+            document.getElementById("address_detail").focus();
+        }
+    }).open();
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
+
+    // 오늘 날짜 가져오기 (YYYY-MM-DD 형식)
+    const now = new Date();
+    const today = now.toISOString().split('T')[0];
+
+    // 1. 시작일 제한: 오늘 이후(미래)는 선택 불가 -> max를 오늘로 설정
+    startDateInput.max = today;
+
+    // 2. 마감일 제한: 오늘 이전(과거)은 선택 불가 -> min을 오늘로 설정
+    endDateInput.min = today;
+
+    // 3. 추가 로직: 시작일을 선택하면 마감일의 최소값이 시작일보다 뒤여야 함
+    startDateInput.addEventListener('change', function() {
+        if (this.value) {
+            endDateInput.min = this.value;
+        }
+    });
+
+    // 4. 추가 로직: 마감일을 선택하면 시작일의 최대값이 마감일보다 앞이어야 함
+    endDateInput.addEventListener('change', function() {
+        if (this.value) {
+            // 마감일이 오늘보다 미래더라도 시작일은 '오늘'이 최대치여야 하므로 비교 로직 추가
+            const selectedEndDate = this.value;
+            startDateInput.max = selectedEndDate < today ? selectedEndDate : today;
+        }
+    });
+});
 
 </script>
 </body>

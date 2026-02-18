@@ -6,6 +6,6 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.itwillbs.project.user.dto.UserDTO" alias="regist"/>
-		
+		<typeAlias type="com.itwillbs.project.job.dto.JobDTO" alias="job"/>
 	</typeAliases>
 </configuration>

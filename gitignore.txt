@@ -104,6 +104,9 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 *.properties
+*.mf
+*.MF
+META-INF/
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 

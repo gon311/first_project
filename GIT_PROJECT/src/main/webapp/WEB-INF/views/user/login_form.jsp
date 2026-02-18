@@ -62,7 +62,7 @@
                             </div>
                             <div class="position-relative">
                                 <i class="fa-solid fa-lock position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
-                                <input type="password" id="password-input" class="form-control form-control-lg ps-5 pe-5" placeholder="비밀번호">
+                                <input type="password" class="password-input form-control form-control-lg ps-5 pe-5" placeholder="비밀번호">
                                 <i class="fa-regular fa-eye-slash position-absolute top-50 end-0 translate-middle-y me-3 password-toggle-icon" id="toggle-password"></i>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                     <span class="mx-2 text-black-50">|</span>
                     <a href="#" class="text-decoration-none text-secondary">비밀번호 찾기</a>
                     <span class="mx-2 text-black-50">|</span>
-                    <a href="#" class="text-decoration-none fw-bold text-primary">회원가입</a>
+                    <a href="<c:url value="/user/regist?id=pe"/>" class="text-decoration-none fw-bold text-primary">회원가입</a>
                 </div>
             </div>
 
@@ -103,7 +103,8 @@
                             </div>
                             <div class="position-relative">
                                 <i class="fa-solid fa-lock position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
-                                <input type="password" class="form-control form-control-lg ps-5" placeholder="비밀번호">
+                                <input type="password" class="password-input form-control form-control-lg ps-5" placeholder="비밀번호">
+                                <i class="fa-regular fa-eye-slash position-absolute top-50 end-0 translate-middle-y me-3 password-toggle-icon" id="toggle-password"></i>
                             </div>
                         </div>
                         <div class="col-3">
@@ -115,11 +116,11 @@
                     IP보안 <span class="ms-2 toggle-text cursor-pointer">ON</span>
                 </div>
                 <div class="text-center text-secondary small mt-5">
-                    <a href="#" class="text-decoration-none text-secondary">아이디 찾기</a>
+                    <a href="<c:url value="/user/find" />" class="text-decoration-none text-secondary">아이디 찾기</a>
                     <span class="mx-2 text-black-50">|</span>
                     <a href="#" class="text-decoration-none text-secondary">비밀번호 찾기</a>
                     <span class="mx-2 text-black-50">|</span>
-                    <a href="#" class="text-decoration-none fw-bold text-primary">기업회원가입</a>
+                    <a href="<c:url value="/user/regist?id=co" />" class="text-decoration-none fw-bold text-primary">기업회원가입</a>
                 </div>
             </div>
 
@@ -128,41 +129,57 @@
 
     <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
-    <script>
-        function switchTab(type) {
-            const tabs = document.querySelectorAll('.tab-btn');
-            const contents = document.querySelectorAll('.tab-content-area');
-            tabs.forEach(t => t.classList.remove('active'));
-            contents.forEach(c => c.classList.remove('active'));
-            if (type === 'personal') {
-                tabs[0].classList.add('active');
-                document.getElementById('personal-content').classList.add('active');
-            } else {
-                tabs[1].classList.add('active');
-                document.getElementById('corporate-content').classList.add('active');
-            }
-        }
-
-        const passwordInput = document.getElementById('password-input');
-        const toggleIcon = document.getElementById('toggle-password');
-
-        passwordInput.addEventListener('input', function() {
-            toggleIcon.style.display = this.value.length > 0 ? 'block' : 'none';
-        });
-
-        toggleIcon.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            }
-        });
-    </script>
+	<script>
+	    function switchTab(type) {
+	        const tabs = document.querySelectorAll('.tab-btn');
+	        const contents = document.querySelectorAll('.tab-content-area');
+	        tabs.forEach(t => t.classList.remove('active'));
+	        contents.forEach(c => c.classList.remove('active'));
+	        if (type === 'personal') {
+	            tabs[0].classList.add('active');
+	            document.getElementById('personal-content').classList.add('active');
+	        } else {
+	            tabs[1].classList.add('active');
+	            document.getElementById('corporate-content').classList.add('active');
+	        }
+	    }
+	
+	    const passwordInputs = document.querySelectorAll('.password-input');
+	
+	    passwordInputs.forEach(input => {
+	        
+	        // 현재 입력창(input)의 부모 박스를 찾고, 그 안에 있는 눈 아이콘(icon)을 찾습니다.
+	        const wrapper = input.parentElement;
+	        const icon = wrapper.querySelector('.password-toggle-icon');
+	
+	        // 예외 처리: 만약 아이콘이 없는 경우(실수 방지) 건너뜀
+	        if (!icon) return;
+	
+	        // 기능 1: 글자 입력 시 아이콘 보이기/숨기기
+	        input.addEventListener('input', function() {
+	            if (this.value.length > 0) {
+	                icon.style.display = 'block';
+	            } else {
+	                icon.style.display = 'none';
+	            }
+	        });
+	
+	        // 기능 2: 아이콘 클릭 시 비밀번호 토글
+	        icon.addEventListener('click', function(e) {
+	            e.preventDefault();
+	            e.stopPropagation(); // 이벤트 버블링 방지
+	
+	            if (input.type === 'password') {
+	                input.type = 'text';
+	                icon.classList.remove('fa-eye-slash');
+	                icon.classList.add('fa-eye');
+	            } else {
+	                input.type = 'password';
+	                icon.classList.remove('fa-eye');
+	                icon.classList.add('fa-eye-slash');
+	            }
+	        });
+	    });
+	</script>
 </body>
 </html>

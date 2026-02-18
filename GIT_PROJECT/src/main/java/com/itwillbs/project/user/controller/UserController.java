@@ -23,4 +23,10 @@ public class UserController {
 		return "/user/regist_form";
 	}
 	
+	@GetMapping("/find")
+	public String find() {
+		
+		return "/user/find_form";
+	}
+	
 }

@@ -13,10 +13,18 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class JobController {
 	
-	@GetMapping("/testJob")
+	@GetMapping("/JobPosting")
 	public String posting() {
 		
+		
+		
 		return "/job/job_posting";
+	}
+	
+	@GetMapping("/JobList")
+	public String list() {
+		
+		return "/job/job_list";
 	}
 	
 	

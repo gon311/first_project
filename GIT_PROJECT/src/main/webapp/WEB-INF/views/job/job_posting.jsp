@@ -35,7 +35,7 @@
         
         <div class="form-group">
             <div class="label-box">공고제목 <span style="color:red">*</span></div>
-            <div class="input-box"><input type="text" name="title" placeholder="디자이너 채용"></div>
+            <div class="input-box"><input type="text" name="title" placeholder="디자이너 채용" required></div>
         </div>
 
         <div class="form-group">
@@ -47,14 +47,14 @@
                         <li style="color:#999; font-size:0.9em; width:100%; text-align:center; margin-top:80px;">대분류를 선택해주세요.</li>
                     </ul>
                 </div>
-                <input type="text" name="category" id="selectedJobInput" readonly placeholder="직무를 선택하면 자동 입력됩니다." style="margin-top:10px; background:#f8f9fa;">
+                <input type="text" name="field" id="selectedJobInput" readonly placeholder="직무를 선택하면 자동 입력됩니다." style="margin-top:10px; background:#f8f9fa;" required>
             </div>
         </div>
 
         <div class="form-group">
             <div class="label-box">주요업무 <span style="color:red">*</span></div>
             <div class="input-box">
-                <textarea name="main_task" rows="5" placeholder="• 사이트 웹디자인"></textarea>
+                <textarea name="task" rows="5" placeholder="• 사이트 웹디자인" required></textarea>
             </div>
         </div>
 
@@ -67,6 +67,20 @@
                 </div>
             </div>
         </div>
+        
+        <div class="form-group">
+		    <div class="label-box">고용 형태 <span style="color:red">*</span></div>
+		    <div class="input-box">
+		        <select name="emp_type" required style="width: 200px; display:inline-block;">
+		            <option value="정규직">정규직</option>
+		            <option value="계약직">계약직</option>
+		            <option value="인턴">인턴</option>
+		        </select>
+		        <label style="margin-left: 15px;">
+		            <input type="checkbox" name="probation" value="Y"> 수습기간 있음
+		        </label>
+		    </div>
+		</div>
 
         <div class="form-group">
 		    <div class="label-box">경력 <span style="color:red">*</span></div>
@@ -98,7 +112,7 @@
         <div class="form-group">
             <div class="label-box">학력 <span style="color:red">*</span></div>
             <div class="input-box">
-                <select name="education">
+                <select name="edu">
                     <option>학력무관</option>
                     <option>고등학교 졸업</option>
                     <option>대학교(2,3년) 졸업</option>
@@ -126,14 +140,30 @@
 		    <div class="label-box">근무지 <span style="color:red">*</span></div>
 		    <div class="input-box">
 		        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-		            <input type="text" name="zipcode" id="zipcode" placeholder="우편번호" style="width: 120px;" readonly>
+		            <input type="text" name="zipcode" id="zipcode" placeholder="우편번호" style="width: 120px;" readonly required>
 		            <button type="button" onclick="execDaumPostcode()" style="padding: 10px; cursor: pointer; background: #333; color: #fff; border: none; border-radius: 5px;">주소 검색</button>
 		        </div>
-		        <input type="text" name="address" id="address" placeholder="기본 주소" style="margin-bottom: 10px;" readonly>
-		        <input type="text" name="address_detail" id="address_detail" placeholder="상세 주소 (예: 101동 202호)">
+		        <input type="text" name="address" id="address" placeholder="기본 주소" style="margin-bottom: 10px;" readonly required>
+		        <input type="text" name="address_detail" id="address_detail" placeholder="상세 주소 (예: 101동 202호)" required>
 		        
 		        <label style="margin-top: 10px; display: block;">
-		            <input type="checkbox" name="remote_work"> 재택근무 가능 
+		            <input type="checkbox" name="is_remote"> 재택근무 가능 
+		        </label>
+		    </div>
+		</div>
+		
+		<div class="form-group">
+		    <div class="label-box">담당자 정보 <span style="color:red">*</span></div>
+		    <div class="input-box">
+		        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+		            <input type="text" name="mgr_name" placeholder="담당자 이름" required>
+		            <input type="text" name="mgr_phone" placeholder="연락처 (010-0000-0000)" 
+       					pattern="01[0-9]-[0-9]{3,4}-[0-9]{4}" title="010-0000-0000 형식으로 입력해주세요" required>
+		        </div>
+		        <input type="email" name="mgr_email" placeholder="이메일 주소" required>
+		        
+		        <label style="margin-top: 10px; display: block; font-size: 0.9em; color: #666;">
+		            <input type="checkbox" name="is_public" value="Y" checked> 담당자 정보를 공고에 공개합니다.
 		        </label>
 		    </div>
 		</div>
@@ -141,8 +171,8 @@
         <div class="form-group">
 		    <div class="label-box">접수기간 <span style="color:red">*</span></div>
 		    <div class="input-box">
-		        <input type="date" name="start_date" id="start_date" style="width: 200px; display:inline-block;"> ~ 
-		        <input type="date" name="end_date" id="end_date" style="width: 200px; display:inline-block;">
+		        <input type="date" name="open_date" id="start_date" required style="width: 200px; display:inline-block;"> ~ 
+		        <input type="date" name="close_date" id="end_date" required style="width: 200px; display:inline-block;">
 		    </div>
 		</div>
 
@@ -151,7 +181,7 @@
 </div>
 
 <script>
-// 직업 데이터
+// 1. 직업 데이터 정의 [cite: 37]
 const jobData = {
     "기획·전략": ["경영기획", "전략기획", "사업개발", "서비스기획", "데이터분석"],
     "마케팅·홍보": ["브랜드마케팅", "퍼포먼스마케팅", "광고AE", "SNS마케팅", "홍보(PR)"],
@@ -163,58 +193,51 @@ const jobData = {
 };
 
 document.addEventListener("DOMContentLoaded", function() {
+    // --- [기능 1] 모집분야(직무) 선택 로직 [cite: 38, 39, 40, 41] ---
     const mainUl = document.getElementById('mainCatList');
     const subUl = document.getElementById('subCatList');
     const jobInput = document.getElementById('selectedJobInput');
 
-    // 대분류 렌더링
-    Object.keys(jobData).forEach(cat => {
-        const li = document.createElement('li');
-        li.textContent = cat;
-        li.onclick = function() {
-            document.querySelectorAll('.main-cat-list li').forEach(el => el.classList.remove('active'));
-            this.classList.add('active');
-            subUl.innerHTML = '';
-            jobData[cat].forEach(sub => {
-                const subBtn = document.createElement('li');
-                subBtn.className = 'sub-job-item';
-                subBtn.textContent = sub;
-                subBtn.onclick = function() {
-                    jobInput.value = sub;
-                    document.querySelectorAll('.sub-job-item').forEach(el => el.classList.remove('selected'));
-                    this.classList.add('selected');
-                };
-                subUl.appendChild(subBtn);
-            });
-        };
-        mainUl.appendChild(li);
-    });
-    
-    
+    if (mainUl && subUl) {
+        Object.keys(jobData).forEach(cat => {
+            const li = document.createElement('li');
+            li.textContent = cat;
+            li.onclick = function() {
+                document.querySelectorAll('.main-cat-list li').forEach(el => el.classList.remove('active'));
+                this.classList.add('active');
+                subUl.innerHTML = '';
+                jobData[cat].forEach(sub => {
+                    const subBtn = document.createElement('li');
+                    subBtn.className = 'sub-job-item';
+                    subBtn.textContent = sub;
+                    subBtn.onclick = function() {
+                        jobInput.value = sub;
+                        document.querySelectorAll('.sub-job-item').forEach(el => el.classList.remove('selected'));
+                        this.classList.add('selected');
+                    };
+                    subUl.appendChild(subBtn);
+                });
+            };
+            mainUl.appendChild(li);
+        });
+    }
 
-    // 기존 경력 관련 스크립트 로직 복구
+    // --- [기능 2] 경력 관련 로직 [cite: 42, 43, 44, 45, 46, 47] ---
     const minSelect = document.getElementById('min_exp');
     const maxSelect = document.getElementById('max_exp');
     const noneCheck = document.getElementById('exp_none');
     const expChecks = document.querySelectorAll('.exp-check');
-	
- // 최소 경력 선택 시 최대 경력 자동 설정 로직 추가
-    minSelect.addEventListener('change', function() {
-	    const minVal = parseInt(this.value);
-	    
-	    if (minVal === 0) {
-	        maxSelect.value = "3";  // 1년 미만 -> 3년 이하
-	    } else if (minVal === 1) {
-	        maxSelect.value = "3";  // 1년 이상 -> 5년 이하
-	    } else if (minVal === 3) {
-	        maxSelect.value = "5";  // 3년 이상 -> 8년 이하
-	    } else if (minVal === 5) {
-	        maxSelect.value = "8"; // 5년 이상 -> 10년 이하
-	    } else if (minVal === 10) {
-	        maxSelect.value = "99"; // 10년 이상 -> 제한 없음
-	    }
-	});
-    
+
+    if (minSelect && maxSelect) {
+        minSelect.addEventListener('change', function() {
+            const minVal = parseInt(this.value);
+            if (minVal === 0 || minVal === 1) maxSelect.value = "3";
+            else if (minVal === 3) maxSelect.value = "5";
+            else if (minVal === 5) maxSelect.value = "8";
+            else if (minVal === 10) maxSelect.value = "99";
+        });
+    }
+
     expChecks.forEach(check => {
         check.addEventListener('click', function() {
             expChecks.forEach(cb => cb.checked = false);
@@ -222,11 +245,9 @@ document.addEventListener("DOMContentLoaded", function() {
             if(this.value === 'new') {
                 minSelect.disabled = true;
                 maxSelect.disabled = true;
-            } else {
-                if(!noneCheck.checked) {
-                    minSelect.disabled = false;
-                    maxSelect.disabled = false;
-                }
+            } else if(!noneCheck.checked) {
+                minSelect.disabled = false;
+                maxSelect.disabled = false;
             }
         });
     });
@@ -237,65 +258,96 @@ document.addEventListener("DOMContentLoaded", function() {
             maxSelect.disabled = this.checked;
         });
     }
-});
 
+    // --- [기능 3] 접수기간 날짜 제한 로직 [cite: 48, 49, 50, 51] ---
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
+    const today = new Date().toISOString().split('T')[0];
+
+    if (startDateInput && endDateInput) {
+        startDateInput.max = today;
+        endDateInput.min = today;
+
+        startDateInput.addEventListener('change', function() {
+            if (this.value) endDateInput.min = this.value;
+        });
+        endDateInput.addEventListener('change', function() {
+            if (this.value) {
+                const selectedEndDate = this.value;
+                startDateInput.max = selectedEndDate < today ? selectedEndDate : today;
+            }
+        });
+    }
+
+    // --- [기능 4] 전화번호 자동 하이픈 [cite: 52, 53] ---
+    const phoneInput = document.querySelector('input[name="mgr_phone"]');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let val = e.target.value.replace(/[^0-9]/g, '');
+            if (val.length > 3 && val.length <= 7) {
+                val = val.substring(0, 3) + '-' + val.substring(3);
+            } else if (val.length > 7) {
+                val = val.substring(0, 3) + '-' + val.substring(3, 7) + '-' + val.substring(7, 11);
+            }
+            e.target.value = val;
+        });
+    }
+
+    // --- [기능 5] 폼 제출 통합 검증 [cite: 54, 55, 56, 57, 58, 59] ---
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const jobValue = document.getElementById('selectedJobInput').value;
+            const zipcode = document.getElementById('zipcode').value;
+            const address = document.getElementById('address').value;
+            const mgrPhone = document.querySelector('input[name="mgr_phone"]');
+            const mgrEmail = document.querySelector('input[name="mgr_email"]');
+
+            const phoneRegex = /^010-\d{3,4}-\d{4}$/;
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (!jobValue || jobValue.trim() === "") {
+                alert("모집분야(직무)를 선택해주세요.");
+                e.preventDefault();
+                document.getElementById('mainCatList').scrollIntoView({ behavior: 'smooth' });
+                return false;
+            }
+
+            if (!zipcode || !address) {
+                alert("주소 검색 버튼을 눌러 근무지 주소를 입력해주세요.");
+                e.preventDefault();
+                document.getElementById('zipcode').scrollIntoView({ behavior: 'smooth' });
+                return false;
+            }
+
+            if (!phoneRegex.test(mgrPhone.value)) {
+                alert("전화번호 11자리를 정확히 입력해주세요.");
+                mgrPhone.focus();
+                e.preventDefault();
+                return false;
+            }
+
+            if (!emailRegex.test(mgrEmail.value)) {
+                alert("이메일 형식이 올바르지 않습니다.");
+                mgrEmail.focus();
+                e.preventDefault();
+                return false;
+            }
+        });
+    }
+}); // DOMContentLoaded 끝 
+
+// --- [기능 6] 카카오 주소 API (이벤트 블록 밖으로 분리)  ---
 function execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
-            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-            let addr = ''; // 주소 변수
-            let extraAddr = ''; // 참고항목 변수
-
-            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-                addr = data.roadAddress;
-            } else { // 사용자가 지번 주소를 선택했을 경우(J)
-                addr = data.jibunAddress;
-            }
-
-            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            let addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
             document.getElementById('zipcode').value = data.zonecode;
             document.getElementById("address").value = addr;
-            
-            // 커서를 상세주소 필드로 이동한다.
             document.getElementById("address_detail").focus();
         }
     }).open();
 }
-
-document.addEventListener("DOMContentLoaded", function() {
-    const startDateInput = document.getElementById('start_date');
-    const endDateInput = document.getElementById('end_date');
-
-    // 오늘 날짜 가져오기 (YYYY-MM-DD 형식)
-    const now = new Date();
-    const today = now.toISOString().split('T')[0];
-
-    // 1. 시작일 제한: 오늘 이후(미래)는 선택 불가 -> max를 오늘로 설정
-    startDateInput.max = today;
-
-    // 2. 마감일 제한: 오늘 이전(과거)은 선택 불가 -> min을 오늘로 설정
-    endDateInput.min = today;
-
-    // 3. 추가 로직: 시작일을 선택하면 마감일의 최소값이 시작일보다 뒤여야 함
-    startDateInput.addEventListener('change', function() {
-        if (this.value) {
-            endDateInput.min = this.value;
-        }
-    });
-
-    // 4. 추가 로직: 마감일을 선택하면 시작일의 최대값이 마감일보다 앞이어야 함
-    endDateInput.addEventListener('change', function() {
-        if (this.value) {
-            // 마감일이 오늘보다 미래더라도 시작일은 '오늘'이 최대치여야 하므로 비교 로직 추가
-            const selectedEndDate = this.value;
-            startDateInput.max = selectedEndDate < today ? selectedEndDate : today;
-        }
-    });
-});
-
 </script>
 </body>
 </html>

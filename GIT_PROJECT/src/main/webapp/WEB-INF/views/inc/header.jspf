@@ -54,7 +54,7 @@
             AI 자소서 첨삭
           </a>
           <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownAI" id="submenu-ai">
-            <li><a class="dropdown-item" href="<c:url value='/ai/analysis' />">자소서 첨삭</a></li>
+            <li><a class="dropdown-item" href="<c:url value='/ai/reviewRegistForm' />">자소서 첨삭</a></li>
             <li><a class="dropdown-item" href="<c:url value='/ai/spellcheck' />">맞춤법 검사</a></li>
             <li><a class="dropdown-item" href="<c:url value='/ai/plagiarism' />">표절 검사</a></li>
           </ul>

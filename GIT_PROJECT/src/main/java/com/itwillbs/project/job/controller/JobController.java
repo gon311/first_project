@@ -1,5 +1,7 @@
 package com.itwillbs.project.job.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,12 +29,14 @@ public class JobController {
 		return "/job/job_posting";
 	}
 	
-	@PostMapping("/job_process")
-	public String posting(JobDTO jobDTO) {
+	@PostMapping("/JobProcess")
+	public String posting(JobDTO jobDTO, HttpSession session) {
 		
+		jobDTO.setCompId(1L);
+		System.out.println(jobDTO.getAddress());
 		jobService.jobInsert(jobDTO);
 		System.out.println(jobDTO);
-		return "redirect:/job_posting";
+		return "redirect:/job/JobList";
 	}
 	
 	@GetMapping("/JobList")

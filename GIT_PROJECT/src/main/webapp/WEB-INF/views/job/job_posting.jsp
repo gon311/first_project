@@ -32,7 +32,7 @@
 <body>
 
 <div class="container">
-    <form action="<c:url value="/job/jobProcess" />" method="post" enctype="multipart/form-data">
+    <form action="<c:url value="/job/JobProcess" />" method="post" enctype="multipart/form-data">
         
         <div class="form-group">
             <div class="label-box">공고제목 <span style="color:red">*</span></div>
@@ -146,6 +146,8 @@
 		        </div>
 		        <input type="text" name="address1" id="address1" placeholder="기본 주소" style="margin-bottom: 10px;" readonly required>
 		        <input type="text" name="address2" id="address2" placeholder="상세 주소" required>
+		        <input type="hidden" name="address" id="address">
+		        
 		        
 		        <label style="margin-top: 10px; display: block;">
 		            <input type="checkbox" name="isRemote" value="Y"> 재택근무 가능 
@@ -181,140 +183,144 @@
 
 <script>
 const jobData = {
-	    "기획·전략": ["경영기획", "전략기획", "사업개발", "서비스기획", "데이터분석"],
-	    "마케팅·홍보": ["브랜드마케팅", "퍼포먼스마케팅", "광고AE", "SNS마케팅", "홍보(PR)"],
-	    "IT개발": ["백엔드", "프론트엔드", "앱개발", "게임개발", "AI·인공지능", "임베디드", "보안"],
-	    "디자인": ["UI·UX디자인", "웹디자인", "그래픽디자인", "영상편집", "제품디자인"],
-	    "교육": ["초중고교사", "대학교수", "전문강사", "학습지교사", "입시강사", "외국어강사", "교직원"],
-	    "영업·고객상담": ["IT영업", "기술영업", "영업관리", "고객상담(CS)", "인바운드"],
-	    "의료·보건": ["의사", "간호사", "물리치료사", "임상병리", "약사", "의료코디네이터"]
-	};
-
+    "기획·전략": ["경영기획", "전략기획", "사업개발", "서비스기획", "데이터분석"],
+    "마케팅·홍보": ["브랜드마케팅", "퍼포먼스마케팅", "광고AE", "SNS마케팅", "홍보(PR)"],
+    "IT개발": ["백엔드", "프론트엔드", "앱개발", "게임개발", "AI·인공지능", "임베디드", "보안"],
+    "디자인": ["UI·UX디자인", "웹디자인", "그래픽디자인", "영상편집", "제품디자인"],
+    "교육": ["초중고교사", "대학교수", "전문강사", "학습지교사", "입시강사", "외국어강사", "교직원"],
+    "영업·고객상담": ["IT영업", "기술영업", "영업관리", "고객상담(CS)", "인바운드"],
+    "의료·보건": ["의사", "간호사", "물리치료사", "임상병리", "약사", "의료코디네이터"]
+}; [cite: 37]
 
 document.addEventListener("DOMContentLoaded", function() {
-    // 1. 모집분야 선택
-    const mainUl = document.getElementById('mainCatList');
-    const subUl = document.getElementById('subCatList');
-    const jobInput = document.getElementById('selectedJobInput');
+    // 1. 모집분야 선택 (정상 복구)
+    const mainUl = document.getElementById('mainCatList'); [cite: 38]
+    const subUl = document.getElementById('subCatList'); [cite: 38]
+    const jobInput = document.getElementById('selectedJobInput'); [cite: 38]
 
     if (mainUl && subUl) {
         Object.keys(jobData).forEach(cat => {
-            const li = document.createElement('li');
-            li.textContent = cat;
+            const li = document.createElement('li'); [cite: 39]
+            li.textContent = cat; [cite: 39]
             li.onclick = function() {
-                document.querySelectorAll('.main-cat-list li').forEach(el => el.classList.remove('active'));
-                this.classList.add('active');
-                subUl.innerHTML = '';
+                document.querySelectorAll('.main-cat-list li').forEach(el => el.classList.remove('active')); [cite: 39]
+                this.classList.add('active'); [cite: 40]
+                subUl.innerHTML = ''; [cite: 40]
                 jobData[cat].forEach(sub => {
-                    const subBtn = document.createElement('li');
-                    subBtn.className = 'sub-job-item';
-                    subBtn.textContent = sub;
+                    const subBtn = document.createElement('li'); [cite: 40]
+                    subBtn.className = 'sub-job-item'; [cite: 41]
+                    subBtn.textContent = sub; [cite: 41]
                     subBtn.onclick = function() {
-                        jobInput.value = sub;
-                        document.querySelectorAll('.sub-job-item').forEach(el => el.classList.remove('selected'));
-                        this.classList.add('selected');
+                        jobInput.value = sub; [cite: 41]
+                        document.querySelectorAll('.sub-job-item').forEach(el => el.classList.remove('selected')); [cite: 41]
+                        this.classList.add('selected'); [cite: 42]
                     };
-                    subUl.appendChild(subBtn);
+                    subUl.appendChild(subBtn); [cite: 42]
                 });
             };
-            mainUl.appendChild(li);
+            mainUl.appendChild(li); [cite: 43]
         });
     }
 
-    // 2. 경력 로직
-    const minSelect = document.getElementById('minExp');
-    const maxSelect = document.getElementById('maxExp');
-    const noneCheck = document.getElementById('expNone');
-    const expChecks = document.querySelectorAll('.expCheck');
+    // 2. 경력 로직 (정상 복구)
+    const minSelect = document.getElementById('minExp'); [cite: 43]
+    const maxSelect = document.getElementById('maxExp'); [cite: 44]
+    const noneCheck = document.getElementById('expNone'); [cite: 44]
+    const expChecks = document.querySelectorAll('.expCheck'); [cite: 44]
 
     if (minSelect && maxSelect) {
         minSelect.addEventListener('change', function() {
-            const minVal = parseInt(this.value);
-            if (minVal === 0 || minVal === 1) maxSelect.value = "3";
-            else if (minVal === 3) maxSelect.value = "5";
-            else if (minVal === 5) maxSelect.value = "8";
-            else if (minVal === 10) maxSelect.value = "99";
+            const minVal = parseInt(this.value); [cite: 45]
+            if (minVal === 0 || minVal === 1) maxSelect.value = "3"; [cite: 45]
+            else if (minVal === 3) maxSelect.value = "5"; [cite: 45]
+            else if (minVal === 5) maxSelect.value = "8"; [cite: 45]
+            else if (minVal === 10) maxSelect.value = "99"; [cite: 46]
         });
     }
 
     expChecks.forEach(check => {
         check.addEventListener('click', function() {
-            expChecks.forEach(cb => cb.checked = false);
-            this.checked = true;
+            expChecks.forEach(cb => cb.checked = false); [cite: 47]
+            this.checked = true; [cite: 47]
             if(this.value === 'new') {
-                minSelect.disabled = true;
-                maxSelect.disabled = true;
+                minSelect.disabled = true; [cite: 47]
+                maxSelect.disabled = true; [cite: 47]
             } else if(!noneCheck.checked) {
-                minSelect.disabled = false;
-                maxSelect.disabled = false;
+                minSelect.disabled = false; [cite: 48]
+                maxSelect.disabled = false; [cite: 48]
             }
         });
     });
 
     if(noneCheck) {
         noneCheck.addEventListener('change', function() {
-            minSelect.disabled = this.checked;
-            maxSelect.disabled = this.checked;
+            minSelect.disabled = this.checked; [cite: 49]
+            maxSelect.disabled = this.checked; [cite: 49]
         });
     }
 
-    // 3. 날짜 제한
-    const startDateInput = document.getElementById('startDate');
-    const endDateInput = document.getElementById('endDate');
-    const today = new Date().toISOString().split('T')[0];
+    // 3. 날짜 제한 (정상 복구)
+    const startDateInput = document.getElementById('startDate'); [cite: 50]
+    const endDateInput = document.getElementById('endDate'); [cite: 50]
+    const today = new Date().toISOString().split('T')[0]; [cite: 51]
 
     if (startDateInput && endDateInput) {
-        startDateInput.max = today;
-        endDateInput.min = today;
+        startDateInput.max = today; [cite: 51]
+        endDateInput.min = today; [cite: 52]
         startDateInput.addEventListener('change', function() {
-            if (this.value) endDateInput.min = this.value;
+            if (this.value) endDateInput.min = this.value; [cite: 52]
         });
     }
 
-    // 4. 전화번호 하이픈
-    const phoneInput = document.querySelector('input[name="mgrPhone"]');
+    // 4. 전화번호 하이픈 (정상 복구)
+    const phoneInput = document.querySelector('input[name="mgrPhone"]'); [cite: 53]
     if (phoneInput) {
         phoneInput.addEventListener('input', function(e) {
-            let val = e.target.value.replace(/[^0-9]/g, '');
+            let val = e.target.value.replace(/[^0-9]/g, ''); [cite: 54]
             if (val.length > 3 && val.length <= 7) {
-                val = val.substring(0, 3) + '-' + val.substring(3);
+                val = val.substring(0, 3) + '-' + val.substring(3); [cite: 54]
             } else if (val.length > 7) {
-                val = val.substring(0, 3) + '-' + val.substring(3, 7) + '-' + val.substring(7, 11);
+                val = val.substring(0, 3) + '-' + val.substring(3, 7) + '-' + val.substring(7, 11); [cite: 55]
             }
-            e.target.value = val;
+            e.target.value = val; [cite: 55]
         });
     }
 
-    // 5. 폼 검증
-    const form = document.querySelector('form');
+    // 5. 폼 검증 및 주소 결합 (통합 수정본)
+    const form = document.querySelector('form'); [cite: 56]
     if (form) {
         form.addEventListener('submit', function(e) {
-            const jobValue = jobInput.value;
-            const zipcode = document.getElementById('postCode').value;
-            const address = document.getElementById('address1').value;
-            const mgrPhone = document.querySelector('input[name="mgrPhone"]');
-            const mgrEmail = document.querySelector('input[name="mgrEmail"]');
+            const jobValue = jobInput.value; [cite: 57]
+            const pc = document.getElementById('postCode').value; [cite: 57]
+            const addr1 = document.getElementById('address1').value; [cite: 57]
+            const addr2 = document.getElementById('address2').value; [cite: 58]
+            const mgrPhone = document.querySelector('input[name="mgrPhone"]'); [cite: 57]
+            const mgrEmail = document.querySelector('input[name="mgrEmail"]'); [cite: 57]
 
-            const phoneRegex = /^010-\d{3,4}-\d{4}$/;
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            const phoneRegex = /^01[0-9]-\d{3,4}-\d{4}$/; [cite: 58]
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; [cite: 58]
 
             if (!jobValue) {
-                alert("직무를 선택해주세요.");
+                alert("직무를 선택해주세요."); [cite: 58]
                 e.preventDefault();
                 return false;
             }
-            if (!zipcode || !address) {
-                alert("주소를 입력해주세요.");
+            if (!pc || !addr1) {
+                alert("주소를 입력해주세요."); [cite: 59]
                 e.preventDefault();
                 return false;
             }
+            
+            // 전송 직전 hidden 필드인 'address'에 결합된 주소 주입
+            document.getElementById('address').value = "[" + pc + "] " + addr1 + " " + addr2; [cite: 65]
+
             if (!phoneRegex.test(mgrPhone.value)) {
-                alert("전화번호를 확인해주세요.");
+                alert("전화번호를 확인해주세요."); [cite: 60]
                 e.preventDefault();
                 return false;
             }
             if (!emailRegex.test(mgrEmail.value)) {
-                alert("이메일을 확인해주세요.");
+                alert("이메일을 확인해주세요."); [cite: 61]
                 e.preventDefault();
                 return false;
             }
@@ -322,13 +328,14 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-function execDaumPostcode() {
+// 다음 주소 API (폼 밖으로 분리)
+function execDaumPostcode() { [cite: 63]
     new daum.Postcode({
         oncomplete: function(data) {
-            let addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
-            document.getElementById('postCode').value = data.zonecode;
-            document.getElementById("address1").value = addr;
-            document.getElementById("address2").focus();
+            let addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress; [cite: 63]
+            document.getElementById('postCode').value = data.zonecode; [cite: 63]
+            document.getElementById("address1").value = addr; [cite: 63]
+            document.getElementById("address2").focus(); [cite: 63]
         }
     }).open();
 }

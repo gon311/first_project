@@ -101,16 +101,15 @@
 				<!-- tbody 필요 -->
 	 			<tbody>
 					<c:forEach var="pay" varStatus="status" items="${payList}">
-						<%-- row 클릭 시 /student/info?idx=xxx 형식으로 해당 학생 정보 조회 요청 --%>
-						<tr class="clickable-row" onclick="location.href='info?idx=${pay.id}'">
+						<tr class="clickable-row" onclick="location.href='info?id=${pay.id}'">
 							<td>${status.count }</td>
-							<td>${pay.payNum }</td>
+							<td>${pay.id }</td>
 							<td>${pay.payDate }</td>
-							<td>${pay.payName }</td>
-							<td>${pay.type }</td>
-							<td>${pay.payPrice }</td>
+							<td>${pay.productName }</td>
+							<td>${pay.userId }</td>
+							<td>${pay.userType }</td>
 							<td>${pay.payMethod }</td>
-							<td>${pay.status }</td>
+							<td>${pay.payStatus }</td>
 						</tr>
 					</c:forEach>
 				</tbody>

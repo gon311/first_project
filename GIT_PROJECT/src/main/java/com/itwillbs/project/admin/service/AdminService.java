@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
+import com.itwillbs.project.admin.dto.PayDTO;
 import com.itwillbs.project.admin.mapper.AdminMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,8 @@ public class AdminService{
 	}
 	
 	// 구직자 목록 조회 필터링
-	public List<MemberDTO> getUserFilter(String user_name, String user_type, String status) {
-		return adminMapper.selectUserFilter(user_name, user_type, status);
+	public List<MemberDTO> getUserFilter(String keyword, String type, String status) {
+		return adminMapper.selectUserFilter(keyword, type, status);
 	}
 
 	// 구직자 상세 정보 조회
@@ -48,6 +49,10 @@ public class AdminService{
 	// 공지사항 저장
 	public void insertNotice(NoticeDTO noticeDTO) {
 		adminMapper.insertNotice(noticeDTO);
+	}
+
+	public List<PayDTO> getPayList(PayDTO payDTO) {
+		return adminMapper.selectPayList(payDTO);
 	}
 
 }

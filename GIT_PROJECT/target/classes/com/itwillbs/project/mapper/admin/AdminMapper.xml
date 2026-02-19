@@ -18,44 +18,35 @@
 		<result property="withdrawnAt" column="withdrawn_at" />
 	</resultMap>
 	
-	<select id="selectUserFilter" resultMap="memberResultMap">
+	<select id="selectUserList" resultMap="memberResultMap">
 		select 
-			user_id
-			,email
-			,password
-			,phone
-			,user_name
-			,user_type
-			,status
-			,joined_at
-			,withdrawn_at
+			*
 		from 
 			user
 		where
 			user_type = 'c'
-		<if test="keyword != null">
-			and
-				user_name = #{keyword}
-		</if>
-		<if test="status != null">
-			and
-				status = #{status}
-		</if>
-			
+			<if test="status != null and !status.equals('')">
+				and
+					status = #{status}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and
+					user_name like concat('%',#{keyword},'%')
+			</if>
 	</select>
 	
 	<!-- 구직자 상세정보 조회 -->
-	<select id="selectUserInfo" resultType="member">
+	<select id="selectUserInfo" resultMap="memberResultMap">
 		select 
 			user_id
-			,email
-			,password
-			,phone
-			,user_name
-			,user_type
-			,status
-			,joined_at
-			,withdrawn_at
+			, email
+			, password
+			, phone
+			, user_name
+			, user_type
+			, status
+			, joined_at
+			, withdrawn_at
 		from 
 			user
 		where
@@ -63,6 +54,7 @@
 		
 	</select>
 
+	<!-- ==================================================================== -->
 	<!-- 공지사항 리스트 조회 -->
 	<select id="getNoticeList" resultType="notice">
 		SELECT

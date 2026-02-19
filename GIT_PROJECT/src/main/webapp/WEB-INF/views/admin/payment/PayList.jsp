@@ -108,6 +108,7 @@
 							<td>${pay.productName }</td>
 							<td>${pay.userId }</td>
 							<td>${pay.userType }</td>
+							<td>${pay.payPrice }</td>
 							<td>${pay.payMethod }</td>
 							<td>${pay.payStatus }</td>
 						</tr>

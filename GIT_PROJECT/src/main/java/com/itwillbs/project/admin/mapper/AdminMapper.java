@@ -12,17 +12,15 @@ import com.itwillbs.project.admin.dto.PayDTO;
 
 @Mapper
 public interface AdminMapper {
-	// 구직자 회원 전체 목록
-	List<MemberDTO> selectUser();
-	
 	// 구직자 회원 목록 필터링
-	List<MemberDTO> selectUserFilter(@Param("keyword") String keyword
+	List<MemberDTO> selectUserList(@Param("keyword") String keyword
 								,@Param("type") String type
 								,@Param("status") String status);
 
 	// 구직자 회원 상세 정보
 	MemberDTO selectUserInfo(BigInteger id);
 	
+	//========================================================================
 	// 공지사항 리스트 조회
 	List<NoticeDTO> getNoticeList(NoticeDTO noticeDTO);
 
@@ -34,8 +32,12 @@ public interface AdminMapper {
 	// 조회수 증가
 	void updateReadCount(int notice_id);
 
+	//========================================================================
 	// 결제 목록 조회
 	List<PayDTO> selectPayList(PayDTO payDTO);
+
+	// 기업회원 목록 조회
+	List<MemberDTO> selectComList(String keyword, String type, String status);
 
  
 }

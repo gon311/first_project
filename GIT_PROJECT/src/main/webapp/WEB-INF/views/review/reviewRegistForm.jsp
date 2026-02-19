@@ -19,7 +19,7 @@
 		<form action="/review/registText" method="post">
 			<!-- 자소서 제목 영역 -->
 			<div>
-			자소서 제목 <input type="text" name="title" placeholder="제목을 입력해 주세요." size=50 required>
+			자소서 제목<span style="color:red">*</span> <input type="text" name="title" placeholder="제목을 입력해 주세요." size=70 required>
 			</div>
 			<!-- 업종 선택 영역 -->
 			<div>
@@ -48,15 +48,14 @@
 			</div>
 			<!-- 세부 직종 선택 영역 -->
 			<div>
-				<c:choose>
-					<c:when test="">
-						<select> 
-							<option id="">백엔드 개발자</option>
-						</select>
-					</c:when>
-				
-				</c:choose>
+				<select id="jobRole" name="jobRole">
+			    	<option value="default">세부 직종을 선택하세요</option>
+				</select>
 			</div>
+			<!-- hidden input으로 선택값 전달 -->
+			<input type="hidden" id="selectedJobInput" name="selectedJobInput">
+			
+			
 			<!-- 기업형태 선택 영역 -->
 			<div>
 			
@@ -80,7 +79,93 @@
 		<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 		
 		<%-- 개별 페이지 자바스크립트 영역 --%>
+		<script> 
+		const jobData = {
+				  IT_DEV_DATA: [
+				    { value: "BACKEND_DEV", label: "백엔드 개발자" },
+				    { value: "FRONTEND_DEV", label: "프론트엔드 개발자" },
+				    { value: "FULLSTACK_DEV", label: "풀스택 개발자" },
+				    { value: "DATA_ANALYST", label: "데이터 분석가" },
+				    { value: "DATA_ENGINEER", label: "데이터 엔지니어" },
+				    { value: "AI_ML_ENGINEER", label: "AI/ML 엔지니어" }
+				    { value: "DEVOPS_INFRA", label: "DevOps/인프라" }
+				  ],
+				  PLAN_MGMT_ADMIN: [
+				    { value: "SERVICE_PLANNER", label: "서비스 기획자" },
+				    { value: "PM_PO", label: "PM/PO" }
+				    { value: "BIZ_PLANNER", label: "사업기획" }
+				    { value: "STRATEGY_PLANNER", label: "전략기획" }
+				    { value: "OPERATION_ADMIN", label: "운영·사무" }
+				  ],
+				  MKT_AD_PR: [
+				    { value: "PERF_MARKETER", label: "퍼포먼스 마케터" },
+				    { value: "CONTENT_MARKETER", label: "콘텐츠 마케터" }
+				    { value: "BRAND_MARKETER", label: "브랜드 마케터" }
+				    { value: "DIGITAL_MARKETER", label: "디지털 마케터" }
+				    { value: "PR_COMM", label: "PR/커뮤니케이션" }
+				  ],
+				  DESIGN_CREATIVE: [
+				    { value: "UX_UI_DESIGNER", label: "UX/UI 디자이너" },
+				    { value: "PRODUCT_DESIGNER", label: "프로덕트 디자이너" }
+				    { value: "GRAPHIC_DESIGNER", label: "그래픽 디자이너" }
+				    { value: "VIDEO_MOTION_DESIGNER", label: "영상·모션 디자이너" }
+				  ],
+				  SALES_CS_BIZ: [
+				    { value: "B2B_SALES", label: "B2B 영업" },
+				    { value: "B2C_SALES", label: "B2C 영업" }
+				    { value: "GLOBAL_SALES", label: "해외영업" }
+				    { value: "TECH_SALES", label: "기술영업" }
+				    { value: "CUSTOMER_SUCCESS", label: "고객성공(CS/CRM)" }
+				  ],
+				  RND_ENGINEERING: [
+				    { value: "RND_RESEARCHER", label: "R&D 연구원" },
+				    { value: "RESEARCH_PLANNER", label: "연구기획" }
+				    { value: "PROCESS_ENGINEER", label: "공정 엔지니어" }
+				    { value: "QA_ENGINEER", label: "품질 엔지니어" }
+				    { value: "HW_ENGINEER", label: "HW 엔지니어" }
+				  ],
+				  PROD_MFG_QA: [
+				    { value: "PRODUCTION_MANAGER", label: "생산관리" },
+				    { value: "PROCESS_MANAGER", label: "공정관리" }
+				    { value: "QUALITY_MANAGER", label: "품질관리" }
+				    { value: "MAINTENANCE_ENGINEER", label: "설비·유지보수" }
+				  ],
+				  PUBLIC_EDU_SERVICE: [
+				    { value: "PUBLIC_ADMIN", label: "공기업 사무" },
+				    { value: "PUBLIC_POLICY", label: "공공행정" }
+				    { value: "TEACHER_INSTRUCTOR", label: "교원·강사" }
+				    { value: "SOCIAL_WORKER", label: "사회복지" }
+				    { value: "SERVICE_OPERATOR", label: "서비스 운영" }
+				  ],
+				};
+
+		document.addEventListener("DOMContentLoaded", function() {
+			const radios = document.querySelectorAll('input[name="jobGroup"]');
+			const selectBox = document.getElementById("jobRole");
+			const jobInput = document.getElementById("selectedJobInput");
+			
+			radios.forEach(radio => {
+				radio.addEventListener("change", function(){
+					const selectedGroup = this.value;
+					selectBox.innerHTML = '<option value="">세부 직종을 선택하세요.</option>';
+					
+					jobData[selectedGroup].forEach(sub => {
+						const opt = document.createElement('option');
+						opt.value = sub.value;
+						opt.textContent = sub.label;
+						selectBox.appendChild(opt);
+					});
+				});
+			});
+			
+			// 드롭다운 선택 시 hidden input에 값 저장 
+			selectBox.addEventListener("change", function(){
+				jobInput.value = this.value;
+			});
+		});
 		
+		
+		</script>
 	</body>
 </html>
 

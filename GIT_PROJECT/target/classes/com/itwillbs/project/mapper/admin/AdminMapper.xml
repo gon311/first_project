@@ -64,7 +64,7 @@
 		 	, status
 		 FROM notice
 	</select>
-	
+	<!-- 공지사항 작성 -->
 	<insert id ="insertNotice" parameterType="notice">
 		INSERT INTO notice (
 			notice_title
@@ -82,5 +82,22 @@
 			, #{status}
 		)
 	</insert>
+	<!-- 공지사항 상세 조회 -->
+	<select id="getNoticeById" resultType = "notice">
+		SELECT 
+			notice_title
+			, notice_content
+			, reg_date
+			, readcount
+		FROM notice
+		WHERE notice_id = #{notice_id}
 	
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateReadCount">
+		UPDATE notice
+		SET readcount = readcount + 1
+		WHERE notice_id = #{notice_id}
+	</update>
 </mapper>

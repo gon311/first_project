@@ -54,7 +54,7 @@
 	                        <tr>
 	                            <td>${notice.notice_id}</td>
 	                            <td class="text-start">
-	                                <a href="<c:url value='/admin/contents/noticeDetail?id=${notice.notice_id}' />" class="text-decoration-none text-dark">
+	                                <a href="<c:url value='/admin/contents/noticeDetail?notice_id=${notice.notice_id}' />" class="text-decoration-none text-dark">
 	                                    ${notice.notice_title}
 	                                </a>
 	                            </td>

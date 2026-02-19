@@ -30,6 +30,8 @@ public interface AdminMapper {
 	
 	// 공지사항 저장
 	void insertNotice(NoticeDTO noticeDTO);
+	// 조회수 증가
+	void updateReadCount(int notice_id);
 
  
 }

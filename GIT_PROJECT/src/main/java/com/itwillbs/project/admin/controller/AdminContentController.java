@@ -43,10 +43,20 @@ public class AdminContentController {
 	
 	@PostMapping("/noticeSave")
 	public String noticeSave(@ModelAttribute NoticeDTO noticeDTO) {
-		System.out.println("데이터 바인딩 결과: " + noticeDTO.toString());
-	    System.out.println("제목 값: " + noticeDTO.getNotice_title());
+//		System.out.println("데이터 바인딩 결과: " + noticeDTO.toString());
+//	    System.out.println("제목 값: " + noticeDTO.getNotice_title());
 		adminService.insertNotice(noticeDTO);
 		return "redirect:/admin/contents/notice";
+	}
+	
+	@GetMapping("/noticeDetail")
+	public String noticeDetail(@RequestParam("notice_id") int notice_id, Model model) {
+		NoticeDTO noticeDTO =adminService.getNoticeDetail(notice_id);
+		model.addAttribute("noticeDTO", noticeDTO); 
+//		System.out.println("데이터 결과값: " + noticeDTO.toString());
+//		System.out.println("제목 리턴값: " + noticeDTO);
+		
+		return "admin/contents/noticeDetail";
 	}
 		
 	

@@ -5,3 +5,9 @@
 	display: block;
 	margin-top: 0; 
 }
+
+
+/*제목 bold 처리*/
+.title thick {
+	font-weight: bold;
+}

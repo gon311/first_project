@@ -10,18 +10,16 @@
 <meta charset="UTF-8">
 <title>채용공고 등록</title>
 <style>
+    /* (기존 스타일 유지) */
     body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; padding: 20px; }
     .container { max-width: 900px; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: auto; }
     .form-group { display: flex; align-items: flex-start; margin-bottom: 20px; }
     .label-box { width: 150px; font-weight: bold; padding-top: 10px; }
     .input-box { flex: 1; }
     input[type="text"], input[type="date"], textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-    .badge-input { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
     .file-upload-area { background: #e9ecef; padding: 20px; border: 2px dashed #ccc; text-align: center; border-radius: 5px; margin: 10px 0; }
     .info-box { background: #f0f7ff; padding: 15px; border-radius: 5px; font-size: 0.9em; color: #0066cc; }
     .btn-submit { background: #333; color: #fff; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; display: block; margin: 20px auto; }
-
-    /* 직업 선택기 전용 스타일 */
     .job-selector-wrapper { display: flex; border: 1px solid #ddd; border-radius: 5px; height: 250px; margin-top: 10px; overflow: hidden; }
     .main-cat-list { width: 30%; background: #f1f3f5; border-right: 1px solid #ddd; overflow-y: auto; list-style: none; padding: 0; margin: 0; }
     .sub-cat-list { width: 70%; background: #fff; overflow-y: auto; list-style: none; padding: 10px; margin: 0; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; }
@@ -34,7 +32,7 @@
 <body>
 
 <div class="container">
-    <form action="<c:url value="/job/job_process" />" method="post" enctype="multipart/form-data">
+    <form action="<c:url value="/job/jobProcess" />" method="post" enctype="multipart/form-data">
         
         <div class="form-group">
             <div class="label-box">공고제목 <span style="color:red">*</span></div>
@@ -65,8 +63,8 @@
             <div class="label-box">파일 첨부</div>
             <div class="input-box">
                 <div class="file-upload-area">
-                    <p>이미지 첨부파일 기능(첨부하기) 추가</p>
-                    <input type="file" name="attach_file" multiple>
+                    <p>이미지 첨부파일 기능 추가</p>
+                    <input type="file" name="attachFile" multiple>
                 </div>
             </div>
         </div>
@@ -88,10 +86,10 @@
         <div class="form-group">
 		    <div class="label-box">경력 <span style="color:red">*</span></div>
 		    <div class="input-box">
-		        <label><input type="checkbox" name="expType" value="new" class="exp-check"> 신입</label>
-		        <label style="margin-right: 15px;"><input type="checkbox" name="expType" value="career" class="exp-check" checked> 경력</label>
+		        <label><input type="checkbox" name="expType" value="new" class="expCheck"> 신입</label>
+		        <label style="margin-right: 15px;"><input type="checkbox" name="expType" value="career" class="expCheck" checked> 경력</label>
 		
-		        <select name="min_exp" id="min_exp" style="width: 140px; display:inline-block;">
+		        <select name="minExp" id="minExp" style="width: 140px; display:inline-block;">
 		            <option value="0">1년 미만</option>
 		            <option value="1">1년 이상</option>
 		            <option value="3">3년 이상</option>
@@ -99,7 +97,7 @@
 		            <option value="10">10년 이상</option>
 		        </select>
 		        <span style="margin: 0 5px;">~</span>
-		        <select name="max_exp" id="max_exp" style="width: 140px; display:inline-block;">
+		        <select name="maxExp" id="maxExp" style="width: 140px; display:inline-block;">
 		            <option value="3">3년 이하</option>
 		            <option value="5">5년 이하</option>
 		            <option value="8">8년 이하</option>
@@ -121,7 +119,7 @@
                     <option>대학교(2,3년) 졸업</option>
                     <option>대학교(4년) 졸업</option>
                 </select>
-                <input type="checkbox"> 졸업 예정자 가능
+                <input type="checkbox" name="eduPending"> 졸업 예정자 가능
             </div>
         </div>
 
@@ -143,14 +141,14 @@
 		    <div class="label-box">근무지 <span style="color:red">*</span></div>
 		    <div class="input-box">
 		        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-		            <input type="text" name="address.postCode" id="postCode" placeholder="우편번호" style="width: 120px;" readonly required>
+		            <input type="text" name="postCode" id="postCode" placeholder="우편번호" style="width: 120px;" readonly required>
 		            <button type="button" onclick="execDaumPostcode()" style="padding: 10px; cursor: pointer; background: #333; color: #fff; border: none; border-radius: 5px;">주소 검색</button>
 		        </div>
-		        <input type="text" name="address.address1" id="address1" placeholder="기본 주소" style="margin-bottom: 10px;" readonly required>
-		        <input type="text" name="address.address2" id="address2" placeholder="상세 주소 (예: 101동 202호)" required>
+		        <input type="text" name="address1" id="address1" placeholder="기본 주소" style="margin-bottom: 10px;" readonly required>
+		        <input type="text" name="address2" id="address2" placeholder="상세 주소" required>
 		        
 		        <label style="margin-top: 10px; display: block;">
-		            <input type="checkbox" name="is_remote"> 재택근무 가능 
+		            <input type="checkbox" name="isRemote" value="Y"> 재택근무 가능 
 		        </label>
 		    </div>
 		</div>
@@ -160,13 +158,11 @@
 		    <div class="input-box">
 		        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
 		            <input type="text" name="mgrName" placeholder="담당자 이름" required>
-		            <input type="text" name="mgrPhone" placeholder="연락처 (010-0000-0000)" 
-       					pattern="01[0-9]-[0-9]{3,4}-[0-9]{4}" title="010-0000-0000 형식으로 입력해주세요" required>
+		            <input type="text" name="mgrPhone" placeholder="연락처" pattern="01[0-9]-[0-9]{3,4}-[0-9]{4}" required>
 		        </div>
 		        <input type="email" name="mgrEmail" placeholder="이메일 주소" required>
-		        
 		        <label style="margin-top: 10px; display: block; font-size: 0.9em; color: #666;">
-		            <input type="checkbox" name="is_public" value="Y" checked> 담당자 정보를 공고에 공개합니다.
+		            <input type="checkbox" name="isPublic" value="Y" checked> 담당자 정보 공개
 		        </label>
 		    </div>
 		</div>
@@ -174,8 +170,8 @@
         <div class="form-group">
 		    <div class="label-box">접수기간 <span style="color:red">*</span></div>
 		    <div class="input-box">
-		        <input type="date" name="open_date" id="start_date" required style="width: 200px; display:inline-block;"> ~ 
-		        <input type="date" name="close_date" id="end_date" required style="width: 200px; display:inline-block;">
+		        <input type="date" name="openDate" id="startDate" required style="width: 200px; display:inline-block;"> ~ 
+		        <input type="date" name="closeDate" id="endDate" required style="width: 200px; display:inline-block;">
 		    </div>
 		</div>
 
@@ -184,19 +180,19 @@
 </div>
 
 <script>
-// 1. 직업 데이터 정의 [cite: 37]
 const jobData = {
-    "기획·전략": ["경영기획", "전략기획", "사업개발", "서비스기획", "데이터분석"],
-    "마케팅·홍보": ["브랜드마케팅", "퍼포먼스마케팅", "광고AE", "SNS마케팅", "홍보(PR)"],
-    "IT개발": ["백엔드", "프론트엔드", "앱개발", "게임개발", "AI·인공지능", "임베디드", "보안"],
-    "디자인": ["UI·UX디자인", "웹디자인", "그래픽디자인", "영상편집", "제품디자인"],
-    "교육": ["초중고교사", "대학교수", "전문강사", "학습지교사", "입시강사", "외국어강사", "교직원"],
-    "영업·고객상담": ["IT영업", "기술영업", "영업관리", "고객상담(CS)", "인바운드"],
-    "의료·보건": ["의사", "간호사", "물리치료사", "임상병리", "약사", "의료코디네이터"]
-};
+	    "기획·전략": ["경영기획", "전략기획", "사업개발", "서비스기획", "데이터분석"],
+	    "마케팅·홍보": ["브랜드마케팅", "퍼포먼스마케팅", "광고AE", "SNS마케팅", "홍보(PR)"],
+	    "IT개발": ["백엔드", "프론트엔드", "앱개발", "게임개발", "AI·인공지능", "임베디드", "보안"],
+	    "디자인": ["UI·UX디자인", "웹디자인", "그래픽디자인", "영상편집", "제품디자인"],
+	    "교육": ["초중고교사", "대학교수", "전문강사", "학습지교사", "입시강사", "외국어강사", "교직원"],
+	    "영업·고객상담": ["IT영업", "기술영업", "영업관리", "고객상담(CS)", "인바운드"],
+	    "의료·보건": ["의사", "간호사", "물리치료사", "임상병리", "약사", "의료코디네이터"]
+	};
+
 
 document.addEventListener("DOMContentLoaded", function() {
-    // --- [기능 1] 모집분야(직무) 선택 로직 [cite: 38, 39, 40, 41] ---
+    // 1. 모집분야 선택
     const mainUl = document.getElementById('mainCatList');
     const subUl = document.getElementById('subCatList');
     const jobInput = document.getElementById('selectedJobInput');
@@ -225,11 +221,11 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // --- [기능 2] 경력 관련 로직 [cite: 42, 43, 44, 45, 46, 47] ---
-    const minSelect = document.getElementById('min_exp');
-    const maxSelect = document.getElementById('max_exp');
-    const noneCheck = document.getElementById('exp_none');
-    const expChecks = document.querySelectorAll('.exp-check');
+    // 2. 경력 로직
+    const minSelect = document.getElementById('minExp');
+    const maxSelect = document.getElementById('maxExp');
+    const noneCheck = document.getElementById('expNone');
+    const expChecks = document.querySelectorAll('.expCheck');
 
     if (minSelect && maxSelect) {
         minSelect.addEventListener('change', function() {
@@ -262,28 +258,21 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // --- [기능 3] 접수기간 날짜 제한 로직 [cite: 48, 49, 50, 51] ---
-    const startDateInput = document.getElementById('start_date');
-    const endDateInput = document.getElementById('end_date');
+    // 3. 날짜 제한
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
     const today = new Date().toISOString().split('T')[0];
 
     if (startDateInput && endDateInput) {
         startDateInput.max = today;
         endDateInput.min = today;
-
         startDateInput.addEventListener('change', function() {
             if (this.value) endDateInput.min = this.value;
         });
-        endDateInput.addEventListener('change', function() {
-            if (this.value) {
-                const selectedEndDate = this.value;
-                startDateInput.max = selectedEndDate < today ? selectedEndDate : today;
-            }
-        });
     }
 
-    // --- [기능 4] 전화번호 자동 하이픈 [cite: 52, 53] ---
-    const phoneInput = document.querySelector('input[name="mgr_phone"]');
+    // 4. 전화번호 하이픈
+    const phoneInput = document.querySelector('input[name="mgrPhone"]');
     if (phoneInput) {
         phoneInput.addEventListener('input', function(e) {
             let val = e.target.value.replace(/[^0-9]/g, '');
@@ -296,51 +285,43 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // --- [기능 5] 폼 제출 통합 검증 [cite: 54, 55, 56, 57, 58, 59] ---
+    // 5. 폼 검증
     const form = document.querySelector('form');
     if (form) {
         form.addEventListener('submit', function(e) {
-            const jobValue = document.getElementById('selectedJobInput').value;
-            const zipcode = document.getElementById('zipcode').value;
-            const address = document.getElementById('address').value;
-            const mgrPhone = document.querySelector('input[name="mgr_phone"]');
-            const mgrEmail = document.querySelector('input[name="mgr_email"]');
+            const jobValue = jobInput.value;
+            const zipcode = document.getElementById('postCode').value;
+            const address = document.getElementById('address1').value;
+            const mgrPhone = document.querySelector('input[name="mgrPhone"]');
+            const mgrEmail = document.querySelector('input[name="mgrEmail"]');
 
             const phoneRegex = /^010-\d{3,4}-\d{4}$/;
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-            if (!jobValue || jobValue.trim() === "") {
-                alert("모집분야(직무)를 선택해주세요.");
+            if (!jobValue) {
+                alert("직무를 선택해주세요.");
                 e.preventDefault();
-                document.getElementById('mainCatList').scrollIntoView({ behavior: 'smooth' });
                 return false;
             }
-
             if (!zipcode || !address) {
-                alert("주소 검색 버튼을 눌러 근무지 주소를 입력해주세요.");
+                alert("주소를 입력해주세요.");
                 e.preventDefault();
-                document.getElementById('zipcode').scrollIntoView({ behavior: 'smooth' });
                 return false;
             }
-
             if (!phoneRegex.test(mgrPhone.value)) {
-                alert("전화번호 11자리를 정확히 입력해주세요.");
-                mgrPhone.focus();
+                alert("전화번호를 확인해주세요.");
                 e.preventDefault();
                 return false;
             }
-
             if (!emailRegex.test(mgrEmail.value)) {
-                alert("이메일 형식이 올바르지 않습니다.");
-                mgrEmail.focus();
+                alert("이메일을 확인해주세요.");
                 e.preventDefault();
                 return false;
             }
         });
     }
-}); // DOMContentLoaded 끝 
+});
 
-// --- [기능 6] 카카오 주소 API (이벤트 블록 밖으로 분리)  ---
 function execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {

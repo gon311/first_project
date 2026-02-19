@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@ include file="/WEB-INF/views/inc/head.jspf" %>
+<%@ include file="/WEB-INF/views/inc/header.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -140,11 +143,11 @@
 		    <div class="label-box">근무지 <span style="color:red">*</span></div>
 		    <div class="input-box">
 		        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-		            <input type="text" name="zipcode" id="zipcode" placeholder="우편번호" style="width: 120px;" readonly required>
+		            <input type="text" name="address.postCode" id="postCode" placeholder="우편번호" style="width: 120px;" readonly required>
 		            <button type="button" onclick="execDaumPostcode()" style="padding: 10px; cursor: pointer; background: #333; color: #fff; border: none; border-radius: 5px;">주소 검색</button>
 		        </div>
-		        <input type="text" name="address" id="address" placeholder="기본 주소" style="margin-bottom: 10px;" readonly required>
-		        <input type="text" name="address_detail" id="address_detail" placeholder="상세 주소 (예: 101동 202호)" required>
+		        <input type="text" name="address.address1" id="address1" placeholder="기본 주소" style="margin-bottom: 10px;" readonly required>
+		        <input type="text" name="address.address2" id="address2" placeholder="상세 주소 (예: 101동 202호)" required>
 		        
 		        <label style="margin-top: 10px; display: block;">
 		            <input type="checkbox" name="is_remote"> 재택근무 가능 
@@ -342,9 +345,9 @@ function execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
             let addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
-            document.getElementById('zipcode').value = data.zonecode;
-            document.getElementById("address").value = addr;
-            document.getElementById("address_detail").focus();
+            document.getElementById('postCode').value = data.zonecode;
+            document.getElementById("address1").value = addr;
+            document.getElementById("address2").focus();
         }
     }).open();
 }

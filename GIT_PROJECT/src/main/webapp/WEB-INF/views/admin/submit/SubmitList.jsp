@@ -92,14 +92,13 @@
 				<!-- tbody 필요 -->
 	 			<tbody>
 					<c:forEach var="submit" varStatus="status" items="${submitList}">
-						<%-- row 클릭 시 /student/info?idx=xxx 형식으로 해당 학생 정보 조회 요청 --%>
-						<tr class="clickable-row" onclick="location.href='info?idx=${submit.id}'">
+						<tr class="clickable-row" onclick="location.href='info?id=${submit.id}'">
 							<td>${status.count }</td>
 							<td>${submit.id }</td>
-							<td>${submit.submitDate }</td>
+							<td>${submit.openDate }</td>
 							<td>${submit.title }</td>
-							<td>${submit.comName }</td>
-							<td>${submit.status }</td>
+							<td>${submit.compId }</td>
+							<td>${submit.postStatus }</td>
 						</tr>
 					</c:forEach>
 				</tbody>

@@ -15,7 +15,9 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.admin.dto.MemberDTO;
+import com.itwillbs.project.admin.dto.PayDTO;
 import com.itwillbs.project.admin.dto.SearchDTO;
+import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.admin.service.AdminService;
 
 import lombok.Getter;
@@ -77,7 +79,7 @@ public class AdminController {
 	@GetMapping("/block")
 	public String userBlock(MemberDTO dto, RedirectAttributes ra) {
 		System.out.println("id : " + dto.getId());
-		adminService.blockUser(dto.getId(), dto.getStatus());
+//		adminService.blockUser(dto.getId(), dto.getStatus());
 		ra.addAttribute("id", dto.getId());
 		
 		return "redirect:/admin/info";
@@ -117,7 +119,10 @@ public class AdminController {
 	//===========================================================================
 	// 제출된 공고 관리
 	@GetMapping("/submits")
-	public String submitList() {
+	public String submitList(SubmitDTO submitDTO, Model model) {
+		List<SubmitDTO> submitList = adminService.getSubmitList(submitDTO);
+		model.addAttribute("submitList", submitList);
+		
 		return "admin/submit/SubmitList";
 	}
 	
@@ -125,15 +130,22 @@ public class AdminController {
 	//===========================================================================
 	// 결제 내역
 	@GetMapping("/payments")
-	public String payList() {
+	public String payList(PayDTO payDTO, Model model) {
+		List<PayDTO> payList = adminService.getPayList(payDTO);
+		model.addAttribute("payList", payList);
+		
 		return "admin/pay/PayList"; 
 	}
 	
+	//===========================================================================
+	// 배너 관리
 	@GetMapping("/banners")
 	public String bannerList() {
 		return "admin/banner";
 	}
 	
+	//===========================================================================
+	// 데이터 관리
 	@GetMapping("/data")
 	public String dataList() {
 		return "admin/data";

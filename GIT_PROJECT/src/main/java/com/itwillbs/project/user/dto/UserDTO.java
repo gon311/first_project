@@ -25,7 +25,7 @@ public class UserDTO {
 	private LocalDateTime withdrawnAt; // withdrawn_at (DATETIME)
 	
 	// 개인
-	private LocalDate birthDate;       // birth_date (DATE)
+	private String birthDate;       // birth_date (DATE)
 	private String gender;             // gender (CHAR)
 	private String country;            // country (VARCHAR)
 	private Integer reportReceivedCnt; // report_received_ (INT) - 'cnt' 등을 붙여 의미를 명확히 함

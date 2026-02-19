@@ -68,7 +68,7 @@
                 <div class="tab" id="tab-C" onclick="switchTab('C')">기업회원</div>
             </div>
 
-            <form action="/signup" method="POST" id="signupForm" onsubmit="return validateForm(event)">
+            <form action="<c:url value="/user/regist" />" method="POST" id="signupForm" onsubmit="return validateForm(event)">
                 <input type="hidden" name="userType" id="userType" value="P">
 
                 <div class="section-title">기본 정보</div>

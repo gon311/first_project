@@ -162,6 +162,10 @@
 
         <h2 class="page-title">내 정보 수정</h2>
         <div class="page-desc">회원 정보를 수정하고 저장할 수 있어요.</div>
+        
+		<c:if test="${not empty errorMsg}">
+			<div class="alert alert-danger mb-3">${errorMsg}</div>
+		</c:if>
 
         <form action="${urlUpdateInfo}" method="post">
 
@@ -175,14 +179,18 @@
 
             <div>
               <div class="field-label">이름</div>
-              <input type="text" class="form-control" name="name"
-                     value="${loginUser.name}" />
+              <input type="text" class="form-control" name="userName"
+                     value="${loginUser.userName}"
+                     required pattern="^[가-힣a-zA-Z\s]{2,20}$"
+                     title="이름은 한글/영문 2~20자만 입력하세요." />        
             </div>
 
             <div class="form-row-full">
               <div class="field-label">전화번호</div>
               <input type="text" class="form-control" name="phone"
-                     value="${loginUser.phone}" />
+                     value="${loginUser.phone}"
+                      required pattern="^01[0-9]-\d{3,4}-\d{4}$"
+                      title="전화번호는 010-1234-5678 형식으로 입력하세요." />
             </div>
 
           </div>

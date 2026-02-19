@@ -93,11 +93,17 @@
             <a class="btn btn-primary" href="${urlUpdateInfo}">내 정보 수정</a>
           </div>
         </div>
+        
+		<c:if test="${not empty msg}">
+			<div class="alert alert-info mb-3" role="alert">
+				${msg}
+			</div>
+		</c:if>
 
         <div class="info-grid">
           <div class="info-card">
             <div class="info-label">이름</div>
-            <div class="info-value">${loginUser.name}</div>
+            <div class="info-value">${loginUser.userName}</div>
           </div>
 
           <div class="info-card">

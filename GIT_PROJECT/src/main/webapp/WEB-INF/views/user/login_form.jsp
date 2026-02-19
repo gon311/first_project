@@ -85,9 +85,9 @@
                 </div>
 
                 <div class="text-center text-secondary small">
-                    <a href="#" class="text-decoration-none text-secondary">아이디 찾기</a>
+                    <a href="<c:url value="/user/find" />" class="text-decoration-none text-secondary">아이디 찾기</a>
                     <span class="mx-2 text-black-50">|</span>
-                    <a href="#" class="text-decoration-none text-secondary">비밀번호 찾기</a>
+                    <a href="<c:url value="/user/find" />" class="text-decoration-none text-secondary">비밀번호 찾기</a>
                     <span class="mx-2 text-black-50">|</span>
                     <a href="<c:url value="/user/regist?id=pe"/>" class="text-decoration-none fw-bold text-primary">회원가입</a>
                 </div>
@@ -118,7 +118,7 @@
                 <div class="text-center text-secondary small mt-5">
                     <a href="<c:url value="/user/find" />" class="text-decoration-none text-secondary">아이디 찾기</a>
                     <span class="mx-2 text-black-50">|</span>
-                    <a href="#" class="text-decoration-none text-secondary">비밀번호 찾기</a>
+                    <a href="<c:url value="/user/find" />" class="text-decoration-none text-secondary">비밀번호 찾기</a>
                     <span class="mx-2 text-black-50">|</span>
                     <a href="<c:url value="/user/regist?id=co" />" class="text-decoration-none fw-bold text-primary">기업회원가입</a>
                 </div>

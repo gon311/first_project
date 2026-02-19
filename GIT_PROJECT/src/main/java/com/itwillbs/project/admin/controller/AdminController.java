@@ -117,11 +117,11 @@ public class AdminController {
 	}
 	
 	//===========================================================================
-	// 제출된 공고 관리
+	// 제출된 공고 관리(보류)
 	@GetMapping("/submits")
 	public String submitList(SubmitDTO submitDTO, Model model) {
-		List<SubmitDTO> submitList = adminService.getSubmitList(submitDTO);
-		model.addAttribute("submitList", submitList);
+//		List<SubmitDTO> submitList = adminService.getSubmitList(submitDTO);
+//		model.addAttribute("submitList", submitList);
 		
 		return "admin/submit/SubmitList";
 	}

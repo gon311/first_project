@@ -109,7 +109,7 @@
 							<td>${pay.userId }</td>
 							<td>${pay.userType }</td>
 							<td>${pay.payMethod }</td>
-							<td>${pay.status }</td>
+							<td>${pay.payStatus }</td>
 						</tr>
 					</c:forEach>
 				</tbody>

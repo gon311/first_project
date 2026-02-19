@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
+import com.itwillbs.project.admin.dto.PayDTO;
 
 @Mapper
 public interface AdminMapper {
@@ -15,8 +16,8 @@ public interface AdminMapper {
 	List<MemberDTO> selectUser();
 	
 	// 구직자 회원 목록 필터링
-	List<MemberDTO> selectUserFilter(@Param("user_name") String user_name
-								,@Param("user_type") String user_type
+	List<MemberDTO> selectUserFilter(@Param("keyword") String keyword
+								,@Param("type") String type
 								,@Param("status") String status);
 
 	// 구직자 회원 상세 정보
@@ -32,6 +33,9 @@ public interface AdminMapper {
 	void insertNotice(NoticeDTO noticeDTO);
 	// 조회수 증가
 	void updateReadCount(int notice_id);
+
+	// 결제 목록 조회
+	List<PayDTO> selectPayList(PayDTO payDTO);
 
  
 }

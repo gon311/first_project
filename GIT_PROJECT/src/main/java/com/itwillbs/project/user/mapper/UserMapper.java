@@ -8,5 +8,10 @@ import com.itwillbs.project.user.dto.UserDTO;
 public interface UserMapper {
 
 	void insertUser(UserDTO userDTO);
+	void insertUserPe(UserDTO userDTO);
+	void insertUserCo(UserDTO userDTO);
+	void insertUserTR(UserDTO userDTO);
+
+
 
 }

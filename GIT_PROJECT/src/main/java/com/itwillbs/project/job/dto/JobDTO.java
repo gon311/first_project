@@ -32,9 +32,9 @@ public class JobDTO {
      * 경력 기간 (exp_year 컬럼에 저장)
      * JSP의 min_exp와 max_exp를 "3~5"와 같은 문자열 형식으로 합쳐서 저장 
      */
-    private String min_exp; // JSP의 name="min_exp"와 매칭
-    private String max_exp; // JSP의 name="max_exp"와 매칭
-    private String exp_none; // JSP의 name="exp_none"
+    private String minExp; // JSP의 name="min_exp"와 매칭
+    private String maxExp; // JSP의 name="max_exp"와 매칭
+    private String expNone; // JSP의 name="exp_none"
     private String expYear;      
     
     private String edu;          // 학력 (name="edu") [cite: 28]
@@ -75,7 +75,7 @@ public class JobDTO {
      */
     public String getExpYear() {
         // 1. 경력 무관인 경우 (JSP의 exp_none 체크 시 로직 추가 가능)
-    	if ("Y".equals(this.exp_none)) {
+    	if ("Y".equals(this.expNone)) {
             return "경력무관";
         }
         // 2. 신입인 경우
@@ -84,8 +84,8 @@ public class JobDTO {
         }
         
         // 3. 경력직인 경우 범위를 문자열로 결합 (예: "1~3")
-        if (min_exp != null && max_exp != null) {
-            return min_exp + "~" + max_exp;
+        if (minExp != null && maxExp != null) {
+            return minExp + "~" + maxExp;
         }
         
         return expYear; // 기본값 리턴
@@ -97,8 +97,8 @@ public class JobDTO {
         // DB에서 가져온 "1~5" 같은 문자열을 다시 min, max 필드에 분리해서 저장
         if (expYear != null && expYear.contains("~")) {
             String[] parts = expYear.split("~");
-            this.min_exp = parts[0];
-            this.max_exp = parts[1];
+            this.minExp = parts[0];
+            this.maxExp = parts[1];
         }
     }
     

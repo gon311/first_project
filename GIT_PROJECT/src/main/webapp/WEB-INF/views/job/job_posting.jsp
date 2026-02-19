@@ -34,7 +34,7 @@
 <body>
 
 <div class="container">
-    <form action="post_job_process.jsp" method="post" enctype="multipart/form-data">
+    <form action="<c:url value="/job/job_process" />" method="post" enctype="multipart/form-data">
         
         <div class="form-group">
             <div class="label-box">공고제목 <span style="color:red">*</span></div>
@@ -74,7 +74,7 @@
         <div class="form-group">
 		    <div class="label-box">고용 형태 <span style="color:red">*</span></div>
 		    <div class="input-box">
-		        <select name="emp_type" required style="width: 200px; display:inline-block;">
+		        <select name="empType" required style="width: 200px; display:inline-block;">
 		            <option value="정규직">정규직</option>
 		            <option value="계약직">계약직</option>
 		            <option value="인턴">인턴</option>
@@ -88,8 +88,8 @@
         <div class="form-group">
 		    <div class="label-box">경력 <span style="color:red">*</span></div>
 		    <div class="input-box">
-		        <label><input type="checkbox" name="exp_type" value="new" class="exp-check"> 신입</label>
-		        <label style="margin-right: 15px;"><input type="checkbox" name="exp_type" value="career" class="exp-check" checked> 경력</label>
+		        <label><input type="checkbox" name="expType" value="new" class="exp-check"> 신입</label>
+		        <label style="margin-right: 15px;"><input type="checkbox" name="expType" value="career" class="exp-check" checked> 경력</label>
 		
 		        <select name="min_exp" id="min_exp" style="width: 140px; display:inline-block;">
 		            <option value="0">1년 미만</option>
@@ -107,7 +107,7 @@
 		            <option value="99">제한 없음</option>
 		        </select>
 		        <label style="margin-left: 15px;">
-		            <input type="checkbox" name="exp_none" id="exp_none"> 경력무관
+		            <input type="checkbox" name="expNone" id="expNone"> 경력무관
 		        </label>
 		    </div>
 		</div>
@@ -159,11 +159,11 @@
 		    <div class="label-box">담당자 정보 <span style="color:red">*</span></div>
 		    <div class="input-box">
 		        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-		            <input type="text" name="mgr_name" placeholder="담당자 이름" required>
-		            <input type="text" name="mgr_phone" placeholder="연락처 (010-0000-0000)" 
+		            <input type="text" name="mgrName" placeholder="담당자 이름" required>
+		            <input type="text" name="mgrPhone" placeholder="연락처 (010-0000-0000)" 
        					pattern="01[0-9]-[0-9]{3,4}-[0-9]{4}" title="010-0000-0000 형식으로 입력해주세요" required>
 		        </div>
-		        <input type="email" name="mgr_email" placeholder="이메일 주소" required>
+		        <input type="email" name="mgrEmail" placeholder="이메일 주소" required>
 		        
 		        <label style="margin-top: 10px; display: block; font-size: 0.9em; color: #666;">
 		            <input type="checkbox" name="is_public" value="Y" checked> 담당자 정보를 공고에 공개합니다.

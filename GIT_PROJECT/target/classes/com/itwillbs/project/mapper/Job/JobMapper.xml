@@ -25,7 +25,7 @@
 	        is_public,
 	        post_status
 	    ) VALUES (
-	        #{compId},    #{title},
+	        (SELECT user_id FROM user WHERE user_id = 1),    #{title},
 	        #{field},
 	        #{task},
 	        #{expType},

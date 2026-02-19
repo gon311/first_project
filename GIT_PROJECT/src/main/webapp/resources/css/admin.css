@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+/*dropdown hover 기능 추가*/
+@media (min-width:992px){
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block !important; 
+    margin-top: 0; /* 마우스가 이동할 때 끊기지 않게 간격 제거 */
+}
+}
+/*제목 bold 처리*/
+.title thick {
+	font-weight: bold;
+}
+
+
+.content {
+  position: static;
+  border: 3px solid;
+}

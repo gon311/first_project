@@ -1,0 +1,58 @@
+package com.itwillbs.project.admin.service;
+
+import java.math.BigInteger;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.itwillbs.project.admin.dto.MemberDTO;
+import com.itwillbs.project.admin.dto.NoticeDTO;
+import com.itwillbs.project.admin.dto.PayDTO;
+import com.itwillbs.project.admin.mapper.AdminMapper;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class AdminService{
+
+	@Autowired
+	private AdminMapper adminMapper;
+
+	// 구직자 전체 목록
+	public List<MemberDTO> getUser() {
+		return adminMapper.selectUser();
+	}
+	
+	// 구직자 목록 조회 필터링
+	public List<MemberDTO> getUserFilter(String keyword, String type, String status) {
+		return adminMapper.selectUserFilter(keyword, type, status);
+	}
+
+	// 구직자 상세 정보 조회
+	public MemberDTO getUserInfo(BigInteger id) {
+		return adminMapper.selectUserInfo(id);
+	}
+	
+	// 공지사항 리스트 조회 (DTO 파라미터로 사용)
+	public List<NoticeDTO> getNoticeList(NoticeDTO noticeDTO){
+		return adminMapper.getNoticeList(noticeDTO);
+	}
+	
+	// 공지사항 상세 조회(DTO 리턴)
+	public NoticeDTO getNoticeDetail(int notice_id) {
+		adminMapper.updateReadCount(notice_id);
+		return adminMapper.getNoticeById(notice_id);
+	}
+	
+	// 공지사항 저장
+	public void insertNotice(NoticeDTO noticeDTO) {
+		adminMapper.insertNotice(noticeDTO);
+	}
+
+	public List<PayDTO> getPayList(PayDTO payDTO) {
+		return adminMapper.selectPayList(payDTO);
+	}
+
+}

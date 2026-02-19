@@ -4,6 +4,9 @@
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
   
 <configuration>
-	
+	<typeAliases>
+		<typeAlias type="com.itwillbs.project.admin.dto.MemberDTO" alias="member"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.NoticeDTO" alias="notice"/>
+	</typeAliases>
 
 </configuration>

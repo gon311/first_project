@@ -14,6 +14,7 @@
 		<%@ include file="/WEB-INF/views/inc/header.jspf" %>
 		<%-- main area --%>
 		<main>
+
 		<!-- 기업 목록 노출 영역 -->
 			<div class="adMain">
 				<h1>기업 목록 노출 영역</h1>
@@ -26,6 +27,14 @@
 			<div class="btAi">
 				<input type="button" value="AI 자소서 첨삭 시작" onclick="location.href='<c:url value="/review/registForm" />'">
 			</div>
+			
+		<!-- 3팀 기업공고/로그인/마이페이지  -->
+			<h1> TEAM3 Area</h1>
+			<h3><a href="<c:url value="/job/JobPosting" />">JobPosting</a></h3>
+			<h3><a href="<c:url value="/job/JobList" />">JobLIst</a></h3>
+			<h3><a href="<c:url value="/user/login" />">testJob</a></h3>
+			<h3><a href="<c:url value="/my/myInfo" />">testJob</a></h3>
+
 		</main>
 		<%-- footer area --%>
 		<%@ include file="/WEB-INF/views/inc/footer.jspf" %>

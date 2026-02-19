@@ -13,12 +13,12 @@
 	<main class="container-fluid mt-5">
 		<div class="card shadow-sm p-4">
 			 <div class= "title">
-			 	<h3>${notice_title }</h3>
+			 	<h3>${noticeDTO.notice_title }</h3>
 			 </div>
-			 등록일 : ${reg_date } | 조회수 : ${readcount }
+			 등록일 : ${noticeDTO.reg_date } | 조회수 : ${noticeDTO.readcount }
 			 <hr>
-			<div>
-				${notice_content }
+			<div class="contents">
+				${noticeDTO.notice_content }
 			</div>
 		</div>
 	</main>

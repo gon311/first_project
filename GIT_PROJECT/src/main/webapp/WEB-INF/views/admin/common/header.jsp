@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ include file="/WEB-INF/views/inc/head.jspf" %>	
 <header class="border-bottom">
     <div class="d-flex justify-content-between align-items-center p-3 bg-white">
         <a href = "<c:url value ='/admin/main '/>" class = "text-decoration-none">
@@ -45,7 +46,15 @@
                     <!-- (변경사항) 26.02.16 SYC dropdownlist 정리 -->
                     <li class="nav-item dropdown">
                     	<a class="nav-link dropdown-toggle" href="#" id="contentDrop" role="button" 
-                    	data-bs-toggle="dropdown" aria-expanded="false">컨텐츠 관리</a>
+                    	data-bs-t
+                    	
+                    	
+                    	
+                    	
+                    	
+                    	
+                    	
+                    	oggle="dropdown" aria-expanded="false">컨텐츠 관리</a>
                     	<ul class="dropdown-menu" aria-labelledby="contentDrop">
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/JobPost" />">채용공고 게시판 관리</a></li>
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/notice" />">공지사항 관리</a></li>

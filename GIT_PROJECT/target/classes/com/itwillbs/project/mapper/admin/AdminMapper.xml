@@ -89,7 +89,8 @@
 	<!-- 공지사항 상세 조회 -->
 	<select id="getNoticeById" resultType = "notice">
 		SELECT 
-			notice_title
+			notice_id
+			, notice_title
 			, notice_content
 			, reg_date
 			, readcount

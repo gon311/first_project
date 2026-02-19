@@ -29,6 +29,13 @@ public class UserService {
 		
 		userMapper.insertUserTR(userDTO);
     }
+
+	public UserDTO getUser(String email) {
+		return userMapper.selectUser(email);
+	}
+
+
+
 	
 
 }

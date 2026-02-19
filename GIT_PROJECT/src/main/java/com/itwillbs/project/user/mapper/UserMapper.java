@@ -11,6 +11,8 @@ public interface UserMapper {
 	void insertUserPe(UserDTO userDTO);
 	void insertUserCo(UserDTO userDTO);
 	void insertUserTR(UserDTO userDTO);
+	
+	UserDTO selectUser(String email);
 
 
 

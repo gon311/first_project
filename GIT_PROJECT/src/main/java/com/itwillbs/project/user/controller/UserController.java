@@ -1,5 +1,8 @@
 package com.itwillbs.project.user.controller;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +27,16 @@ public class UserController {
 		return "/user/login_form";
 	}
 	
+	@PostMapping("/login")
+	public String loginP(UserDTO userDTO, BCryptPasswordEncoder passwordEncoder,
+						 HttpSession session) {
+		
+		UserDTO dbUser = userService.getUser(userDTO.getEmail());
+		
+		
+		return "redirect:/";
+	}
+	
 	@GetMapping("/regist")
 	public String registG() {
 		
@@ -31,10 +44,10 @@ public class UserController {
 	}
 	
 	@PostMapping("/regist")
-	public String registP(UserDTO userDTO) {
+	public String registP(UserDTO userDTO, BCryptPasswordEncoder passwordEncoder) {
 		
-//		String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
-//		userDTO.setPassword(encryptedPassword);
+		String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+		userDTO.setPassword(encryptedPassword);
 		
 		userService.registUser(userDTO);
 

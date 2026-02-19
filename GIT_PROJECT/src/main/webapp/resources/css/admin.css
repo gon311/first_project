@@ -1,13 +1,31 @@
 @charset "UTF-8";
 
 /*dropdown hover 기능 추가*/
-.nav-item dropdown: hover. dropdown-menu {
-	display: block;
-	margin-top: 0; 
+.nav-item dropdown ul {
+	list-style: none;
+	display: flex;
+	gap:20px;
 }
 
+.nav-item dropdown a{
+	text-decoration: none;
+	color:#333;
+	padding: 10px 15px;
+	transition: all 0.3 ease;
+}
+
+.nav-item dropdown a:hover {
+  background-color: #f0f0f0; /* 배경색 변경 */
+  color: #007bff;            /* 글자색 변경 */
+  border-radius: 5px;        /* 모서리 둥글게 */
+}
 
 /*제목 bold 처리*/
 .title thick {
 	font-weight: bold;
+}
+
+.content {
+  position: static;
+  border: 3px solid;
 }

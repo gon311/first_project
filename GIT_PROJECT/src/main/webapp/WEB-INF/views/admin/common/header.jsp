@@ -35,15 +35,7 @@
                     <!-- (변경사항) 26.02.16 SYC dropdownlist 정리 -->
                     <li class="nav-item dropdown">
                     	<a class="nav-link dropdown-toggle" href="#" id="contentDrop" role="button" 
-                    	data-bs-t
-                    	
-                    	
-                    	
-                    	
-                    	
-                    	
-                    	
-                    	oggle="dropdown" aria-expanded="false">컨텐츠 관리</a>
+                    	data-bs-toggle="dropdown" aria-expanded="false">컨텐츠 관리</a>
                     	<ul class="dropdown-menu" aria-labelledby="contentDrop">
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/JobPost" />">채용공고 게시판 관리</a></li>
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/notice" />">공지사항 관리</a></li>

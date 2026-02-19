@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.service.AdminService;
 
@@ -58,13 +59,28 @@ public class AdminContentController {
 		
 		return "admin/contents/noticeDetail";
 	}
-		
-	
+// ==============================================================================
+//	채용공고목록조회
 	@GetMapping("/JobPost")
-	public String jobPostList() {
+	public String jobPostList(@RequestParam(value="page", defaultValue="1") int page,
+			JobPostDTO jobPostDTO
+			, Model model) {
 		
+		List<JobPostDTO> list = adminService.getJobPostList(jobPostDTO);
+		model.addAttribute("jobPostList", list);
+		model.addAttribute("jobPostDTO", jobPostDTO);
 		return "admin/contents/jobPost";
 	}
+	
+	@GetMapping("/JobPostDetail")
+	public String jobPostDetail(@RequestParam("jobPost_id") int jobPost_id, Model model) {
+		JobPostDTO jobPostDTO = adminService.getJobPostDetail(jobPost_id);
+		model.addAttribute("jobPostDTO", jobPostDTO);
+		
+		return "admin/contents/jobPostDetail";
+	}
+	
+	
 	@GetMapping("/Board")
 	public String boardList() {
 		

@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.PayDTO;
@@ -22,6 +23,7 @@ public interface AdminMapper {
 
 	// 구직자 회원 상세 정보
 	MemberDTO selectUserInfo(BigInteger id);
+//	--------------------------------------------------------------------------------
 	
 	// 공지사항 리스트 조회
 	List<NoticeDTO> getNoticeList(NoticeDTO noticeDTO);
@@ -33,9 +35,18 @@ public interface AdminMapper {
 	void insertNotice(NoticeDTO noticeDTO);
 	// 조회수 증가
 	void updateReadCount(int notice_id);
-
+	
+//	----------------------------------------------------------------------------------
+//	채용공고 리스트 조회
+	List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO);
+//	채용공고 상세 조회
+	JobPostDTO getJobPostById(int jobPost_id);
+	
+// ====================================================================================
 	// 결제 목록 조회
 	List<PayDTO> selectPayList(PayDTO payDTO);
+
+
 
  
 }

@@ -32,7 +32,6 @@ public class JobController {
 	@PostMapping("/JobProcess")
 	public String posting(JobDTO jobDTO, HttpSession session) {
 		
-		jobDTO.setCompId(1L);
 		System.out.println(jobDTO.getAddress());
 		jobService.jobInsert(jobDTO);
 		System.out.println(jobDTO);

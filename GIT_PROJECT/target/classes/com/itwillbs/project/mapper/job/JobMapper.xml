@@ -26,7 +26,8 @@
 	        is_public, 
 	        post_status
 	    ) VALUES (
-	        #{compId},       #{title}, 
+	        #{compId},       
+	        #{title}, 
 	        #{field}, 
 	        #{task}, 
 	        #{expType}, 
@@ -35,7 +36,13 @@
 	        #{empType}, 
 	        #{probation}, 
 	        #{salary}, 
-	        #{address},      #{isRemote}, 
+	        #{address},
+	        <if test="!isRemote">
+		        DEFAULT, 
+	        </if>      
+	        <if test="isRemote">
+		        #{isRemote}, 
+	        </if>      
 	        #{openDate}, 
 	        #{closeDate}, 
 	        #{mgrName}, 

@@ -182,6 +182,7 @@
 </div>
 
 <script>
+// 1. 모집분야 데이터 정의
 const jobData = {
     "기획·전략": ["경영기획", "전략기획", "사업개발", "서비스기획", "데이터분석"],
     "마케팅·홍보": ["브랜드마케팅", "퍼포먼스마케팅", "광고AE", "SNS마케팅", "홍보(PR)"],
@@ -190,152 +191,158 @@ const jobData = {
     "교육": ["초중고교사", "대학교수", "전문강사", "학습지교사", "입시강사", "외국어강사", "교직원"],
     "영업·고객상담": ["IT영업", "기술영업", "영업관리", "고객상담(CS)", "인바운드"],
     "의료·보건": ["의사", "간호사", "물리치료사", "임상병리", "약사", "의료코디네이터"]
-}; [cite: 37]
+};
 
 document.addEventListener("DOMContentLoaded", function() {
-    // 1. 모집분야 선택 (정상 복구)
-    const mainUl = document.getElementById('mainCatList'); [cite: 38]
-    const subUl = document.getElementById('subCatList'); [cite: 38]
-    const jobInput = document.getElementById('selectedJobInput'); [cite: 38]
+    // === [기능 1] 모집분야 카테고리 선택 ===
+    const mainUl = document.getElementById('mainCatList');
+    const subUl = document.getElementById('subCatList');
+    const jobInput = document.getElementById('selectedJobInput');
 
     if (mainUl && subUl) {
         Object.keys(jobData).forEach(cat => {
-            const li = document.createElement('li'); [cite: 39]
-            li.textContent = cat; [cite: 39]
+            const li = document.createElement('li');
+            li.textContent = cat;
             li.onclick = function() {
-                document.querySelectorAll('.main-cat-list li').forEach(el => el.classList.remove('active')); [cite: 39]
-                this.classList.add('active'); [cite: 40]
-                subUl.innerHTML = ''; [cite: 40]
+                document.querySelectorAll('.main-cat-list li').forEach(el => el.classList.remove('active'));
+                this.classList.add('active');
+                subUl.innerHTML = '';
                 jobData[cat].forEach(sub => {
-                    const subBtn = document.createElement('li'); [cite: 40]
-                    subBtn.className = 'sub-job-item'; [cite: 41]
-                    subBtn.textContent = sub; [cite: 41]
+                    const subBtn = document.createElement('li');
+                    subBtn.className = 'sub-job-item';
+                    subBtn.textContent = sub;
                     subBtn.onclick = function() {
-                        jobInput.value = sub; [cite: 41]
-                        document.querySelectorAll('.sub-job-item').forEach(el => el.classList.remove('selected')); [cite: 41]
-                        this.classList.add('selected'); [cite: 42]
+                        jobInput.value = sub;
+                        document.querySelectorAll('.sub-job-item').forEach(el => el.classList.remove('selected'));
+                        this.classList.add('selected');
                     };
-                    subUl.appendChild(subBtn); [cite: 42]
+                    subUl.appendChild(subBtn);
                 });
             };
-            mainUl.appendChild(li); [cite: 43]
+            mainUl.appendChild(li);
         });
     }
 
-    // 2. 경력 로직 (정상 복구)
-    const minSelect = document.getElementById('minExp'); [cite: 43]
-    const maxSelect = document.getElementById('maxExp'); [cite: 44]
-    const noneCheck = document.getElementById('expNone'); [cite: 44]
-    const expChecks = document.querySelectorAll('.expCheck'); [cite: 44]
+    // === [기능 2] 경력 선택 및 셀렉트박스 제어 ===
+    const minSelect = document.getElementById('minExp');
+    const maxSelect = document.getElementById('maxExp');
+    const noneCheck = document.getElementById('expNone');
+    const expChecks = document.querySelectorAll('.expCheck');
 
     if (minSelect && maxSelect) {
         minSelect.addEventListener('change', function() {
-            const minVal = parseInt(this.value); [cite: 45]
-            if (minVal === 0 || minVal === 1) maxSelect.value = "3"; [cite: 45]
-            else if (minVal === 3) maxSelect.value = "5"; [cite: 45]
-            else if (minVal === 5) maxSelect.value = "8"; [cite: 45]
-            else if (minVal === 10) maxSelect.value = "99"; [cite: 46]
+            const minVal = parseInt(this.value);
+            if (minVal === 0 || minVal === 1) maxSelect.value = "3";
+            else if (minVal === 3) maxSelect.value = "5";
+            else if (minVal === 5) maxSelect.value = "8";
+            else if (minVal === 10) maxSelect.value = "99";
         });
     }
 
     expChecks.forEach(check => {
         check.addEventListener('click', function() {
-            expChecks.forEach(cb => cb.checked = false); [cite: 47]
-            this.checked = true; [cite: 47]
+            expChecks.forEach(cb => cb.checked = false);
+            this.checked = true;
             if(this.value === 'new') {
-                minSelect.disabled = true; [cite: 47]
-                maxSelect.disabled = true; [cite: 47]
+                minSelect.disabled = true;
+                maxSelect.disabled = true;
             } else if(!noneCheck.checked) {
-                minSelect.disabled = false; [cite: 48]
-                maxSelect.disabled = false; [cite: 48]
+                minSelect.disabled = false;
+                maxSelect.disabled = false;
             }
         });
     });
 
     if(noneCheck) {
         noneCheck.addEventListener('change', function() {
-            minSelect.disabled = this.checked; [cite: 49]
-            maxSelect.disabled = this.checked; [cite: 49]
+            minSelect.disabled = this.checked;
+            maxSelect.disabled = this.checked;
         });
     }
 
-    // 3. 날짜 제한 (정상 복구)
-    const startDateInput = document.getElementById('startDate'); [cite: 50]
-    const endDateInput = document.getElementById('endDate'); [cite: 50]
-    const today = new Date().toISOString().split('T')[0]; [cite: 51]
+ // === [기능 3] 접수기간 날짜 설정 (개선본) ===
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    const today = new Date().toISOString().split('T')[0];
 
     if (startDateInput && endDateInput) {
-        startDateInput.max = today; [cite: 51]
-        endDateInput.min = today; [cite: 52]
+        // 1. 시작일과 마감일 모두 오늘 이전 날짜는 선택 불가능하게 설정
+        startDateInput.min = today;
+        endDateInput.min = today;
+
         startDateInput.addEventListener('change', function() {
-            if (this.value) endDateInput.min = this.value; [cite: 52]
+            if (this.value) {
+                // 2. 시작일이 정해지면 마감일은 최소 시작일과 같거나 커야 함
+                endDateInput.min = this.value;
+                
+                // 3. 만약 마감일이 이미 입력되어 있는데 시작일보다 빠르다면? 마감일을 시작일로 초기화
+                if (endDateInput.value && endDateInput.value < this.value) {
+                    endDateInput.value = this.value;
+                }
+            }
         });
     }
 
-    // 4. 전화번호 하이픈 (정상 복구)
-    const phoneInput = document.querySelector('input[name="mgrPhone"]'); [cite: 53]
+    // === [기능 4] 담당자 전화번호 하이픈 자동생성 ===
+    const phoneInput = document.querySelector('input[name="mgrPhone"]');
     if (phoneInput) {
         phoneInput.addEventListener('input', function(e) {
-            let val = e.target.value.replace(/[^0-9]/g, ''); [cite: 54]
+            let val = e.target.value.replace(/[^0-9]/g, '');
             if (val.length > 3 && val.length <= 7) {
-                val = val.substring(0, 3) + '-' + val.substring(3); [cite: 54]
+                val = val.substring(0, 3) + '-' + val.substring(3);
             } else if (val.length > 7) {
-                val = val.substring(0, 3) + '-' + val.substring(3, 7) + '-' + val.substring(7, 11); [cite: 55]
+                val = val.substring(0, 3) + '-' + val.substring(3, 7) + '-' + val.substring(7, 11);
             }
-            e.target.value = val; [cite: 55]
+            e.target.value = val;
         });
     }
 
-    // 5. 폼 검증 및 주소 결합 (통합 수정본)
-    const form = document.querySelector('form'); [cite: 56]
+    // === [기능 5] 폼 제출 시 데이터 최종 검증 및 주소 결합 ===
+    const form = document.querySelector('form');
     if (form) {
         form.addEventListener('submit', function(e) {
-            const jobValue = jobInput.value; [cite: 57]
-            const pc = document.getElementById('postCode').value; [cite: 57]
-            const addr1 = document.getElementById('address1').value; [cite: 57]
-            const addr2 = document.getElementById('address2').value; [cite: 58]
-            const mgrPhone = document.querySelector('input[name="mgrPhone"]'); [cite: 57]
-            const mgrEmail = document.querySelector('input[name="mgrEmail"]'); [cite: 57]
+            // 주소 관련 데이터 추출
+            const pc = document.getElementById('postCode').value;
+            const addr1 = document.getElementById('address1').value;
+            const addr2 = document.getElementById('address2').value;
 
-            const phoneRegex = /^01[0-9]-\d{3,4}-\d{4}$/; [cite: 58]
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; [cite: 58]
-
-            if (!jobValue) {
-                alert("직무를 선택해주세요."); [cite: 58]
+            // 1. 필수 선택 확인 (모집분야)
+            if (!jobInput.value) {
+                alert("모집분야를 선택해주세요.");
                 e.preventDefault();
                 return false;
             }
+
+            // 2. 주소 결합 로직
             if (!pc || !addr1) {
-                alert("주소를 입력해주세요."); [cite: 59]
+                alert("근무지 주소를 검색하여 입력해주세요.");
+                e.preventDefault();
+                return false;
+            }
+            // hidden 필드(name="address")에 최종 결합된 문자열 삽입
+            document.getElementById('address').value = "[" + pc + "] " + addr1 + " " + addr2;
+
+            // 3. 전화번호 형식 검증
+            const phoneRegex = /^01[0-9]-\d{3,4}-\d{4}$/;
+            if (!phoneRegex.test(phoneInput.value)) {
+                alert("전화번호 형식을 다시 확인해주세요.");
                 e.preventDefault();
                 return false;
             }
             
-            // 전송 직전 hidden 필드인 'address'에 결합된 주소 주입
-            document.getElementById('address').value = "[" + pc + "] " + addr1 + " " + addr2; [cite: 65]
-
-            if (!phoneRegex.test(mgrPhone.value)) {
-                alert("전화번호를 확인해주세요."); [cite: 60]
-                e.preventDefault();
-                return false;
-            }
-            if (!emailRegex.test(mgrEmail.value)) {
-                alert("이메일을 확인해주세요."); [cite: 61]
-                e.preventDefault();
-                return false;
-            }
+            // 모든 검사 통과 시 전송
         });
     }
 });
 
-// 다음 주소 API (폼 밖으로 분리)
-function execDaumPostcode() { [cite: 63]
+// === [기능 6] 카카오 주소 API 실행 함수 ===
+function execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
-            let addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress; [cite: 63]
-            document.getElementById('postCode').value = data.zonecode; [cite: 63]
-            document.getElementById("address1").value = addr; [cite: 63]
-            document.getElementById("address2").focus(); [cite: 63]
+            let addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
+            document.getElementById('postCode').value = data.zonecode;
+            document.getElementById("address1").value = addr;
+            document.getElementById("address2").focus();
         }
     }).open();
 }

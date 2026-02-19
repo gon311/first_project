@@ -39,7 +39,7 @@
       <ul class="navbar-nav main-menu gap-3">
         <!-- 채용공고 (하위메뉴 없음) -->
         <li class="nav-item">
-          <a class="nav-link fw-semibold" href="<c:url value='/jobs' />">채용공고</a>
+          <a class="nav-link fw-semibold" href="<c:url value='/jobs/jobPost' />">채용공고</a>
         </li>
 
         <!-- AI 자소서 첨삭 -->
@@ -47,16 +47,16 @@
           <a
             class="nav-link dropdown-toggle fw-semibold"
             href="#"
-            id="dropdownAI"
+            id="dropdownReview"
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false">
             AI 자소서 첨삭
           </a>
-          <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownAI" id="submenu-ai">
-            <li><a class="dropdown-item" href="<c:url value='/ai/reviewRegistForm' />">자소서 첨삭</a></li>
-            <li><a class="dropdown-item" href="<c:url value='/ai/spellcheck' />">맞춤법 검사</a></li>
-            <li><a class="dropdown-item" href="<c:url value='/ai/plagiarism' />">표절 검사</a></li>
+          <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownReview" id="submenu-review">
+            <li><a class="dropdown-item" href="<c:url value='/review/registForm' />">자소서 첨삭</a></li>
+            <li><a class="dropdown-item" href="<c:url value='/review/spellCheck' />">맞춤법 검사</a></li>
+            <li><a class="dropdown-item" href="<c:url value='/review/copyCheck' />">표절 검사</a></li>
           </ul>
         </li>
 
@@ -72,8 +72,8 @@
             이력서 관리
           </a>
           <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownResume" id="submenu-resume">
-            <li><a class="dropdown-item" href="<c:url value='/resume/write' />">이력서 작성</a></li>
-            <li><a class="dropdown-item" href="<c:url value='/resume/mine' />">내 이력서</a></li>
+            <li><a class="dropdown-item" href="<c:url value='/resume/regist' />">이력서 작성</a></li>
+            <li><a class="dropdown-item" href="<c:url value='/resume/list' />">내 이력서</a></li>
           </ul>
         </li>
 
@@ -82,21 +82,21 @@
           <a
             class="nav-link dropdown-toggle fw-semibold"
             href="#"
-            id="dropdownCommunity"
+            id="dropdownBoard"
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false">
             커뮤니티
           </a>
-          <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownCommunity" id="submenu-community">
-            <li><a class="dropdown-item" href="<c:url value='/community/free' />">자유게시판</a></li>
-            <li><a class="dropdown-item" href="<c:url value='/community/reviews' />">면접후기</a></li>
+          <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownBoard" id="submenu-board">
+            <li><a class="dropdown-item" href="<c:url value='/board/board' />">자유게시판</a></li>
+            <li><a class="dropdown-item" href="<c:url value='/board/intvReview' />">면접후기</a></li>
           </ul>
         </li>
 
         <!-- 요금제 (하위메뉴 없음) -->
         <li class="nav-item">
-          <a class="nav-link fw-semibold" href="<c:url value='/pricing' />">요금제</a>
+          <a class="nav-link fw-semibold" href="<c:url value='/pay' />">요금제</a>
         </li>
       </ul>
 

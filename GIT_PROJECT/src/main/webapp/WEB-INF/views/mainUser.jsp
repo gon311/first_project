@@ -24,7 +24,7 @@
 			<br><br><br><br><br><br>
 		<!-- AI 자소서 첨삭 시작 버튼  -->
 			<div class="btAi">
-				<input type="button" value="AI 자소서 첨삭 시작" onclick="location.hrec='<c:url value="#" />'">
+				<input type="button" value="AI 자소서 첨삭 시작" onclick="location.hrec='<c:url value="/review/registForm" />'">
 			</div>
 		</main>
 		<%-- footer area --%>

@@ -13,6 +13,7 @@
 		<%-- header area --%>
 		<%@ include file="/WEB-INF/views/inc/header.jspf" %>
 		<%-- main area --%>
+		
 		<main>
 		<!-- 자소서 제목 영역 -->
 		<div>
@@ -42,6 +43,7 @@
 		<div>
 			
 		</div>
+		
 		</main>
 		<%-- footer area --%>
 		<%@ include file="/WEB-INF/views/inc/footer.jspf" %>

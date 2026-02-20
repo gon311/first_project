@@ -68,7 +68,7 @@
                 <div class="tab" id="tab-C" onclick="switchTab('C')">기업회원</div>
             </div>
 
-            <form action="/signup" method="POST" id="signupForm" onsubmit="return validateForm(event)">
+            <form action="<c:url value="/user/regist" />" method="POST" id="signupForm" onsubmit="return validateForm(event)">
                 <input type="hidden" name="userType" id="userType" value="P">
 
                 <div class="section-title">기본 정보</div>
@@ -176,13 +176,13 @@
                 <div class="section-title">이용약관 동의</div>
                 <div class="terms-box">
                     <div class="terms-item">
-                        <input type="checkbox" name="termsCode" value="Y" required> [필수] 서비스 이용약관 동의
+                        <input type="checkbox" name="termsCode" value="서비스 이용약관 동의" required> [필수] 서비스 이용약관 동의
                     </div>
                     <div class="terms-item">
-                        <input type="checkbox" name="termsCode" value="Y" required> [필수] 개인정보 수집 및 이용 동의
+                        <input type="checkbox" name="termsCode" value="개인정보 수집 및 이용 동의" required> [필수] 개인정보 수집 및 이용 동의
                     </div>
                     <div class="terms-item">
-                        <input type="checkbox" name="agreedYn" value="Y"> [선택] 마케팅 정보 수신 동의
+                        <input type="checkbox" name="termsCode" value="마케팅 정보 수신 동의"> [선택] 마케팅 정보 수신 동의
                     </div>
                 </div>
 

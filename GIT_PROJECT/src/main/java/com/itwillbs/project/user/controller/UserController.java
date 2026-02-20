@@ -1,23 +1,40 @@
 package com.itwillbs.project.user.controller;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itwillbs.project.user.dto.UserDTO;
+import com.itwillbs.project.user.service.UserService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Controller
 @RequestMapping("/user")
+@RequiredArgsConstructor
 @Log4j2
 public class UserController {
+	private final UserService userService;
 	
 	@GetMapping("/login")
 	public String login() {
 		
 		return "/user/login_form";
+	}
+	
+	@PostMapping("/login")
+	public String loginP(UserDTO userDTO, BCryptPasswordEncoder passwordEncoder,
+						 HttpSession session) {
+		
+		UserDTO dbUser = userService.getUser(userDTO.getEmail());
+		
+		
+		return "redirect:/";
 	}
 	
 	@GetMapping("/regist")
@@ -27,7 +44,13 @@ public class UserController {
 	}
 	
 	@PostMapping("/regist")
-	public String registP(UserDTO userDTO) {
+	public String registP(UserDTO userDTO, BCryptPasswordEncoder passwordEncoder) {
+		
+		String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+		userDTO.setPassword(encryptedPassword);
+		
+		userService.registUser(userDTO);
+
 		
 		return "redirect:/";
 	}

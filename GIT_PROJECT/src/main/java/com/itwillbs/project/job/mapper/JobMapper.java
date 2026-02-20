@@ -2,7 +2,12 @@ package com.itwillbs.project.job.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.itwillbs.project.job.dto.JobDTO;
+
 @Mapper
-public class JobMapper {
+public interface JobMapper {
+
+	void insertJob(JobDTO jobDTO);
+
 
 }

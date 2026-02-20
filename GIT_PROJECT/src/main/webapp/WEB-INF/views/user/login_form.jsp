@@ -53,7 +53,7 @@
             </div>
 
             <div id="personal-content" class="tab-content-area active">
-                <form onsubmit="return false;">
+                <form action="<c:url value="/user/login" />" method="post" onsubmit="">
                     <div class="row g-2 mb-3">
                         <div class="col-9">
                             <div class="position-relative mb-2">
@@ -94,7 +94,7 @@
             </div>
 
             <div id="corporate-content" class="tab-content-area">
-                <form onsubmit="return false;">
+                <form action="<c:url value="/user/login" />" method="post" onsubmit="">
                     <div class="row g-2 mb-3">
                         <div class="col-9">
                             <div class="position-relative mb-2">

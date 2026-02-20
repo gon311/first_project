@@ -2,6 +2,10 @@ package com.itwillbs.project.user.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +29,7 @@ public class UserDTO {
 	private LocalDateTime withdrawnAt; // withdrawn_at (DATETIME)
 	
 	// 개인
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;       // birth_date (DATE)
 	private String gender;             // gender (CHAR)
 	private String country;            // country (VARCHAR)
@@ -38,7 +43,7 @@ public class UserDTO {
 	private String companyAddress;   // company_addre... (VARCHAR)
 	
 	// 약관동의
-	private String termsCode;
+	private List<String> termsCode;
 	private String agreedYn;
 	
 }

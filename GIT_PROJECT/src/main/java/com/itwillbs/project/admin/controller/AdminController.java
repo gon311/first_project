@@ -33,6 +33,7 @@ public class AdminController {
 	private AdminService adminService;
 	
 	//=============================================================
+	// 구직자 관리 페이지
 	// 조건별 검색(구현중)
 	@PostMapping("/users")
 	public String userSearch(SearchDTO searchDTO, RedirectAttributes ra) {
@@ -44,38 +45,37 @@ public class AdminController {
 		return "redirect:/admin/users";
 	}
 	
-	// 구독자 관리 페이지
+	// 구직자 회원 목록
 	@GetMapping("/users")
 	public String userList(@RequestParam(value="tab", defaultValue="all") String tab
 							, Model model
-							, SearchDTO searchDTO) {
+							, SearchDTO searchDTO
+							, String sort) {
 		// tab 파라미터가 없으면 기본값 "all"로 설정됨
 		model.addAttribute("activeTab", tab); 
-		System.out.println("searchDTO 전송 : " + searchDTO);
-		List<MemberDTO> userList = adminService.getUserFilter(searchDTO.getKeyword()
+		//-----------------------------------------------------
+		log.info("sort >>>>>>>> ", sort);
+		
+		List<MemberDTO> userList = adminService.getUserList(searchDTO.getKeyword()
 																, searchDTO.getType()
 																, searchDTO.getStatus());
 		model.addAttribute("userList", userList);
-		
 		 
 		return "admin/member/UserList";
 			
 	}
 	
-	
-	// 구독자 상세정보
+	// 구직자 상세정보
 	@GetMapping("/info")
-	public String userInfo(Model model, MemberDTO dto) {
-		System.out.println("dto.getId : " + dto.getId());
-		MemberDTO userDTO = adminService.getUserInfo(dto.getId());
-		System.out.println("userDTO : " + userDTO);
+	public String userInfo(Model model, MemberDTO memberDTO) {
+		MemberDTO userDTO = adminService.getUserInfo(memberDTO.getId());
 		
 		model.addAttribute("user", userDTO);
 		
 		return "admin/member/UserInfo";
 	}
 	
-	// 구독자 차단(구현중)
+	// 구직자 차단(구현중)
 	@GetMapping("/block")
 	public String userBlock(MemberDTO dto, RedirectAttributes ra) {
 		System.out.println("id : " + dto.getId());
@@ -86,31 +86,31 @@ public class AdminController {
 	}
 	
 	//===========================================================================
-	// 기업회원 관리 페이지
+	// 기업회원 관리 페이지(구현중)
+	// 조건별 검색
+	@PostMapping("/coms")
+	public String comSearch(SearchDTO searchDTO, RedirectAttributes ra) {
+		ra.addAttribute("keyword", searchDTO.getKeyword());
+		ra.addAttribute("type", searchDTO.getType());
+		ra.addAttribute("status", searchDTO.getStatus());
+		System.out.println("searchDTO : " + searchDTO);
+		
+		return "redirect:/admin/coms";
+	}
+	
+	// 기업회원 목록 조회
 	@GetMapping("/coms")
 	public String comList(@RequestParam(value="tab", defaultValue="all") String tab
 							, Model model
 							, SearchDTO searchDTO) {
 		// tab 파라미터가 없으면 기본값 "all"로 설정됨
-		model.addAttribute("activeTab", tab);
+		model.addAttribute("activeTab", tab); 
 		
-		
-		if(searchDTO.getKeyword() != null || 
-			searchDTO.getType() != null || 
-			searchDTO.getStatus() != null) {
-			
-			List<MemberDTO> comDTO = adminService.getUserFilter(searchDTO.getKeyword()
-																	, searchDTO.getType()
-																	, searchDTO.getStatus());
-			
-			model.addAttribute("comList", comDTO);
-	   
-		} else {
-			
-			List<MemberDTO> comList = adminService.getUser();
-			model.addAttribute("comList", comList);
-		}
-			
+		System.out.println("searchDTO 검색 : " + searchDTO);
+		List<MemberDTO> comList = adminService.getComList(searchDTO.getKeyword()
+																, searchDTO.getType()
+																, searchDTO.getStatus());
+		model.addAttribute("comList", comList);
 		 
 		return "admin/member/ComList";
 			
@@ -134,7 +134,7 @@ public class AdminController {
 		List<PayDTO> payList = adminService.getPayList(payDTO);
 		model.addAttribute("payList", payList);
 		
-		return "admin/pay/PayList"; 
+		return "admin/payment/PayList"; 
 	}
 	
 	//===========================================================================
@@ -151,6 +151,18 @@ public class AdminController {
 		return "admin/data";
 	}
 	
+	//===========================================================================
+	// 요금제(보류)
+	@GetMapping("/store")
+	public String comStore() {
+		return "admin/store/comStore";
+	}
+	
+	// 결제하기
+	@GetMapping("/pay")
+	public String pay() {
+		return "admin/pay/payForm";
+	}
 	
 	
 }

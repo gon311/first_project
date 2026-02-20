@@ -20,22 +20,18 @@ public class AdminService{
 
 	@Autowired
 	private AdminMapper adminMapper;
-
-	// 구직자 전체 목록
-	public List<MemberDTO> getUser() {
-		return adminMapper.selectUser();
-	}
 	
-	// 구직자 목록 조회 필터링
-	public List<MemberDTO> getUserFilter(String keyword, String type, String status) {
-		return adminMapper.selectUserFilter(keyword, type, status);
-	}
+	// 구직자 목록 조회
+	public List<MemberDTO> getUserList(String keyword, String type, String status) {
+		return adminMapper.selectUserList(keyword, type, status);
+	} 
 
 	// 구직자 상세 정보 조회
 	public MemberDTO getUserInfo(BigInteger id) {
 		return adminMapper.selectUserInfo(id);
 	}
 	
+	//======================================================================================
 	// 공지사항 리스트 조회 (DTO 파라미터로 사용)
 	public List<NoticeDTO> getNoticeList(NoticeDTO noticeDTO){
 		return adminMapper.getNoticeList(noticeDTO);
@@ -52,6 +48,7 @@ public class AdminService{
 		adminMapper.insertNotice(noticeDTO);
 	}
 
+<<<<<<< HEAD
 	// 채용공고 리스트 조회
 	public List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO) {
 		
@@ -62,11 +59,22 @@ public class AdminService{
 		return adminMapper.getJobPostById(jobPost_id);
 	}
 	
+=======
+	//======================================================================================
+	// 결제 목록 조회
+>>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 	public List<PayDTO> getPayList(PayDTO payDTO) {
 		return adminMapper.selectPayList(payDTO);
 	}
 
+<<<<<<< HEAD
 
 
+=======
+	// 기업회원 목록 조회
+	public List<MemberDTO> getComList(String keyword, String type, String status) {
+		return adminMapper.selectComList(keyword, type, status);
+	}
+>>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 
 }

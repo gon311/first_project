@@ -25,12 +25,23 @@
                     	<a class="nav-link dropdown-toggle" href="#" id="contentDrop" role="button" 
                     	data-bs-toggle="dropdown" aria-expanded="false">사용자 관리</a>
                     	<ul class="dropdown-menu" aria-labelledby="contentDrop">
-		                    <li><a class="dropdown-item" href="<c:url value="/admin/users" />">구독자 관리</a></li>
+		                    <li><a class="dropdown-item" href="<c:url value="/admin/users" />">구직자 관리</a></li>
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/coms" />">기업회원 관리</a></li>
                     	</ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/submits" />">기업 공고 관리</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/payments" />">결제 관리</a></li>
+<%--                     <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/payments" />">결제 관리</a></li> --%>
+                    
+                    <!-- 사용자페이지의 요금제, 결제하기 페이지 확인을 위한 임시 하위 메뉴 -->
+                    <li class="nav-item dropdown">
+                    	<a class="nav-link dropdown-toggle" href="#" id="contentDrop" role="button" 
+                    	data-bs-toggle="dropdown" aria-expanded="false">결제 관리</a>
+                    	<ul class="dropdown-menu" aria-labelledby="contentDrop">
+		                    <li><a class="dropdown-item" href="<c:url value="/admin/payments" />">결제 관리</a></li>
+		                    <li><a class="dropdown-item" href="<c:url value="/admin/store" />">요금제</a></li>
+		                    <li><a class="dropdown-item" href="<c:url value="/admin/pay" />">결제하기</a></li>
+                    	</ul>
+                    </li>
                     
                     <!-- (변경사항) 26.02.16 SYC dropdownlist 정리 -->
                     <li class="nav-item dropdown">

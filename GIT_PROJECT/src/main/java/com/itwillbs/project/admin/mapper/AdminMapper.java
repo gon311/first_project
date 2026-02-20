@@ -13,11 +13,8 @@ import com.itwillbs.project.admin.dto.PayDTO;
 
 @Mapper
 public interface AdminMapper {
-	// 구직자 회원 전체 목록
-	List<MemberDTO> selectUser();
-	
 	// 구직자 회원 목록 필터링
-	List<MemberDTO> selectUserFilter(@Param("keyword") String keyword
+	List<MemberDTO> selectUserList(@Param("keyword") String keyword
 								,@Param("type") String type
 								,@Param("status") String status);
 
@@ -25,6 +22,7 @@ public interface AdminMapper {
 	MemberDTO selectUserInfo(BigInteger id);
 //	--------------------------------------------------------------------------------
 	
+	//========================================================================
 	// 공지사항 리스트 조회
 	List<NoticeDTO> getNoticeList(NoticeDTO noticeDTO);
 
@@ -35,6 +33,7 @@ public interface AdminMapper {
 	void insertNotice(NoticeDTO noticeDTO);
 	// 조회수 증가
 	void updateReadCount(int notice_id);
+<<<<<<< HEAD
 	
 //	----------------------------------------------------------------------------------
 //	채용공고 리스트 조회
@@ -43,10 +42,19 @@ public interface AdminMapper {
 	JobPostDTO getJobPostById(int jobPost_id);
 	
 // ====================================================================================
+=======
+
+	//========================================================================
+>>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 	// 결제 목록 조회
 	List<PayDTO> selectPayList(PayDTO payDTO);
 
+<<<<<<< HEAD
 
+=======
+	// 기업회원 목록 조회
+	List<MemberDTO> selectComList(String keyword, String type, String status);
+>>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 
  
 }

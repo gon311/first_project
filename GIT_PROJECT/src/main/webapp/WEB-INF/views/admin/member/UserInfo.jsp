@@ -61,7 +61,7 @@
 			    	</div>
 			    	<div class="text-end mt-2">
 			    		<c:choose>
-			    			<c:when test="${user.status eq 'active'}">
+			    			<c:when test="${user.status eq 'ACTIVE'}">
 							    <button type="button" id="block" class="btn btn-danger" onclick="block(${user.id})">
 							    차단</button>
 			    			</c:when>
@@ -87,16 +87,16 @@
 		function block(id) {
 			if(document.getElementById("block")) {
 				if(confirm("차단하시겠습니까?")) {
-					document.getElementById("block").innerText = "차단";
-					location.href="<c:url value="/admin/block" />" + "?id=" + id;
+					document.getElementById("block").innerText = "차단 해제";
 				}
 			} else {
 				if(confirm("차단 해제하시겠습니까?")) {
-					document.getElementById("active").innerText = "차단 해제";
-					location.href="<c:url value="/admin/block" />" + "?id=" + id;
+					document.getElementById("active").innerText = "차단";
 				}
-				
 			}
+			
+			location.href="<c:url value="/admin/block" />" + "?id=" + id;
+			
 		}
 		
 		

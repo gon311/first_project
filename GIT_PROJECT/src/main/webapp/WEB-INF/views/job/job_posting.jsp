@@ -10,7 +10,6 @@
 <meta charset="UTF-8">
 <title>채용공고 등록</title>
 <style>
-    /* (기존 스타일 유지) */
     body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; padding: 20px; }
     .container { max-width: 900px; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: auto; }
     .form-group { display: flex; align-items: flex-start; margin-bottom: 20px; }
@@ -19,7 +18,14 @@
     input[type="text"], input[type="date"], textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
     .file-upload-area { background: #e9ecef; padding: 20px; border: 2px dashed #ccc; text-align: center; border-radius: 5px; margin: 10px 0; }
     .info-box { background: #f0f7ff; padding: 15px; border-radius: 5px; font-size: 0.9em; color: #0066cc; }
-    .btn-submit { background: #333; color: #fff; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; display: block; margin: 20px auto; }
+	.button-group {display: flex; justify-content: center; gap: 10px; margin: 40px 0; padding-bottom: 20px;}
+	.button-group button {padding: 12px 25px; border-radius: 5px; font-size: 15px; font-weight: bold; cursor: pointer; border: 1px solid #ddd; transition: 0.2s;}
+	.btn-submit {background-color: #333 !important; color: #fff !important; border: none !important;}
+	.btn-reset {background-color: #e9ecef; color: #333;}
+	.btn-cancel {background-color: #fff; color: #666;}
+	.btn-submit:hover { background-color: #000 !important; }
+	.btn-reset:hover { background-color: #dee2e6; }
+	.btn-cancel:hover { background-color: #f8f9fa; }
     .job-selector-wrapper { display: flex; border: 1px solid #ddd; border-radius: 5px; height: 250px; margin-top: 10px; overflow: hidden; }
     .main-cat-list { width: 30%; background: #f1f3f5; border-right: 1px solid #ddd; overflow-y: auto; list-style: none; padding: 0; margin: 0; }
     .sub-cat-list { width: 70%; background: #fff; overflow-y: auto; list-style: none; padding: 10px; margin: 0; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; }
@@ -178,7 +184,11 @@
 		    </div>
 		</div>
 
-        <button type="submit" class="btn-submit">공고 등록하기</button>
+        <div class="button-group">
+		    <button type="submit" class="btn-submit">공고 등록하기</button>
+		    <button type="reset" class="btn-reset">초기화</button>
+		    <button type="button" class="btn-cancel" onclick="history.back()">취소</button>
+		</div>
     </form>
 </div>
 

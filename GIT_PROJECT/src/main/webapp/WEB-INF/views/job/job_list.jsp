@@ -115,11 +115,11 @@
     <form action="search_process.jsp" method="get">
         
         <div class="filter-dropdown-row">
-            <select name="exp_type" class="filter-select">
-                <option value="">경력 전체</option>
-                <option value="new">신입</option>
-                <option value="career">경력</option>
-            </select>
+            <select class="filter-select" id="expFilter" onchange="changeFilter()">
+			    <option value="">경력 전체</option>
+			    <option value="new" ${selectedExp == 'new' ? 'selected' : ''}>신입</option>
+			    <option value="career" ${selectedExp == 'career' ? 'selected' : ''}>경력</option>
+			</select>
             <select name="edu_level" class="filter-select">
                 <option value="">학력 전체</option>
                 <option value="high">고졸</option>
@@ -245,6 +245,14 @@ function resetAll() {
 
 // 초기 로딩
 document.addEventListener('DOMContentLoaded', renderMainCategory);
+
+function changeFilter() {
+    const expType = document.getElementById("expFilter").value;
+    // 현재 주소로 파라미터를 붙여서 이동
+    location.href = "JobList?expType=" + expType;
+}
+
+
 </script>
 
 </body>

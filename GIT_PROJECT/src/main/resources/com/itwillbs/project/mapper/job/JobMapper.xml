@@ -61,27 +61,30 @@
 	        1                )
 	</insert>
 	
+	
 	<select id="getJobList" resultType="job">
 	    SELECT 
-			j.job_id as jobId,
-			j.comp_id as compId,
-			u.company_name as comName,
-			j.title,
-			j.field,
-			CASE 
+	        j.job_id as jobId,
+	        j.comp_id as compId,
+	        u.company_name as comName,
+	        j.title,
+	        j.field,
+	        CASE 
 		        WHEN j.exp_year = '0' OR j.exp_year LIKE '%신입%' THEN '신입'
 			    ELSE '경력'
 		    END as expYear,
-			j.edu,
-			j.address,
-			j.close_date as closeDate
-		FROM JOB_POSTING j JOIN USER_COMPANY u
-		ON j.comp_id = u.user_id
-		ORDER BY j.job_id DESC
-		LIMIT 0, 1000;
+	        j.exp_type as expType, j.edu,
+	        j.address,
+	        j.close_date as closeDate
+	    FROM JOB_POSTING j JOIN USER_COMPANY u
+	    ON j.comp_id = u.user_id
+	    <where>
+	        <if test="expType != null and expType != ''">
+	            AND j.exp_type = #{expType}
+	        </if>
+	    </where>
+	    ORDER BY j.job_id DESC
 	</select>
-	
-	
 </mapper>
 
 

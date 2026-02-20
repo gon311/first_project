@@ -42,15 +42,10 @@ public class JobController {
 	}
 	
 	@GetMapping("/JobList")
-	public String list(Model model) {
-	    // 1. DB에서 리스트를 가져온다
-	    List<JobDTO> jobList = jobService.getJobList();
-	    
-	    // 2. "jobList"라는 이름으로 JSP에 전달한다 (매우 중요!)
+	public String list(Model model, String expType) { // expType 파라미터 추가
+	    List<JobDTO> jobList = jobService.getJobList(expType); // 서비스에 전달
 	    model.addAttribute("jobList", jobList);
-	    
-	    log.info("조회된 공고 개수: " + (jobList != null ? jobList.size() : 0));
-	    
+	    model.addAttribute("selectedExp", expType); // JSP에서 선택 상태 유지를 위해 추가
 	    return "/job/job_list";
 	}
 	

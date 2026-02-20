@@ -218,13 +218,12 @@
 			job_posting
 	</select>
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	<!-- 제출된 공고 상세정보 조회 -->
+	<select id="selectSubmitInfo" resultMap="submitResultMap">
+		select *
+		from job_posting
+		where 
+			job_id = #{id}
+	</select>
 	
 </mapper>

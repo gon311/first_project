@@ -45,6 +45,9 @@ public interface AdminMapper {
 	// 제출된 공고 목록 조회
 	List<SubmitDTO> selectSubmitList(SubmitDTO submitDTO);
 
+	// 제출된 공고 상세정보 조회
+	MemberDTO selectSubmitInfo(BigInteger id);
+
 	// 기업회원 상세정보 조회
 //	MemberDTO selectComInfo(BigInteger id);
 

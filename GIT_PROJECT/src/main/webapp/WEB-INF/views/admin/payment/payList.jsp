@@ -17,7 +17,7 @@
 	    <h5 class="card-title mb-3">검색</h5>
 			<div class="card">
 			    <div class="card-body">
-				      <form action="<c:url value="/admin/search" />" name="searchForm" method="post" class="row g-3 align-items-center">
+				      <form action="<c:url value="/admin/payments" />" name="searchForm" method="post" class="row g-3 align-items-center">
 				        <div class="row my-3">
 					        <!-- 기간별 검색 - 시작일자 -->
 					        <div class="col-md-3">
@@ -101,7 +101,7 @@
 				<!-- tbody 필요 -->
 	 			<tbody>
 					<c:forEach var="pay" varStatus="status" items="${payList}">
-						<tr class="clickable-row" onclick="location.href='info?id=${pay.id}'">
+						<tr class="clickable-row" onclick="location.href='payments/info?id=${pay.id}'">
 							<td>${status.count }</td>
 							<td>${pay.id }</td>
 							<td>${pay.payDate }</td>

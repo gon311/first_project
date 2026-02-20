@@ -102,7 +102,7 @@
 					<tbody>
 					<!-- 구현 예정 -->
 						<c:forEach var="com" varStatus="status" items="${comList}">
-							<tr class="clickable-row" onclick="location.href='info?id=${com.id}'">
+							<tr class="clickable-row" onclick="location.href='coms/info?id=${com.id}'">
 								<td>${status.count}</td>
 								<td>${com.id}</td>
 								<td>${com.name}</td>

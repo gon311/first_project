@@ -105,7 +105,7 @@
 						<!-- tbody 필요 -->
 			 			<tbody>
 							<c:forEach var="user" varStatus="status" items="${userList}">
-								<tr class="clickable-row" onclick="location.href='info?id=${user.id}'">
+								<tr class="clickable-row" onclick="location.href='users/info?id=${user.id}'">
 									<td>${status.count}</td>
 									<td>${user.id}</td>
 									<td>${user.name}</td>

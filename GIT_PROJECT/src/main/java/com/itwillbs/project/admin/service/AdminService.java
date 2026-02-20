@@ -59,9 +59,14 @@ public class AdminService{
 		return adminMapper.selectComList(keyword, type, status);
 	}
 	
-	// 제출된 공고 조회
+	// 제출된 공고 목록 조회
 	public List<SubmitDTO> getSubmitList(SubmitDTO submitDTO) {
 		return adminMapper.selectSubmitList(submitDTO);
+	}
+	
+	// 제출된 공고 상세 조회
+	public MemberDTO getSubmitInfo(BigInteger id) {
+		return adminMapper.selectSubmitInfo(id);
 	}
 
 	// 기업회원 상세정보 조회

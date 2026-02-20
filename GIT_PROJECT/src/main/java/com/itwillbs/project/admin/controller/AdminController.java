@@ -29,7 +29,8 @@ public class AdminController {
 	private AdminService adminService;
 	
 	//=============================================================
-	// 구직자 관리 페이지
+	// [ 구직자 관리 페이지 ]
+	
 	// 조건별 검색(구현중)
 	@PostMapping("/users")
 	public String userSearch(SearchDTO searchDTO, RedirectAttributes ra) {
@@ -60,29 +61,19 @@ public class AdminController {
 	}
 	
 	// 구직자 상세정보
-	@GetMapping("/info")
+	@GetMapping("/users/info")
 	public String userInfo(Model model, MemberDTO memberDTO) {
-		if(memberDTO.getMemberType() == 'c') {
-			MemberDTO userDTO = adminService.getUserInfo(memberDTO.getId());
-			
-			model.addAttribute("user", userDTO);
-			
-			return "admin/member/userInfo";
-		} else {
-			MemberDTO comDTO = adminService.getUserInfo(memberDTO.getId());
-			
-			model.addAttribute("com", comDTO);
-			
-			return "admin/member/comInfo";
-			
-		}
+		MemberDTO userDTO = adminService.getUserInfo(memberDTO.getId());
+		
+		model.addAttribute("user", userDTO);
+		
+		return "admin/member/userInfo";
 		
 	}
 	
 	// 구직자 차단(구현중)
 	@GetMapping("/block")
 	public String userBlock(MemberDTO dto, RedirectAttributes ra) {
-		System.out.println("id : " + dto.getId());
 //		adminService.blockUser(dto.getId(), dto.getStatus());
 		ra.addAttribute("id", dto.getId());
 		
@@ -90,7 +81,8 @@ public class AdminController {
 	}
 	
 	//===========================================================================
-	// 기업회원 관리 페이지(구현중)
+	// [ 기업회원 관리 페이지 ]
+	
 	// 조건별 검색
 	@PostMapping("/coms")
 	public String comSearch(SearchDTO searchDTO, RedirectAttributes ra) {
@@ -110,7 +102,6 @@ public class AdminController {
 		// tab 파라미터가 없으면 기본값 "all"로 설정됨
 		model.addAttribute("activeTab", tab); 
 		
-//		System.out.println("searchDTO 검색 : " + searchDTO);
 		List<MemberDTO> comList = adminService.getComList(searchDTO.getKeyword()
 																, searchDTO.getType()
 																, searchDTO.getStatus());
@@ -120,8 +111,33 @@ public class AdminController {
 			
 	}
 	
+	// 기업회원 상세 정보
+	@GetMapping("/coms/info")
+	public String comInfo(Model model, MemberDTO memberDTO) {
+		
+		MemberDTO comDTO = adminService.getUserInfo(memberDTO.getId());
+		
+		model.addAttribute("com", comDTO);
+		
+		return "admin/member/comInfo";
+			
+	}
+	
 	//===========================================================================
-	// 제출된 공고 관리(보류)
+	// [ 제출된 공고 관리 ](상세정보 구현 예정)
+	
+	// 조건별 검색(구현중)
+	@PostMapping("/submits")
+	public String submitSearch(SearchDTO searchDTO, RedirectAttributes ra) {
+		ra.addAttribute("keyword", searchDTO.getKeyword());
+		ra.addAttribute("type", searchDTO.getType());
+		ra.addAttribute("status", searchDTO.getStatus());
+		System.out.println("searchDTO : " + searchDTO);
+		
+		return "redirect:/admin/submits";
+	}
+	
+	// 제출된 공고 목록 조회
 	@GetMapping("/submits")
 	public String submitList(SubmitDTO submitDTO, Model model) {
 		List<SubmitDTO> submitList = adminService.getSubmitList(submitDTO);
@@ -130,15 +146,53 @@ public class AdminController {
 		return "admin/submit/submitList";
 	}
 	
+	// 제출된 공고 상세정보 조회
+	@GetMapping("/submits/info")
+	public String submitInfo(Model model, MemberDTO memberDTO) {
+		MemberDTO submitDTO = adminService.getSubmitInfo(memberDTO.getId());
+		
+		model.addAttribute("submit", submitDTO);
+		
+		return "admin/member/userInfo";
+		
+	}
+	
 	
 	//===========================================================================
-	// 결제 내역
+	// [ 결제 관리 ](상세정보 구현 예정)
+	
+	// 조건별 검색
+	@PostMapping("/payments")
+	public String paySearch(SearchDTO searchDTO, RedirectAttributes ra) {
+		ra.addAttribute("keyword", searchDTO.getKeyword());
+		ra.addAttribute("type", searchDTO.getType());
+		ra.addAttribute("status", searchDTO.getStatus());
+		System.out.println("searchDTO : " + searchDTO);
+		
+		return "redirect:/admin/payments";
+	}
+	
+	// 결제 내역 목록 조회
 	@GetMapping("/payments")
 	public String payList(PayDTO payDTO, Model model) {
 		List<PayDTO> payList = adminService.getPayList(payDTO);
 		model.addAttribute("payList", payList);
 		
 		return "admin/payment/payList"; 
+	}
+	
+	//-----------------------------------------
+	// (사용자 페이지와 매핑 필요)
+	// 요금제(보류)
+	@GetMapping("/store")
+	public String comStore() {
+		return "admin/store/comStore";
+	}
+	
+	// 결제하기(보류)
+	@GetMapping("/pay")
+	public String pay() {
+		return "admin/pay/payForm";
 	}
 	
 	//===========================================================================
@@ -153,19 +207,6 @@ public class AdminController {
 	@GetMapping("/data")
 	public String dataList() {
 		return "admin/data";
-	}
-	
-	//===========================================================================
-	// 요금제(보류)
-	@GetMapping("/store")
-	public String comStore() {
-		return "admin/store/comStore";
-	}
-	
-	// 결제하기
-	@GetMapping("/pay")
-	public String pay() {
-		return "admin/pay/payForm";
 	}
 	
 	

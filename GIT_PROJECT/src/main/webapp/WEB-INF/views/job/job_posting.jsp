@@ -35,6 +35,7 @@
     <form action="<c:url value="/job/JobProcess" />" method="post" enctype="multipart/form-data">
         
         <div class="form-group">
+        	<input type="hidden" name="compId" value="1">
             <div class="label-box">공고제목 <span style="color:red">*</span></div>
             <div class="input-box"><input type="text" name="title" placeholder="디자이너 채용" required></div>
         </div>

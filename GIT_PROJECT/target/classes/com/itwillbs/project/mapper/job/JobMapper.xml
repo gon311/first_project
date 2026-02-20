@@ -33,16 +33,25 @@
 	        #{expType}, 
 	        #{expYear}, 
 	        #{edu}, 
-	        #{empType}, 
-	        #{probation}, 
+	        #{empType},
+	        <choose>
+	            <when test="probation != null and probation == 'Y'">
+	                #{probation},
+	            </when>
+	            <otherwise>
+	                DEFAULT,
+	            </otherwise>
+	        </choose>
 	        #{salary}, 
 	        #{address},
-	        <if test="!isRemote">
-		        DEFAULT, 
-	        </if>      
-	        <if test="isRemote">
-		        #{isRemote}, 
-	        </if>      
+	        <choose>
+	            <when test="isRemote != null and isRemote == 'Y'">
+	                #{isRemote},
+	            </when>
+	            <otherwise>
+	                DEFAULT,
+	            </otherwise>
+	        </choose>
 	        #{openDate}, 
 	        #{closeDate}, 
 	        #{mgrName}, 

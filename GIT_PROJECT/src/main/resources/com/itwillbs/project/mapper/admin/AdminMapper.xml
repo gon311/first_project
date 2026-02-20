@@ -144,6 +144,27 @@
 	</update>
 	
 	<!-- ================================================================================== -->
+	<!--  채용공고 목록 조회 -->
+	<select id="getJobPostList" resultType="jobPost">
+		SELECT job_id <!-- 공고 id -->
+			, comp_id
+			, title
+			, field
+			, open_date
+			, close_date
+			, post_check
+		FROM job_posting
+	</select>
+	
+	<select id="getJobPostById" resultType ="jobPost">
+		SELECT *
+		FROM job_posting
+		WHERE job_id = #{job_id}
+	
+	</select>
+		
+	
+	<!-- ================================================================================== -->
 	<!-- 결제 목록 조회 -->
 	<resultMap id="payResultMap" type="com.itwillbs.project.admin.dto.PayDTO">
 		<id property="id" column="pay_id" />
@@ -218,6 +239,7 @@
 			job_posting
 	</select>
 	
+<<<<<<< HEAD
 	<!-- 제출된 공고 상세정보 조회 -->
 	<select id="selectSubmitInfo" resultMap="submitResultMap">
 		select *
@@ -225,5 +247,11 @@
 		where 
 			job_id = #{id}
 	</select>
+=======
+	
+	
+	
+	
+>>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 	
 </mapper>

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.PayDTO;
@@ -48,8 +49,19 @@ public class AdminService{
 		adminMapper.insertNotice(noticeDTO);
 	}
 
+	// 채용공고 리스트 조회
+	public List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO) {
+		
+		return adminMapper.getJobPostList(jobPostDTO);
+	}
+	// 채용공고 상세 조회
+	public JobPostDTO getJobPostDetail(int job_id) {
+		return adminMapper.getJobPostById(job_id);
+	}
+	
+
 	//======================================================================================
-	// 결제 목록 조회
+
 	public List<PayDTO> getPayList(PayDTO payDTO) {
 		return adminMapper.selectPayList(payDTO);
 	}

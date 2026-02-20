@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.PayDTO;
+import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.admin.mapper.AdminMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -57,5 +58,15 @@ public class AdminService{
 	public List<MemberDTO> getComList(String keyword, String type, String status) {
 		return adminMapper.selectComList(keyword, type, status);
 	}
+	
+	// 제출된 공고 조회
+	public List<SubmitDTO> getSubmitList(SubmitDTO submitDTO) {
+		return adminMapper.selectSubmitList(submitDTO);
+	}
+
+	// 기업회원 상세정보 조회
+//	public MemberDTO getComInfo(BigInteger id) {
+//		return adminMapper.selectComInfo(id);
+//	}
 
 }

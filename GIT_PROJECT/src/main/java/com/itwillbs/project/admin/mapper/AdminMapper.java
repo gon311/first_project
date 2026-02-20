@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.PayDTO;
+import com.itwillbs.project.admin.dto.SubmitDTO;
 
 @Mapper
 public interface AdminMapper {
@@ -37,7 +38,15 @@ public interface AdminMapper {
 	List<PayDTO> selectPayList(PayDTO payDTO);
 
 	// 기업회원 목록 조회
-	List<MemberDTO> selectComList(String keyword, String type, String status);
+	List<MemberDTO> selectComList(@Param("keyword") String keyword
+								,@Param("type") String type
+								,@Param("status") String status);
+
+	// 제출된 공고 목록 조회
+	List<SubmitDTO> selectSubmitList(SubmitDTO submitDTO);
+
+	// 기업회원 상세정보 조회
+//	MemberDTO selectComInfo(BigInteger id);
 
  
 }

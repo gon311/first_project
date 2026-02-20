@@ -12,7 +12,6 @@ import lombok.ToString;
 @ToString
 public class MemberDTO {
 	// 화면 출력 확인을 위해 임시로 만든 회원정보DTO
-	
 	private BigInteger id;
 	private String email;
 	private String password;
@@ -23,5 +22,9 @@ public class MemberDTO {
 	private LocalDateTime joinedAt;
 	private LocalDateTime withdrawnAt;
 	
+	// 구직자 상세 정보
+//	private UserDTO userDto = new UserDTO();
 	
+	// 기업회원 상세 정보
+//	private ComDTO comDTO = new ComDTO();
 }

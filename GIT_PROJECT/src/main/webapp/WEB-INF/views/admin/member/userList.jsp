@@ -149,12 +149,12 @@
 	<script type="text/javascript">
 		function selectSort(){
 			if(document.getElementById("sort").value == "new") {
-				location.href="<c:url value="/admin/users" />" + "&sort=new";
+ 				location.href="<c:url value="/admin/users" />" + "&sort=new";
 			} else if(document.getElementById("sort").value == "old") {
-				location.href="<c:url value="/admin/users" />" + "&sort=old";
-			} else if(document.getElementById("sort").value == "abc") {
+ 				location.href="<c:url value="/admin/users" />" + "&sort=old";
+ 			} else if(document.getElementById("sort").value == "abc") {
 				location.href="<c:url value="/admin/users" />" + "&sort=abc";
-		}
+ 		}
 	
 	</script>
 	

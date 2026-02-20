@@ -87,6 +87,7 @@
 						<label><input type="radio" name="careerLevel" value="INTERN"><span class="radio-btn">인턴</span></label>
 					</div>
 					<div class="btn-submit">
+					
 						<input type="submit" value="저장후 다음으로">
 					</div>
 				</div>

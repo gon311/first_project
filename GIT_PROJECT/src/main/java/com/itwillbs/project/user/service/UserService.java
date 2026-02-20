@@ -13,10 +13,6 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	private final UserMapper userMapper;
 	
-//	public void registUser(UserDTO userDTO) {
-//		userMapper.insertUser(userDTO);
-//	}
-	
 	@Transactional // 다 성공하거나, 다 실패해야 함 (원자성)
     public void registUser(UserDTO userDTO) {
         userMapper.insertUser(userDTO);
@@ -30,9 +26,11 @@ public class UserService {
 		userMapper.insertUserTR(userDTO);
     }
 
-//	public UserDTO getUser(String email) {
-//		return userMapper.selectUser(email);
-//	}
+	public UserDTO getUser(String email) {
+		return userMapper.selectUser(email);
+	}
+
+
 
 
 

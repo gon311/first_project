@@ -77,7 +77,7 @@ public class AdminService{
 	}
 	
 	// 제출된 공고 상세 조회
-	public MemberDTO getSubmitInfo(BigInteger id) {
+	public SubmitDTO getSubmitInfo(BigInteger id) {
 		return adminMapper.selectSubmitInfo(id);
 	}
 

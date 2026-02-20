@@ -239,7 +239,6 @@
 			job_posting
 	</select>
 	
-<<<<<<< HEAD
 	<!-- 제출된 공고 상세정보 조회 -->
 	<select id="selectSubmitInfo" resultMap="submitResultMap">
 		select *
@@ -247,11 +246,7 @@
 		where 
 			job_id = #{id}
 	</select>
-=======
 	
 	
-	
-	
->>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 	
 </mapper>

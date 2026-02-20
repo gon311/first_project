@@ -113,12 +113,19 @@
 			, comp_id
 			, title
 			, field
-			,CONCAT (open_date, '~', close_date) AS 'period'
-			, post_status
+			, open_date
+			, close_date
+			, post_check
 		FROM job_posting
-		WHERE post_check = '2'
 	</select>
 	
+	<select id="getJobPostById" resultType ="jobPost">
+		SELECT *
+		FROM job_posting
+		WHERE job_id = #{job_id}
+	
+	</select>
+		
 	
 	<!-- ================================================================================== -->
 	<!-- 결제 목록 조회 -->

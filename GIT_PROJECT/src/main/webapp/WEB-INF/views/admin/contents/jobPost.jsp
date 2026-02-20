@@ -61,12 +61,9 @@
 
 					</form>
 				</div>
-			</div>
-		</div>
-	
-
-	
-		<!-- 정렬 Select Box -->
+			</div> 
+		</div> 
+			<!-- 정렬 Select Box -->
 		<div class="d-flex justify-content-end mt-3">
 			<select class="form-select w-auto" id="sort" onchange="selectSort()">
 				<option value="all">전체</option>
@@ -76,9 +73,6 @@
 			</select>
 		</div>
 	
-	    
-	    
-	    
 		<div class="tab-content mt-3" id="memberTabContent">
 			<table class="table table-hover table-bordered align-middle text-center">
 				<thead class="table-light">
@@ -95,14 +89,14 @@
 				<!-- tbody 필요 -->
 	 			<tbody>
 					<c:forEach var="jobPost" varStatus="status" items="${jobPostList}">
-						<tr class="clickable-row" onclick="location.href='info?job_id=${jobPost.job_id}'">
+						<tr onclick="location.href='<c:url value='/admin/contents/JobPostDetail?job_id=${jobPost.job_id}'/>'">
 							<td>${status.count }</td>
 							<td>${jobPost.job_id }</td>
 							<td>${jobPost.comp_id}</td>
 							<td>${jobPost.title }</td>
 							<td>${jobPost.field }</td>
-							<td>${jobPost.period }</td>
-							<td>${jobPost.post_status }</td>
+							<td>${jobPost.open_date} ~ ${jobPost.close_date }</td>
+							<td>${jobPost.post_check }</td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -122,6 +116,14 @@
 	            </nav>
 			</div>
 		</div>	
+	</div>
+
+	
+	
+	    
+	    
+	    
+
 	</main>
 </body>
 </html>

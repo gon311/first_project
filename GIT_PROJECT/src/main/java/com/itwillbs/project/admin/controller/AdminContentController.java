@@ -73,8 +73,8 @@ public class AdminContentController {
 	}
 	
 	@GetMapping("/JobPostDetail")
-	public String jobPostDetail(@RequestParam("jobPost_id") int jobPost_id, Model model) {
-		JobPostDTO jobPostDTO = adminService.getJobPostDetail(jobPost_id);
+	public String jobPostDetail(@RequestParam("job_id") int job_id, Model model) {
+		JobPostDTO jobPostDTO = adminService.getJobPostDetail(job_id);
 		model.addAttribute("jobPostDTO", jobPostDTO);
 		
 		return "admin/contents/jobPostDetail";

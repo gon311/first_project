@@ -48,33 +48,26 @@ public class AdminService{
 		adminMapper.insertNotice(noticeDTO);
 	}
 
-<<<<<<< HEAD
 	// 채용공고 리스트 조회
 	public List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO) {
 		
 		return adminMapper.getJobPostList(jobPostDTO);
 	}
 	// 채용공고 상세 조회
-	public JobPostDTO getJobPostDetail(int jobPost_id) {
-		return adminMapper.getJobPostById(jobPost_id);
+	public JobPostDTO getJobPostDetail(int job_id) {
+		return adminMapper.getJobPostById(job_id);
 	}
 	
-=======
+
 	//======================================================================================
-	// 결제 목록 조회
->>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
+
 	public List<PayDTO> getPayList(PayDTO payDTO) {
 		return adminMapper.selectPayList(payDTO);
 	}
 
-<<<<<<< HEAD
-
-
-=======
 	// 기업회원 목록 조회
 	public List<MemberDTO> getComList(String keyword, String type, String status) {
 		return adminMapper.selectComList(keyword, type, status);
 	}
->>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 
 }

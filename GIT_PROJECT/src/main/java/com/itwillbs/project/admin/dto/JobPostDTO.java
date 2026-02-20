@@ -2,6 +2,16 @@ package com.itwillbs.project.admin.dto;
 
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class JobPostDTO {
 	// 출력 위한 임시 DTO
 	private int job_id;

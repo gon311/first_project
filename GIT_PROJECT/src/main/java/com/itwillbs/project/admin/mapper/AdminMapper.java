@@ -33,28 +33,22 @@ public interface AdminMapper {
 	void insertNotice(NoticeDTO noticeDTO);
 	// 조회수 증가
 	void updateReadCount(int notice_id);
-<<<<<<< HEAD
+
 	
 //	----------------------------------------------------------------------------------
 //	채용공고 리스트 조회
 	List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO);
 //	채용공고 상세 조회
-	JobPostDTO getJobPostById(int jobPost_id);
+	JobPostDTO getJobPostById(int job_id);
 	
-// ====================================================================================
-=======
-
 	//========================================================================
->>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
+
 	// 결제 목록 조회
 	List<PayDTO> selectPayList(PayDTO payDTO);
 
-<<<<<<< HEAD
 
-=======
 	// 기업회원 목록 조회
 	List<MemberDTO> selectComList(String keyword, String type, String status);
->>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 
  
 }

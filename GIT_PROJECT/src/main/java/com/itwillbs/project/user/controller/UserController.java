@@ -31,7 +31,7 @@ public class UserController {
 	public String loginP(UserDTO userDTO, BCryptPasswordEncoder passwordEncoder,
 						 HttpSession session) {
 		
-		UserDTO dbUser = userService.getUser(userDTO.getEmail());
+//		UserDTO dbUser = userService.getUser(userDTO.getEmail());
 		
 		
 		return "redirect:/";

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.project.job.mapper.JobMapper">
+	
+	<insert id="insertJob">
+	    INSERT INTO JOB_POSTING (
+	        comp_id, 
+	        title, 
+	        field, 
+	        task, 
+	        exp_type, 
+	        exp_year, 
+	        edu, 
+	        emp_type, 
+	        probation, 
+	        salary, 
+	        address, 
+	        is_remote, 
+	        open_date, 
+	        close_date, 
+	        mgr_name, 
+	        mgr_phone, 
+	        mgr_email, 
+	        is_public, 
+	        post_status
+	    ) VALUES (
+	        #{compId},       
+	        #{title}, 
+	        #{field}, 
+	        #{task}, 
+	        #{expType}, 
+	        #{expYear}, 
+	        #{edu}, 
+	        #{empType}, 
+	        #{probation}, 
+	        #{salary}, 
+	        #{address},
+	        <if test="!isRemote">
+		        DEFAULT, 
+	        </if>      
+	        <if test="isRemote">
+		        #{isRemote}, 
+	        </if>      
+	        #{openDate}, 
+	        #{closeDate}, 
+	        #{mgrName}, 
+	        #{mgrPhone}, 
+	        #{mgrEmail}, 
+	        #{isPublic}, 
+	        1                )
+	</insert>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

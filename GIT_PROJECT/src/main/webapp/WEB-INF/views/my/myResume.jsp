@@ -356,9 +356,9 @@
                   <div>
                     <p class="resumeItem-title">
                       <c:out value="${r.title}"/>
-                      <c:if test="${r.representative}">
-                        <span class="badge text-bg-warning ms-2">대표</span>
-                      </c:if>
+						<c:if test="${r.representative eq 'Y'}">
+							<span class="badge text-bg-warning ms-2">대표</span>
+						</c:if>
                     </p>
                     <div class="resumeItem-sub">
                       최종수정: <c:out value="${r.updatedAt}"/> · 상태:
@@ -367,7 +367,7 @@
                   </div>
 
                   <div class="resumeActions">
-                    <a class="btn btn-outline-secondary" href="<c:url value='/my/resume/edit'><c:param name='id' value='${r.id}'/></c:url>">
+                    <a class="btn btn-outline-secondary" href="<c:url value='/my/resume/edit'><c:param name='id' value='${r.resumeId}'/></c:url>">
                       수정
                     </a>
                     <button class="btn btn-light" type="button">복사</button>

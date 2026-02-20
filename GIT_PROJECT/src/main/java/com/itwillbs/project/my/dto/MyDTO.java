@@ -140,6 +140,8 @@ public class MyDTO {
 	private String phone; // 전화번호
 	private String userType; // 회원 상태 "P" or "C"
 	
+	
+	
 
 
 }

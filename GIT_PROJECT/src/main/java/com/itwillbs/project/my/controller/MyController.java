@@ -32,12 +32,12 @@ public class MyController {
 	// 마이페이지 내정보
 	@GetMapping("/myInfo")
 	public String myInfo(HttpSession session, Model model, MyDTO myDTO) {
-	    model.addAttribute("currentMenu", "myInfo");
-	    
+	 
 	    //로그인 체크
 	    String sId = (String) session.getAttribute("sId");
-	    if (sId == null) return "redirect:/user/login_form";
+	    if (sId == null) return "redirect:/user/login";
 
+	    model.addAttribute("currentMenu", "myInfo");
 	    MyDTO user = myService.getUser(sId);
 	    model.addAttribute("loginUser", user);
 
@@ -180,9 +180,6 @@ public class MyController {
 		}
 
 	}
-	
-	
-	
 	
 	
 

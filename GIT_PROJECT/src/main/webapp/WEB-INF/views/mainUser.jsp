@@ -24,13 +24,16 @@
 			<br><br><br><br><br><br>
 		<!-- AI 자소서 첨삭 시작 버튼  -->
 			<div class="btAi">
-				<input type="button" value="AI 자소서 첨삭 시작" onclick="location.hrec='<c:url value="/review/registForm" />'">
+				<input type="button" value="AI 자소서 첨삭 시작" onclick="location.href='<c:url value="/review/registForm" />'">
 			</div>
 		</main>
 		<%-- footer area --%>
 		<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 		
 		<%-- 개별 페이지 자바스크립트 영역 --%>
+		<script type="text/javascript">
+		
+		</script>
 		
 	</body>
 </html>

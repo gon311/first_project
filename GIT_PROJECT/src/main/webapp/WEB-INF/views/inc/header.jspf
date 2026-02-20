@@ -6,22 +6,24 @@
   <%-- 차후 url 교체 --%>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <!-- 좌측: 브랜드 -->
-    <img src="<c:url value="/resources/images/logo.png" />" alt="로고" class="img-fluid" style="max-width:80px;">
-
+    <a href="<c:url value="/" />">
+	    <img src="<c:url value="/resources/images/logo.png" />" alt="로고" 
+	    	 class="img-fluid" style="max-width:80px;">
+    </a>
     <!-- 우측: 인증 관련 메뉴 -->
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
       <c:choose>
         <c:when test="${empty sessionScope.sId}">
           <li class="nav-item">
-            <a class="nav-link" href="<c:url value='/member/login' />">로그인</a>
+            <a class="nav-link" href="<c:url value='/user/login_form' />">로그인</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<c:url value='/member/regist' />">회원가입</a>
+            <a class="nav-link" href="<c:url value='/user/regist_form' />">회원가입</a>
           </li>
         </c:when>
         <c:otherwise>
           <li class="nav-item">
-            <a class="nav-link" href="<c:url value='/member/info' />">${memberName} 님</a>
+            <a class="nav-link" href="<c:url value='/my/myInfo' />">${memberName} 님</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" onclick="requestLogout()">로그아웃</a>
@@ -113,5 +115,3 @@
     </div>
   </nav>
 </header>
-
-<hr>

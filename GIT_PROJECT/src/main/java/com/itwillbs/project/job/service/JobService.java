@@ -1,5 +1,7 @@
 package com.itwillbs.project.job.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +20,10 @@ public class JobService {
 	public void jobInsert(JobDTO jobDTO) {
 		jobMapper.insertJob(jobDTO);
 	}
+
+	public List<JobDTO> getJobList() {
+	    return jobMapper.getJobList();
+	}
+
 
 }

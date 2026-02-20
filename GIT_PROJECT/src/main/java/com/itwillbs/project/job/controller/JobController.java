@@ -1,9 +1,12 @@
 package com.itwillbs.project.job.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,9 +42,16 @@ public class JobController {
 	}
 	
 	@GetMapping("/JobList")
-	public String list() {
-		
-		return "/job/job_list";
+	public String list(Model model) {
+	    // 1. DB에서 리스트를 가져온다
+	    List<JobDTO> jobList = jobService.getJobList();
+	    
+	    // 2. "jobList"라는 이름으로 JSP에 전달한다 (매우 중요!)
+	    model.addAttribute("jobList", jobList);
+	    
+	    log.info("조회된 공고 개수: " + (jobList != null ? jobList.size() : 0));
+	    
+	    return "/job/job_list";
 	}
 	
 	

@@ -20,6 +20,7 @@ public class JobDTO {
 	// 1. 기본 식별 정보
     private Long jobId;          // job_id (PK) [cite: 31]
     private Long compId;         // comp_id (FK) [cite: 31]
+    private String comName; 	 // 기업명 (com_info 테이블의 com_name)
 
     // 2. 공고 핵심 내용
     private String title;        // 공고제목 (name="title") [cite: 18]
@@ -94,6 +95,13 @@ public class JobDTO {
             this.minExp = parts[0];
             this.maxExp = parts[1];
         }
+    }
+    
+ // 이 메서드를 추가해두면 JSP에서 ${job.displayAddress}로 호출 가능합니다.
+    public String getDisplayAddress() {
+        if (this.address == null) return "";
+        // [12345] 처럼 대괄호와 그 안의 내용을 삭제
+        return this.address.replaceAll("\\[\\d{5}\\]\\s?", "");
     }
     
 }

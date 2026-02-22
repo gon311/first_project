@@ -5,52 +5,93 @@
   
 <mapper namespace="com.itwillbs.project.admin.mapper.AdminMapper">
 
-	<select id="selectUser" resultType="member">
-		select *
-		from user
-	</select>
-
-	<!-- 구직자 전체 목록 조회(필터링) -->
-	<select id="selectUserFilter" resultType="member">
+	<resultMap id="memberResultMap" type="com.itwillbs.project.admin.dto.MemberDTO">
+		<id property="id" column="user_id" />
+		<result property="email" column="email" />
+		<result property="password" column="password" />
+		<result property="phone" column="phone" />
+		<result property="name" column="user_name" />
+		<result property="memberType" column="user_type" />
+		<result property="status" column="status" />
+		<result property="joinedAt" column="joined_at" />
+		<result property="withdrawnAt" column="withdrawn_at" />
+	</resultMap>
+	
+	<!-- 구직자 목록 조회 -->
+	<select id="selectUserList" resultMap="memberResultMap">
 		select 
-			user_id
-			,email
-			,password
-			,phone
-			,user_name
-			,user_type
-			,status
-			,joined_at
-			,withdrawn_at
+			*
 		from 
 			user
 		where
-			user_type = #{user_type}
-		and
-			status = #{status}
-		and
-			user_name = #{user_name}
+			user_type = 'c'
+			<if test="status != null and !status.equals('')">
+				and
+					status = #{status}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and
+					user_name like concat('%',#{keyword},'%')
+			</if>
 	</select>
 	
 	<!-- 구직자 상세정보 조회 -->
-	<select id="selectUserInfo" resultType="member">
+	<select id="selectUserInfo" resultMap="memberResultMap">
 		select 
 			user_id
-			,email
-			,password
-			,phone
-			,user_name
-			,user_type
-			,status
-			,joined_at
-			,withdrawn_at
+			, email
+			, password
+			, phone
+			, user_name
+			, user_type
+			, status
+			, joined_at
+			, withdrawn_at
 		from 
 			user
 		where
 			user_id = #{id}
 		
 	</select>
+	
+	
+	<!-- 기업회원 목록 조회 -->
+	<select id="selectComList" resultMap="memberResultMap">
+		select 
+			*
+		from 
+			user
+		where
+			user_type = 'p'
+			<if test="status != null and !status.equals('')">
+				and
+					status = #{status}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and
+					user_name like concat('%',#{keyword},'%')
+			</if>
+	</select>
+	
+	<!-- 기업회원 상세정보 조회 -->
+<!-- 	<select id="selectComInfo" resultMap="memberResultMap"> -->
+<!-- 		select  -->
+<!-- 			user_id -->
+<!-- 			, email -->
+<!-- 			, password -->
+<!-- 			, phone -->
+<!-- 			, user_name -->
+<!-- 			, user_type -->
+<!-- 			, status -->
+<!-- 			, joined_at -->
+<!-- 			, withdrawn_at -->
+<!-- 		from  -->
+<!-- 			user -->
+<!-- 		where -->
+<!-- 			user_id = #{id} -->
+<!-- 	</select> -->
 
+	<!-- ==================================================================== -->
 	<!-- 공지사항 리스트 조회 -->
 	<select id="getNoticeList" resultType="notice">
 		SELECT
@@ -64,7 +105,7 @@
 		 	, status
 		 FROM notice
 	</select>
-	
+	<!-- 공지사항 작성 -->
 	<insert id ="insertNotice" parameterType="notice">
 		INSERT INTO notice (
 			notice_title
@@ -82,5 +123,130 @@
 			, #{status}
 		)
 	</insert>
+	<!-- 공지사항 상세 조회 -->
+	<select id="getNoticeById" resultType = "notice">
+		SELECT 
+			notice_id
+			, notice_title
+			, notice_content
+			, reg_date
+			, readcount
+		FROM notice
+		WHERE notice_id = #{notice_id}
+	
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateReadCount">
+		UPDATE notice
+		SET readcount = readcount + 1
+		WHERE notice_id = #{notice_id}
+	</update>
+	
+	<!-- ================================================================================== -->
+	<!--  채용공고 목록 조회 -->
+	<select id="getJobPostList" resultType="jobPost">
+		SELECT job_id <!-- 공고 id -->
+			, comp_id
+			, title
+			, field
+			, open_date
+			, close_date
+			, post_check
+		FROM job_posting
+	</select>
+	
+	<select id="getJobPostById" resultType ="jobPost">
+		SELECT *
+		FROM job_posting
+		WHERE job_id = #{job_id}
+	
+	</select>
+		
+	
+	<!-- ================================================================================== -->
+	<!-- 결제 목록 조회 -->
+	<resultMap id="payResultMap" type="com.itwillbs.project.admin.dto.PayDTO">
+		<id property="id" column="pay_id" />
+		<result property="userId" column="user_id" />
+		<result property="userType" column="user_type" />
+		<result property="productId" column="product_id" />
+		<result property="productName" column="product_name" />
+		<result property="payMethod" column="pay_method" />
+		<result property="cardName" column="card_name" />
+		<result property="cardNum" column="card_num" />
+		<result property="bankName" column="bank_name" />
+		<result property="depositAccount" column="deposit_account" />
+		<result property="depositName" column="deposit_name" />
+		<result property="payPrice" column="pay_price" />
+		<result property="payDate" column="pay_date" />
+		<result property="payStatus" column="pay_status" />
+	</resultMap>
+	
+	<select id="selectPayList" resultMap="payResultMap">
+		select 
+			p.pay_id
+			, p.user_id
+			, u.user_type
+			, p.product_id
+			, pd.product_name
+			, p.pay_method
+			, p.card_name
+			, p.bank_name
+			, p.deposit_account
+			, p.deposit_name
+			, p.pay_price
+			, p.pay_date
+			, p.pay_status
+		from 
+			pay p join product pd
+		on 
+			p.product_id = pd.product_id
+		join
+			user u
+		on p.user_id = u.user_id
+	</select>
+	
+	<!-- ================================================================================== -->
+	<!-- 제출된 공고 목록 조회 -->
+	<resultMap id="submitResultMap" type="com.itwillbs.project.admin.dto.SubmitDTO">
+		<id property="id" column="job_id" />
+		<result property="compId" column="comp_id" />
+		<result property="title" column="title" />
+		<result property="field" column="field" />
+		<result property="task" column="task" />
+		<result property="expType" column="exp_type" />
+		<result property="expYear" column="exp_year" />
+		<result property="edu" column="edu" />
+		<result property="empType" column="emp_type" />
+		<result property="probation" column="probation" />
+		<result property="salary" column="salary" />
+		<result property="address" column="address" />
+		<result property="isRemote" column="is_remote" />
+		<result property="openDate" column="open_date" />
+		<result property="closeDate" column="close_date" />
+		<result property="mgrName" column="mgr_name" />
+		<result property="mgrPhone" column="mgr_phone" />
+		<result property="mgrEmail" column="mgr_email" />
+		<result property="isPublic" column="is_public" />
+		<result property="postStatus" column="post_status" />
+	</resultMap>
+	
+	<select id="selectSubmitList" resultMap="submitResultMap">
+		select 
+			*
+		from 
+			job_posting
+	</select>
+	
+	<!-- 제출된 공고 상세정보 조회 -->
+	<select id="selectSubmitInfo" resultMap="submitResultMap">
+		select *
+		from job_posting
+		where 
+			job_id = #{id}
+	</select>
+	
+	
 	
 </mapper>

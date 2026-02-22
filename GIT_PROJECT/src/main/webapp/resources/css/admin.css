@@ -1,7 +1,31 @@
 @charset "UTF-8";
 
 /*dropdown hover 기능 추가*/
-.nav-item dropdown: hover. dropdown-menu {
-	display: block;
-	margin-top: 0; 
+@media (min-width:992px){
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block !important; 
+    margin-top: 0; /* 마우스가 이동할 때 끊기지 않게 간격 제거 */
 }
+}
+/*제목 bold 처리*/
+.title thick {
+	font-weight: bold;
+}
+
+
+.content {
+  position: static;
+  border: 3px solid;
+}
+
+.mb-7 {
+  margin-bottom: 8rem !important; /* 원하는 값 */
+}
+
+.custom-width {
+    max-width: 700px;   /* 원하는 최대 너비 */
+    margin: 0 auto;     /* 중앙 정렬 */
+    padding-left: 1rem; /* 좌우 여백 최소화 */
+    padding-right: 1rem;
+}
+

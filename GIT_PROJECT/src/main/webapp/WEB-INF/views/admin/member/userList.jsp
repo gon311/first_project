@@ -77,7 +77,7 @@
 		<!-- 정렬 Select Box -->
 		<div class="d-flex justify-content-end mt-3">
 			<select class="form-select w-auto" id="sort" onchange="selectSort()">
-				<option value="all">전체</option>
+				<option value="">전체</option>
 				<option value="new">최근 일자순</option>
 				<option value="old">오래된 순</option>
 				<option value="abc">가나다 순</option>
@@ -105,7 +105,7 @@
 						<!-- tbody 필요 -->
 			 			<tbody>
 							<c:forEach var="user" varStatus="status" items="${userList}">
-								<tr class="clickable-row" onclick="location.href='info?id=${user.id}'">
+								<tr class="clickable-row" onclick="location.href='users/info?id=${user.id}'">
 									<td>${status.count}</td>
 									<td>${user.id}</td>
 									<td>${user.name}</td>
@@ -145,5 +145,18 @@
 			</div>
 		</div>
 	</main>
+	
+	<script type="text/javascript">
+		function selectSort(){
+			if(document.getElementById("sort").value == "new") {
+ 				location.href="<c:url value="/admin/users" />" + "&sort=new";
+			} else if(document.getElementById("sort").value == "old") {
+ 				location.href="<c:url value="/admin/users" />" + "&sort=old";
+ 			} else if(document.getElementById("sort").value == "abc") {
+				location.href="<c:url value="/admin/users" />" + "&sort=abc";
+ 		}
+	
+	</script>
+	
 </body>
 </html>

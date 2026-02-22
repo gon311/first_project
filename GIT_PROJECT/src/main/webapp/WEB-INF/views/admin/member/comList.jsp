@@ -15,7 +15,7 @@
 			<div class="card">
 			    <div class="card-body">
 				      <h5 class="card-title mb-3">조건별 검색</h5>
-				      <form class="row g-3 align-items-center">
+				      <form action="<c:url value="/admin/coms" />" name="searchForm" method="post" class="row g-3 align-items-center">
 				        <!-- 제목 검색 -->
 				        <div class="col-md-4">
 				          <label for="keyword" class="form-label">제목</label>
@@ -101,18 +101,18 @@
 					</thead>
 					<tbody>
 					<!-- 구현 예정 -->
-<%-- 						<c:forEach var="com" varStatus="status" items="${comList}"> --%>
-<%-- 							<tr class="clickable-row" onclick="location.href='info?idx=${com.id}'"> --%>
-<%-- 								<td>${status.count}</td> --%>
-<%-- 								<td>${com.id}</td> --%>
-<%-- 								<td>${com.name}</td> --%>
-<%-- 								<td>${com.email}</td> --%>
-<%-- 								<td>${com.comNum}</td> --%>
-<%-- 								<td>${com.phone}</td> --%>
-<%-- 								<td>${com.memberType}</td> --%>
-<%-- 								<td>${com.status}</td> --%>
-<!-- 							</tr> -->
-<%-- 						</c:forEach> --%>
+						<c:forEach var="com" varStatus="status" items="${comList}">
+							<tr class="clickable-row" onclick="location.href='coms/info?id=${com.id}'">
+								<td>${status.count}</td>
+								<td>${com.id}</td>
+								<td>${com.name}</td>
+								<td>${com.email}</td>
+								<td></td>
+								<td>${com.phone}</td>
+								<td>${com.memberType}</td>
+								<td>${com.status}</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 		 
 

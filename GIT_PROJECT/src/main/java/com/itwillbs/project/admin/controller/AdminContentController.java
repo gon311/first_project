@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.service.AdminService;
 
@@ -43,18 +44,43 @@ public class AdminContentController {
 	
 	@PostMapping("/noticeSave")
 	public String noticeSave(@ModelAttribute NoticeDTO noticeDTO) {
-		System.out.println("데이터 바인딩 결과: " + noticeDTO.toString());
-	    System.out.println("제목 값: " + noticeDTO.getNotice_title());
+//		System.out.println("데이터 바인딩 결과: " + noticeDTO.toString());
+//	    System.out.println("제목 값: " + noticeDTO.getNotice_title());
 		adminService.insertNotice(noticeDTO);
 		return "redirect:/admin/contents/notice";
 	}
-		
 	
-	@GetMapping("/JobPost")
-	public String jobPostList() {
+	@GetMapping("/noticeDetail")
+	public String noticeDetail(@RequestParam("notice_id") int notice_id, Model model) {
+		NoticeDTO noticeDTO =adminService.getNoticeDetail(notice_id);
+		model.addAttribute("noticeDTO", noticeDTO); 
+//		System.out.println("데이터 결과값: " + noticeDTO.toString());
+//		System.out.println("제목 리턴값: " + noticeDTO);
 		
+		return "admin/contents/noticeDetail";
+	}
+// ==============================================================================
+//	채용공고목록조회
+	@GetMapping("/JobPost")
+	public String jobPostList(@RequestParam(value="page", defaultValue="1") int page,
+			JobPostDTO jobPostDTO
+			, Model model) {
+		
+		List<JobPostDTO> list = adminService.getJobPostList(jobPostDTO);
+		model.addAttribute("jobPostList", list);
+		model.addAttribute("jobPostDTO", jobPostDTO);
 		return "admin/contents/jobPost";
 	}
+	
+	@GetMapping("/JobPostDetail")
+	public String jobPostDetail(@RequestParam("job_id") int job_id, Model model) {
+		JobPostDTO jobPostDTO = adminService.getJobPostDetail(job_id);
+		model.addAttribute("jobPostDTO", jobPostDTO);
+		
+		return "admin/contents/jobPostDetail";
+	}
+	
+	
 	@GetMapping("/Board")
 	public String boardList() {
 		

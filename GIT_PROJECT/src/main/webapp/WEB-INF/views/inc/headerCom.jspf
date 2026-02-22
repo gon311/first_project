@@ -20,9 +20,6 @@
           <li class="nav-item">
             <a class="nav-link" href="<c:url value='/user/regist' />">회원가입</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<c:url value='/mainCom' />">기업회원</a>
-          </li>
         </c:when>
         <c:otherwise>
           <li class="nav-item">
@@ -42,12 +39,8 @@
     <div class="container-fluid">
       <!-- 메인 메뉴 -->
       <ul class="navbar-nav main-menu gap-3">
-        <!-- 채용공고 (하위메뉴 없음) -->
-        <li class="nav-item">
-          <a class="nav-link fw-semibold" href="<c:url value='/job/JobList' />">채용공고</a>
-        </li>
 
-        <!-- AI 자소서 첨삭 -->
+        <!-- 고용관리 -->
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle fw-semibold"
@@ -56,30 +49,17 @@
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false">
-            AI 자소서 첨삭
+            고용관리
           </a>
           <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownReview" id="submenu-review">
-            <li><a class="dropdown-item" href="<c:url value='/review/registForm' />">자소서 첨삭</a></li>
-            <li><a class="dropdown-item" href="<c:url value='/review/spellCheck' />">맞춤법 검사</a></li>
-            <li><a class="dropdown-item" href="<c:url value='/review/copyCheck' />">표절 검사</a></li>
+            <li><a class="dropdown-item" href="<c:url value='/job/JobPosting' />">공고 등록</a></li>
+            <li><a class="dropdown-item" href="<c:url value='#' />">내 공고</a></li>
           </ul>
         </li>
 
-        <!-- 이력서 관리 -->
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle fw-semibold"
-            href="#"
-            id="dropdownResume"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false">
-            이력서 관리
-          </a>
-          <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownResume" id="submenu-resume">
-            <li><a class="dropdown-item" href="<c:url value='/resume/regist' />">이력서 작성</a></li>
-            <li><a class="dropdown-item" href="<c:url value='/resume/list' />">내 이력서</a></li>
-          </ul>
+        <!-- 요금제 (하위메뉴 없음) -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="<c:url value='/pay' />">요금제</a>
         </li>
 
         <!-- 커뮤니티 -->
@@ -99,10 +79,6 @@
           </ul>
         </li>
 
-        <!-- 요금제 (하위메뉴 없음) -->
-        <li class="nav-item">
-          <a class="nav-link fw-semibold" href="<c:url value='/pay' />">요금제</a>
-        </li>
       </ul>
 
       <!-- 우측: 전체 메뉴 버튼 -->

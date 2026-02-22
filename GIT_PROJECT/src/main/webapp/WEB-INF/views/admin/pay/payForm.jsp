@@ -13,7 +13,7 @@
     
     <main>
         <div class="container mt-5 custom-width">
-            <h2 class="mb-4 text-center">결제 페이지</h2>
+            <h2 class="mb-4 text-center">구매하기</h2>
 
             <form action="<c:url value='/admin/pay' />" method="post" class="needs-validation" novalidate>
 
@@ -184,7 +184,7 @@
 				</div>
 
                 <!-- 버튼 -->
-                <div class="d-grid mb-4">
+                <div class="d-flex justify-content-center mb-4">
                     <button type="submit" class="btn btn-primary">구매하기</button>
                 </div>
             </form>

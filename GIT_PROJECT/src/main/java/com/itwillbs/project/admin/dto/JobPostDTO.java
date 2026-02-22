@@ -19,11 +19,11 @@ public class JobPostDTO {
 	private String title;
 	private String field;
 	private String task;
+	private String emp_type;
+	private char probation;
 	private String exp_type;
 	private String exp_year;
 	private String edu;
-	private String emp_type;
-	private String probation;
 	private String salary;
 	private Date open_date;
 	private Date close_date;

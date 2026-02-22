@@ -109,7 +109,7 @@
 								<td>${com.email}</td>
 								<td></td>
 								<td>${com.phone}</td>
-								<td>${com.memberType}</td>
+								<td>${com.userType}</td>
 								<td>${com.status}</td>
 							</tr>
 						</c:forEach>

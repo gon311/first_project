@@ -59,6 +59,9 @@ public interface AdminMapper {
 	// 제출된 공고 상세정보 조회
 	SubmitDTO selectSubmitInfo(BigInteger id);
 
+	// 결제 내역 상세 정보 조회
+	PayDTO selectPayInfo(String id);
+
 	// 기업회원 상세정보 조회
 //	MemberDTO selectComInfo(BigInteger id);
 

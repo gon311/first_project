@@ -32,7 +32,7 @@
                     
                     <!-- 10회권 -->
                     <div class="col">
-                        <div class="card h-100 shadow-lg border-0">
+                        <div class="card subscription-card h-100 shadow-lg border-0">
                             <div class="card-header bg-light text-center">
                                 <h4 class="fw-semibold">10회권</h4>
                             </div>
@@ -47,7 +47,7 @@
                                 <hr class="mt-1 mb-2"> <!-- 구분선 아래 간격 줄임 -->
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">5,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay'">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
 
                     <!-- 30회권 -->
                     <div class="col">
-                        <div class="card h-100 shadow-lg border-0">
+                        <div class="card subscription-card h-100 shadow-lg border-0">
                             <div class="card-header bg-secondary text-white text-center">
                                 <h4 class="fw-semibold">30회권</h4>
                             </div>
@@ -71,7 +71,7 @@
                                 <hr class="mt-1 mb-2"> <!-- 구분선 아래 간격 줄임 -->
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">8,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay'">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                     
                     <!-- 60회권 -->
                     <div class="col">
-                        <div class="card h-100 shadow-lg border-0">
+                        <div class="card subscription-card h-100 shadow-lg border-0">
                             <div class="card-header bg-light text-center">
                                 <h4 class="fw-semibold">60회권</h4>
                             </div>
@@ -94,7 +94,7 @@
                                 <hr class="mt-1 mb-2"> <!-- 구분선 아래 간격 줄임 -->
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">15,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay'">구매하기</button>
                                 </div>
                             </div>
                         </div>

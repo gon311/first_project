@@ -61,7 +61,7 @@ public class AdminService{
 	
 
 	//======================================================================================
-
+	// 결제 내역 전체 목록 조회
 	public List<PayDTO> getPayList(PayDTO payDTO) {
 		return adminMapper.selectPayList(payDTO);
 	}
@@ -79,6 +79,11 @@ public class AdminService{
 	// 제출된 공고 상세 조회
 	public SubmitDTO getSubmitInfo(BigInteger id) {
 		return adminMapper.selectSubmitInfo(id);
+	}
+
+	// 결제 내역 상세정보
+	public PayDTO getPayInfo(String id) {
+		return adminMapper.selectPayInfo(id);
 	}
 
 	// 기업회원 상세정보 조회

@@ -111,7 +111,7 @@
 									<td>${user.name}</td>
 									<td>${user.email}</td>
 									<td>${user.phone}</td>
-									<td>${user.memberType}</td>
+									<td>${user.userType}</td>
 									<td>${user.status}</td>
 								</tr>
 							</c:forEach>

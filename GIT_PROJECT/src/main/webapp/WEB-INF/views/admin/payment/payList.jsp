@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 
 <!DOCTYPE html>
 <html>
@@ -104,7 +105,10 @@
 						<tr class="clickable-row" onclick="location.href='payments/info?id=${pay.id}'">
 							<td>${status.count }</td>
 							<td>${pay.id }</td>
-							<td>${pay.payDate }</td>
+							<td>
+								<fmt:parseDate var="parsedDate" value="${pay.payDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+								<fmt:formatDate value="${parsedDate}" pattern="yyyy년 MM월 dd일"/>
+							</td>
 							<td>${pay.productName }</td>
 							<td>${pay.userId }</td>
 							<td>${pay.userType }</td>
@@ -117,7 +121,7 @@
 	
 			</table>
 		</div>
-	
+		
 	</main>
 </body>
 </html>

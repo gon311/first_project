@@ -31,7 +31,7 @@ public class AdminController {
 	
 	//=============================================================
 	// [ 구직자 관리 페이지 ]
-	// 조건별 검색(구현중)
+	// 조건별 검색
 	@PostMapping("/users")
 	public String userSearch(SearchDTO searchDTO, RedirectAttributes ra) {
 		ra.addAttribute("keyword", searchDTO.getKeyword());
@@ -55,7 +55,7 @@ public class AdminController {
 																, searchDTO.getType()
 																, searchDTO.getStatus());
 		model.addAttribute("userList", userList);
-		 
+		
 		return "admin/member/userList";
 			
 	}
@@ -66,7 +66,7 @@ public class AdminController {
 		MemberDTO userDTO = adminService.getUserInfo(memberDTO.getId());
 		
 		model.addAttribute("user", userDTO);
-		
+
 		return "admin/member/userInfo";
 		
 	}
@@ -148,13 +148,13 @@ public class AdminController {
 	
 	// 제출된 공고 상세정보 조회
 	@GetMapping("/submits/info")
-	public String submitInfo(Model model, MemberDTO memberDTO) {
+	public String submitInfo(Model model, MemberDTO memberDTO, SubmitDTO submitDTO) {
 		// 제출된 공고 상세 내용
-		SubmitDTO submitDTO = adminService.getSubmitInfo(memberDTO.getId());
+		SubmitDTO submitInfo = adminService.getSubmitInfo(submitDTO.getId());
 		
-		model.addAttribute("submit", submitDTO);
+		model.addAttribute("submit", submitInfo);
 		
-		// 기업 정보
+		// 공고를 제출한 기업 정보
 		MemberDTO comDTO = adminService.getUserInfo(memberDTO.getId());
 		
 		model.addAttribute("com", comDTO);
@@ -187,11 +187,21 @@ public class AdminController {
 		return "admin/payment/payList"; 
 	}
 	
-	// 결제 내역 상세정보 조회(구현 필요)
+	// 결제 내역 상세정보 조회
+	@GetMapping("/payments/info")
+	public String payInfo(Model model, PayDTO payDTO) {
+		PayDTO payInfo = adminService.getPayInfo(payDTO.getId());
+		
+		model.addAttribute("pay", payInfo);
+		
+		
+		return "admin/payment/payInfo";
+		
+	}
 	
 	//-----------------------------------------
 	// (사용자 페이지와 매핑 필요)
-	// 기업요금제(보류)
+	// 기업요금제(보류) 
 	@GetMapping("/cstore")
 	public String comStore() {
 		return "admin/store/comStore";

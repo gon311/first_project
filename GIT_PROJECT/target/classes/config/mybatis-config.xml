@@ -9,5 +9,6 @@
 		<typeAlias type="com.itwillbs.project.admin.dto.NoticeDTO" alias="notice"/>
 		<typeAlias type="com.itwillbs.project.user.dto.UserDTO" alias="user"/>
 		<typeAlias type="com.itwillbs.project.job.dto.JobDTO" alias="job"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.JobPostDTO" alias="jobPost"/>
 	</typeAliases>
 </configuration>

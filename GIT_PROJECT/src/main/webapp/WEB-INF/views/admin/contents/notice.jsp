@@ -40,7 +40,8 @@
 	                <thead class="table-light">
 	                    <tr>
 	                        <th>No</th>
-	                        <th>공지사항 명 <i class="bi bi-caret-down-fill"></i></th> <th>게시 일자 <i class="bi bi-caret-down-fill"></i></th>
+	                        <th>공지사항 명 <i class="bi bi-caret-down-fill"></i></th> 
+	                        <th>게시 일자 <i class="bi bi-caret-down-fill"></i></th>
 	                        <th>상태 <i class="bi bi-caret-down-fill"></i></th>
 	                        <th>회원 유형 <i class="bi bi-caret-down-fill"></i></th>
 	                    </tr>
@@ -54,12 +55,12 @@
 	                        <tr>
 	                            <td>${notice.notice_id}</td>
 	                            <td class="text-start">
-	                                <a href="<c:url value='/admin/contents/noticeDetail?notice_id=${notice.notice_id}' />" class="text-decoration-none text-dark">
+	                                <a href="<c:url value='/admin/contents/noticeDetail?notice_id=${notice.notice_id}' />" class="  text-decoration-none text-dark">
 	                                    ${notice.notice_title}
 	                                </a>
 	                            </td>
 	                            <td>${notice.reg_date}</td>
-	                            <td><span class="badge ${notice.status == 'Y' ? '게시 중' : '임시저장'}">${notice.status}</span></td>
+	                            <td><span>  ${notice.status == 'Y' ? '게시 중' : '임시저장'}</span></td>
 	                            <td>${notice.user_type}</td>
 	                        </tr>
 	                        

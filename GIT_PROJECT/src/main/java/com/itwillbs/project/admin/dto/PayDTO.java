@@ -29,6 +29,8 @@ pay_status enum('ready', 'paid', 'cacelled')
 public class PayDTO {
 	private String id;
 	private BigInteger userId;
+	private String userName;
+	private String userPhone;
 	private String userType;	 // 사용자 구분(결제 - 회원 테이블 조인)
 	private String productId;
 	private String productName;  // 상품명(결제 - 상품 테이블 조인)
@@ -41,4 +43,13 @@ public class PayDTO {
 	private Integer payPrice;
 	private LocalDateTime payDate;
 	private String payStatus;
+	
+	public void setUserType(String userType) {
+		if(userType.equalsIgnoreCase("c")) {
+			this.userType = "기업 회원";
+		} else {
+			this.userType = "구직자 회원";
+		}
+	}
+	
 }

@@ -1,11 +1,14 @@
 package com.itwillbs.project.review.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.review.dto.CoverLetterDTO;
 import com.itwillbs.project.review.service.ReviewService;
 
@@ -34,9 +37,12 @@ public class ReviewController {
 	}
 	
 	@PostMapping("/registText")
-	public String registText(CoverLetterDTO coverLetterDTO) {
-		log.info(">>>>>>>>>>>>>>>> coverLetterDTO : " + coverLetterDTO);
-		reviewService.registForm(coverLetterDTO);
+	public String registText(CoverLetterDTO coverLetterDTO, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		log.info(">>>>>>>>>>>>>> sId : " + sId);
+		coverLetterDTO.setSId(sId);
+		log.info(">>>>>>>>>>> coverLetterDTO : " + coverLetterDTO);
+//		reviewService.registForm(coverLetterDTO);    // 여기서부터 작업 다시 시작 
 	    return "/review/reviewText";
 	}
 	// registForm 의 입력값은 따로 DB에 저장되어야, 내 자소서에서 문서를 불러올때 그 값이 유지.

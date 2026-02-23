@@ -11,8 +11,8 @@ import lombok.ToString;
 @ToString
 public class CoverLetterDTO {
 	
-	private Integer coverLetterIdx;	// 자조서 일련번호
-	private Integer userId; 		// 사용자 아이디 
+	private Integer coverLetterIdx;	// 자소서 일련번호
+	private String sId; 			// 사용자 식별자(이메일)
 	
 	private String title;			// 자소서 제목
 	
@@ -28,6 +28,5 @@ public class CoverLetterDTO {
 	private Integer saveStatus;     // 저장 상태 (0: 최종저장, 1: 저장, 2: 임시저장(default)) 
 	
 	private LocalDateTime createdAt; // 생성일시
-	private LocalDateTime updatedAt; // 업데이트 일시 
 	
 }

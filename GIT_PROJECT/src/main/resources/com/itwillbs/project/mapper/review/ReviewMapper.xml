@@ -4,8 +4,34 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.project.review.mapper.ReviewMapper">
 
-<!-- 	<insert id="insertForm"> -->
-<!-- 		INSERT INTO 		 -->
+	<insert id="insertForm">
+		INSERT INTO cover_letter (
+			-- cover_letter_idx(AI)
+			user_id
+			, title
+			, industry_idx
+			, job_idx
+			, role_idx
+			, applied_field
+			, company_name
+			, company_idx
+			, career_idx
+			, save_status
+			, created_at
+		)
+		VALUES (
+			#{userId}
+			, #{title}
+			, (SELECT industry_idx FROM industry WHERE industry_code = #{industryCode})
+			, (SELECT job_idx FROM job_group WHERE job_code = #{jobCode})
+			, (SELECT role_idx FROM job_role WHERE role_code = #{roleCode})
+			, #{appliedField}
+			, #{companyName}
+			, (SELECT company_idx FROM company_type WHERE company_code = #{companyCode})
+			, (SELECT career_idx FROM career_level WHERE career_code = #{careerCode})
+			, #{saveStatus}
+			, NOW()
+		)		
 	
-<!-- 	</insert> -->
+	</insert>
 </mapper>

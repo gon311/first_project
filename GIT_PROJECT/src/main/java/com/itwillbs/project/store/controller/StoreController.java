@@ -38,7 +38,7 @@ public class StoreController {
 	// 구매하기(구현중) - 특정 상품의 "구매하기" 버튼 클릭
 	@GetMapping("/pay")
 	public String pay(String sId, StoreDTO storeDTO, Model model) {
-		// 세션에 저장된 id값을 통해 구매자 정보 출력
+		// 세션에 저장된 id값을 통해 구매자 정보 출력(구현 예정)
 		
 		// 상품 정보
 		StoreDTO storeInfo = storeService.getStoreInfo(storeDTO.getProductId());

@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+ /* 칩(토글 라디오) 공통 스타일 보강 */
+.chip-group { gap: .5rem; }
+.chip {
+  --bs-btn-padding-y: .375rem;
+  --bs-btn-padding-x: .75rem;
+  --bs-btn-font-size: .9rem;
+  border-radius: 999px;
+}
+
+/* 비활성 select 흐리게 */
+select:disabled { background-color:#f8f9fa; cursor:not-allowed; }
+
+
+
+

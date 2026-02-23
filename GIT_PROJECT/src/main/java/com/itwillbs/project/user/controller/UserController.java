@@ -1,11 +1,14 @@
 package com.itwillbs.project.user.controller;
 
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,6 +101,22 @@ public class UserController {
 	public String find() {
 		
 		return "/user/find_form";
+	}
+	
+	@PostMapping("/findId")
+	public String findId(Model model) {
+		
+		List<UserDTO> userIdList = userService.getUserIdList();
+		
+		model.addAttribute("userIdList", userIdList);
+		
+		return "/user/find_id";
+	}
+	
+	@PostMapping("/findPw")
+	public String findPw() {
+		
+		return "/user/find_pw";
 	}
 	
 }

@@ -1,5 +1,7 @@
 package com.itwillbs.project.user.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,10 @@ public class UserService {
 
 	public UserDTO getUser(String email) {
 		return userMapper.selectUser(email);
+	}
+
+	public List<UserDTO> getUserIdList() {
+		return userMapper.selectUserIdList();
 	}
 
 

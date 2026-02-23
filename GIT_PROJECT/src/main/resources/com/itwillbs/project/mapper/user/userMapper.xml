@@ -27,11 +27,11 @@
 	
 	<insert id="insertUserCo">
 	    INSERT INTO USER_COMPANY (user_id, biz_reg_no, company_name, ceo_name, company_address)
-	    VALUES (#{userId}
-	    		, #{bizRegNo}
-	    		, #{companyName}
-	    		, #{ceoName}
-	    		, #{companyAddress}
+	    VALUES (#{user.userId}
+	    		, #{user.bizRegNo}
+	    		, #{user.companyName}
+	    		, #{user.userName}
+	    		, #{user.companyAddress}
 	        	
 	    )
 	</insert>
@@ -80,6 +80,10 @@
 		LEFT OUTER JOIN USER_PERSON p ON u.user_id = p.user_id
 		LEFT OUTER JOIN USER_COMPANY c ON u.user_id = c.user_id
 		WHERE u.email = #{email}
+	</select>
+	
+	<select id="selectUserIdList" resultType="com.itwillbs.project.user.dto.UserDTO">
+		SELECT email from user
 	</select>
 	
 </mapper>

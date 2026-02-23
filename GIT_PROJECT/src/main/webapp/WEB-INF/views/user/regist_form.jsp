@@ -4,7 +4,6 @@
 <html lang="ko">
 <head>
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
-    <title>회원가입 | My Service</title>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
         :root { --primary-color: #0046ff; --bg-color: #f4f7f6; }
@@ -123,7 +122,7 @@
 	                
 	                <div class="form-group">
 	                    <label>이름 *</label>
-	                    <input type="text" name="userName" required>
+	                    <input type="text" name="userName">
 	                </div>
 	                
                     <div class="form-group">
@@ -171,7 +170,7 @@
                     </div>
                     <div class="form-group">
                         <label>대표자명 *</label>
-                        <input type="text" name="ceoName">
+                        <input type="text" name="userName">
                     </div>
                     <div class="form-group">
                         <label>회사 주소 *</label>
@@ -227,16 +226,32 @@
             if (type === 'P') {
                 personFields.classList.remove('hidden');
                 companyFields.classList.add('hidden');
+                
+                toggleFields(personFields, false);
+                toggleFields(companyFields, true);
+                
                 // 필수 속성 제어
                 companyFields.querySelectorAll('input').forEach(el => el.required = false);
+                
             } else {
                 personFields.classList.add('hidden');
                 companyFields.classList.remove('hidden');
+                
+                toggleFields(personFields, true);
+                toggleFields(companyFields, false);
+                
                 // 필수 속성 제어
                 document.getElementsByName('bizRegNo')[0].required = true;
                 document.getElementsByName('companyName')[0].required = true;
                 document.getElementsByName('ceoName')[0].required = true;
             }
+        }
+        
+        function toggleFields(container, isDisable) {
+            const inputs = container.querySelectorAll('input, select');
+            inputs.forEach(el => {
+                el.disabled = isDisable;
+            });
         }
 
         // 인증번호 발송 (JSP EL 충돌 방지 위해 문자열 결합 사용)

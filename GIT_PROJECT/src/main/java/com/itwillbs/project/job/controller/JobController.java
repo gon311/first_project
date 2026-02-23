@@ -1,7 +1,12 @@
 package com.itwillbs.project.job.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,18 +32,21 @@ public class JobController {
 		return "/job/job_posting";
 	}
 	
-	@PostMapping("/job_process")
-	public String posting(JobDTO jobDTO) {
+	@PostMapping("/JobProcess")
+	public String posting(JobDTO jobDTO, HttpSession session) {
 		
+		System.out.println(jobDTO.getAddress());
 		jobService.jobInsert(jobDTO);
 		System.out.println(jobDTO);
-		return "redirect:/job_posting";
+		return "redirect:/job/JobList";
 	}
 	
 	@GetMapping("/JobList")
-	public String list() {
-		
-		return "/job/job_list";
+	public String list(Model model, String expType) { // expType 파라미터 추가
+	    List<JobDTO> jobList = jobService.getJobList(expType); // 서비스에 전달
+	    model.addAttribute("jobList", jobList);
+	    model.addAttribute("selectedExp", expType); // JSP에서 선택 상태 유지를 위해 추가
+	    return "/job/job_list";
 	}
 	
 	

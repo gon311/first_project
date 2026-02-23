@@ -10,7 +10,6 @@
 <meta charset="UTF-8">
 <title>채용공고 등록</title>
 <style>
-    /* (기존 스타일 유지) */
     body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; padding: 20px; }
     .container { max-width: 900px; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: auto; }
     .form-group { display: flex; align-items: flex-start; margin-bottom: 20px; }
@@ -19,7 +18,14 @@
     input[type="text"], input[type="date"], textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
     .file-upload-area { background: #e9ecef; padding: 20px; border: 2px dashed #ccc; text-align: center; border-radius: 5px; margin: 10px 0; }
     .info-box { background: #f0f7ff; padding: 15px; border-radius: 5px; font-size: 0.9em; color: #0066cc; }
-    .btn-submit { background: #333; color: #fff; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; display: block; margin: 20px auto; }
+	.button-group {display: flex; justify-content: center; gap: 10px; margin: 40px 0; padding-bottom: 20px;}
+	.button-group button {padding: 12px 25px; border-radius: 5px; font-size: 15px; font-weight: bold; cursor: pointer; border: 1px solid #ddd; transition: 0.2s;}
+	.btn-submit {background-color: #333 !important; color: #fff !important; border: none !important;}
+	.btn-reset {background-color: #e9ecef; color: #333;}
+	.btn-cancel {background-color: #fff; color: #666;}
+	.btn-submit:hover { background-color: #000 !important; }
+	.btn-reset:hover { background-color: #dee2e6; }
+	.btn-cancel:hover { background-color: #f8f9fa; }
     .job-selector-wrapper { display: flex; border: 1px solid #ddd; border-radius: 5px; height: 250px; margin-top: 10px; overflow: hidden; }
     .main-cat-list { width: 30%; background: #f1f3f5; border-right: 1px solid #ddd; overflow-y: auto; list-style: none; padding: 0; margin: 0; }
     .sub-cat-list { width: 70%; background: #fff; overflow-y: auto; list-style: none; padding: 10px; margin: 0; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; }
@@ -32,9 +38,10 @@
 <body>
 
 <div class="container">
-    <form action="<c:url value="/job/jobProcess" />" method="post" enctype="multipart/form-data">
+    <form action="<c:url value="/job/JobProcess" />" method="post" enctype="multipart/form-data">
         
         <div class="form-group">
+        	<input type="hidden" name="compId" value="1">
             <div class="label-box">공고제목 <span style="color:red">*</span></div>
             <div class="input-box"><input type="text" name="title" placeholder="디자이너 채용" required></div>
         </div>
@@ -146,6 +153,8 @@
 		        </div>
 		        <input type="text" name="address1" id="address1" placeholder="기본 주소" style="margin-bottom: 10px;" readonly required>
 		        <input type="text" name="address2" id="address2" placeholder="상세 주소" required>
+		        <input type="hidden" name="address" id="address">
+		        
 		        
 		        <label style="margin-top: 10px; display: block;">
 		            <input type="checkbox" name="isRemote" value="Y"> 재택근무 가능 
@@ -175,24 +184,28 @@
 		    </div>
 		</div>
 
-        <button type="submit" class="btn-submit">공고 등록하기</button>
+        <div class="button-group">
+		    <button type="submit" class="btn-submit">공고 등록하기</button>
+		    <button type="reset" class="btn-reset">초기화</button>
+		    <button type="button" class="btn-cancel" onclick="history.back()">취소</button>
+		</div>
     </form>
 </div>
 
 <script>
+// 1. 모집분야 데이터 정의
 const jobData = {
-	    "기획·전략": ["경영기획", "전략기획", "사업개발", "서비스기획", "데이터분석"],
-	    "마케팅·홍보": ["브랜드마케팅", "퍼포먼스마케팅", "광고AE", "SNS마케팅", "홍보(PR)"],
-	    "IT개발": ["백엔드", "프론트엔드", "앱개발", "게임개발", "AI·인공지능", "임베디드", "보안"],
-	    "디자인": ["UI·UX디자인", "웹디자인", "그래픽디자인", "영상편집", "제품디자인"],
-	    "교육": ["초중고교사", "대학교수", "전문강사", "학습지교사", "입시강사", "외국어강사", "교직원"],
-	    "영업·고객상담": ["IT영업", "기술영업", "영업관리", "고객상담(CS)", "인바운드"],
-	    "의료·보건": ["의사", "간호사", "물리치료사", "임상병리", "약사", "의료코디네이터"]
-	};
-
+    "기획·전략": ["경영기획", "전략기획", "사업개발", "서비스기획", "데이터분석"],
+    "마케팅·홍보": ["브랜드마케팅", "퍼포먼스마케팅", "광고AE", "SNS마케팅", "홍보(PR)"],
+    "IT개발": ["백엔드", "프론트엔드", "앱개발", "게임개발", "AI·인공지능", "임베디드", "보안"],
+    "디자인": ["UI·UX디자인", "웹디자인", "그래픽디자인", "영상편집", "제품디자인"],
+    "교육": ["초중고교사", "대학교수", "전문강사", "학습지교사", "입시강사", "외국어강사", "교직원"],
+    "영업·고객상담": ["IT영업", "기술영업", "영업관리", "고객상담(CS)", "인바운드"],
+    "의료·보건": ["의사", "간호사", "물리치료사", "임상병리", "약사", "의료코디네이터"]
+};
 
 document.addEventListener("DOMContentLoaded", function() {
-    // 1. 모집분야 선택
+    // === [기능 1] 모집분야 카테고리 선택 ===
     const mainUl = document.getElementById('mainCatList');
     const subUl = document.getElementById('subCatList');
     const jobInput = document.getElementById('selectedJobInput');
@@ -221,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 2. 경력 로직
+    // === [기능 2] 경력 선택 및 셀렉트박스 제어 ===
     const minSelect = document.getElementById('minExp');
     const maxSelect = document.getElementById('maxExp');
     const noneCheck = document.getElementById('expNone');
@@ -258,20 +271,30 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 3. 날짜 제한
+ // === [기능 3] 접수기간 날짜 설정 (개선본) ===
     const startDateInput = document.getElementById('startDate');
     const endDateInput = document.getElementById('endDate');
     const today = new Date().toISOString().split('T')[0];
 
     if (startDateInput && endDateInput) {
-        startDateInput.max = today;
+        // 1. 시작일과 마감일 모두 오늘 이전 날짜는 선택 불가능하게 설정
+        startDateInput.min = today;
         endDateInput.min = today;
+
         startDateInput.addEventListener('change', function() {
-            if (this.value) endDateInput.min = this.value;
+            if (this.value) {
+                // 2. 시작일이 정해지면 마감일은 최소 시작일과 같거나 커야 함
+                endDateInput.min = this.value;
+                
+                // 3. 만약 마감일이 이미 입력되어 있는데 시작일보다 빠르다면? 마감일을 시작일로 초기화
+                if (endDateInput.value && endDateInput.value < this.value) {
+                    endDateInput.value = this.value;
+                }
+            }
         });
     }
 
-    // 4. 전화번호 하이픈
+    // === [기능 4] 담당자 전화번호 하이픈 자동생성 ===
     const phoneInput = document.querySelector('input[name="mgrPhone"]');
     if (phoneInput) {
         phoneInput.addEventListener('input', function(e) {
@@ -285,43 +308,45 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 5. 폼 검증
+    // === [기능 5] 폼 제출 시 데이터 최종 검증 및 주소 결합 ===
     const form = document.querySelector('form');
     if (form) {
         form.addEventListener('submit', function(e) {
-            const jobValue = jobInput.value;
-            const zipcode = document.getElementById('postCode').value;
-            const address = document.getElementById('address1').value;
-            const mgrPhone = document.querySelector('input[name="mgrPhone"]');
-            const mgrEmail = document.querySelector('input[name="mgrEmail"]');
+            // 주소 관련 데이터 추출
+            const pc = document.getElementById('postCode').value;
+            const addr1 = document.getElementById('address1').value;
+            const addr2 = document.getElementById('address2').value;
 
-            const phoneRegex = /^010-\d{3,4}-\d{4}$/;
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            // 1. 필수 선택 확인 (모집분야)
+            if (!jobInput.value) {
+                alert("모집분야를 선택해주세요.");
+                e.preventDefault();
+                return false;
+            }
 
-            if (!jobValue) {
-                alert("직무를 선택해주세요.");
+            // 2. 주소 결합 로직
+            if (!pc || !addr1) {
+                alert("근무지 주소를 검색하여 입력해주세요.");
                 e.preventDefault();
                 return false;
             }
-            if (!zipcode || !address) {
-                alert("주소를 입력해주세요.");
+            // hidden 필드(name="address")에 최종 결합된 문자열 삽입
+            document.getElementById('address').value = "[" + pc + "] " + addr1 + " " + addr2;
+
+            // 3. 전화번호 형식 검증
+            const phoneRegex = /^01[0-9]-\d{3,4}-\d{4}$/;
+            if (!phoneRegex.test(phoneInput.value)) {
+                alert("전화번호 형식을 다시 확인해주세요.");
                 e.preventDefault();
                 return false;
             }
-            if (!phoneRegex.test(mgrPhone.value)) {
-                alert("전화번호를 확인해주세요.");
-                e.preventDefault();
-                return false;
-            }
-            if (!emailRegex.test(mgrEmail.value)) {
-                alert("이메일을 확인해주세요.");
-                e.preventDefault();
-                return false;
-            }
+            
+            // 모든 검사 통과 시 전송
         });
     }
 });
 
+// === [기능 6] 카카오 주소 API 실행 함수 ===
 function execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {

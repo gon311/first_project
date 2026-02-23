@@ -31,5 +31,7 @@
 	</bean>
 	
 	<mybatis-spring:scan base-package="com.itwillbs.project"/>
-	
+	<!-- 패스워드 암호화 -->
+	<bean id="passwordEncoder"
+      class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 </beans>

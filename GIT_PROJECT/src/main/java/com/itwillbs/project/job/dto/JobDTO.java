@@ -1,6 +1,9 @@
 package com.itwillbs.project.job.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 import lombok.Getter;
@@ -17,6 +20,7 @@ public class JobDTO {
 	// 1. 기본 식별 정보
     private Long jobId;          // job_id (PK) [cite: 31]
     private Long compId;         // comp_id (FK) [cite: 31]
+    private String comName; 	 // 기업명 (com_info 테이블의 com_name)
 
     // 2. 공고 핵심 내용
     private String title;        // 공고제목 (name="title") [cite: 18]
@@ -45,30 +49,21 @@ public class JobDTO {
      * 주소 (address 컬럼에 저장)
      * zipcode, address, address_detail을 하나로 합쳐서 저장 
      */
-    private AddressDTO address = new AddressDTO(); 
-    private Integer isRemote;    // 재택근무 여부 (name="is_remote") [cite: 34]
+    private String address;
+    private String isRemote;    // 재택근무 여부 (name="is_remote") [cite: 34]
 
     // 5. 담당자 정보
     private String mgrName;      // 담당자 이름 (name="mgr_name") [cite: 35]
     private String mgrPhone;     // 담당자 연락처 (name="mgr_phone") [cite: 35]
     private String mgrEmail;     // 담당자 이메일 (name="mgr_email") [cite: 35]
-    private Integer isPublic;    // 정보 공개 여부 (name="is_public") [cite: 36]
+    private String isPublic;    // 정보 공개 여부 (name="is_public") [cite: 36]
 
     // 6. 기간 및 상태
-    private LocalDateTime openDate;   // 접수 시작일 (name="open_date") [cite: 36]
-    private LocalDateTime closeDate;  // 접수 마감일 (name="close_date") [cite: 36]
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate openDate;   // 접수 시작일 (name="open_date") [cite: 36]
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate closeDate;  // 접수 마감일 (name="close_date") [cite: 36]
     private Integer postStatus;       // 모집 상태 (1: 모집중 등) [cite: 31]
-    
-    
- // JobDTO 내부
-    public String getFullAddress() {
-        if(address != null) {
-            return "(" + address.getPostCode() + ") " 
-                 + address.getAddress1() + " " 
-                 + address.getAddress2();
-        }
-        return null;
-    }
     
     /**
      * DB의 exp_year 컬럼에 저장될 값을 생성하는 메서드
@@ -102,43 +97,11 @@ public class JobDTO {
         }
     }
     
- // JobDTO.java 내부 추가
-
-    public void setFullAddress(String fullAddress) {
-        // 1. 우선 전달받은 전체 주소를 address 필드에 저장 (기본 Setter 동작)
-        this.address.setAddress1(fullAddress); // 혹은 별도의 fullAddress 필드가 있다면 저장
-
-        // 2. 데이터 분리 작업 (예: "(06159) 서울 강남구, 10층")
-        if (fullAddress != null && fullAddress.contains(")")) {
-            try {
-                // ( ) 기호를 기준으로 우편번호와 나머지 주소 분리
-                String postCode = fullAddress.substring(fullAddress.indexOf("(") + 1, fullAddress.indexOf(")"));
-                String remainAddr = fullAddress.substring(fullAddress.indexOf(")") + 1).trim();
-                
-                // 나머지 주소에서 , 기호를 기준으로 기본주소와 상세주소 분리
-                String address1 = remainAddr;
-                String address2 = "";
-                
-                if (remainAddr.contains(",")) {
-                    String[] addrParts = remainAddr.split(",", 2);
-                    address1 = addrParts[0].trim();
-                    address2 = addrParts[1].trim();
-                }
-                
-                // 3. 분리된 값을 AddressDTO 객체에 각각 저장
-                if (this.address == null) {
-                    this.address = new AddressDTO();
-                }
-                this.address.setPostCode(postCode);
-                this.address.setAddress1(address1);
-                this.address.setAddress2(address2);
-                
-            } catch (Exception e) {
-                // 주소 형식이 규격과 다를 경우 예외 처리 (기본주소에 통째로 저장)
-                this.address.setAddress1(fullAddress);
-            }
-        }
+ // 이 메서드를 추가해두면 JSP에서 ${job.displayAddress}로 호출 가능합니다.
+    public String getDisplayAddress() {
+        if (this.address == null) return "";
+        // [12345] 처럼 대괄호와 그 안의 내용을 삭제
+        return this.address.replaceAll("\\[\\d{5}\\]\\s?", "");
     }
-    
     
 }

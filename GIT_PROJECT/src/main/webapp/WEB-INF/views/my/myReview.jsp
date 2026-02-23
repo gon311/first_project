@@ -1,30 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%-- =========================================================
-     [이력서 관리] myResume.jsp
-     - common.css 없이: 이 파일 내부 style로만 구성
-     - 좌측: mySidebar.jspf include
-     - 우측: 사람인 "이력서 관리" 느낌의 카드/리스트 UI
-     - 나중에 DB 붙이면: resumes 리스트를 c:forEach로 자동 출력
-   ========================================================= --%>
 
-<%-- (선택) head.jspf에 부트스트랩이 없다면 아래 주석 해제
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
---%>
+<%-- =========================================================
+     [자기소개서 관리] myReview.jsp
+     - myResume.jsp 구성 그대로 가져옴(통일감)
+     - 좌측: mySidebar.jspf include
+     - 우측: 사람인 "자소서 관리" 느낌의 카드/리스트 UI
+     - 나중에 DB 붙이면: reviews 리스트를 c:forEach로 자동 출력
+   ========================================================= --%>
 
 <style>
   /* ====== 페이지 배경 ====== */
   body { background:#f6f7fb; }
-
   .mypage-wrap{ min-height:100vh; }
-  
-  
-  /* ====== 사이드 바 ====== */
+
+  /* ====== (참고) 사이드바 스타일은 mySidebar.jspf에 넣어도 되지만
+     지금은 myResume.jsp랑 동일하게 여기에도 둠(통일감/빠른 작업용) ====== */
   .mySidebar{
     background:#fff;
     border-right:1px solid #e9edf3;
@@ -32,7 +27,7 @@
   }
   .mySidebar-inner{
     position: sticky;
-    top: 0;               /* 헤더가 fixed면 여기만 px로 조정 */
+    top: 0;
     padding: 18px 14px;
   }
   .mySidebar-brand{ padding: 6px 8px 16px; display:flex; align-items:center; gap:10px; }
@@ -47,7 +42,6 @@
   }
   .myNav-link i{ font-size:1.05rem; color:#94a3b8; width:20px; text-align:center; }
   .myNav-link:hover{ background:#f3f6fb; }
-
   .myNav-link.active{
     background:#eaf2ff; color:#1d4ed8; font-weight:800;
   }
@@ -56,8 +50,6 @@
     content:""; position:absolute; left:-6px; top:10px; bottom:10px;
     width:3px; border-radius:999px; background:#1d4ed8;
   }
-  
-  
 
   /* ====== 우측 컨텐츠 카드(공통 톤) ====== */
   .myContent{ padding:22px 22px; }
@@ -82,7 +74,7 @@
     margin-top:6px;
   }
 
-  /* ====== 상단 유틸(총건수 + 필터) ====== */
+  /* ====== 상단 유틸 ====== */
   .topbar{
     margin-top: 14px;
     padding-top: 8px;
@@ -98,7 +90,7 @@
     font-size:.92rem;
   }
   .filterSelect{
-    width: 160px;
+    width: 180px;
     border-radius: 10px;
     border-color:#d9dde3;
     padding: .55rem .8rem;
@@ -109,15 +101,14 @@
     border-color:#9bbcff;
   }
 
-  /* ====== 사람인 느낌: "이력서 카드" ====== */
-  .resumeCard{
+  /* ====== 상단 "대표 자소서" 카드 ====== */
+  .reviewCard{
     margin-top: 18px;
     border:1px solid #eef2f7;
     border-radius: 14px;
     padding: 18px 18px;
   }
-
-  .resumeHeader{
+  .reviewHeader{
     display:flex;
     align-items:flex-start;
     justify-content: space-between;
@@ -131,7 +122,7 @@
     color:#ef4444;
     margin-right: 8px;
   }
-  .resumeTitle{
+  .reviewTitle{
     font-size: 1.15rem;
     font-weight: 900;
     letter-spacing: -.2px;
@@ -155,20 +146,12 @@
   }
   .metaItem i{ color:#9ca3af; }
 
-  .linkSmall{
-    color:#2563eb;
-    text-decoration:none;
-    font-weight:800;
-  }
-  .linkSmall:hover{ text-decoration: underline; }
-
   .btn-outline-primary{
     border-radius: 10px;
     font-weight:900;
     padding: .6rem 1.2rem;
   }
 
-  /* ====== 메모(안내 바) ====== */
   .memoBar{
     margin-top: 16px;
     background:#f3f6fb;
@@ -184,14 +167,14 @@
   }
   .memoBar i{ color:#94a3b8; }
 
-  /* ====== 하단: 이력서 리스트(여러 개일 때) ====== */
-  .resumeList{
+  /* ====== 리스트 ====== */
+  .reviewList{
     margin-top: 16px;
     display:grid;
     grid-template-columns: 1fr;
     gap: 14px;
   }
-  .resumeItem{
+  .reviewItem{
     border:1px solid #eef2f7;
     border-radius: 14px;
     padding: 16px 16px;
@@ -201,19 +184,19 @@
     gap: 14px;
     background:#fff;
   }
-  .resumeItem-title{
+  .reviewItem-title{
     font-weight:900;
     color:#111827;
     margin:0;
   }
-  .resumeItem-sub{
+  .reviewItem-sub{
     margin-top: 6px;
     color:#6b7280;
     font-weight:700;
     font-size:.9rem;
   }
 
-  .resumeActions{
+  .reviewActions{
     display:flex;
     align-items:center;
     gap: 8px;
@@ -224,7 +207,6 @@
     padding: .55rem .95rem;
   }
 
-  /* ====== 점3개 드롭다운 버튼 느낌(사람인스럽게) ====== */
   .kebabBtn{
     border:1px solid #eef2f7;
     background:#fff;
@@ -240,36 +222,32 @@
 </style>
 
 <%-- =========================================================
-     URL을 c:url로 통일 (ctx 변수 제거)
-     - 컨트롤러 매핑은 네가 쓰는 /my/* 기준
+     URL 전부 c:url로 (ctx 변수 없음)
+     - 매핑은 일단 뼈대용. 나중에 컨트롤러/DTO 맞춰서 변경하면 됨.
    ========================================================= --%>
-<c:url var="urlMyResume" value="/my/myResume"/>
-<c:url var="urlResumeCreate" value="/my/resume/create"/>   <%-- 새 이력서 작성(나중에) --%>
-<c:url var="urlResumeEdit" value="/my/resume/edit"/>       <%-- 수정(나중에 파라미터 붙이기) --%>
-<c:url var="urlResumeDelete" value="/my/resume/delete"/>   <%-- 삭제(나중에 POST) --%>
+<c:url var="urlMyReview" value="/my/myReview"/>
+
+<c:url var="urlReviewCreate" value="/my/review/create"/>   <%-- 새 자소서 작성 --%>
+<c:url var="urlReviewEdit" value="/my/review/edit"/>       <%-- 수정 (id param 나중에) --%>
+<c:url var="urlReviewDelete" value="/my/review/delete"/>   <%-- 삭제 (나중에 POST 추천) --%>
 
 <main class="container-fluid px-0 mypage-wrap">
   <div class="row g-0">
 
-    <%-- ✅ 좌측 사이드바 include
-         - 이 페이지 active는 컨트롤러에서 currentMenu='resume' 내려주는 방식 추천
-         - (지금은 네 mySidebar.jspf가 알아서 active 처리하도록 두면 됨)
-     --%>
+    <%-- ✅ 좌측 사이드바 include --%>
     <%@ include file="/WEB-INF/views/inc/mySidebar.jspf" %>
 
     <%-- ✅ 우측 컨텐츠 --%>
     <section class="col-10 myContent">
       <div class="myContent-inner">
 
-        <%-- 타이틀 --%>
-        <h2 class="page-title">내 이력서</h2>
-        <div class="page-desc">이력서를 관리하고, 필요할 때 빠르게 수정할 수 있어요.</div>
+        <h2 class="page-title">내 자기소개서</h2>
+        <div class="page-desc">자기소개서를 작성/관리하고, 필요할 때 빠르게 수정할 수 있어요.</div>
 
-        <%-- 상단 유틸: 총건수 + 필터(전체/대표/미완성 등) --%>
+        <%-- 상단 유틸 --%>
         <div class="topbar">
           <div class="countText">
-            <%-- resumes가 없을 수도 있으니 기본값 처리 --%>
-            총 <strong><c:out value="${empty resumes ? 0 : fn:length(resumes)}"/></strong>건
+            총 <strong><c:out value="${empty reviews ? 0 : fn:length(reviews)}"/></strong>건
           </div>
 
           <div class="d-flex align-items-center gap-2">
@@ -282,92 +260,82 @@
           </div>
         </div>
 
-        <%-- =========================================================
-             ✅ 대표/최근 이력서 1개 카드
-             - 지금은 샘플로 loginUser 기반 텍스트만 넣음
-             - 나중엔 대표 이력서(resume 대표=true)를 여기 꽂으면 됨
-           ========================================================= --%>
-        <div class="resumeCard">
-          <div class="resumeHeader">
+        <%-- 대표/최근 자소서 카드(샘플) --%>
+        <div class="reviewCard">
+          <div class="reviewHeader">
             <div>
               <div>
                 <span class="badgeDraft">미완성</span>
-                <span class="resumeTitle"><c:out value="${loginUser.name}"/>의 이력서 입니다</span>
+                <span class="reviewTitle"><c:out value="${loginUser.name}"/>의 자기소개서 입니다</span>
               </div>
 
               <div class="metaRow">
                 <div class="metaItem">
-                  <i class="bi bi-briefcase"></i>
-                  <span>신입</span>
+                  <i class="bi bi-file-earmark-text"></i>
+                  <span>문항: -</span>
                 </div>
                 <div class="metaItem">
-                  <i class="bi bi-pin-map"></i>
-                  <span>희망지역: -</span>
-                  <a class="linkSmall" href="#">희망근무조건 수정</a>
+                  <i class="bi bi-calendar3"></i>
+                  <span>최종수정: -</span>
                 </div>
                 <div class="metaItem">
-                  <i class="bi bi-person-workspace"></i>
-                  <span>희망 직무: -</span>
+                  <i class="bi bi-building"></i>
+                  <span>지원기업: -</span>
                 </div>
               </div>
             </div>
 
             <div class="d-flex align-items-center gap-2">
-              <%-- 사람인 느낌의 오른쪽 버튼 --%>
-              <a class="btn btn-outline-primary" href="${urlResumeCreate}">
-                이력서 완성하기
+              <a class="btn btn-outline-primary" href="${urlReviewCreate}">
+                새 자기소개서 작성
               </a>
 
-              <%-- 점3개(옵션) : 부트스트랩 dropdown 쓰고 싶으면 data-bs-toggle 사용 --%>
               <div class="dropdown">
                 <button class="kebabBtn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="bi bi-three-dots-vertical"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="${urlResumeEdit}">수정</a></li>
+                  <li><a class="dropdown-item" href="${urlReviewEdit}">수정</a></li>
                   <li><a class="dropdown-item" href="#">대표 설정</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item text-danger" href="${urlResumeDelete}">삭제</a></li>
+                  <li><a class="dropdown-item text-danger" href="${urlReviewDelete}">삭제</a></li>
                 </ul>
               </div>
             </div>
           </div>
 
-          <%-- 메모 안내 바 --%>
           <div class="memoBar">
             <i class="bi bi-card-text"></i>
-            <span>이력서에 관련된 중요한 내용을 메모해보세요. 예) 11월 25일까지 제출</span>
+            <span>자소서 관련 중요한 메모를 남겨보세요. 예) 2/28까지 제출</span>
           </div>
         </div>
 
-        <%-- =========================================================
-             ✅ 리스트 영역 (나중에 DB로 자동 추가되는 곳)
-             - resumes 라는 List를 model로 내려준다고 가정
-             - 지금은 샘플 2개를 fallback으로 보여줌
-           ========================================================= --%>
-
-        <div class="resumeList">
+        <%-- 리스트 영역 (DB 붙으면 자동 출력) --%>
+        <div class="reviewList">
 
           <c:choose>
-            <c:when test="${not empty resumes}">
-              <%-- ✅ DB 붙이면 여기만 살아남음 --%>
-              <c:forEach var="r" items="${resumes}">
-                <div class="resumeItem">
+            <c:when test="${not empty reviews}">
+              <c:forEach var="rv" items="${reviews}">
+                <div class="reviewItem">
                   <div>
-                    <p class="resumeItem-title">
-                      <c:out value="${r.title}"/>
-						<c:if test="${r.representative eq 'Y'}">
-							<span class="badge text-bg-warning ms-2">대표</span>
-						</c:if>
+                    <p class="reviewItem-title">
+                      <c:out value="${rv.title}"/>
+                      <c:if test="${rv.representative}">
+                        <span class="badge text-bg-warning ms-2">대표</span>
+                      </c:if>
                     </p>
-                    <div class="resumeItem-sub">
-                      최종수정: <c:out value="${r.updatedAt}"/> · 상태:
-                      <c:out value="${r.status}"/>
+
+                    <div class="reviewItem-sub">
+                      기업: <c:out value="${rv.companyName}"/> ·
+                      최종수정: <c:out value="${rv.updatedAt}"/> ·
+                      상태: <c:out value="${rv.status}"/>
                     </div>
                   </div>
 
-                  <div class="resumeActions">
-                    <a class="btn btn-outline-secondary" href="<c:url value='/my/resume/edit'><c:param name='id' value='${r.resumeId}'/></c:url>">
+                  <div class="reviewActions">
+                    <%-- id 파라미터 붙이는 버전 (나중에 그대로 쓰면 됨) --%>
+                    <a class="btn btn-outline-secondary"
+                       href="<c:url value='/my/review/edit'><c:param name='id' value='${rv.id}'/></c:url>">
                       수정
                     </a>
                     <button class="btn btn-light" type="button">복사</button>
@@ -387,25 +355,25 @@
             </c:when>
 
             <c:otherwise>
-              <%-- ✅ 아직 데이터 없을 때 보이는 샘플(뼈대) --%>
-              <div class="resumeItem">
+              <%-- 데이터 없을 때 샘플 --%>
+              <div class="reviewItem">
                 <div>
-                  <p class="resumeItem-title">샘플 이력서 #1</p>
-                  <div class="resumeItem-sub">최종수정: 2026-02-19 · 상태: 미완성</div>
+                  <p class="reviewItem-title">샘플 자기소개서 #1</p>
+                  <div class="reviewItem-sub">기업: - · 최종수정: 2026-02-19 · 상태: 미완성</div>
                 </div>
-                <div class="resumeActions">
+                <div class="reviewActions">
                   <a class="btn btn-outline-secondary" href="#">수정</a>
                   <button class="btn btn-light" type="button">복사</button>
                   <button class="kebabBtn" type="button"><i class="bi bi-three-dots-vertical"></i></button>
                 </div>
               </div>
 
-              <div class="resumeItem">
+              <div class="reviewItem">
                 <div>
-                  <p class="resumeItem-title">샘플 이력서 #2</p>
-                  <div class="resumeItem-sub">최종수정: 2026-02-10 · 상태: 완성</div>
+                  <p class="reviewItem-title">샘플 자기소개서 #2</p>
+                  <div class="reviewItem-sub">기업: - · 최종수정: 2026-02-10 · 상태: 완성</div>
                 </div>
-                <div class="resumeActions">
+                <div class="reviewActions">
                   <a class="btn btn-outline-secondary" href="#">수정</a>
                   <button class="btn btn-light" type="button">복사</button>
                   <button class="kebabBtn" type="button"><i class="bi bi-three-dots-vertical"></i></button>
@@ -424,12 +392,7 @@
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
-<%-- (선택) footer.jspf에 bootstrap.bundle.js 없으면 아래 주석 해제 (dropdown용)
+<%-- dropdown 동작하려면 bootstrap.bundle.js 필요
+     footer.jspf에 없으면 아래 주석 해제
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
---%>
-
-<%-- fn:length 쓰려면 JSTL functions taglib 필요.
-     head에서 안 쓰면 아래 추가:
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-   지금은 fn:length를 썼으니, 에러나면 위 라인을 맨 위에 추가
 --%>

@@ -80,10 +80,10 @@
                     <div class="col-body">
                         <div class="radio-row">
                             <label class="radio-label">
-                                <input type="radio" name="auth_group_id" value="email" onclick="updateFormState('id')"> 이메일 인증
+                                <input type="radio" name="auth_group_id" value="email" checked onclick="updateFormState('id')"> 이메일 인증
                             </label>
                             <label class="radio-label">
-                                <input type="radio" name="auth_group_id" value="phone" checked onclick="updateFormState('id')"> 휴대폰 인증
+                                <input type="radio" name="auth_group_id" value="phone" onclick="updateFormState('id')"> 휴대폰 인증
                             </label>
                         </div>
 

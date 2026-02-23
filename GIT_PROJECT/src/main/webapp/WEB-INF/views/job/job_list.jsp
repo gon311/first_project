@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="/WEB-INF/views/inc/head.jspf" %>
+<%@ include file="/WEB-INF/views/inc/header.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,20 +71,41 @@
     .btn-reset-filter { background: none; border: none; color: #999; cursor: pointer; text-decoration: underline; }
 
     /* 4. 공고 리스트 (하단 예시) */
-    .job-list-container { margin-top: 40px; }
-    .list-header { margin-bottom: 20px; font-size: 18px; font-weight: bold; }
-    .job-card { 
-        background: #fff; padding: 25px; border-radius: 8px; margin-bottom: 15px;
-        border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .job-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-    .job-info h3 { margin: 0 0 10px 0; font-size: 18px; color: #333; }
-    .job-tags { display: flex; gap: 8px; font-size: 13px; color: #777; }
-    .tag { background: #f1f3f5; padding: 3px 8px; border-radius: 3px; }
-    .apply-info { text-align: right; }
-    .d-day { color: #ff4d4f; font-weight: bold; margin-bottom: 5px; }
-    .btn-apply { background: #007bff; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+    /* 공고 리스트 컨테이너 */
+	.job-list-container { margin-top: 40px; width: 100%; }
+	
+	/* 한 줄(카드) 전체 설정 */
+	.job-card { 
+	    background: #fff; 
+	    padding: 20px; 
+	    border-radius: 8px; 
+	    margin-bottom: 12px;
+	    border: 1px solid #eee; 
+	    display: flex;        /* 가로 배치 */
+	    align-items: center;  /* 세로 중앙 정렬 */
+	    justify-content: flex-start;
+	    transition: all 0.2s;
+	    cursor: pointer;
+	}
+	
+	.job-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-color: #007bff; }
+	
+	/* 각 칸별 고정 너비 지정 (여기서 정렬이 결정됩니다) */
+	.company-name { width: 120px; font-weight: bold; flex-shrink: 0; color: #333; }
+	.job-title    { width: 250px; font-weight: 500; flex-shrink: 0; padding: 0 10px; color: #000; }
+	.job-tags     { width: 220px; display: flex; gap: 5px; flex-shrink: 0; justify-content: center; }
+	.job-location { flex: 1; color: #666; font-size: 14px; padding: 0 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+	.job-deadline { width: 140px; text-align: right; color: #ff4d4f; font-weight: bold; font-size: 13px; flex-shrink: 0; }
+	
+	/* 태그 디자인 추가 */
+	.tag { 
+	    background: #f1f3f5; 
+	    padding: 4px 8px; 
+	    border-radius: 4px; 
+	    font-size: 12px; 
+	    color: #666;
+	    white-space: nowrap;
+	}
 </style>
 </head>
 <body>
@@ -92,11 +115,11 @@
     <form action="search_process.jsp" method="get">
         
         <div class="filter-dropdown-row">
-            <select name="exp_type" class="filter-select">
-                <option value="">경력 전체</option>
-                <option value="new">신입</option>
-                <option value="career">경력</option>
-            </select>
+            <select class="filter-select" id="expFilter" onchange="changeFilter()">
+			    <option value="">경력 전체</option>
+			    <option value="new" ${selectedExp == 'new' ? 'selected' : ''}>신입</option>
+			    <option value="career" ${selectedExp == 'career' ? 'selected' : ''}>경력</option>
+			</select>
             <select name="edu_level" class="filter-select">
                 <option value="">학력 전체</option>
                 <option value="high">고졸</option>
@@ -133,24 +156,28 @@
     </form>
 
     <div class="job-list-container">
-        <div class="list-header">전체 채용 공고</div>
-        
-        <div class="job-card">
-            <div class="job-info">
-                <h3>[신입/경력] 플랫폼 백엔드 개발자 채용</h3>
-                <div class="job-tags">
-                    <span class="tag">IT개발</span>
-                    <span class="tag">서울 강남구</span>
-                    <span class="tag">정규직</span>
-                    <span class="tag">연봉 4,000 이상</span>
-                </div>
-            </div>
-            <div class="apply-info">
-                <div class="d-day">D-14</div>
-                <button class="btn-apply">입사지원</button>
-            </div>
-        </div>
-    </div>
+	    <div class="list-header">전체 채용 공고</div>
+	    
+	    <c:forEach var="job" items="${jobList}">
+	        <div class="job-card" onclick="location.href='/job/JobDetail?jobId=${job.jobId}'">
+	            <div class="company-name">${job.comName}</div>
+	            
+	            <div class="job-title">${job.title}</div>
+	            
+	            <div class="job-tags">
+	                <span class="tag">${job.field}</span>
+	                <span class="tag">${job.expYear}</span>
+	                <span class="tag">${job.edu}</span>
+	            </div>
+	            
+	            <div class="job-location">${job.displayAddress}</div>
+	            
+	            <div class="job-deadline">
+	                ~ ${job.closeDate} 까지
+	            </div>
+	        </div>
+	    </c:forEach>
+	</div>
 
 </div>
 
@@ -218,6 +245,14 @@ function resetAll() {
 
 // 초기 로딩
 document.addEventListener('DOMContentLoaded', renderMainCategory);
+
+function changeFilter() {
+    const expType = document.getElementById("expFilter").value;
+    // 현재 주소로 파라미터를 붙여서 이동
+    location.href = "JobList?expType=" + expType;
+}
+
+
 </script>
 
 </body>

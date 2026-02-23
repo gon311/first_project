@@ -5,6 +5,7 @@
 
 <c:url var="urlMyInfo" value="/my/myInfo"/>
 <c:url var="urlmyResume" value="/my/myResume"/>
+<c:url var="urlmyReview" value="/my/myReview"/>
 <c:url var="urlFavorites" value="/my/favorites"/>
 <c:url var="urlPayment" value="/my/payment"/>
 <c:url var="urlApply" value="/my/apply"/>
@@ -24,9 +25,13 @@
       </a>
 
       <a class="myNav-link ${currentMenu=='resume' ? 'active' : ''}" href="${urlmyResume}">
-        <i class="bi bi-file-earmark-text"></i><span>이력서/자기소개서 관리</span>
+        <i class="bi bi-file-earmark-text"></i><span>이력서 관리</span>
       </a>
-
+      
+      <a class="myNav-link ${currentMenu=='review' ? 'active' : ''}" href="${urlmyReview}">
+        <i class="bi bi-file-earmark-text"></i><span>자기소개서 관리</span>
+      </a>
+      
       <a class="myNav-link ${currentMenu=='favorites' ? 'active' : ''}" href="${urlFavorites}">
         <i class="bi bi-star"></i><span>관심목록</span>
       </a>

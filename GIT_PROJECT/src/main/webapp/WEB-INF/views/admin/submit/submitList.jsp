@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 
 <!DOCTYPE html>
 <html>
@@ -17,7 +18,7 @@
         <h5 class="card-title mb-3">검색</h5>
 			<div class="card">
 			    <div class="card-body">
-			    	 <form action="<c:url value="/admin/search" />" name="searchForm" method="post" class="row g-3 align-items-center">
+			    	 <form action="<c:url value="/admin/submits" />" name="searchForm" method="post" class="row g-3 align-items-center">
 				        <div class="row my-3">
 					        <!-- 기간별 검색 - 시작일자 -->
 					        <div class="col-md-4">
@@ -81,24 +82,26 @@
 			<table class="table table-hover table-bordered align-middle text-center">
 				<thead class="table-light">
 					<tr>
-						<th>No</th>
-						<th>아이디</th>
-						<th>제출일자</th>
-						<th>제목</th>
-						<th>기업명</th>
-						<th>상태</th>
+						<th style="width:5%;">No</th>
+		                <th style="width:10%;">공고번호</th>
+		                <th style="width:20%;">제출일자</th>
+		                <th style="width:40%;">제목</th> 
+		                <th style="width:15%;">기업명</th>
+		                <th style="width:10%;">상태</th>
 					</tr>
 				</thead>
-				<!-- tbody 필요 -->
 	 			<tbody>
 					<c:forEach var="submit" varStatus="status" items="${submitList}">
-						<tr class="clickable-row" onclick="location.href='info?id=${submit.id}'">
-							<td>${status.count }</td>
-							<td>${submit.id }</td>
-							<td>${submit.openDate }</td>
-							<td>${submit.title }</td>
-							<td>${submit.compId }</td>
-							<td>${submit.postStatus }</td>
+						<tr class="clickable-row" onclick="location.href='submits/info?id=${submit.id}'">
+							<td>${status.count}</td>
+							<td>${submit.id}</td>
+							<td>
+								<fmt:parseDate var="submitDate" value="${submit.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+								<fmt:formatDate value="${submitDate}" pattern="yyyy년 MM월 dd일 HH시 mm분"/>
+							</td>
+							<td>${submit.title}</td>
+							<td>${submit.compId}</td>
+							<td>${submit.postCheck}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

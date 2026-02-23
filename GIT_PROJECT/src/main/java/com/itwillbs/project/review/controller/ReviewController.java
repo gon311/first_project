@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.itwillbs.project.review.dto.CoverLetterRequestDTO;
+import com.itwillbs.project.review.dto.CoverLetterDTO;
 import com.itwillbs.project.review.service.ReviewService;
 
 import lombok.extern.log4j.Log4j2;
@@ -34,10 +34,9 @@ public class ReviewController {
 	}
 	
 	@PostMapping("/registText")
-	public String registText(CoverLetterRequestDTO requestDTO) {
-		log.info(">>>>>>>>>>> requestDTO : " + requestDTO);
-		reviewService.registForm(requestDTO);
-		
+	public String registText(CoverLetterDTO coverLetterDTO) {
+		log.info(">>>>>>>>>>>>>>>> coverLetterDTO : " + coverLetterDTO);
+		reviewService.registForm(coverLetterDTO);
 	    return "/review/reviewText";
 	}
 	// registForm 의 입력값은 따로 DB에 저장되어야, 내 자소서에서 문서를 불러올때 그 값이 유지.

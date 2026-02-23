@@ -1,5 +1,7 @@
 package com.itwillbs.project.review.dto;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,7 +9,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CoverLetterRequestDTO {
+public class CoverLetterDTO {
+	
+	private Integer coverLetterIdx;	// 자조서 일련번호
+	private Integer userId; 		// 사용자 아이디 
+	
 	private String title;			// 자소서 제목
 	
 	private String industryCode;	// 업종
@@ -20,5 +26,8 @@ public class CoverLetterRequestDTO {
 	private String companyName;  	// 기업 이름 
 	
 	private Integer saveStatus;     // 저장 상태 (0: 최종저장, 1: 저장, 2: 임시저장(default)) 
+	
+	private LocalDateTime createdAt; // 생성일시
+	private LocalDateTime updatedAt; // 업데이트 일시 
 	
 }

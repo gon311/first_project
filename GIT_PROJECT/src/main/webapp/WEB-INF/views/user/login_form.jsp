@@ -53,16 +53,16 @@
             </div>
 
             <div id="personal-content" class="tab-content-area active">
-                <form onsubmit="return false;">
+                <form action="<c:url value="/user/login" />" method="post" onsubmit="">
                     <div class="row g-2 mb-3">
                         <div class="col-9">
                             <div class="position-relative mb-2">
                                 <i class="fa-regular fa-user position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
-                                <input type="text" class="form-control form-control-lg ps-5" placeholder="개인 ID">
+                                <input type="text" class="form-control form-control-lg ps-5" name="email" placeholder="개인 ID">
                             </div>
                             <div class="position-relative">
                                 <i class="fa-solid fa-lock position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
-                                <input type="password" class="password-input form-control form-control-lg ps-5 pe-5" placeholder="비밀번호">
+                                <input type="password" class="password-input form-control form-control-lg ps-5 pe-5" name="password" placeholder="비밀번호">
                                 <i class="fa-regular fa-eye-slash position-absolute top-50 end-0 translate-middle-y me-3 password-toggle-icon" id="toggle-password"></i>
                             </div>
                         </div>
@@ -94,16 +94,16 @@
             </div>
 
             <div id="corporate-content" class="tab-content-area">
-                <form onsubmit="return false;">
+                <form action="<c:url value="/user/login" />" method="post" onsubmit="">
                     <div class="row g-2 mb-3">
                         <div class="col-9">
                             <div class="position-relative mb-2">
                                 <i class="fa-regular fa-building position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
-                                <input type="text" class="form-control form-control-lg ps-5" placeholder="기업 ID">
+                                <input type="text" class="form-control form-control-lg ps-5" name="email" placeholder="기업 ID">
                             </div>
                             <div class="position-relative">
                                 <i class="fa-solid fa-lock position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
-                                <input type="password" class="password-input form-control form-control-lg ps-5" placeholder="비밀번호">
+                                <input type="password" class="password-input form-control form-control-lg ps-5" name="password" placeholder="비밀번호">
                                 <i class="fa-regular fa-eye-slash position-absolute top-50 end-0 translate-middle-y me-3 password-toggle-icon" id="toggle-password"></i>
                             </div>
                         </div>

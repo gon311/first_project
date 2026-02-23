@@ -72,7 +72,7 @@
                 <input type="hidden" name="userType" id="userType" value="P">
 
                 <div class="section-title">기본 정보</div>
-                <div class="form-group">
+                <div class="form-group" >
                     <label>이메일(아이디) *</label>
                     <div class="input-with-btn">
                         <input type="email" id="email" name="email" required placeholder="example@email.com">
@@ -93,16 +93,22 @@
                 </div>
 
                 <div class="form-group">
-                    <label>이름 *</label>
-                    <input type="text" name="userName" required>
-                </div>
-
-                <div class="form-group">
                     <label>전화번호 *</label>
                     <div class="input-with-btn">
+                    	<select name="mobileCarrier" id="mobileCarrier" style="width: 120px; flex: none;" required>
+				            <option value="" disabled selected>통신사</option>
+				            <option value="SKT">SKT</option>
+				            <option value="KT">KT</option>
+				            <option value="LG">LG U+</option>
+				            <option value="SKT_A">SKT 알뜰폰</option>
+				            <option value="KT_A">KT 알뜰폰</option>
+				            <option value="LG_A">LG 알뜰폰</option>
+				        </select>
+				        
                         <input type="tel" id="phone" name="phone" required placeholder="010-0000-0000">
                         <button type="button" class="btn-action" id="btn-phone-send" onclick="sendVerification('phone')">인증번호 전송</button>
                     </div>
+				    
                     <div id="phone-verify-area" class="verify-area">
                         <div class="input-with-btn">
                             <input type="text" id="phone-code" placeholder="인증번호 4자리">
@@ -114,6 +120,12 @@
 
                 <div id="person-fields">
                     <div class="section-title">개인 상세정보</div>
+	                
+	                <div class="form-group">
+	                    <label>이름 *</label>
+	                    <input type="text" name="userName" required>
+	                </div>
+	                
                     <div class="form-group">
                         <label>생년월일</label>
                         <input type="date" name="birthDate">
@@ -267,6 +279,11 @@
 
         // 폼 제출 전 최종 검증
         function validateForm(e) {
+        	if(!document.getElementById('mobileCarrier').value) {
+                alert("통신사를 선택해주세요.");
+                return false;
+            }
+        	
             if(!verificationStatus.email || !verificationStatus.phone) {
                 alert("이메일과 휴대폰 인증을 완료해주세요.");
                 return false;

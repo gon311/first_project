@@ -1,81 +1,17 @@
 @charset "UTF-8";
 
-form {
-	display: flex;
-	flex-wrap: wrap; /* 전체는 세로 배치 */
-	max-width: 900px;
-	margin: 20px auto;
-}
-div{
-	margin-bottom: 20px;
-}
-
-#title{
-	width: 500px; 
-	height: 30px;
+ /* 칩(토글 라디오) 공통 스타일 보강 */
+.chip-group { gap: .5rem; }
+.chip {
+  --bs-btn-padding-y: .375rem;
+  --bs-btn-padding-x: .75rem;
+  --bs-btn-font-size: .9rem;
+  border-radius: 999px;
 }
 
-/* 직종 및 세부직종 container */
-.job-group-container {
-	display: flex;
-	justify-content: flex-start;  /* 왼쪽 정렬 */
-	align-items: flex-start;
-}
-
-/* 직종 영역 */
-.job-group {
-	flex: 1;
-}
-
-/* 세부직종 영역 */
-.job-role {
-	flex: 1;
-	margin-left: 20px;   /* 직종 영역과의 간격 */
-}
-
-.text-group-container {
-	display: flex;
-	justify-content: flex-start;  /* 왼쪽 정렬 */
-	align-items: flex-start;
-}
-
-.sec {
-	flex : 1;
-}
-
-.company-name {
-	flex: 1;
-	margin-left: 20px;
-}
-
-.career-level {
-	margin-top: 20px;
-}
-
-.form-area {
-	position: relative;   /* 버튼 위치 기준 */
-	padding-bottom: 60px; /* 버튼이 겹치지 않도록 여유 공간 */
-}
-
-.btn-submit {
-	position: absolute;
-	right: -120px;
-	bottom: 0;
-}
+/* 비활성 select 흐리게 */
+select:disabled { background-color:#f8f9fa; cursor:not-allowed; }
 
 
-.radio-btn {
-  display: inline-block;
-  padding: 5px 10px;
-  border: 2px solid #333;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 5px;
-}
-input[type="radio"] {
-  display: none;
-}
-input[type="radio"]:checked + .radio-btn {
-  background-color: #333;
-  color: #fff;
-}
+
+

@@ -17,10 +17,29 @@
 
 		<!-- 기업 목록 노출 영역 -->
 			<div class="adMain">
-				<h1>기업 목록 노출 영역</h1>
-				<h1>기업 목록 노출 영역</h1>
-				<h1>기업 목록 노출 영역</h1>
-				<h1>기업 목록 노출 영역</h1>
+				<ul class="nav nav-pills mb-3" id="jobTabs">
+				    <li class="nav-item">
+				        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#today">
+				            오늘의 기업
+				        </button>
+				    </li>
+				    <li class="nav-item">
+				        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#popular">
+				            인기 기업
+				        </button>
+				    </li>
+				    <c:if test="${!empty sessionScope.sId}">
+					    <li class="nav-item">
+					        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#bookmark">
+					            찜한 기업
+					        </button>
+					    </li>
+				    </c:if>
+				</ul>
+				
+				<div class="cardAds">
+					이 자리에 기업 공고가 카드 형태로 들어가게 만듬 
+				</div>
 			</div>
 			<br><br><br><br><br><br>
 		<!-- AI 자소서 첨삭 시작 버튼  -->
@@ -32,8 +51,8 @@
 			<h1> TEAM3 Area</h1>
 			<h3><a href="<c:url value="/job/JobPosting" />">JobPosting</a></h3>
 			<h3><a href="<c:url value="/job/JobList" />">JobLIst</a></h3>
-			<h3><a href="<c:url value="/user/login" />">testJob</a></h3>
-			<h3><a href="<c:url value="/my/myInfo" />">testJob</a></h3>
+			<h3><a href="<c:url value="/user/login" />">Login</a></h3>
+			<h3><a href="<c:url value="/my/myInfo" />">MyPage</a></h3>
 
 		</main>
 		<%-- footer area --%>

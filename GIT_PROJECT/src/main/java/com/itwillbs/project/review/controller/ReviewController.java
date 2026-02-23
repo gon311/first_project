@@ -35,5 +35,11 @@ public class ReviewController {
 	// registForm 의 입력값은 따로 DB에 저장되어야, 내 자소서에서 문서를 불러올때 그 값이 유지.
 	// 단계값(step)을 줘서 1단계값, 2단계, 완성 표시 
 	// text 페이지의 입력값과 함께 챗GPT에 파라미터로 전달
+	
+	@PostMapping("/save")
+	public String reviewSave() {
+		
+		return "/review/reviewSave";
+	}
 
 }

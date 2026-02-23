@@ -15,11 +15,14 @@ public class HomeController {
 	
 	@GetMapping("/mainCom")
 	public String mainCom() {
+		
 		return "/mainCom";
 	}
+
 	
 	@GetMapping("/admin/main")
 	public String adminMain() {
+		
 		return "admin/common/main";
 	}
 	

@@ -52,10 +52,17 @@ public class AdminController {
 		// tab 파라미터가 없으면 기본값 "all"로 설정됨
 		model.addAttribute("activeTab", tab); 
 		//-----------------------------------------------------
+		// 전체 회원 목록 조회
 		List<MemberDTO> userList = adminService.getUserList(searchDTO.getKeyword()
 																, searchDTO.getType()
 																, searchDTO.getStatus());
 		model.addAttribute("userList", userList);
+		
+		// 탈퇴 회원 목록 조회
+		List<MemberDTO> userWithdraw = adminService.getUserWithdraw(searchDTO.getKeyword()
+																, searchDTO.getType()
+																, searchDTO.getStatus());
+		model.addAttribute("userWithdraw", userWithdraw);
 		
 		return "admin/member/userList";
 			
@@ -64,7 +71,7 @@ public class AdminController {
 	// 구직자 상세정보
 	@GetMapping("/users/info")
 	public String userInfo(Model model, MemberDTO memberDTO) {
-		MemberDTO userDTO = adminService.getUserInfo(memberDTO.getId());
+		MemberDTO userDTO = adminService.getUserInfo(memberDTO.getUserId());
 		
 		model.addAttribute("user", userDTO);
 
@@ -76,7 +83,7 @@ public class AdminController {
 	@GetMapping("/block")
 	public String userBlock(MemberDTO dto, RedirectAttributes ra) {
 //		adminService.blockUser(dto.getId(), dto.getStatus());
-		ra.addAttribute("id", dto.getId());
+		ra.addAttribute("id", dto.getUserId());
 		
 		return "redirect:/admin/info";
 	}
@@ -102,11 +109,18 @@ public class AdminController {
 							, SearchDTO searchDTO) {
 		// tab 파라미터가 없으면 기본값 "all"로 설정됨
 		model.addAttribute("activeTab", tab); 
-		
+		//-----------------------------------------------------------
+		// 전체 회원 목록 조회
 		List<MemberDTO> comList = adminService.getComList(searchDTO.getKeyword()
 																, searchDTO.getType()
 																, searchDTO.getStatus());
 		model.addAttribute("comList", comList);
+		
+		// 탈퇴 회원 목록 조회
+		List<MemberDTO> comWithdraw = adminService.getComWithdraw(searchDTO.getKeyword()
+																, searchDTO.getType()
+																, searchDTO.getStatus());
+		model.addAttribute("comWithdraw", comWithdraw);
 		 
 		return "admin/member/comList";
 			
@@ -116,7 +130,7 @@ public class AdminController {
 	@GetMapping("/coms/info")
 	public String comInfo(Model model, MemberDTO memberDTO) {
 		
-		MemberDTO comDTO = adminService.getUserInfo(memberDTO.getId());
+		MemberDTO comDTO = adminService.getUserInfo(memberDTO.getUserId());
 		
 		model.addAttribute("com", comDTO);
 		
@@ -151,12 +165,12 @@ public class AdminController {
 	@GetMapping("/submits/info")
 	public String submitInfo(Model model, MemberDTO memberDTO, SubmitDTO submitDTO) {
 		// 제출된 공고 상세 내용
-		SubmitDTO submitInfo = adminService.getSubmitInfo(submitDTO.getId());
+		SubmitDTO submitInfo = adminService.getSubmitInfo(submitDTO.getJobId());
 		
 		model.addAttribute("submit", submitInfo);
 		
 		// 공고를 제출한 기업 정보
-		MemberDTO comDTO = adminService.getUserInfo(memberDTO.getId());
+		MemberDTO comDTO = adminService.getUserInfo(memberDTO.getUserId());
 		
 		model.addAttribute("com", comDTO);
 		
@@ -191,7 +205,7 @@ public class AdminController {
 	// 결제 내역 상세정보 조회
 	@GetMapping("/payments/info")
 	public String payInfo(Model model, PayDTO payDTO) {
-		PayDTO payInfo = adminService.getPayInfo(payDTO.getId());
+		PayDTO payInfo = adminService.getPayInfo(payDTO.getPayId());
 		
 		model.addAttribute("pay", payInfo);
 		

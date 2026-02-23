@@ -13,7 +13,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SubmitDTO {
-	private BigInteger id; // job_id
+	private BigInteger jobId; // job_id
 	private BigInteger compId;
 	private String title;
 	private String field;
@@ -33,18 +33,17 @@ public class SubmitDTO {
 	private Date openDate;
 	private Date closeDate;
 	private int postStatus;
-	private LocalDateTime regDate;
-	private String submitDate;
+	private String regDate;
 	private Integer postCheck;
 	
 	public void setRegDate(LocalDateTime regDate) {
-		this.regDate = regDate;
-		
 		String pattern = "yyyy년 MM월 dd일 HH시 mm분 ss초";
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(pattern);
 		
-		this.submitDate = this.regDate.format(dtf);
+		this.regDate = regDate.format(dtf);
 		
 	}
+	
+	
 	
 }

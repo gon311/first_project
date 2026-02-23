@@ -1,7 +1,9 @@
 package com.itwillbs.project.admin.dto;
 
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +29,7 @@ pay_status enum('ready', 'paid', 'cacelled')
 @Setter
 @ToString
 public class PayDTO {
-	private String id;
+	private String payId;
 	private BigInteger userId;
 	private String userName;
 	private String userPhone;
@@ -40,8 +42,8 @@ public class PayDTO {
 	private String bankName;
 	private String depositAccount;
 	private String depositName;
-	private Integer payPrice;
-	private LocalDateTime payDate;
+	private String payPrice;
+	private String payDate;
 	private String payStatus;
 	
 	public void setUserType(String userType) {
@@ -50,6 +52,26 @@ public class PayDTO {
 		} else {
 			this.userType = "구직자 회원";
 		}
+	}
+	
+	public void setPayDate(LocalDateTime payDate) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm:ss");
+		this.payDate = payDate.format(dtf);
+	}
+	
+	public void setPayStatus(String payStatus) {
+		if(payStatus.equalsIgnoreCase("paid")) {
+			this.payStatus = "결제완료";
+		} else if(payStatus.equalsIgnoreCase("ready")) {
+			this.payStatus = "입금대기";
+		} else if(payStatus.equalsIgnoreCase("cacelled")) {
+			this.payStatus = "결제취소";
+		}
+	}
+	
+	public void setPayPrice(Integer payPrice) {
+		DecimalFormat df = new DecimalFormat("###,###");
+		this.payPrice = df.format(payPrice);
 	}
 	
 }

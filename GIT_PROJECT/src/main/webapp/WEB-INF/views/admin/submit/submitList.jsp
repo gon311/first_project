@@ -91,11 +91,11 @@
 				</thead>
 	 			<tbody>
 					<c:forEach var="submit" varStatus="status" items="${submitList}">
-						<tr class="clickable-row" onclick="location.href='submits/info?id=${submit.id}'">
+						<tr class="clickable-row" onclick="location.href='submits/info?jobId=${submit.jobId}'">
 							<td>${status.count}</td>
-							<td>${submit.id}</td>
+							<td>${submit.jobId}</td>
 							<td>${submit.title}</td>
-							<td>${submit.submitDate}</td>
+							<td>${submit.regDate}</td>
 							<td>${submit.compId}</td>
 							<td>${submit.postCheck}</td>
 						</tr>

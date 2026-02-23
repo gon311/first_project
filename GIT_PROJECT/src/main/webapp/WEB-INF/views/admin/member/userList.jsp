@@ -104,10 +104,10 @@
 						</thead>
 			 			<tbody>
 							<c:forEach var="user" varStatus="status" items="${userList}">
-								<tr class="clickable-row" onclick="location.href='users/info?id=${user.id}'">
+								<tr class="clickable-row" onclick="location.href='users/info?userId=${user.userId}'">
 									<td>${status.count}</td>
-									<td>${user.id}</td>
-									<td>${user.name}</td>
+									<td>${user.userId}</td>
+									<td>${user.userName}</td>
 									<td>${user.email}</td>
 									<td>${user.phone}</td>
 									<td>${user.userType}</td>
@@ -137,15 +137,15 @@
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 구현 예정 -->
-							<c:forEach var="user" varStatus="status" items="${userList}">
-								<tr class="clickable-row" onclick="location.href='users/info?id=${user.id}'">
+							<!-- 삭제 기능 구현 예정 -->
+							<c:forEach var="withdraw" varStatus="status" items="${withdrawList}">
+								<tr>
 									<td>${status.count}</td>
-									<td>${user.id}</td>
-									<td>${user.name}</td>
-									<td>${user.email}</td>
-									<td>${user.phone}</td>
-									<td>${user.withdrawnAt}</td>
+									<td>${withdraw.userId}</td>
+									<td>${withdraw.userName}</td>
+									<td>${withdraw.email}</td>
+									<td>${withdraw.phone}</td>
+									<td>${withdraw.withdrawnAt}</td>
 									<td>
 										<button class="btn btn-danger">삭제</button>
 									</td>
@@ -161,14 +161,7 @@
 	</main>
 	
 	<script type="text/javascript">
-		function selectSort(){
-			if(document.getElementById("sort").value == "new") {
- 				location.href="<c:url value="/admin/users" />" + "&sort=new";
-			} else if(document.getElementById("sort").value == "old") {
- 				location.href="<c:url value="/admin/users" />" + "&sort=old";
- 			} else if(document.getElementById("sort").value == "abc") {
-				location.href="<c:url value="/admin/users" />" + "&sort=abc";
- 		}
+	 // 정렬 기능 구현 예정
 	
 	</script>
 	

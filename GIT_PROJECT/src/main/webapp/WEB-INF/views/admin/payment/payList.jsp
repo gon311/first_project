@@ -99,22 +99,18 @@
 						<th>상태</th>
 					</tr>
 				</thead>
-				<!-- tbody 필요 -->
 	 			<tbody>
 					<c:forEach var="pay" varStatus="status" items="${payList}">
-						<tr class="clickable-row" onclick="location.href='payments/info?id=${pay.id}'">
-							<td>${status.count }</td>
-							<td>${pay.id }</td>
-							<td>
-								<fmt:parseDate var="parsedDate" value="${pay.payDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-								<fmt:formatDate value="${parsedDate}" pattern="yyyy년 MM월 dd일"/>
-							</td>
-							<td>${pay.productName }</td>
-							<td>${pay.userId }</td>
-							<td>${pay.userType }</td>
-							<td>${pay.payPrice }</td>
-							<td>${pay.payMethod }</td>
-							<td>${pay.payStatus }</td>
+						<tr class="clickable-row" onclick="location.href='payments/info?payId=${pay.payId}'">
+							<td>${status.count}</td>
+							<td>${pay.payId}</td>
+							<td>${pay.payDate}</td>
+							<td>${pay.productName}</td>
+							<td>${pay.userId}</td>
+							<td>${pay.userType}</td>
+							<td>${pay.payPrice}원</td>
+							<td>${pay.payMethod}</td>
+							<td>${pay.payStatus}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

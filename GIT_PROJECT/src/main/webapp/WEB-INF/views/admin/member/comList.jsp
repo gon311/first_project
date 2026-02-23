@@ -38,7 +38,7 @@
 				          <select class="form-select" name="status" onchange="selectStatus()">
 				            <option value="">전체</option>
 				            <option value="active">활성</option>
-				            <option value="block">차단</option>
+				            <option value="suspended">차단</option>
 				          </select>
 				        </div>
 				
@@ -102,10 +102,10 @@
 					<tbody>
 					<!-- 구현 예정 -->
 						<c:forEach var="com" varStatus="status" items="${comList}">
-							<tr class="clickable-row" onclick="location.href='coms/info?id=${com.id}'">
+							<tr class="clickable-row" onclick="location.href='coms/info?userId=${com.userId}'">
 								<td>${status.count}</td>
-								<td>${com.id}</td>
-								<td>${com.name}</td>
+								<td>${com.userId}</td>
+								<td>${com.userName}</td>
 								<td>${com.email}</td>
 								<td></td>
 								<td>${com.phone}</td>
@@ -138,14 +138,14 @@
 					</thead>
 					<tbody>
 						<!-- 구현 예정 -->
-						<c:forEach var="com" varStatus="status" items="${comList}">
+						<c:forEach var="withdraw" varStatus="status" items="${comWithdraw}">
 							<tr class="clickable-row">
 								<td>${status.count}</td>
-								<td>${com.id}</td>
-								<td>${com.name}</td>
-								<td>${com.email}</td>
-								<td>${com.phone}</td>
-								<td>${com.withdrawnAt}</td>
+								<td>${withdraw.userId}</td>
+								<td>${withdraw.userName}</td>
+								<td>${withdraw.email}</td>
+								<td>${withdraw.phone}</td>
+								<td>${withdraw.withdrawnAt}</td>
 								<td>
 									<button class="btn btn-danger">삭제</button>
 								</td>

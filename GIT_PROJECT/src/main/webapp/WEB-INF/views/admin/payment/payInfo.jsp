@@ -25,7 +25,7 @@
 						<dl class="row mb-0">
 
 							<dt class="col-5 text-secondary py-2">결제번호</dt>
-							<dd class="col-7 py-2">${pay.id}</dd>
+							<dd class="col-7 py-2">${pay.payId}</dd>
 
 							<dt class="col-5 text-secondary py-2">아이디</dt>
 							<dd class="col-7 py-2">${pay.userId}</dd>
@@ -49,7 +49,7 @@
 							<dd class="col-7 py-2">${pay.payMethod}</dd>
 
 							<dt class="col-5 text-secondary py-2">결제금액</dt>
-							<dd class="col-7 py-2">${pay.payPrice}</dd>
+							<dd class="col-7 py-2">${pay.payPrice}원</dd>
 
 							<dt class="col-5 text-secondary py-2">결제상태</dt>
 							<dd class="col-7 py-2">${pay.payStatus}</dd>

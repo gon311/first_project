@@ -35,6 +35,8 @@
 	</div>
 	
 	<%-- 메인 메뉴 버튼 부분 --%>
+	<%-- 구직자 요금제 페이지 url 설정 <c:url value="/store/ustore" /> 로 설정 부탁드립니다ㅜㅜ --%>
+	<%-- 기업회원 요금제 페이지 url 설정 <c:url value="/store/cstore" /> 로 설정 부탁드립니다ㅜㅜ --%>
 	<div>
 		<nav></nav>
 	</div>

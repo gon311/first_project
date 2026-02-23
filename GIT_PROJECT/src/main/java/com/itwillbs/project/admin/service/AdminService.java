@@ -33,6 +33,21 @@ public class AdminService{
 		return adminMapper.selectUserInfo(id);
 	}
 	
+	// 탈퇴한 회원 목록
+	public List<MemberDTO> getUserWithdraw(String keyword, String type, String status) {
+		return adminMapper.selectUserWithdraw(keyword, type, status);
+	}
+	
+	// 기업회원 목록 조회
+	public List<MemberDTO> getComList(String keyword, String type, String status) {
+		return adminMapper.selectComList(keyword, type, status);
+	}
+	
+	// 탈퇴한 회원 목록
+	public List<MemberDTO> getComWithdraw(String keyword, String type, String status) {
+		return adminMapper.selectComWithdraw(keyword, type, status);
+	}
+	
 	//======================================================================================
 	// 공지사항 리스트 조회 (DTO 파라미터로 사용)
 	public List<NoticeDTO> getNoticeList(NoticeDTO noticeDTO){
@@ -49,7 +64,8 @@ public class AdminService{
 	public void insertNotice(NoticeDTO noticeDTO) {
 		adminMapper.insertNotice(noticeDTO);
 	}
-
+	
+	//========================================================================================
 	// 채용공고 리스트 조회
 	public List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO) {
 		
@@ -67,11 +83,12 @@ public class AdminService{
 		return adminMapper.selectPayList(payDTO);
 	}
 
-	// 기업회원 목록 조회
-	public List<MemberDTO> getComList(String keyword, String type, String status) {
-		return adminMapper.selectComList(keyword, type, status);
+	// 결제 내역 상세정보
+	public PayDTO getPayInfo(String id) {
+		return adminMapper.selectPayInfo(id);
 	}
 	
+	//========================================================================================
 	// 제출된 공고 목록 조회
 	public List<SubmitDTO> getSubmitList(SubmitDTO submitDTO) {
 		return adminMapper.selectSubmitList(submitDTO);
@@ -82,19 +99,12 @@ public class AdminService{
 		return adminMapper.selectSubmitInfo(id);
 	}
 
-	// 결제 내역 상세정보
-	public PayDTO getPayInfo(String id) {
-		return adminMapper.selectPayInfo(id);
-	}
-
+	//========================================================================================
 	// 구매할 상품 정보(구매하기 진행)
 	public ProductDTO getProductInfo(String productId) {
 		return adminMapper.selectProductInfo(productId);
 	}
 
-	// 기업회원 상세정보 조회
-//	public MemberDTO getComInfo(BigInteger id) {
-//		return adminMapper.selectComInfo(id);
-//	}
+
 
 }

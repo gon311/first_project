@@ -8,8 +8,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SearchDTO {
-	// 조건별 검색 DTO(임시)
+	// 조건별 검색 DTO
 	private String keyword;
 	private String type; 
 	private String status;
+	private String startDate;
+	private String endDate;
 }

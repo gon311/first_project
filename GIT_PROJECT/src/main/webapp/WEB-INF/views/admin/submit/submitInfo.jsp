@@ -28,16 +28,16 @@
 							<dl class="row mb-0">
 
 								<dt class="col-4 text-secondary py-2">아이디</dt>
-								<dd class="col-8 py-2">${com.id}</dd>
+								<dd class="col-8 py-2">${com.userId}</dd>
 
 								<dt class="col-4 text-secondary py-2">회사명</dt>
-								<dd class="col-8 py-2">${com.name}</dd>
+								<dd class="col-8 py-2">${com.userName}</dd>
 
 								<dt class="col-4 text-secondary py-2">사업자등록번호</dt>
 								<dd class="col-8 py-2"></dd>
 
 								<dt class="col-4 text-secondary py-2">대표자명</dt>
-								<dd class="col-8 py-2">${com.name}</dd>
+								<dd class="col-8 py-2">${com.userName}</dd>
 
 								<dt class="col-4 text-secondary py-2">전화번호</dt>
 								<dd class="col-8 py-2">${com.phone}</dd>
@@ -94,7 +94,7 @@
 						<div class="mb-4 position-relative">
 						    <h4 class="fw-bold mb-1">${submit.title}</h4>
 						    <small class="text-muted position-absolute bottom-0 end-0">
-								제출일 : ${submit.submitDate}
+								제출일 : ${submit.regDate}
 						    </small>
 						</div>
 
@@ -122,7 +122,7 @@
 								<dd class="col-sm-9">${submit.probation}</dd>
 
 								<dt class="col-sm-3 text-secondary">경력</dt>
-								<dd class="col-sm-9">${submit.expType} - ${submit.expYear }</dd>
+								<dd class="col-sm-9">${submit.expType}(${submit.expYear})</dd>
 
 								<dt class="col-sm-3 text-secondary">학력</dt>
 								<dd class="col-sm-9">${submit.edu}</dd>

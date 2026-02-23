@@ -17,16 +17,6 @@ public class ReviewController {
 		return "/review/reviewForm";
 	}
 	
-	@GetMapping("/spellCheck")
-	public String spellCheck() {
-		return "/review/reviewSpellCheck";
-	}
-	
-	@GetMapping("/copyCheck")
-	public String copyCheck() {
-		return "/review/reviewCopyCheck";
-	}
-	
 	@PostMapping("/registText")
 	public String registText() {
 		
@@ -42,4 +32,13 @@ public class ReviewController {
 		return "/review/reviewSave";
 	}
 
+	@GetMapping("/spellCheck")
+	public String spellCheck() {
+		return "/review/reviewSpellCheck";
+	}
+	
+	@GetMapping("/copyCheck")
+	public String copyCheck() {
+		return "/review/reviewCopyCheck";
+	}
 }

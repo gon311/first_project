@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Log4j2 설정 파일 -->
+<Configuration>
+	<Properties> 
+<!-- 		<property name="layoutPattern">%d{yyyy-MM-dd HH:mm:ss} %-5p [%c] %m%n</property> -->
+		<property name="layoutPattern">%d{yyyy-MM-dd HH:mm:ss} %highlight{%-5p} %style{[%c]}{CYAN} %m%n</property>
+	</Properties>
+	
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+<!-- 			<PatternLayout pattern="%-5p: %c - %m%n" /> -->
+<!-- 			<PatternLayout pattern="%d %-5p: %c - %m%n" /> -->
+<!-- 			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p [%c] %m%n" /> -->
+			<PatternLayout pattern="${layoutPattern}" />
+		</Console>
+	</Appenders>
+	
+	<Loggers>
+		<!-- 기본 로거는 <Root> 태그, 그 외의 로거는 <Logger> 태그 사용하여 설정 -->
+		<!-- 각 태그에 level 속성을 사용하여 로그 메세지에 대한 심각도(레벨) 지정(심각도 : TRACE < DEBUG < INFO < WARN < ERROR < FATAL) -->
+		<!-- 각 태그 내부에 <AppederRef> 태그의 ref 속성값으로 <Appenders> 태그에서 생성한 로그 출력 대상 지정 -->
+		<!-- 1. 루트 로거 설정 -->
+		<!-- 기본 출력되는 시스템 로그(별도의 대상을 지정하지 않은 모든 로그)를 담당 -->
+<!-- 		<Root level="INFO"> -->
+		<Root level="DEBUG">
+			<AppenderRef ref="console" />
+		</Root>
+		
+		<!-- 2. 여기서부터 현재 프로젝트(애플리케이션) 내의 각 로그 대상 지정 -->
+		<!-- 1) 현재 프로젝트의 기본 패키지 내의 모든 클래스를 대상으로 지정 -->
+		<Logger name="com.itwillbs.mvc_board" level="INFO" additivity="false">
+<!-- 		<Logger name="com.itwillbs.mvc_board" level="DEBUG" additivity="false"> -->
+			<AppenderRef ref="console" />
+		</Logger>
+		
+		<!-- 2) log4jdbc 를 활용한 SQL 로그 출력 -->
+		<!-- 주의! log4jdbc.log4j2.properties 파일 필수! -->
+		<!-- 2-1) jdbc.sqltiming 로그 : 실행되는 SQL 구문 + 실행에 소용된 시간(밀리초)을 포함하는 로그 -->
+		<Logger name="jdbc.sqltiming" level="INFO" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+		
+		<Logger name="jdbc.resultsettable" level="INFO" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+		
+		<!--  임시) Log4jdbc 로그 => 내용이 많음 -->
+		<Logger name="log4jdbc.log4j2" level="INFO" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+		
+		
+	</Loggers>
+	
+
+
+</Configuration>

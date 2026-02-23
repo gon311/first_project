@@ -1,9 +1,13 @@
 package com.itwillbs.project.review.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.itwillbs.project.review.dto.CoverLetterRequestDTO;
+import com.itwillbs.project.review.service.ReviewService;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -11,6 +15,8 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/review")
 @Log4j2
 public class ReviewController {
+	@Autowired
+	private ReviewService reviewService;
 	
 	@GetMapping("/registForm")
 	public String registForm() {
@@ -28,9 +34,11 @@ public class ReviewController {
 	}
 	
 	@PostMapping("/registText")
-	public String registText() {
+	public String registText(CoverLetterRequestDTO requestDTO) {
+		log.info(">>>>>>>>>>> requestDTO : " + requestDTO);
+		reviewService.registForm(requestDTO);
 		
-		return "/review/reviewText";
+	    return "/review/reviewText";
 	}
 	// registForm 의 입력값은 따로 DB에 저장되어야, 내 자소서에서 문서를 불러올때 그 값이 유지.
 	// 단계값(step)을 줘서 1단계값, 2단계, 완성 표시 

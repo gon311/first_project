@@ -10,6 +10,7 @@ import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.PayDTO;
+import com.itwillbs.project.admin.dto.ProductDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.admin.mapper.AdminMapper;
 
@@ -84,6 +85,11 @@ public class AdminService{
 	// 결제 내역 상세정보
 	public PayDTO getPayInfo(String id) {
 		return adminMapper.selectPayInfo(id);
+	}
+
+	// 구매할 상품 정보(구매하기 진행)
+	public ProductDTO getProductInfo(String productId) {
+		return adminMapper.selectProductInfo(productId);
 	}
 
 	// 기업회원 상세정보 조회

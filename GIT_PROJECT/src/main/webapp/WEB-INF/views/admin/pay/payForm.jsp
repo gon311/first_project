@@ -7,8 +7,6 @@
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
 <body>
-
-    <%-- 헤더 영역 --%>
     <%@ include file="/WEB-INF/views/inc/header.jspf" %>
     
     <main>
@@ -38,11 +36,11 @@
                         <h4 class="mb-3">상품 정보</h4>
                         <div class="mb-3">
                             <label class="form-label">상품명</label>
-                            <input type="text" class="form-control" name="productName" readonly>
+                            <input type="text" class="form-control" name="productName" value="${product.productName}" readonly>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">상품 가격</label>
-                            <input type="text" class="form-control" name="productPrice" readonly>
+                            <input type="text" class="form-control" name="productPrice" value="${product.productPrice}원" readonly>
                         </div>
                     </div>
                 </div>
@@ -112,7 +110,7 @@
                         <h4 class="mb-3">결제 금액</h4>
                         <div class="row mb-2">
                             <div class="col-6">상품 금액</div>
-                            <div class="col-6 text-end">0원</div>
+                            <div class="col-6 text-end">${product.productPrice}원</div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-6">할인 금액</div>
@@ -120,7 +118,7 @@
                         </div>
                         <div class="row fw-bold">
                             <div class="col-6">총 결제 금액</div>
-                            <div class="col-6 text-end">0원</div>
+                            <div class="col-6 text-end">${product.productPrice}원</div>
                         </div>
                     </div>
                 </div>

@@ -2,6 +2,7 @@ package com.itwillbs.project.admin.dto;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import lombok.Getter;
@@ -33,5 +34,17 @@ public class SubmitDTO {
 	private Date closeDate;
 	private int postStatus;
 	private LocalDateTime regDate;
+	private String submitDate;
 	private Integer postCheck;
+	
+	public void setRegDate(LocalDateTime regDate) {
+		this.regDate = regDate;
+		
+		String pattern = "yyyy년 MM월 dd일 HH시 mm분 ss초";
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(pattern);
+		
+		this.submitDate = this.regDate.format(dtf);
+		
+	}
+	
 }

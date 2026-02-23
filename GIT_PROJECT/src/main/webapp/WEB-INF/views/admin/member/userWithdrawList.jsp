@@ -30,9 +30,9 @@
 				          <select class="form-select" name="type">
 				            <option value="" selected>전체</option>
 				            <option value="p">기본</option>
-				            <option value="P-U10">10회권</option>
-				            <option value="P-U30">30회권</option>
-				            <option value="P-U60">60회권</option>
+				            <option value="c">10회권</option>
+				            <option value="30">30회권</option>
+				            <option value="60">60회권</option>
 				          </select>
 				        </div>
 				
@@ -102,6 +102,7 @@
 								<th>상태</th>
 							</tr>
 						</thead>
+						<!-- tbody 필요 -->
 			 			<tbody>
 							<c:forEach var="user" varStatus="status" items="${userList}">
 								<tr class="clickable-row" onclick="location.href='users/info?id=${user.id}'">
@@ -136,22 +137,7 @@
 								<th>회원삭제</th>
 							</tr>
 						</thead>
-						<tbody>
-							<!-- 구현 예정 -->
-							<c:forEach var="user" varStatus="status" items="${userList}">
-								<tr class="clickable-row" onclick="location.href='users/info?id=${user.id}'">
-									<td>${status.count}</td>
-									<td>${user.id}</td>
-									<td>${user.name}</td>
-									<td>${user.email}</td>
-									<td>${user.phone}</td>
-									<td>${user.withdrawnAt}</td>
-									<td>
-										<button class="btn btn-danger">삭제</button>
-									</td>
-								</tr>
-							</c:forEach>
-						</tbody>
+						<!-- 데이터가 아직 없으므로 tbody는 주석 처리 -->
 						
 		
 					</table>

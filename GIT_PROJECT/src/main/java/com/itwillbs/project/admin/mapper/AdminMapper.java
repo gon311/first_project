@@ -10,6 +10,7 @@ import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.PayDTO;
+import com.itwillbs.project.admin.dto.ProductDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
 
 @Mapper
@@ -61,6 +62,9 @@ public interface AdminMapper {
 
 	// 결제 내역 상세 정보 조회
 	PayDTO selectPayInfo(String id);
+
+	// 구매할 상품 상세 정보 조회(구매하기 진행)
+	ProductDTO selectProductInfo(String productId);
 
 	// 기업회원 상세정보 조회
 //	MemberDTO selectComInfo(BigInteger id);

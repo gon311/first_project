@@ -29,8 +29,8 @@
 					        
 					        <!-- 키워드 검색 -->
 					        <div class="col-md-3">
-					          <label for="keyword" class="form-label">키워드</label>
-					          <input type="text" class="form-control" name="keyword" placeholder="키워드를 입력하세요">
+					          <label for="keyword" class="form-label">결제명</label>
+					          <input type="text" class="form-control" name="keyword" placeholder="결제명을 입력하세요">
 					        </div>
 					
 					        <!-- 구분 -->

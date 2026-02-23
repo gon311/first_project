@@ -283,6 +283,16 @@
 			job_id = #{id}
 	</select>
 	
+	<!-- ===================================================================== -->
+	<!-- 구매할 상품 정보 조회 -->
+	<select id="selectProductInfo" resultType="product">
+		select	*
+		from
+			product
+		where
+			product_id = #{productId}
+	</select>
+	
 	
 	
 </mapper>

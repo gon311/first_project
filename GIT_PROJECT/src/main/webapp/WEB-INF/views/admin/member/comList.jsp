@@ -16,10 +16,10 @@
 			    <div class="card-body">
 				      <h5 class="card-title mb-3">조건별 검색</h5>
 				      <form action="<c:url value="/admin/coms" />" name="searchForm" method="post" class="row g-3 align-items-center">
-				        <!-- 제목 검색 -->
+				        <!-- 기업명 검색 -->
 				        <div class="col-md-4">
-				          <label for="keyword" class="form-label">제목</label>
-				          <input type="search" class="form-control" name="keyword" placeholder="키워드를 입력하세요">
+				          <label for="keyword" class="form-label">기업명</label>
+				          <input type="search" class="form-control" name="keyword" placeholder="기업명을 입력하세요">
 				        </div>
 				
 				        <!-- 구분 -->
@@ -136,7 +136,22 @@
 							<th>회원삭제</th>
 						</tr>
 					</thead>
-					<!-- 데이터가 아직 없으므로 tbody는 주석 처리 -->
+					<tbody>
+						<!-- 구현 예정 -->
+						<c:forEach var="com" varStatus="status" items="${comList}">
+							<tr class="clickable-row">
+								<td>${status.count}</td>
+								<td>${com.id}</td>
+								<td>${com.name}</td>
+								<td>${com.email}</td>
+								<td>${com.phone}</td>
+								<td>${com.withdrawnAt}</td>
+								<td>
+									<button class="btn btn-danger">삭제</button>
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
 	
 				</table>
 			</div>

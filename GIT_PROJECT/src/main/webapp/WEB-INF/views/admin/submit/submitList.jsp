@@ -29,8 +29,8 @@
 					        
 					        <!-- 키워드 검색 -->
 					        <div class="col-md-4">
-					          <label for="keyword" class="form-label">키워드</label>
-					          <input type="text" class="form-control" name="keyword" placeholder="키워드를 입력하세요">
+					          <label for="keyword" class="form-label">기업명</label>
+					          <input type="text" class="form-control" name="keyword" placeholder="기업명을 입력하세요">
 					        </div>
 					
 					        <!-- 구분 -->
@@ -38,12 +38,11 @@
 					          <label for="type" class="form-label">구분</label>
 					          <select class="form-select" name="user_type">
 					            <option value="" selected>전체</option>
-					            <option value="approval">승인</option>
-					            <option value="wait">검토전</option>
-					            <option value="defer">보류</option>
+					            <option value="1">검토전</option>
+					            <option value="2">승인</option>
+					            <option value="3">보류</option>
 					          </select>
 					        </div>
-					
 					        
 				        </div>
 				        <div class="row my-0.5">
@@ -84,8 +83,8 @@
 					<tr>
 						<th style="width:5%;">No</th>
 		                <th style="width:10%;">공고번호</th>
-		                <th style="width:20%;">제출일자</th>
-		                <th style="width:40%;">제목</th> 
+		                <th style="width:35%;">제목</th> 
+		                <th style="width:25%;">제출일자</th>
 		                <th style="width:15%;">기업명</th>
 		                <th style="width:10%;">상태</th>
 					</tr>
@@ -95,11 +94,8 @@
 						<tr class="clickable-row" onclick="location.href='submits/info?id=${submit.id}'">
 							<td>${status.count}</td>
 							<td>${submit.id}</td>
-							<td>
-								<fmt:parseDate var="submitDate" value="${submit.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-								<fmt:formatDate value="${submitDate}" pattern="yyyy년 MM월 dd일 HH시 mm분"/>
-							</td>
 							<td>${submit.title}</td>
+							<td>${submit.submitDate}</td>
 							<td>${submit.compId}</td>
 							<td>${submit.postCheck}</td>
 						</tr>

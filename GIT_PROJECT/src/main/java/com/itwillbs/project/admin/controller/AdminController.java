@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.PayDTO;
+import com.itwillbs.project.admin.dto.ProductDTO;
 import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.admin.service.AdminService;
@@ -212,9 +213,15 @@ public class AdminController {
 		return "admin/store/userStore";
 	}
 	
-	// 결제하기(보류)
+	// 구매하기(보류)
 	@GetMapping("/pay")
-	public String pay() {
+	public String pay(String sId, ProductDTO productDTO, Model model) {
+		// 세션에 저장된 id값을 통해 구매자 정보 출력
+		
+		// 상품 정보
+		ProductDTO productInfo = adminService.getProductInfo(productDTO.getProductId());
+		model.addAttribute("product", productInfo);
+		
 		return "admin/pay/payForm";
 	}
 	

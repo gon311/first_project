@@ -31,8 +31,8 @@ pay_status enum('ready', 'paid', 'cacelled')
 public class PayDTO {
 	private String payId;
 	private BigInteger userId;
-	private String userName;
-	private String userPhone;
+	private String userName;	
+	private String phone;	 
 	private String userType;	 // 사용자 구분(결제 - 회원 테이블 조인)
 	private String productId;
 	private String productName;  // 상품명(결제 - 상품 테이블 조인)

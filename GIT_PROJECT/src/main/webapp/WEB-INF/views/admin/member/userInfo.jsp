@@ -40,13 +40,13 @@
 								<dd class="col-8 py-2">${user.email}</dd>
 
 								<dt class="col-4 text-secondary py-2">생년월일</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">-</dd>
 
 								<dt class="col-4 text-secondary py-2">성별</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">-</dd>
 
 								<dt class="col-4 text-secondary py-2">국적</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">-</dd>
 
 								<dt class="col-4 text-secondary py-2">가입일자</dt>
 								<dd class="col-8 py-2">${user.joinedAt}</dd>
@@ -55,7 +55,7 @@
 								<dd class="col-8 py-2">${user.status}</dd>
 
 								<dt class="col-4 text-secondary py-2">신고횟수</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">-</dd>
 							</dl>
 
 							<div class="text-end mt-4">

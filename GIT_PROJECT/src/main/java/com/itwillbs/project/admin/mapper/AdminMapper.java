@@ -20,7 +20,7 @@ public interface AdminMapper {
 								,@Param("type") String type
 								,@Param("status") String status);
 
-	// 구직자 회원 상세 정보
+	// 회원 상세 정보
 	MemberDTO selectUserInfo(BigInteger id);
 	
 	// 탈퇴 회원 목록 조회

@@ -61,7 +61,7 @@
 							<dd class="col-8 py-2">${com.status}</dd>
 
 							<dt class="col-4 text-secondary py-2">신고횟수</dt>
-							<dd class="col-8 py-2"></dd>
+							<dd class="col-8 py-2">-</dd>
 
 						</dl>
 

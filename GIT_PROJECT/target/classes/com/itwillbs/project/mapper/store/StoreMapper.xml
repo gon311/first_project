@@ -6,7 +6,7 @@
 <mapper namespace="com.itwillbs.project.store.mapper.StoreMapper">
 
 	<!-- 구매할 상품 정보 조회 -->
-	<select id="selectProductInfo" resultType="store">
+	<select id="selectStoreInfo" resultType="store">
 		select	*
 		from
 			product

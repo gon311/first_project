@@ -34,7 +34,7 @@
 								<dd class="col-8 py-2">${com.userName}</dd>
 
 								<dt class="col-4 text-secondary py-2">사업자등록번호</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">-</dd>
 
 								<dt class="col-4 text-secondary py-2">대표자명</dt>
 								<dd class="col-8 py-2">${com.userName}</dd>
@@ -52,7 +52,7 @@
 								<dd class="col-8 py-2">${submit.mgrName}</dd>
 
 								<dt class="col-4 text-secondary py-2">보유 이용권</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">-</dd>
 
 								<dt class="col-4 text-secondary py-2">상태</dt>
 								<dd class="col-8 py-2">${com.status}</dd>

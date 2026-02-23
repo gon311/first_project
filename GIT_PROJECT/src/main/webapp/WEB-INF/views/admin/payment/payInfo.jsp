@@ -34,7 +34,7 @@
 							<dd class="col-7 py-2">${pay.userName}</dd>
 
 							<dt class="col-5 text-secondary py-2">전화번호</dt>
-							<dd class="col-7 py-2">${pay.userPhone}</dd>
+							<dd class="col-7 py-2">${pay.phone}</dd>
 
 							<dt class="col-5 text-secondary py-2">회원유형</dt>
 							<dd class="col-7 py-2">${pay.userType}</dd>

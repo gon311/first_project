@@ -49,5 +49,16 @@ public class JobController {
 	    return "/job/job_list";
 	}
 	
+	@GetMapping("/JobRelay")
+	public String relay() {
+		
+		return "/job/job_relay";
+	}
+	
+	@GetMapping("/JobManagement")
+	public String management() {
+		
+		return "/job/job_management";
+	}
 	
 }

@@ -302,22 +302,46 @@
 	<!-- 제출된 공고 목록 조회 -->
 	<select id="selectSubmitList" resultType="submit">
 		select 
-			*
+			j.job_id
+			,j.comp_id
+			,c.company_name
+			,j.title
+			,j.field
+			,j.task
+			,j.emp_type
+			,j.probation
+			,j.exp_type
+			,j.exp_year
+			,j.edu
+			,j.salary
+			,j.address
+			,j.is_remote
+			,j.mgr_name
+			,j.mgr_phone
+			,j.mgr_email
+			,j.is_public
+			,j.open_date
+			,j.close_date
+			,j.post_status
+			,j.reg_date
+			,j.post_check
 		from 
-			job_posting
+			job_posting j join user_company c
+		on
+			j.comp_id = c.user_id
 		where
 			1=1
 			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
 				and 
-					date(reg_date) between #{startDate} and #{endDate}
+					date(j.reg_date) between #{startDate} and #{endDate}
 			</if>
 			<if test="keyword != null and !keyword.equals('')">
 				and 
-					title like concat('%',#{keyword},'%')
+					c.company_name like concat('%',#{keyword},'%')
 			</if>
 			<if test="submitStatus != null and !submitStatus.equals('')">
 				and 
-					post_check = #{submitStatus}
+					j.post_check = #{submitStatus}
 			</if>
 	</select>
 	

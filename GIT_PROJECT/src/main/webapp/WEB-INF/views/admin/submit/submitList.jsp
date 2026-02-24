@@ -46,8 +46,8 @@
 		
 		                    <!-- 기업명 -->
 		                    <div class="col-md-4">
-		                        <label class="form-label fw-bold mb-2">공고명</label>
-		                        <input type="text" class="form-control form-control-sm" name="keyword" placeholder="키워드를 입력하세요">
+		                        <label class="form-label fw-bold mb-2">기업명</label>
+		                        <input type="text" class="form-control form-control-sm" name="keyword" placeholder="기업명을 입력하세요">
 		                    </div>
 		
 		                    <!-- 상태 -->
@@ -103,7 +103,7 @@
 							<td>${submit.jobId}</td>
 							<td>${submit.title}</td>
 							<td>${submit.regDate}</td>
-							<td>${submit.compId}</td>
+							<td>${submit.companyName}</td>
 							<td>${submit.postCheck}</td>
 						</tr>
 					</c:forEach>

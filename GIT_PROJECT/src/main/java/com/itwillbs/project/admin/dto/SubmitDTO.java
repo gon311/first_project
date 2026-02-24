@@ -51,6 +51,7 @@ CONSTRAINT `check_date` CHECK (`open_date` <= `close_date`)
 public class SubmitDTO {
 	private BigInteger jobId; // job_id
 	private BigInteger compId;
+	private String companyName;
 	private String title;
 	private String field;
 	private String task;

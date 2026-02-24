@@ -64,9 +64,9 @@
 		                        <label class="form-label fw-bold mb-2">상태</label>
 		                        <select class="form-select form-select-sm" name="payStatus">
 		                            <option value="" selected>전체</option>
-		                            <option value="1">검토전</option>
-		                            <option value="2">승인</option>
-		                            <option value="3">보류</option>
+		                            <option value="paid">결제완료</option>
+		                            <option value="ready">입금대기</option>
+		                            <option value="cancelled">결제취소</option>
 		                        </select>
 		                    </div>
 		

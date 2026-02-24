@@ -52,8 +52,8 @@
 		
 		                    <!-- 구분 -->
 		                    <div class="col-md-3">
-		                        <label class="form-label fw-bold mb-2">구분</label>
-		                        <select class="form-select form-select-sm" name="user_type">
+		                        <label class="form-label fw-bold mb-2">상태</label>
+		                        <select class="form-select form-select-sm" name="status">
 		                            <option value="" selected>전체</option>
 		                            <option value="1">검토전</option>
 		                            <option value="2">승인</option>

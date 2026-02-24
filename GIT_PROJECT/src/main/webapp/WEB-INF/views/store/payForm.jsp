@@ -13,7 +13,7 @@
         <div class="container mt-5 custom-width">
             <h2 class="mb-4 text-center">구매하기</h2>
 
-            <form action="<c:url value='/admin/pay' />" method="post" class="needs-validation" novalidate>
+            <form action="<c:url value='/store/pay' />" method="post" class="needs-validation" novalidate>
 
                 <!-- 주문자 정보 -->
                 <div class="card mb-4">
@@ -104,7 +104,7 @@
                         <h4 class="mb-3">결제 금액</h4>
                         <div class="row mb-2">
                             <div class="col-6">상품 금액</div>
-                            <div class="col-6 text-end">${product.productPrice}원</div>
+                            <div class="col-6 text-end">${storeInfo.productPrice}원</div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-6">할인 금액</div>
@@ -112,7 +112,7 @@
                         </div>
                         <div class="row fw-bold">
                             <div class="col-6">총 결제 금액</div>
-                            <div class="col-6 text-end">${product.productPrice}원</div>
+                            <div class="col-6 text-end">${storeInfo.productPrice}원</div>
                         </div>
                     </div>
                 </div>

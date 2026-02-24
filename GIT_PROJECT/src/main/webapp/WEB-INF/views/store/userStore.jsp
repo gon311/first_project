@@ -7,7 +7,7 @@
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
 <body>
-    <%@ include file="/WEB-INF/views/admin/common/header.jsp" %>
+    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
     <main class="container mt-5">
         <div class="row">
@@ -47,7 +47,7 @@
                                 <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">5,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay'">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U10'">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                                 <hr class="mt-1 mb-2"> <!-- 구분선 아래 간격 줄임 -->
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">8,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay'">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U30'">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                                 <hr class="mt-1 mb-2"> <!-- 구분선 아래 간격 줄임 -->
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">15,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay'">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U60'">구매하기</button>
                                 </div>
                             </div>
                         </div>

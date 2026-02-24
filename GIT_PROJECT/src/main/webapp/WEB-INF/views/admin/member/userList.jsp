@@ -68,6 +68,7 @@
                                         <option value="" selected>전체</option>
                                         <option value="active">활성</option>
                                         <option value="suspended">차단</option>
+                                        <option value="withdrawn">탈퇴</option>
                                     </select>
                                 </div>
 

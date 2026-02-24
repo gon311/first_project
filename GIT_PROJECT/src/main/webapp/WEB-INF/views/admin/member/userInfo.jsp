@@ -50,6 +50,11 @@
 
 								<dt class="col-4 text-secondary py-2">가입일자</dt>
 								<dd class="col-8 py-2">${user.joinedAt}</dd>
+								
+								<c:if test="${user.status eq '탈퇴'}">
+									<dt class="col-4 text-secondary py-2">탈퇴일자</dt>
+									<dd class="col-8 py-2">${user.withdrawnAt}</dd>
+								</c:if>
 
 								<dt class="col-4 text-secondary py-2">상태</dt>
 								<dd class="col-8 py-2">${user.status}</dd>
@@ -59,18 +64,17 @@
 							</dl>
 
 							<div class="text-end mt-4">
-								<c:choose>
-									<c:when test="${user.status eq '활성'}">
-										<button type="button" id="block" class="btn btn-danger btn-sm" onclick="block(${user.userId})">
-											차단
-										</button>
-									</c:when>
-									<c:otherwise>
-										<button type="button" id="active" class="btn btn-outline-danger btn-sm" onclick="block(${user.userId})">
-											차단 해제
-										</button>
-									</c:otherwise>
-								</c:choose>
+								<c:if test="${user.status eq '활성'}">
+									<button type="button" id="block" class="btn btn-danger btn-sm" onclick="block(${user.userId})">
+										차단
+									</button>
+								</c:if>
+								<c:if test="${user.status eq '차단'}">
+									<button type="button" id="active" class="btn btn-outline-danger btn-sm" onclick="block(${user.userId})">
+										차단 해제
+									</button>
+								</c:if>
+							
 							</div>
 
 						</div>

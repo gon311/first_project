@@ -52,7 +52,17 @@
 		                    <!-- 구분 -->
 		                    <div class="col-md-2">
 		                        <label class="form-label fw-bold mb-2">구분</label>
-		                        <select class="form-select form-select-sm" name="user_type">
+		                        <select class="form-select form-select-sm" name="userType">
+		                            <option value="" selected>전체</option>
+		                            <option value="P">구직자</option>
+		                            <option value="C">기업</option>
+		                        </select>
+		                    </div>
+		                    
+		                    <!-- 상태 -->
+		                    <div class="col-md-2">
+		                        <label class="form-label fw-bold mb-2">상태</label>
+		                        <select class="form-select form-select-sm" name="status">
 		                            <option value="" selected>전체</option>
 		                            <option value="1">검토전</option>
 		                            <option value="2">승인</option>
@@ -60,15 +70,6 @@
 		                        </select>
 		                    </div>
 		
-		                    <!-- 상태 -->
-		                    <div class="col-md-2">
-		                        <label class="form-label fw-bold mb-2">상태</label>
-		                        <select class="form-select form-select-sm" name="status">
-		                            <option value="" selected>전체</option>
-		                            <option value="active">활성</option>
-		                            <option value="inactive">비활성</option>
-		                        </select>
-		                    </div>
 		                </div>
 		
 		                <!-- 검색 버튼 -->

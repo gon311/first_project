@@ -33,15 +33,15 @@ public class AdminController {
 	//=============================================================
 	// [ 구직자 관리 페이지 ]
 	// 조건별 검색
-	@PostMapping("/users")
-	public String userSearch(SearchDTO searchDTO, RedirectAttributes ra) {
-		ra.addAttribute("keyword", searchDTO.getKeyword());
-		ra.addAttribute("type", searchDTO.getType());
-		ra.addAttribute("status", searchDTO.getStatus());
-		System.out.println("searchDTO : " + searchDTO);
-		
-		return "redirect:/admin/users";
-	}
+//	@PostMapping("/users")
+//	public String userSearch(SearchDTO searchDTO, RedirectAttributes ra) {
+//		ra.addAttribute("keyword", searchDTO.getKeyword());
+//		ra.addAttribute("type", searchDTO.getType());
+//		ra.addAttribute("status", searchDTO.getStatus());
+//		System.out.println("searchDTO : " + searchDTO);
+//		
+//		return "redirect:/admin/users";
+//	}
 	
 	// 구직자 회원 목록(정렬 구현중)
 	@GetMapping("/users")
@@ -92,15 +92,15 @@ public class AdminController {
 	// [ 기업회원 관리 페이지 ]
 	
 	// 조건별 검색
-	@PostMapping("/coms")
-	public String comSearch(SearchDTO searchDTO, RedirectAttributes ra) {
-		ra.addAttribute("keyword", searchDTO.getKeyword());
-		ra.addAttribute("type", searchDTO.getType());
-		ra.addAttribute("status", searchDTO.getStatus());
-		System.out.println("searchDTO : " + searchDTO);
-		
-		return "redirect:/admin/coms";
-	}
+//	@PostMapping("/coms")
+//	public String comSearch(SearchDTO searchDTO, RedirectAttributes ra) {
+//		ra.addAttribute("keyword", searchDTO.getKeyword());
+//		ra.addAttribute("type", searchDTO.getType());
+//		ra.addAttribute("status", searchDTO.getStatus());
+//		System.out.println("searchDTO : " + searchDTO);
+//		
+//		return "redirect:/admin/coms";
+//	}
 	
 	// 기업회원 목록 조회
 	@GetMapping("/coms")
@@ -142,15 +142,15 @@ public class AdminController {
 	// [ 제출된 공고 관리 ](상세정보 구현 예정)
 	
 	// 조건별 검색(구현중)
-	@PostMapping("/submits")
-	public String submitSearch(SearchDTO searchDTO, RedirectAttributes ra) {
-		ra.addAttribute("keyword", searchDTO.getKeyword());
-		ra.addAttribute("type", searchDTO.getType());
-		ra.addAttribute("status", searchDTO.getStatus());
-		System.out.println("searchDTO : " + searchDTO);
-		
-		return "redirect:/admin/submits";
-	}
+//	@PostMapping("/submits")
+//	public String submitSearch(SearchDTO searchDTO, RedirectAttributes ra) {
+//		ra.addAttribute("keyword", searchDTO.getKeyword());
+//		ra.addAttribute("type", searchDTO.getType());
+//		ra.addAttribute("status", searchDTO.getStatus());
+//		System.out.println("searchDTO : " + searchDTO);
+//		
+//		return "redirect:/admin/submits";
+//	}
 	
 	// 제출된 공고 목록 조회
 	@GetMapping("/submits")

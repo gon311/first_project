@@ -7,14 +7,14 @@
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
 <body>
-    <%@ include file="/WEB-INF/views/admin/common/header.jsp" %>
+    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
     <main class="container mt-5">
         <div class="row">
-            <div class="col-lg-10 mx-auto"> <!-- 중앙 집중 -->
+            <div class="col-lg-10 mx-auto"> 
 
                 <!-- 헤더 영역 -->
-                <div class="text-center mb-5 mb-7"> <!-- 모바일은 mb-5, 데스크탑은 mb-7 -->
+                <div class="text-center mb-5 mb-7"> 
                     <p class="mt-4">
                         <span class="display-5 fw-bold text-primary">신속</span>
                         <span class="fs-3 text-dark fw-semibold">하고</span>
@@ -28,7 +28,7 @@
                 </div>
 
                 <!-- 요금제 카드 영역 -->
-                <div class="row row-cols-1 row-cols-md-3 g-4 mb-5 mb-7"> <!-- 모바일은 mb-5, 데스크탑은 mb-7 -->
+                <div class="row row-cols-1 row-cols-md-3 g-4 mb-5 mb-7"> 
                     
                     <!-- 10회권 -->
                     <div class="col">
@@ -44,10 +44,10 @@
                                 <p class="small text-muted text-center mb-0">
                                     기본 첨삭 5회 + 10회 추가 제공
                                 </p>
-                                <hr class="mt-1 mb-2"> <!-- 구분선 아래 간격 줄임 -->
+                                <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">5,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay'">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U10'">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                                 <hr class="mt-1 mb-2"> <!-- 구분선 아래 간격 줄임 -->
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">8,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay'">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U30'">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                                 <hr class="mt-1 mb-2"> <!-- 구분선 아래 간격 줄임 -->
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">15,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay'">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U60'">구매하기</button>
                                 </div>
                             </div>
                         </div>

@@ -12,7 +12,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/admin/common/header.jsp" %>
 
-	<main class="container mt-4 pt-4 mb-5 pb-5">
+	<main class="container mt-5 pt-4 mb-5 pb-5">
 		
 		<div class="row">
 
@@ -28,16 +28,16 @@
 							<dl class="row mb-0">
 
 								<dt class="col-4 text-secondary py-2">아이디</dt>
-								<dd class="col-8 py-2">${com.id}</dd>
+								<dd class="col-8 py-2">${com.userId}</dd>
 
 								<dt class="col-4 text-secondary py-2">회사명</dt>
-								<dd class="col-8 py-2">${com.name}</dd>
+								<dd class="col-8 py-2">${com.companyName}</dd>
 
 								<dt class="col-4 text-secondary py-2">사업자등록번호</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">${com.bizRegNo}</dd>
 
 								<dt class="col-4 text-secondary py-2">대표자명</dt>
-								<dd class="col-8 py-2">${com.name}</dd>
+								<dd class="col-8 py-2">${com.ceoName}</dd>
 
 								<dt class="col-4 text-secondary py-2">전화번호</dt>
 								<dd class="col-8 py-2">${com.phone}</dd>
@@ -46,13 +46,13 @@
 								<dd class="col-8 py-2">${com.email}</dd>
 
 								<dt class="col-4 text-secondary py-2">회사 주소</dt>
-								<dd class="col-8 py-2">${submit.address}</dd>
+								<dd class="col-8 py-2">${com.companyAddress}</dd>
 
 								<dt class="col-4 text-secondary py-2">담당자명</dt>
-								<dd class="col-8 py-2">${submit.mgrName}</dd>
+								<dd class="col-8 py-2">${com.userName}</dd>
 
 								<dt class="col-4 text-secondary py-2">보유 이용권</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">-</dd>
 
 								<dt class="col-4 text-secondary py-2">상태</dt>
 								<dd class="col-8 py-2">${com.status}</dd>
@@ -74,7 +74,7 @@
 						<div class="d-flex justify-content-between align-items-center">
 							<h5 class="mb-0 fw-bold">공고 상세 검토</h5>
 							<span class="badge bg-warning text-dark px-3 py-2">
-								진행중
+								${submit.postCheck}
 							</span>
 						</div>
 					</div>
@@ -82,10 +82,9 @@
 					<div class="card-body">
 
 						<div class="mb-4 position-relative">
-						    <h4 class="fw-bold mb-1">웹 개발자 채용</h4>
+						    <h4 class="fw-bold mb-1">${submit.title}</h4>
 						    <small class="text-muted position-absolute bottom-0 end-0">
-						        <fmt:parseDate var="submitDate" value="${submit.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-								제출일 <fmt:formatDate value="${submitDate}" pattern="yyyy년 MM월 dd일 HH시 mm분 ss초"/>
+								제출일 : ${submit.regDate}
 						    </small>
 						</div>
 
@@ -100,37 +99,57 @@
 									<fmt:formatDate value="${submit.closeDate}" pattern="yyyy년 MM월 dd일"/> 
 								</dd>
 								
-								<dt class="col-sm-3 text-secondary">직종</dt>
-								<dd class="col-sm-9">
-									프론트엔드 개발자, 백엔드 개발자
-								</dd>
+								<dt class="col-sm-3 text-secondary">모집분야</dt>
+								<dd class="col-sm-9">${submit.field}</dd>
+								
+								<dt class="col-sm-3 text-secondary">직무</dt>
+								<dd class="col-sm-9">${submit.task}</dd>
+
+								<dt class="col-sm-3 text-secondary">고용형태</dt>
+								<dd class="col-sm-9">${submit.empType}</dd>
+								
+								<dt class="col-sm-3 text-secondary">수습기간 여부</dt>
+								<dd class="col-sm-9">${submit.probation}</dd>
 
 								<dt class="col-sm-3 text-secondary">경력</dt>
-								<dd class="col-sm-9">경력 무관</dd>
+								<dd class="col-sm-9">${submit.expType}(${submit.expYear})</dd>
 
 								<dt class="col-sm-3 text-secondary">학력</dt>
-								<dd class="col-sm-9">학력 무관</dd>
-
-								<dt class="col-sm-3 text-secondary">근무지역</dt>
-								<dd class="col-sm-9">부산시 부산진구</dd>
-
-								<dt class="col-sm-3 text-secondary">근무형태</dt>
-								<dd class="col-sm-9">정규직</dd>
+								<dd class="col-sm-9">${submit.edu}</dd>
 
 								<dt class="col-sm-3 text-secondary">급여</dt>
-								<dd class="col-sm-9">면접 후 결정</dd>
+								<dd class="col-sm-9">${submit.salary}</dd>
+								
+								<dt class="col-sm-3 text-secondary">근무지역</dt>
+								<dd class="col-sm-9">${submit.address}</dd>
+								
+								<dt class="col-sm-3 text-secondary">재택근무</dt>
+								<dd class="col-sm-9">${submit.isRemote}</dd>
+
+								<dt class="col-sm-3 text-secondary">담당자</dt>
+								<dd class="col-sm-9">${submit.mgrName}</dd>
+								
+								<dt class="col-sm-3 text-secondary">담당자 연락처</dt>
+								<dd class="col-sm-9">${submit.mgrPhone}</dd>
+								
+								<dt class="col-sm-3 text-secondary">담당자 이메일</dt>
+								<dd class="col-sm-9">${submit.mgrEmail}</dd>
+
+								<dt class="col-sm-3 text-secondary">정보 공개 여부</dt>
+								<dd class="col-sm-9">${submit.isPublic}</dd>
 
 								<dt class="col-sm-3 text-secondary">접수기간</dt>
 								<dd class="col-sm-9">
-									2026.01.02 ~ 2026.02.01
+									<fmt:formatDate value="${submit.openDate}" pattern="yyyy/MM/dd"/> 
+									~ 
+									<fmt:formatDate value="${submit.closeDate}" pattern="yyyy/MM/dd"/>
 								</dd>
 
 								<dt class="col-sm-3 text-secondary">접수방법</dt>
-								<dd class="col-sm-9">홈페이지 접수</dd>
+								<dd class="col-sm-9">-</dd>
 								
 								<dt class="col-sm-3 text-secondary">첨부파일</dt>
-								<dd class="col-sm-9"></dd>	
-								
+								<dd class="col-sm-9">-</dd>	
 								
 							</dl>
 

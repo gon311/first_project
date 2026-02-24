@@ -28,10 +28,10 @@
 						<div class="card-body px-4 py-4">
 							<dl class="row mb-0">
 								<dt class="col-4 text-secondary py-2">아이디</dt>
-								<dd class="col-8 py-2">${user.id}</dd>
+								<dd class="col-8 py-2">${user.userId}</dd>
 
 								<dt class="col-4 text-secondary py-2">이름</dt>
-								<dd class="col-8 py-2">${user.name}</dd>
+								<dd class="col-8 py-2">${user.userName}</dd>
 
 								<dt class="col-4 text-secondary py-2">전화번호</dt>
 								<dd class="col-8 py-2">${user.phone}</dd>
@@ -40,40 +40,41 @@
 								<dd class="col-8 py-2">${user.email}</dd>
 
 								<dt class="col-4 text-secondary py-2">생년월일</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">${user.birthDate}</dd>
 
 								<dt class="col-4 text-secondary py-2">성별</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">${user.gender}</dd>
 
 								<dt class="col-4 text-secondary py-2">국적</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">${user.country}</dd>
 
 								<dt class="col-4 text-secondary py-2">가입일자</dt>
-								<dd class="col-8 py-2">
-									<fmt:parseDate var="joinDate" value="${user.joinedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-									<fmt:formatDate value="${joinDate}" pattern="yyyy년 MM월 dd일 HH시 mm분"/>
-								</dd>
+								<dd class="col-8 py-2">${user.joinedAt}</dd>
+								
+								<c:if test="${user.status eq '탈퇴'}">
+									<dt class="col-4 text-secondary py-2">탈퇴일자</dt>
+									<dd class="col-8 py-2">${user.withdrawnAt}</dd>
+								</c:if>
 
 								<dt class="col-4 text-secondary py-2">상태</dt>
 								<dd class="col-8 py-2">${user.status}</dd>
 
 								<dt class="col-4 text-secondary py-2">신고횟수</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">${user.reportReceivedCount}</dd>
 							</dl>
 
 							<div class="text-end mt-4">
-								<c:choose>
-									<c:when test="${user.status eq 'ACTIVE'}">
-										<button type="button" id="block" class="btn btn-danger btn-sm" onclick="block(${user.id})">
-											차단
-										</button>
-									</c:when>
-									<c:otherwise>
-										<button type="button" id="active" class="btn btn-outline-danger btn-sm" onclick="block(${user.id})">
-											차단 해제
-										</button>
-									</c:otherwise>
-								</c:choose>
+								<c:if test="${user.status eq '활성'}">
+									<button type="button" id="block" class="btn btn-danger btn-sm" onclick="block(${user.userId})">
+										차단
+									</button>
+								</c:if>
+								<c:if test="${user.status eq '차단'}">
+									<button type="button" id="active" class="btn btn-outline-danger btn-sm" onclick="block(${user.userId})">
+										차단 해제
+									</button>
+								</c:if>
+							
 							</div>
 
 						</div>

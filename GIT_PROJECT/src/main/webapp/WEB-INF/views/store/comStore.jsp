@@ -7,14 +7,14 @@
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
 <body>
-    <%@ include file="/WEB-INF/views/admin/common/header.jsp" %>
+    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
     <main class="container mt-5">
         <div class="row">
-            <div class="col-lg-8 mx-auto"> <!-- 중앙 집중 -->
+            <div class="col-lg-8 mx-auto"> 
 
                 <!-- 헤더 영역 -->
-                <div class="text-center mb-5 mb-7"> <!-- 모바일은 mb-5, 데스크탑은 mb-7 -->
+                <div class="text-center mb-5 mb-7"> 
                     <p class="mt-4">
                         <span class="display-5 fw-bold text-primary">간편</span>
                         <span class="fs-3 text-dark fw-semibold">하고</span>
@@ -28,11 +28,11 @@
                 </div>
 
                 <!-- 요금제 카드 영역 -->
-                <div class="row row-cols-1 row-cols-md-2 g-4 mb-5 mb-7"> <!-- 모바일은 mb-5, 데스크탑은 mb-7 -->
+                <div class="row row-cols-1 row-cols-md-2 g-4 mb-5 mb-7"> 
                     
                     <!-- 일반 이용권 -->
                     <div class="col">
-                        <div class="card h-100 shadow-lg border-0">
+                        <div class="card subscription-card h-100 shadow-lg border-0">
                             <div class="card-header bg-light text-center">
                                 <h4 class="fw-semibold">일반 이용권</h4>
                             </div>
@@ -44,10 +44,10 @@
                                 <p class="small text-muted mb-0">
                                     ※ 해당 이용권 구매자는 기업 서비스를 이용할 수 있습니다.
                                 </p>
-                                <hr class="mt-1 mb-2"> <!-- 구분선 아래 간격 줄임 -->
+                                <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">500,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay'">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-C1'">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
 
                     <!-- 프리미엄 이용권 -->
                     <div class="col">
-                        <div class="card h-100 shadow-lg border-primary">
+                        <div class="card subscription-card h-100 shadow-lg border-primary">
                             <div class="card-header bg-primary text-white text-center">
                                 <h4 class="fw-semibold">프리미엄 이용권</h4>
                             </div>
@@ -68,10 +68,10 @@
                                 <p class="small text-muted mb-0 text-center">
                                     ※ 이용권 기간 내 홈 화면 배너에 채용공고 게재
                                 </p>
-                                <hr class="mt-1 mb-2"> <!-- 구분선 아래 간격 줄임 -->
+                                <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">1,000,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay'">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-C2'">구매하기</button>
                                 </div>
                             </div>
                         </div>

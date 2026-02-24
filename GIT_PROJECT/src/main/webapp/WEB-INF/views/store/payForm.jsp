@@ -7,15 +7,13 @@
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
 <body>
-
-    <%-- 헤더 영역 --%>
     <%@ include file="/WEB-INF/views/inc/header.jspf" %>
     
     <main>
         <div class="container mt-5 custom-width">
             <h2 class="mb-4 text-center">구매하기</h2>
 
-            <form action="<c:url value='/admin/pay' />" method="post" class="needs-validation" novalidate>
+            <form action="<c:url value='/store/pay' />" method="post" class="needs-validation" novalidate>
 
                 <!-- 주문자 정보 -->
                 <div class="card mb-4">
@@ -38,11 +36,11 @@
                         <h4 class="mb-3">상품 정보</h4>
                         <div class="mb-3">
                             <label class="form-label">상품명</label>
-                            <input type="text" class="form-control" name="productName" readonly>
+                            <input type="text" class="form-control" name="productName" value="${storeInfo.productName}" readonly>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">상품 가격</label>
-                            <input type="text" class="form-control" name="productPrice" readonly>
+                            <input type="text" class="form-control" name="productPrice" value="${storeInfo.productPrice}원" readonly>
                         </div>
                     </div>
                 </div>
@@ -55,11 +53,8 @@
                             <input class="form-check-input" type="radio" name="payMethod" value="credit" id="credit" required>
                             <label class="form-check-label" for="credit">신용카드</label>
                         </div>
+                        
                         <!-- 신용카드를 선택한 경우 -->
-                        <c:if test="">
-                        
-                        
-                        </c:if>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">카드사 선택</label>
@@ -83,11 +78,8 @@
                             <input class="form-check-input" type="radio" name="payMethod" value="bank" id="bank">
                             <label class="form-check-label" for="bank">무통장 입금</label>
                         </div>
+                        
                         <!-- 무통장 입금을 선택한 경우 -->
-                        <c:if test="">
-                        
-                        
-                        </c:if>
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label">은행 선택</label>
@@ -112,7 +104,7 @@
                         <h4 class="mb-3">결제 금액</h4>
                         <div class="row mb-2">
                             <div class="col-6">상품 금액</div>
-                            <div class="col-6 text-end">0원</div>
+                            <div class="col-6 text-end">${storeInfo.productPrice}원</div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-6">할인 금액</div>
@@ -120,7 +112,7 @@
                         </div>
                         <div class="row fw-bold">
                             <div class="col-6">총 결제 금액</div>
-                            <div class="col-6 text-end">0원</div>
+                            <div class="col-6 text-end">${storeInfo.productPrice}원</div>
                         </div>
                     </div>
                 </div>
@@ -190,6 +182,10 @@
             </form>
         </div>
     </main>
+    
+    <script type="text/javascript">
+    	// 결제 수단 선택에 따라 해당하는 셀렉트 박스 디스플레이
+    </script>
 
 </body>
 </html>

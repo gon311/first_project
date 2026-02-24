@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.itwillbs.project.store.dto.ProductInfoDTO;
+import com.itwillbs.project.store.dto.StoreDTO;
 import com.itwillbs.project.store.service.StoreService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,30 +20,32 @@ public class StoreController {
 	@Autowired
 	private StoreService storeService;
 	
-	
-	// 기업요금제
-	@GetMapping("/cstore")
-	public String comStore() {
-		return "store/comStore";
-	}
-	// 구직자요금제
+	//------------------------------------------------------------
+	// 구직자 요금제
 	@GetMapping("/ustore")
 	public String userStore() {
+		
 		return "store/userStore";
 	}
 	
-	// 구매하기(구현중)
+	// 기업 요금제
+	@GetMapping("/cstore")
+	public String comStore() {
+		
+		return "store/comStore";
+	}
+	
+	// 구매하기(구현중) - 특정 상품의 "구매하기" 버튼 클릭
 	@GetMapping("/pay")
-	public String pay(String sId, ProductInfoDTO productDTO, Model model) {
-		// 세션에 저장된 id값을 통해 구매자 정보 출력(구현예정)
+	public String pay(String sId, StoreDTO storeDTO, Model model) {
+		// 세션에 저장된 id값을 통해 구매자 정보 출력(구현 예정)
 		
 		// 상품 정보
-		ProductInfoDTO productInfo = storeService.getProductInfo(productDTO.getProductId());
-		model.addAttribute("product", productInfo);
+		StoreDTO storeInfo = storeService.getStoreInfo(storeDTO.getProductId());
+		model.addAttribute("storeInfo", storeInfo);
 		
 		return "store/payForm";
 	}
-	
 	
 	
 }

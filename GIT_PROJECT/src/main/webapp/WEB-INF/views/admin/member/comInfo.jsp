@@ -31,16 +31,16 @@
 						<dl class="row mb-0">
 
 							<dt class="col-4 text-secondary py-2">아이디</dt>
-							<dd class="col-8 py-2">${com.id}</dd>
+							<dd class="col-8 py-2">${com.userId}</dd>
 
 							<dt class="col-4 text-secondary py-2">회사명</dt>
-							<dd class="col-8 py-2">${com.name}</dd>
+							<dd class="col-8 py-2">${com.companyName}</dd>
 
 							<dt class="col-4 text-secondary py-2">사업자번호</dt>
-							<dd class="col-8 py-2">${com.phone}</dd>
+							<dd class="col-8 py-2">${com.bizRegNo}</dd>
 
 							<dt class="col-4 text-secondary py-2">대표자명</dt>
-							<dd class="col-8 py-2">${com.name}</dd>
+							<dd class="col-8 py-2">${com.ceoName}</dd>
 
 							<dt class="col-4 text-secondary py-2">전화번호</dt>
 							<dd class="col-8 py-2">${com.phone}</dd>
@@ -49,42 +49,35 @@
 							<dd class="col-8 py-2">${com.email}</dd>
 
 							<dt class="col-4 text-secondary py-2">회사 주소</dt>
-							<dd class="col-8 py-2">-</dd>
+							<dd class="col-8 py-2">${com.companyAddress}</dd>
 
 							<dt class="col-4 text-secondary py-2">담당자명</dt>
-							<dd class="col-8 py-2">-</dd>
+							<dd class="col-8 py-2">${com.userName}</dd>
 
 							<dt class="col-4 text-secondary py-2">가입일자</dt>
-							<dd class="col-8 py-2">
-								<fmt:parseDate var="joinDate" value="${com.joinedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-								<fmt:formatDate value="${joinDate}" pattern="yyyy년 MM월 dd일 HH시 mm분"/>
-							</dd>
+							<dd class="col-8 py-2">${com.joinedAt}</dd>
+							
+							<c:if test="${com.status eq '탈퇴'}">
+								<dt class="col-4 text-secondary py-2">탈퇴일자</dt>
+								<dd class="col-8 py-2">${com.withdrawnAt}</dd>
+							</c:if>
 
 							<dt class="col-4 text-secondary py-2">상태</dt>
 							<dd class="col-8 py-2">${com.status}</dd>
 
-							<dt class="col-4 text-secondary py-2">신고횟수</dt>
-							<dd class="col-8 py-2">0</dd>
-
 						</dl>
 
 						<div class="text-end mt-4">
-							<c:choose>
-								<c:when test="${com.status eq 'ACTIVE'}">
-									<button type="button"
-											class="btn btn-danger btn-sm"
-											onclick="block(${com.id})">
-										차단
-									</button>
-								</c:when>
-								<c:otherwise>
-									<button type="button"
-											class="btn btn-outline-danger btn-sm"
-											onclick="block(${com.id})">
-										차단 해제
-									</button>
-								</c:otherwise>
-							</c:choose>
+							<c:if test="${com.status eq '활성'}">
+								<button type="button" id="block" class="btn btn-danger btn-sm" onclick="block(${com.userId})">
+									차단
+								</button>
+							</c:if>
+							<c:if test="${com.status eq '차단'}">
+								<button type="button" id="active" class="btn btn-outline-danger btn-sm" onclick="block(${com.userId})">
+									차단 해제
+								</button>
+							</c:if>
 						</div>
 
 					</div>
@@ -215,11 +208,21 @@
 	</main>
 
 	<script>
-		function block(id) {
-			if(confirm("상태를 변경하시겠습니까?")) {
-				location.href = "<c:url value='/admin/block' />?id=" + id;
+	
+	function block(userId) {
+		if(document.getElementById("block")) {
+			if(confirm("차단하시겠습니까?")) {
+				document.getElementById("block").innerText = "차단 해제";
+				location.href="<c:url value='/admin/coms/block' />" + "?userId=" + userId;
+			}
+		} else {
+			if(confirm("차단 해제하시겠습니까?")) {
+				document.getElementById("active").innerText = "차단";
+				location.href="<c:url value='/admin/coms/unblock' />" + "?userId=" + userId;
 			}
 		}
+
+	}
 	</script>
 
 </body>

@@ -29,8 +29,44 @@ public class AdminService{
 	} 
 
 	// 구직자 상세 정보 조회
-	public MemberDTO getUserInfo(BigInteger id) {
-		return adminMapper.selectUserInfo(id);
+	public MemberDTO getUserInfo(BigInteger userId) {
+		return adminMapper.selectUserInfo(userId);
+	}
+	
+	// 회원 차단
+	public void blockUser(BigInteger userId) {
+		adminMapper.updateUserBlock(userId);
+	}
+	
+	// 회원 차단 해제
+	public void unblockUser(BigInteger userId) {
+		adminMapper.updateUserUnblock(userId);
+	}
+	
+	// 탈퇴한 회원 삭제
+	public void deleteUser(BigInteger userId) {
+		adminMapper.deleteUserInfo(userId);
+	}
+	
+	// 탈퇴한 회원 목록
+	public List<MemberDTO> getUserWithdraw(String keyword, String startDate, String endDate) {
+		return adminMapper.selectUserWithdraw(keyword, startDate, endDate);
+	}
+	
+	//---------------------------------------------------------------------------------------------
+	// 기업회원 목록 조회
+	public List<MemberDTO> getComList(String keyword, String type, String status) {
+		return adminMapper.selectComList(keyword, type, status);
+	}
+	
+	// 기업회원 상세 정보 조회
+	public MemberDTO getComInfo(BigInteger userId) {
+		return adminMapper.selectComInfo(userId);
+	}
+	
+	// 탈퇴한 회원 목록
+	public List<MemberDTO> getComWithdraw(String keyword, String startDate, String endDate) {
+		return adminMapper.selectComWithdraw(keyword, startDate, endDate);
 	}
 	
 	//======================================================================================
@@ -49,7 +85,8 @@ public class AdminService{
 	public void insertNotice(NoticeDTO noticeDTO) {
 		adminMapper.insertNotice(noticeDTO);
 	}
-
+	
+	//========================================================================================
 	// 채용공고 리스트 조회
 	public List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO) {
 		
@@ -63,18 +100,19 @@ public class AdminService{
 
 	//======================================================================================
 	// 결제 내역 전체 목록 조회
-	public List<PayDTO> getPayList(PayDTO payDTO) {
-		return adminMapper.selectPayList(payDTO);
+	public List<PayDTO> getPayList(String startDate, String endDate, String keyword, String userType, String payStatus) {
+		return adminMapper.selectPayList(startDate, endDate, keyword, userType, payStatus);
 	}
 
-	// 기업회원 목록 조회
-	public List<MemberDTO> getComList(String keyword, String type, String status) {
-		return adminMapper.selectComList(keyword, type, status);
+	// 결제 내역 상세정보
+	public PayDTO getPayInfo(String id) {
+		return adminMapper.selectPayInfo(id);
 	}
 	
+	//========================================================================================
 	// 제출된 공고 목록 조회
-	public List<SubmitDTO> getSubmitList(SubmitDTO submitDTO) {
-		return adminMapper.selectSubmitList(submitDTO);
+	public List<SubmitDTO> getSubmitList(String startDate, String endDate, String keyword, String submitStatus) {
+		return adminMapper.selectSubmitList(startDate, endDate, keyword, submitStatus);
 	}
 	
 	// 제출된 공고 상세 조회
@@ -82,19 +120,26 @@ public class AdminService{
 		return adminMapper.selectSubmitInfo(id);
 	}
 
-	// 결제 내역 상세정보
-	public PayDTO getPayInfo(String id) {
-		return adminMapper.selectPayInfo(id);
-	}
-
+	//========================================================================================
 	// 구매할 상품 정보(구매하기 진행)
 	public ProductDTO getProductInfo(String productId) {
 		return adminMapper.selectProductInfo(productId);
 	}
 
-	// 기업회원 상세정보 조회
-//	public MemberDTO getComInfo(BigInteger id) {
-//		return adminMapper.selectComInfo(id);
-//	}
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
 
 }

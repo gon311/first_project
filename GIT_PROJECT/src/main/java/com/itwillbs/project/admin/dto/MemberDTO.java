@@ -1,7 +1,11 @@
 package com.itwillbs.project.admin.dto;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.springframework.format.datetime.DateFormatter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,33 +16,74 @@ import lombok.ToString;
 @ToString
 public class MemberDTO {
 	// 화면 출력 확인을 위해 임시로 만든 회원정보DTO
-	private BigInteger id;
+	private BigInteger userId;
 	private String email;
 	private String password;
 	private String phone;
-	private String name;
-	private char memberType;
+	private String userName;
 	private String userType;
 	private String status;
-	private LocalDateTime joinedAt;
-	private LocalDateTime withdrawnAt;
+	private String joinedAt;
+	private String withdrawnAt;
 	
-	public void setMemberType(char memberType) {
-	    this.memberType = memberType;
-	    this.userType = (this.memberType == 'C') ? "기업 회원" : "구직자 회원";
+	// 구직자 회원 상세 정보
+	private String birthDate;
+	private String gender;
+	private String country;
+	private Integer passCount;
+	private Integer reportReceivedCount;
+	private String profileUrl;
+	
+	// 기업 회원 상세 정보
+	private String bizRegNo;
+	private String companyName;
+	private String ceoName;
+	private String companyAddress;
+	
+	// 구직자 회원 이용권
+	private String productId;
+	private String productName;
+	
+	// 탈퇴 일자 계산을 위한 현재 날짜
+	private LocalDateTime today = LocalDateTime.now();
+	
+	public void setUserType(char userType) {
+	    this.userType = (userType == 'C') ? "기업 회원" : "구직자 회원";
 	}
 	
 	public void setStatus(String status) {
 		if(status.equalsIgnoreCase("active")) {
 			this.status = "활성";
-		} else {
+		} else if(status.equalsIgnoreCase("suspended")) {
 			this.status = "차단";
+		} else if(status.equalsIgnoreCase("withdrawn")) {
+			this.status = "탈퇴";
 		}
 	}
 	
-	// 구직자 상세 정보
-//	private UserDTO userDto = new UserDTO();
+	public void setJoinedAt(LocalDateTime joinedAt) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm:ss");
+		this.joinedAt = joinedAt.format(dtf);
+	}
 	
-	// 기업회원 상세 정보
-//	private ComDTO comDTO = new ComDTO();
+	public void setWithdrawnAt(LocalDateTime withdrawnAt) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm:ss");
+		this.withdrawnAt = withdrawnAt.format(dtf);
+	}
+	
+	public void setBirthDate(LocalDate birthDate) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+		this.birthDate = birthDate.format(dtf);
+	}
+	
+	public void setGender(char gender) {
+		if(gender == 'M') {
+			this.gender = "남";
+		} else if(gender == 'F') {
+			this.gender = "여";
+		} else {
+			this.gender = "공개안함";
+		}
+	}
+	
 }

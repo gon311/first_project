@@ -28,16 +28,16 @@
 							<dl class="row mb-0">
 
 								<dt class="col-4 text-secondary py-2">아이디</dt>
-								<dd class="col-8 py-2">${com.id}</dd>
+								<dd class="col-8 py-2">${com.userId}</dd>
 
 								<dt class="col-4 text-secondary py-2">회사명</dt>
-								<dd class="col-8 py-2">${com.name}</dd>
+								<dd class="col-8 py-2">${com.companyName}</dd>
 
 								<dt class="col-4 text-secondary py-2">사업자등록번호</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">${com.bizRegNo}</dd>
 
 								<dt class="col-4 text-secondary py-2">대표자명</dt>
-								<dd class="col-8 py-2">${com.name}</dd>
+								<dd class="col-8 py-2">${com.ceoName}</dd>
 
 								<dt class="col-4 text-secondary py-2">전화번호</dt>
 								<dd class="col-8 py-2">${com.phone}</dd>
@@ -46,13 +46,13 @@
 								<dd class="col-8 py-2">${com.email}</dd>
 
 								<dt class="col-4 text-secondary py-2">회사 주소</dt>
-								<dd class="col-8 py-2">${submit.address}</dd>
+								<dd class="col-8 py-2">${com.companyAddress}</dd>
 
 								<dt class="col-4 text-secondary py-2">담당자명</dt>
-								<dd class="col-8 py-2">${submit.mgrName}</dd>
+								<dd class="col-8 py-2">${com.userName}</dd>
 
 								<dt class="col-4 text-secondary py-2">보유 이용권</dt>
-								<dd class="col-8 py-2"></dd>
+								<dd class="col-8 py-2">-</dd>
 
 								<dt class="col-4 text-secondary py-2">상태</dt>
 								<dd class="col-8 py-2">${com.status}</dd>
@@ -74,17 +74,7 @@
 						<div class="d-flex justify-content-between align-items-center">
 							<h5 class="mb-0 fw-bold">공고 상세 검토</h5>
 							<span class="badge bg-warning text-dark px-3 py-2">
-								<c:choose>
-									<c:when test="${submit.postCheck eq 1}">
-										검토전
-									</c:when>
-									<c:when test="${submit.postCheck eq 2}">
-										승인
-									</c:when>
-									<c:otherwise>
-										보류
-									</c:otherwise>
-								</c:choose>
+								${submit.postCheck}
 							</span>
 						</div>
 					</div>
@@ -94,7 +84,7 @@
 						<div class="mb-4 position-relative">
 						    <h4 class="fw-bold mb-1">${submit.title}</h4>
 						    <small class="text-muted position-absolute bottom-0 end-0">
-								제출일 : ${submit.submitDate}
+								제출일 : ${submit.regDate}
 						    </small>
 						</div>
 
@@ -122,7 +112,7 @@
 								<dd class="col-sm-9">${submit.probation}</dd>
 
 								<dt class="col-sm-3 text-secondary">경력</dt>
-								<dd class="col-sm-9">${submit.expType} - ${submit.expYear }</dd>
+								<dd class="col-sm-9">${submit.expType}(${submit.expYear})</dd>
 
 								<dt class="col-sm-3 text-secondary">학력</dt>
 								<dd class="col-sm-9">${submit.edu}</dd>
@@ -156,11 +146,10 @@
 								</dd>
 
 								<dt class="col-sm-3 text-secondary">접수방법</dt>
-								<dd class="col-sm-9"></dd>
+								<dd class="col-sm-9">-</dd>
 								
 								<dt class="col-sm-3 text-secondary">첨부파일</dt>
-								<dd class="col-sm-9"></dd>	
-								
+								<dd class="col-sm-9">-</dd>	
 								
 							</dl>
 

@@ -18,6 +18,9 @@
 		<typeAlias type="com.itwillbs.project.job.dto.JobDTO" alias="job"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.JobPostDTO" alias="jobPost"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.ProductDTO" alias="product"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.PayDTO" alias="pay"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.SubmitDTO" alias="submit"/>
+		<typeAlias type="com.itwillbs.project.store.dto.StoreDTO" alias="store"/>
 		
 	</typeAliases>
 </configuration>

@@ -5,29 +5,174 @@
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <style>
-    body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; }
-	.container { max-width: 900px; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: 40px auto; }
-    .form-group { display: flex; align-items: flex-start; margin-bottom: 20px; }
-    .label-box { width: 150px; font-weight: bold; padding-top: 10px; }
-    .input-box { flex: 1; }
-    input[type="text"], input[type="date"], textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-    .file-upload-area { background: #e9ecef; padding: 20px; border: 2px dashed #ccc; text-align: center; border-radius: 5px; margin: 10px 0; }
-    .info-box { background: #f0f7ff; padding: 15px; border-radius: 5px; font-size: 0.9em; color: #0066cc; }
-	.button-group {display: flex; justify-content: center; gap: 10px; margin: 40px 0; padding-bottom: 20px;}
-	.button-group button {padding: 12px 25px; border-radius: 5px; font-size: 15px; font-weight: bold; cursor: pointer; border: 1px solid #ddd; transition: 0.2s;}
-	.btn-submit {background-color: #333 !important; color: #fff !important; border: none !important;}
-	.btn-reset {background-color: #e9ecef; color: #333;}
-	.btn-cancel {background-color: #fff; color: #666;}
-	.btn-submit:hover { background-color: #000 !important; }
-	.btn-reset:hover { background-color: #dee2e6; }
-	.btn-cancel:hover { background-color: #f8f9fa; }
-    .job-selector-wrapper { display: flex; border: 1px solid #ddd; border-radius: 5px; height: 250px; margin-top: 10px; overflow: hidden; }
-    .main-cat-list { width: 30%; background: #f1f3f5; border-right: 1px solid #ddd; overflow-y: auto; list-style: none; padding: 0; margin: 0; }
-    .sub-cat-list { width: 70%; background: #fff; overflow-y: auto; list-style: none; padding: 10px; margin: 0; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; }
-    .main-cat-list li { padding: 12px 15px; cursor: pointer; border-bottom: 1px solid #e9ecef; font-size: 0.95em; }
-    .main-cat-list li:hover, .main-cat-list li.active { background: #333; color: #fff; }
-    .sub-job-item { padding: 6px 12px; border: 1px solid #dee2e6; border-radius: 20px; cursor: pointer; font-size: 0.85em; background: #fff; transition: 0.2s; }
-    .sub-job-item:hover, .sub-job-item.selected { background: #007bff; color: #fff; border-color: #007bff; }
+    /* [수정] 부트스트랩 간섭 방지 및 기본 초기화 */
+    body { 
+/*         font-family: 'Pretendard', sans-serif;  */
+        background-color: #f8f9fa; 
+        margin: 0 !important;   /* 부트스트랩 기본 마진 강제 제거 */
+        padding: 0 !important;  /* 부트스트랩 기본 패딩 강제 제거 */
+        line-height: 1.5; 
+    }
+
+    /* [추가] 헤더 아래 hr 태그의 미세 여백 제거 */
+    header + hr {
+        margin: 0 !important;
+        border: 0;
+        height: 1px;
+        background-color: #dee2e6;
+    }
+
+    /* 레이아웃 컨테이너 */
+    .container { 
+        max-width: 900px; 
+        background: #fff; 
+        padding: 30px; 
+        border-radius: 10px; 
+        box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+        margin: 40px auto; 
+    }
+
+    /* 폼 그룹 레이아웃 */
+    .form-group { 
+        display: flex; 
+        align-items: flex-start; 
+        margin-bottom: 20px; 
+    }
+
+    .label-box { 
+        width: 150px; 
+        font-weight: bold; 
+        padding-top: 10px; 
+    }
+
+    .input-box { 
+        flex: 1; 
+    }
+
+    /* 입력 요소 공통 */
+    input[type="text"], 
+    input[type="date"], 
+    textarea, 
+    select { 
+        width: 100%; 
+        padding: 10px; 
+        border: 1px solid #ddd; 
+        border-radius: 5px; 
+        box-sizing: border-box; /* 패딩이 너비에 영향을 주지 않도록 설정 */
+    }
+
+    /* 파일 업로드 및 안내 문구 */
+    .file-upload-area { 
+        background: #e9ecef; 
+        padding: 20px; 
+        border: 2px dashed #ccc; 
+        text-align: center; 
+        border-radius: 5px; 
+        margin: 10px 0; 
+    }
+
+    .info-box { 
+        background: #f0f7ff; 
+        padding: 15px; 
+        border-radius: 5px; 
+        font-size: 0.9em; 
+        color: #0066cc; 
+    }
+
+    /* 하단 버튼 그룹 */
+    .button-group {
+        display: flex; 
+        justify-content: center; 
+        gap: 10px; 
+        margin: 40px 0; 
+        padding-bottom: 20px;
+    }
+
+    .button-group button {
+        padding: 12px 25px; 
+        border-radius: 5px; 
+        font-size: 15px; 
+        font-weight: bold; 
+        cursor: pointer; 
+        border: 1px solid #ddd; 
+        transition: 0.2s;
+    }
+
+    .btn-submit { 
+        background-color: #333 !important; 
+        color: #fff !important; 
+        border: none !important; 
+    }
+
+    .btn-reset { background-color: #e9ecef; color: #333; }
+    .btn-cancel { background-color: #fff; color: #666; }
+
+    .btn-submit:hover { background-color: #000 !important; }
+    .btn-reset:hover { background-color: #dee2e6; }
+    .btn-cancel:hover { background-color: #f8f9fa; }
+
+    /* 모집 분야 선택기(Job Selector) */
+    .job-selector-wrapper { 
+        display: flex; 
+        border: 1px solid #ddd; 
+        border-radius: 5px; 
+        height: 250px; 
+        margin-top: 10px; 
+        overflow: hidden; 
+    }
+
+    .main-cat-list { 
+        width: 30%; 
+        background: #f1f3f5; 
+        border-right: 1px solid #ddd; 
+        overflow-y: auto; 
+        list-style: none; 
+        padding: 0; 
+        margin: 0; 
+    }
+
+    .sub-cat-list { 
+        width: 70%; 
+        background: #fff; 
+        overflow-y: auto; 
+        list-style: none; 
+        padding: 10px; 
+        margin: 0; 
+        display: flex; 
+        flex-wrap: wrap; 
+        align-content: flex-start; 
+        gap: 8px; 
+    }
+
+    .main-cat-list li { 
+        padding: 12px 15px; 
+        cursor: pointer; 
+        border-bottom: 1px solid #e9ecef; 
+        font-size: 0.95em; 
+    }
+
+    .main-cat-list li:hover, 
+    .main-cat-list li.active { 
+        background: #333; 
+        color: #fff; 
+    }
+
+    .sub-job-item { 
+        padding: 6px 12px; 
+        border: 1px solid #dee2e6; 
+        border-radius: 20px; 
+        cursor: pointer; 
+        font-size: 0.85em; 
+        background: #fff; 
+        transition: 0.2s; 
+    }
+
+    .sub-job-item:hover, 
+    .sub-job-item.selected { 
+        background: #007bff; 
+        color: #fff; 
+        border-color: #007bff; 
+    }
 </style>
 
 <div class="container">

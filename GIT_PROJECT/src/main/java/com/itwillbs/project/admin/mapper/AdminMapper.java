@@ -60,14 +60,21 @@ public interface AdminMapper {
 	
 	//========================================================================
 	// 결제 목록 조회
-	List<PayDTO> selectPayList(PayDTO payDTO);
+	List<PayDTO> selectPayList(@Param("startDate") String startDate
+								, @Param("endDate") String endDate
+								, @Param("keyword") String keyword
+								, @Param("userType") String userType
+								, @Param("payStatus") String payStatus);
 
 	// 결제 내역 상세 정보 조회
 	PayDTO selectPayInfo(String id);
 
 	//========================================================================
 	// 제출된 공고 목록 조회
-	List<SubmitDTO> selectSubmitList(SubmitDTO submitDTO);
+	List<SubmitDTO> selectSubmitList(@Param("startDate") String startDate
+									, @Param("endDate") String endDate
+									, @Param("keyword") String keyword
+									, @Param("submitStatus") String submitStatus);
 
 	// 제출된 공고 상세정보 조회
 	SubmitDTO selectSubmitInfo(BigInteger id);
@@ -75,6 +82,10 @@ public interface AdminMapper {
 	//========================================================================
 	// 구매할 상품 상세 정보 조회(구매하기 진행)
 	ProductDTO selectProductInfo(String productId);
+
+	
+
+	
 
 
 	

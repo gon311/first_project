@@ -70,7 +70,7 @@ public class SubmitDTO {
 	private Date closeDate;
 	private int postStatus;
 	private String regDate;
-	private Integer postCheck;
+	private String postCheck;
 	
 	public void setRegDate(LocalDateTime regDate) {
 		String pattern = "yyyy년 MM월 dd일 HH시 mm분 ss초";
@@ -80,6 +80,15 @@ public class SubmitDTO {
 		
 	}
 	
+	public void setPostCheck(Integer postCheck) {
+		if(postCheck == 1) {
+			this.postCheck = "검토전";
+		} else if(postCheck == 2) {
+			this.postCheck = "승인";
+		} else if(postCheck == 3) {
+			this.postCheck = "보류";
+		}
+	}
 	
 	
 }

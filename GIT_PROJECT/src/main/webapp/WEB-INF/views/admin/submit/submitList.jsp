@@ -46,14 +46,14 @@
 		
 		                    <!-- 기업명 -->
 		                    <div class="col-md-4">
-		                        <label class="form-label fw-bold mb-2">기업명</label>
-		                        <input type="text" class="form-control form-control-sm" name="keyword" placeholder="기업명을 입력하세요">
+		                        <label class="form-label fw-bold mb-2">공고명</label>
+		                        <input type="text" class="form-control form-control-sm" name="keyword" placeholder="키워드를 입력하세요">
 		                    </div>
 		
-		                    <!-- 구분 -->
+		                    <!-- 상태 -->
 		                    <div class="col-md-3">
 		                        <label class="form-label fw-bold mb-2">상태</label>
-		                        <select class="form-select form-select-sm" name="status">
+		                        <select class="form-select form-select-sm" name="submitStatus">
 		                            <option value="" selected>전체</option>
 		                            <option value="1">검토전</option>
 		                            <option value="2">승인</option>

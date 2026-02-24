@@ -45,14 +45,17 @@
                     <div class="card">
                         <div class="card-body">
                             <form action="<c:url value='/admin/users' />" method="get" class="row g-3 align-items-center">
+                            
+                            	<!-- 탭 유지용 -->
+	                            <input type="hidden" name="activeTab" value="all"/>
                                 
                                 <div class="col-md-4">
-                                    <label class="form-label">이름</label>
+                                    <label class="form-label fw-bold mb-2">이름</label>
                                     <input type="text" class="form-control" name="keyword" placeholder="이름을 입력하세요">
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label class="form-label">구분</label>
+                                    <label class="form-label fw-bold mb-2">구분(구현중)</label>
                                     <select class="form-select" name="type">
                                         <option value="" selected>전체</option>
                                         <option value="p">기본</option>
@@ -63,7 +66,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label class="form-label">상태</label>
+                                    <label class="form-label fw-bold mb-2">상태</label>
                                     <select class="form-select" name="status">
                                         <option value="" selected>전체</option>
                                         <option value="active">활성</option>
@@ -141,19 +144,38 @@
                     <div class="card">
                         <div class="card-body">
                             <form action="<c:url value='/admin/users' />" method="get" class="row g-3 align-items-center">
-                                
-                                <div class="col-md-5">
-                                    <label class="form-label">이름</label>
-                                    <input type="text" class="form-control" name="keyword" placeholder="이름을 입력하세요">
-                                </div>
-
-                                <div class="col-md-5">
-                                    <label class="form-label">탈퇴일</label>
-                                    <input type="date" class="form-control" name="withdrawDate">
-                                </div>
-
-                                <div class="col-12 d-flex justify-content-end mt-2">
-				                    <button type="submit" class="btn btn-primary">검색</button>
+                            
+                            <!-- 탭 유지용 -->
+                            <input type="hidden" name="activeTab" value="withdraw"/>
+                            
+                            <div class="row my-3">
+	                            <div class="col-md-5">
+	                                    <label class="form-label fw-bold mb-2">기간별</label>
+	                                    <div class="border rounded p-2"> 
+				                            <div class="d-flex flex-column gap-2">
+				                                <!-- 시작일자 -->
+				                                <div class="d-flex flex-column ms-2">
+				                                    <label class="form-label small mb-1 text-secondary">시작일자</label>
+				                                    <input type="date" class="form-control form-control-sm" name="startDate">
+				                                </div>
+				                                <!-- 종료일자 -->
+				                                <div class="d-flex flex-column ms-2">
+				                                    <label class="form-label small mb-1 text-secondary">종료일자</label>
+				                                    <input type="date" class="form-control form-control-sm" name="endDate">
+				                                </div>
+				                            </div>
+				                        </div>
+	                                </div>
+	                                
+	                                <div class="col-md-5">
+	                                    <label class="form-label fw-bold mb-2">이름</label>
+	                                    <input type="text" class="form-control" name="keyword" placeholder="이름을 입력하세요">
+	                                </div>
+	
+	
+	                                <div class="col-12 d-flex justify-content-end mt-2">
+					                    <button type="submit" class="btn btn-primary">검색</button>
+					                </div>
 				                </div>
                             </form>
                         </div>

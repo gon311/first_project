@@ -18,7 +18,7 @@
 		    <h5 class="card-title mb-3">검색</h5>
 		    <div class="card">
 		        <div class="card-body">
-		            <form action="<c:url value='/admin/submits' />" 
+		            <form action="<c:url value='/admin/payments' />" 
 		                  name="searchForm" 
 		                  method="get" 
 		                  class="row g-4 align-items-center">
@@ -62,7 +62,7 @@
 		                    <!-- 상태 -->
 		                    <div class="col-md-2">
 		                        <label class="form-label fw-bold mb-2">상태</label>
-		                        <select class="form-select form-select-sm" name="status">
+		                        <select class="form-select form-select-sm" name="payStatus">
 		                            <option value="" selected>전체</option>
 		                            <option value="1">검토전</option>
 		                            <option value="2">승인</option>

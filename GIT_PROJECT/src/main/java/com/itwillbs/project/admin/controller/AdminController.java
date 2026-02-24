@@ -32,25 +32,14 @@ public class AdminController {
 	
 	//=============================================================
 	// [ 구직자 관리 페이지 ]
-	// 조건별 검색
-//	@PostMapping("/users")
-//	public String userSearch(SearchDTO searchDTO, RedirectAttributes ra) {
-//		ra.addAttribute("keyword", searchDTO.getKeyword());
-//		ra.addAttribute("type", searchDTO.getType());
-//		ra.addAttribute("status", searchDTO.getStatus());
-//		System.out.println("searchDTO : " + searchDTO);
-//		
-//		return "redirect:/admin/users";
-//	}
-	
 	// 구직자 회원 목록(정렬 구현중)
 	@GetMapping("/users")
-	public String userList(@RequestParam(value="tab", defaultValue="all") String tab
+	public String userList(@RequestParam(name="activeTab", defaultValue="all") String activeTab
 							, Model model
 							, SearchDTO searchDTO
 							, String sort) {
 		// tab 파라미터가 없으면 기본값 "all"로 설정됨
-		model.addAttribute("activeTab", tab); 
+		model.addAttribute("activeTab", activeTab); 
 		//-----------------------------------------------------
 		// 전체 회원 목록 조회
 		List<MemberDTO> userList = adminService.getUserList(searchDTO.getKeyword()
@@ -90,25 +79,13 @@ public class AdminController {
 	
 	//===========================================================================
 	// [ 기업회원 관리 페이지 ]
-	
-	// 조건별 검색
-//	@PostMapping("/coms")
-//	public String comSearch(SearchDTO searchDTO, RedirectAttributes ra) {
-//		ra.addAttribute("keyword", searchDTO.getKeyword());
-//		ra.addAttribute("type", searchDTO.getType());
-//		ra.addAttribute("status", searchDTO.getStatus());
-//		System.out.println("searchDTO : " + searchDTO);
-//		
-//		return "redirect:/admin/coms";
-//	}
-	
 	// 기업회원 목록 조회
 	@GetMapping("/coms")
-	public String comList(@RequestParam(value="tab", defaultValue="all") String tab
+	public String comList(@RequestParam(defaultValue="all") String activeTab
 							, Model model
 							, SearchDTO searchDTO) {
 		// tab 파라미터가 없으면 기본값 "all"로 설정됨
-		model.addAttribute("activeTab", tab); 
+		model.addAttribute("activeTab", activeTab); 
 		//-----------------------------------------------------------
 		// 전체 회원 목록 조회
 		List<MemberDTO> comList = adminService.getComList(searchDTO.getKeyword()
@@ -140,22 +117,15 @@ public class AdminController {
 	
 	//===========================================================================
 	// [ 제출된 공고 관리 ](상세정보 구현 예정)
-	
-	// 조건별 검색(구현중)
-//	@PostMapping("/submits")
-//	public String submitSearch(SearchDTO searchDTO, RedirectAttributes ra) {
-//		ra.addAttribute("keyword", searchDTO.getKeyword());
-//		ra.addAttribute("type", searchDTO.getType());
-//		ra.addAttribute("status", searchDTO.getStatus());
-//		System.out.println("searchDTO : " + searchDTO);
-//		
-//		return "redirect:/admin/submits";
-//	}
-	
 	// 제출된 공고 목록 조회
 	@GetMapping("/submits")
-	public String submitList(SubmitDTO submitDTO, Model model) {
-		List<SubmitDTO> submitList = adminService.getSubmitList(submitDTO);
+	public String submitList(SubmitDTO submitDTO, Model model, SearchDTO searchDTO) {
+		
+		List<SubmitDTO> submitList = adminService.getSubmitList(searchDTO.getStartDate()
+																, searchDTO.getEndDate()
+																, searchDTO.getKeyword()
+																, searchDTO.getSubmitStatus());
+		
 		model.addAttribute("submitList", submitList);
 		
 		return "admin/submit/submitList";
@@ -181,22 +151,14 @@ public class AdminController {
 	
 	//===========================================================================
 	// [ 결제 관리 ]
-	
-	// 조건별 검색
-	@PostMapping("/payments")
-	public String paySearch(SearchDTO searchDTO, RedirectAttributes ra) {
-		ra.addAttribute("keyword", searchDTO.getKeyword());
-		ra.addAttribute("type", searchDTO.getType());
-		ra.addAttribute("status", searchDTO.getStatus());
-		System.out.println("searchDTO : " + searchDTO);
-		
-		return "redirect:/admin/payments";
-	}
-	
 	// 결제 내역 목록 조회
 	@GetMapping("/payments")
-	public String payList(PayDTO payDTO, Model model) {
-		List<PayDTO> payList = adminService.getPayList(payDTO);
+	public String payList(PayDTO payDTO, Model model, SearchDTO searchDTO) {
+		List<PayDTO> payList = adminService.getPayList(searchDTO.getStartDate()
+													, searchDTO.getEndDate()
+													, searchDTO.getKeyword()
+													, searchDTO.getUserType()
+													, searchDTO.getPayStatus());
 		model.addAttribute("payList", payList);
 		
 		return "admin/payment/payList"; 

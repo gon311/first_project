@@ -74,17 +74,7 @@
 						<div class="d-flex justify-content-between align-items-center">
 							<h5 class="mb-0 fw-bold">공고 상세 검토</h5>
 							<span class="badge bg-warning text-dark px-3 py-2">
-								<c:choose>
-									<c:when test="${submit.postCheck eq 1}">
-										검토전
-									</c:when>
-									<c:when test="${submit.postCheck eq 2}">
-										승인
-									</c:when>
-									<c:otherwise>
-										보류
-									</c:otherwise>
-								</c:choose>
+								${submit.postCheck}
 							</span>
 						</div>
 					</div>

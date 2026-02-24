@@ -11,7 +11,10 @@ public class SearchDTO {
 	// 조건별 검색 DTO
 	private String keyword;
 	private String type; 
+	private String userType; 
 	private String status;
+	private String submitStatus;
+	private String payStatus;
 	private String startDate;
 	private String endDate;
 }

@@ -79,8 +79,8 @@ public class AdminService{
 
 	//======================================================================================
 	// 결제 내역 전체 목록 조회
-	public List<PayDTO> getPayList(PayDTO payDTO) {
-		return adminMapper.selectPayList(payDTO);
+	public List<PayDTO> getPayList(String startDate, String endDate, String keyword, String userType, String payStatus) {
+		return adminMapper.selectPayList(startDate, endDate, keyword, userType, payStatus);
 	}
 
 	// 결제 내역 상세정보
@@ -90,8 +90,8 @@ public class AdminService{
 	
 	//========================================================================================
 	// 제출된 공고 목록 조회
-	public List<SubmitDTO> getSubmitList(SubmitDTO submitDTO) {
-		return adminMapper.selectSubmitList(submitDTO);
+	public List<SubmitDTO> getSubmitList(String startDate, String endDate, String keyword, String submitStatus) {
+		return adminMapper.selectSubmitList(startDate, endDate, keyword, submitStatus);
 	}
 	
 	// 제출된 공고 상세 조회
@@ -104,6 +104,10 @@ public class AdminService{
 	public ProductDTO getProductInfo(String productId) {
 		return adminMapper.selectProductInfo(productId);
 	}
+
+	
+
+	
 
 
 

@@ -1,6 +1,7 @@
 package com.itwillbs.project.admin.dto;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -22,6 +23,20 @@ public class MemberDTO {
 	private String status;
 	private String joinedAt;
 	private String withdrawnAt;
+	
+	// 구직자 회원 상세 정보
+	private LocalDate birthDate;
+	private char gender;
+	private String country;
+	private Integer passCount;
+	private Integer reportReceivedCount;
+	private String profileUrl;
+	
+	// 기업 회원 상세 정보
+	private String bizRegNo;
+	private String companyName;
+	private String ceoName;
+	private String companyAddress;
 	
 	public void setUserType(char userType) {
 	    this.userType = (userType == 'C') ? "기업 회원" : "구직자 회원";
@@ -47,9 +62,5 @@ public class MemberDTO {
 		this.withdrawnAt = withdrawnAt.format(dtf);
 	}
 	
-	// 구직자 상세 정보
-//	private UserDTO userDto = new UserDTO();
 	
-	// 기업회원 상세 정보
-//	private ComDTO comDTO = new ComDTO();
 }

@@ -17,23 +17,23 @@
 	
 		<main class="container my-5">
 			<div class="row g-4 justify-content-center">
-	
-				<!-- 프리미엄 요금제 -->
-				<div class="col-12 col-md-6 col-lg-5">
-					<div class="cta-card text-center h-100" role="button"
-						onclick="location.href='<c:url value="#" />'">
-						<div class="cta-label">프리미엄 요금제 살펴보기</div>
+				<section id="intro">
+					<!-- 프리미엄 요금제 -->
+					<div class="col-12 col-md-6 col-lg-5">
+						<div class="cta-card text-center h-100" role="button"
+							onclick="location.href='<c:url value="#" />'">
+							<div class="cta-label">프리미엄 요금제 살펴보기</div>
+						</div>
 					</div>
-				</div>
-	
-				<!-- 공고 등록 바로가기 -->
-				<div class="col-12 col-md-6 col-lg-5">
-					<div class="cta-card text-center h-100" role="button"
-						onclick="location.href='<c:url value="/job/JobPosting" />'">
-						<div class="cta-label">공고 등록 바로가기</div>
+		
+					<!-- 공고 등록 바로가기 -->
+					<div class="col-12 col-md-6 col-lg-5">
+						<div class="cta-card text-center h-100" role="button"
+							onclick="location.href='<c:url value="/job/JobPosting" />'">
+							<div class="cta-label">공고 등록 바로가기</div>
+						</div>
 					</div>
-				</div>
-	
+				</section>
 			</div>
 		</main>
 		

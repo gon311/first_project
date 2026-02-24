@@ -1,6 +1,9 @@
 @charset "UTF-8";
 /* header 영역 */
-
+.nav-upper {
+	background-color: #A7C7E7;
+	height: 90px;
+}
 
 /* main 영역 */
 .adMain, .btAi {

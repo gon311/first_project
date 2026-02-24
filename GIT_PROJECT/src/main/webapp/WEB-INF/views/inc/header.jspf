@@ -4,7 +4,7 @@
 <header>
   <%-- 상단: 로고 + 로그인/회원가입/마이페이지/로그아웃 --%>
   <%-- 차후 url 교체 --%>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 nav-upper">
     <!-- 좌측: 브랜드 -->
     <a href="<c:url value="/" />">
 	    <img src="<c:url value="/resources/images/logo.png" />" alt="로고" 

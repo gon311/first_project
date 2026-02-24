@@ -366,7 +366,7 @@
 		
 				btnDraft.addEventListener('click', () => {
 					statusInput.value = "2";  // 임시저장 상태로 설정 (0 : 최종저장, 1: 1단계저장, 2: 임시저장)
-					form.submit();            // 서버로 전송
+// 					form.submit();            // DB에 저장은 되지만, 페이지 이동 없이 현재 화면에 머물러야 함.(어떻게하지?)
 				});
 			});   // controller에서 DB에 저장할 때, status 추가해서 저장하도록 맵핑하기 
 						

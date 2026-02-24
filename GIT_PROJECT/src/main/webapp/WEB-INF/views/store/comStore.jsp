@@ -7,7 +7,7 @@
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
 <body>
-    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+    <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
 
     <main class="container mt-5">
         <div class="row">

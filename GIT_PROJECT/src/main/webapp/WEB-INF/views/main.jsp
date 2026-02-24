@@ -16,7 +16,7 @@
 			<h1> Main Area</h1>
 			<h3><a href="<c:url value="/job/JobPosting" />">JobPosting</a></h3>
 			<h3><a href="<c:url value="/job/JobList" />">JobLIst</a></h3>
-			<h3><a href="<c:url value="/job/JobRelay" />">JobRelay</a></h3>
+			<h3><a href="<c:url value="/job/JobDetail" />">JobDetail</a></h3>
 			<h3><a href="<c:url value="/job/JobManagement" />">JobManagement</a></h3>
 			<h3><a href="<c:url value="/help/helpWord" />">Help</a></h3>
 			<h3><a href="<c:url value="/user/login" />">testJob</a></h3>

@@ -21,8 +21,8 @@ public class JobService {
 		jobMapper.insertJob(jobDTO);
 	}
 
-	public List<JobDTO> getJobList(String expType) { // 매개변수 추가
-	    return jobMapper.getJobList(expType);
+	public List<JobDTO> getJobList(String expType, String eduType) {
+	    return jobMapper.getJobList(expType, eduType);
 	}
 
 

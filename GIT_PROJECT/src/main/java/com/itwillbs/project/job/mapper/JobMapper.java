@@ -12,7 +12,6 @@ public interface JobMapper {
 
 	void insertJob(JobDTO jobDTO);
 
-	List<JobDTO> getJobList(@Param("expType") String expType);
-
+	List<JobDTO> getJobList(@Param("expType") String expType, @Param("eduType") String eduType);
 
 }

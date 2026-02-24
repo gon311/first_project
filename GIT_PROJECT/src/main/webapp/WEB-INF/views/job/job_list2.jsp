@@ -8,15 +8,14 @@
 <meta charset="UTF-8">
 <title>채용공고 목록</title>
 <style>
-    /* 1. 전체 레이아웃 */
     body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; color: #333; }
     .main-wrapper { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
 
-    /* 2. 상단 필터 */
+    /* 상단 드롭다운 필터 영역 */
     .filter-dropdown-row { margin-bottom: 15px; display: flex; gap: 10px; }
     .filter-select { padding: 10px 15px; border: 1px solid #ddd; border-radius: 5px; background: #fff; font-size: 14px; min-width: 150px; cursor: pointer; }
 
-    /* 3. 검색 섹션 */
+    /* 검색창 및 탭 영역 레이아웃 고정 */
     .search-section { background: #fff; border: 2px solid #333; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
     .search-tab-bar { display: flex; width: 100%; height: 60px; border-bottom: 1px solid #eee; background: #fff; }
     .tab-item { width: 150px; font-weight: bold; cursor: pointer; font-size: 16px; border-right: 1px solid #eee; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -27,36 +26,32 @@
     .search-input-area input { flex: 1; border: none; outline: none; font-size: 15px; height: 100%; }
     .btn-main-search { background: #333; color: #fff; border: none; padding: 0 30px; height: 40px; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-    /* 4. 선택 패널 */
+    /* 카테고리 선택 패널 */
     .selection-detail-panel { display: flex; height: 350px; border-top: 1px solid #eee; }
     .category-column { width: 220px; background: #f1f3f5; border-right: 1px solid #ddd; overflow-y: auto; list-style: none; padding: 0; }
     .category-column li { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #e9ecef; }
     .category-column li.active { background: #fff; color: #007bff; font-weight: bold; }
+
     .sub-item-column { flex: 1; padding: 25px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; overflow-y: auto; align-content: flex-start; }
     .sub-item-column label { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
 
-    /* 5. 푸터 및 디자인 버튼 */
     .selection-footer { padding: 15px 25px; background: #fff; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-    .selected-status { font-size: 14px; color: #666; }
-    .selected-status strong { color: #007bff; font-size: 16px; margin: 0 2px; }
-
-    .btn-reset {
-        display: flex; align-items: center; gap: 6px; background-color: transparent;
-        color: #888; border: 1px solid #ddd; padding: 8px 18px; border-radius: 25px;
-        font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.3s ease;
-    }
-    .btn-reset:hover { background-color: #f8f9fa; color: #333; border-color: #bbb; }
-    .btn-reset i { font-style: normal; font-size: 16px; transition: transform 0.4s ease; }
-    .btn-reset:hover i { transform: rotate(-180deg); }
-
-    /* 6. 리스트 카드 */
+    
+    /* 채용공고 카드 리스트 스타일 */
     .job-list-container { margin-top: 40px; }
-    .job-card { background: #fff; padding: 25px 30px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; display: flex; align-items: center; cursor: pointer; transition: all 0.2s; }
+    .job-card { 
+        background: #fff; padding: 25px 30px; border-radius: 12px; margin-bottom: 15px; 
+        border: 1px solid #eee; display: flex; align-items: center; cursor: pointer; 
+        transition: all 0.2s; 
+    }
     .job-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-color: #007bff; }
-    .company-name { width: 120px; font-weight: bold; }
-    .job-title { width: 250px; font-weight: 600; padding: 0 10px; }
-    .tag { background: #f1f3f5; padding: 5px 10px; border-radius: 4px; font-size: 12px; color: #888; margin-right: 5px; }
-    .job-deadline { margin-left: auto; color: #ff4d4f; font-weight: bold; }
+    
+    .company-name { width: 120px; font-weight: bold; flex-shrink: 0; }
+    .job-title { width: 250px; font-weight: 600; flex-shrink: 0; padding: 0 10px; }
+    .job-tags { width: 240px; display: flex; gap: 6px; flex-shrink: 0; justify-content: center; }
+    .tag { background: #f1f3f5; padding: 5px 10px; border-radius: 4px; font-size: 12px; color: #888; border: 1px solid #e9ecef; }
+    .job-location { flex: 1; color: #666; font-size: 14px; padding: 0 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .job-deadline { width: 140px; text-align: right; color: #ff4d4f; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -70,12 +65,12 @@
                 <option value="career" ${param.expType == 'career' ? 'selected' : ''}>경력</option>
             </select>
             <select class="filter-select" id="eduFilter" name="eduType" onchange="changeFilter()">
-                <option value="" ${empty param.eduType ? 'selected' : ''}>학력 전체</option>
-                <option value="학력무관" ${param.eduType == '학력무관' ? 'selected' : ''}>학력무관</option>
-                <option value="고등학교 졸업" ${param.eduType == '고등학교 졸업' ? 'selected' : ''}>고졸</option>
-                <option value="대학교(2,3년) 졸업" ${param.eduType == '대학교(2,3년) 졸업' ? 'selected' : ''}>대학교(2,3년) 졸업</option>
-                <option value="대학교(4년) 졸업" ${param.eduType == '대학교(4년) 졸업' ? 'selected' : ''}>대학교(4년) 졸업</option>
-            </select>
+			    <option value="" ${empty param.eduType ? 'selected' : ''}>학력 전체</option>
+			    <option value="학력무관" ${param.eduType == '학력무관' ? 'selected' : ''}>학력무관</option>
+			    <option value="고등학교 졸업" ${param.eduType == '고등학교 졸업' ? 'selected' : ''}>고졸</option>
+			    <option value="대학교(2,3년) 졸업" ${param.eduType == '대학교(2,3년) 졸업' ? 'selected' : ''}>대학교(2,3년) 졸업</option>
+			    <option value="대학교(4년) 졸업" ${param.eduType == '대학교(4년) 졸업' ? 'selected' : ''}>대학교(4년) 졸업</option>
+			</select>
         </div>
 
         <div class="search-section">
@@ -93,9 +88,7 @@
             </div>
             <div class="selection-footer">
                 <div class="selected-status">선택된 조건: <strong id="selectedCount">0</strong>건</div>
-                <button type="button" class="btn-reset" onclick="resetAll()">
-                    <i>⟳</i> 조건 초기화
-                </button>
+                <button type="button" onclick="resetAll()">조건 초기화 ⟳</button>
             </div>
         </div>
         
@@ -144,6 +137,8 @@
 	};
 	
     let currentTab = 'region';
+    
+    // ⭐ 중복 카운팅 해결: Set을 사용하여 유일한 값만 저장 ⭐
     let savedChecks = new Set();
     document.querySelectorAll('.preserved-val').forEach(el => savedChecks.add(el.value));
 
@@ -169,20 +164,31 @@
         const data = (currentTab === 'region') ? regionData : jobData;
         const items = data[catName];
         subDiv.innerHTML = '';
+        
         if (items) {
             items.forEach(item => {
                 const label = document.createElement('label');
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.value = item;
+                
+                // Set에 저장된 항목이면 체크 표시
                 if(savedChecks.has(item)) checkbox.checked = true;
+
                 checkbox.onchange = function() {
-                    if(this.checked) savedChecks.add(this.value);
-                    else savedChecks.delete(this.value);
+                    if(this.checked) {
+                        savedChecks.add(this.value);
+                    } else {
+                        savedChecks.delete(this.value);
+                    }
                     updateSelectedCount();
                 };
+                
+                const span = document.createElement('span');
+                span.textContent = item;
+                
                 label.appendChild(checkbox);
-                label.append(item);
+                label.appendChild(span);
                 subDiv.appendChild(label);
             });
         }
@@ -193,6 +199,7 @@
         document.getElementById('selectedCount').textContent = savedChecks.size;
     }
 
+    // 폼 제출 전, Set의 데이터를 히든 필드로 변환하여 전송 준비
     function syncHiddenFields() {
         const container = document.getElementById('hiddenCheckboxes');
         container.innerHTML = ''; 
@@ -213,12 +220,12 @@
     }
 
     function changeFilter() {
-        syncHiddenFields();
+        syncHiddenFields(); // 현재 체크된 항목들을 모두 챙겨서 전송
         document.getElementById("searchForm").submit();
     }
 
     function resetAll() {
-        location.href = "JobList";
+        location.href = "JobList"; // 완전 초기화
     }
 
     document.addEventListener('DOMContentLoaded', renderMainCategory);

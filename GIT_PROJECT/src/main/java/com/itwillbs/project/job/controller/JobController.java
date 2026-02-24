@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.project.job.dto.JobDTO;
 import com.itwillbs.project.job.service.JobService;
@@ -42,17 +43,21 @@ public class JobController {
 	}
 	
 	@GetMapping("/JobList")
-	public String list(Model model, String expType) { // expType 파라미터 추가
-	    List<JobDTO> jobList = jobService.getJobList(expType); // 서비스에 전달
+	public String list(Model model, 
+	                   @RequestParam(value="expType", required=false) String expType,
+	                   @RequestParam(value="eduType", required=false) String eduType) { 
+	    
+	    // 두 필터 조건을 모두 서비스에 전달
+	    List<JobDTO> jobList = jobService.getJobList(expType, eduType); 
+	    
 	    model.addAttribute("jobList", jobList);
-	    model.addAttribute("selectedExp", expType); // JSP에서 선택 상태 유지를 위해 추가
 	    return "/job/job_list";
 	}
 	
-	@GetMapping("/JobRelay")
+	@GetMapping("/JobDetail")
 	public String relay() {
 		
-		return "/job/job_relay";
+		return "/job/job_detail";
 	}
 	
 	@GetMapping("/JobManagement")

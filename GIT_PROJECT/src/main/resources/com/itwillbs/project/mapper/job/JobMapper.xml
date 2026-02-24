@@ -35,7 +35,7 @@
 	        #{edu}, 
 	        #{empType},
 	        <choose>
-	            <when test="probation != null and probation == 'Y'">
+	            <when test='probation != null and probation == "Y"'>
 	                #{probation},
 	            </when>
 	            <otherwise>
@@ -45,7 +45,7 @@
 	        #{salary}, 
 	        #{address},
 	        <choose>
-	            <when test="isRemote != null and isRemote == 'Y'">
+	            <when test='isRemote != null and isRemote == "Y"'>
 	                #{isRemote},
 	            </when>
 	            <otherwise>
@@ -56,11 +56,10 @@
 	        #{closeDate}, 
 	        #{mgrName}, 
 	        #{mgrPhone}, 
-	        #{mgrEmail}, 
+	        LOWER(#{mgrEmail}),
 	        #{isPublic}, 
 	        1                )
-	</insert>
-	
+	</insert>	
 	
 	<select id="getJobList" resultType="job">
 	    SELECT 
@@ -70,18 +69,36 @@
 	        j.title,
 	        j.field,
 	        CASE 
-		        WHEN j.exp_year = '0' OR j.exp_year LIKE '%신입%' THEN '신입'
-			    ELSE '경력'
-		    END as expYear,
-	        j.exp_type as expType, j.edu,
+	            WHEN j.exp_year = '0' OR j.exp_year LIKE '%신입%' THEN '신입'
+	            ELSE '경력'
+	        END as expYear,
+	        j.edu,
 	        j.address,
 	        j.close_date as closeDate
 	    FROM JOB_POSTING j JOIN USER_COMPANY u
-	    ON j.comp_id = u.user_id
+		ON j.comp_id = u.user_id
 	    <where>
 	        <if test="expType != null and expType != ''">
-	            AND j.exp_type = #{expType}
+	            <choose>
+	                <when test="expType == 'new'">
+	                    AND (j.exp_type = 'new' OR j.exp_year = '0')
+	                </when>
+	                <when test="expType == 'career'">
+	                    AND j.exp_type = 'career'
+	                </when>
+	            </choose>
 	        </if>
+	        
+	        <if test="eduType != null and eduType != ''">
+			    <choose>
+			        <when test='eduType == "학력무관"'>
+			            AND j.edu = '학력무관'
+			        </when>
+			        <otherwise>
+			            AND (j.edu = #{eduType} OR j.edu = '학력무관')
+			        </otherwise>
+			    </choose>
+			</if>
 	    </where>
 	    ORDER BY j.job_id DESC
 	</select>

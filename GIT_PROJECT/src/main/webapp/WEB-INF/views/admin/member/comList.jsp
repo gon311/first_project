@@ -38,9 +38,9 @@
 	
 	            <!-- 전체 회원 검색 -->
 	            <div class="container w-50 my-4 mx-3">
+                    <h5 class="card-title mb-3">검색</h5>
 	                <div class="card">
 	                    <div class="card-body">
-	                        <h5 class="card-title mb-3">검색</h5>
 	
 	                        <form action="<c:url value='/admin/coms' />"
 	                              method="get"
@@ -153,7 +153,7 @@
 	                            <input type="hidden" name="activeTab" value="withdraw"/>
 	                            
 	                            <div class="row my-3">
-		                            <div class="col-md-5">
+		                            <div class="col-md-6">
 		                                    <label class="form-label fw-bold mb-2">기간별</label>
 		                                    <div class="border rounded p-2"> 
 					                            <div class="d-flex flex-column gap-2">

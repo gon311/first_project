@@ -49,7 +49,7 @@
                             	<!-- 탭 유지용 -->
 	                            <input type="hidden" name="activeTab" value="all"/>
                                 
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <label class="form-label fw-bold mb-2">이름</label>
                                     <input type="text" class="form-control" name="keyword" placeholder="이름을 입력하세요">
                                 </div>
@@ -149,7 +149,7 @@
                             <input type="hidden" name="activeTab" value="withdraw"/>
                             
                             <div class="row my-3">
-	                            <div class="col-md-5">
+	                            <div class="col-md-6">
 	                                    <label class="form-label fw-bold mb-2">기간별</label>
 	                                    <div class="border rounded p-2"> 
 				                            <div class="d-flex flex-column gap-2">

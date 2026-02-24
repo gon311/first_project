@@ -34,8 +34,8 @@ public class AdminService{
 	}
 	
 	// 탈퇴한 회원 목록
-	public List<MemberDTO> getUserWithdraw(String keyword, String type, String status) {
-		return adminMapper.selectUserWithdraw(keyword, type, status);
+	public List<MemberDTO> getUserWithdraw(String keyword, String startDate, String endDate) {
+		return adminMapper.selectUserWithdraw(keyword, startDate, endDate);
 	}
 	
 	// 기업회원 목록 조회
@@ -44,8 +44,8 @@ public class AdminService{
 	}
 	
 	// 탈퇴한 회원 목록
-	public List<MemberDTO> getComWithdraw(String keyword, String type, String status) {
-		return adminMapper.selectComWithdraw(keyword, type, status);
+	public List<MemberDTO> getComWithdraw(String keyword, String startDate, String endDate) {
+		return adminMapper.selectComWithdraw(keyword, startDate, endDate);
 	}
 	
 	//======================================================================================

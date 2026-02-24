@@ -43,14 +43,14 @@ public class AdminController {
 		//-----------------------------------------------------
 		// 전체 회원 목록 조회
 		List<MemberDTO> userList = adminService.getUserList(searchDTO.getKeyword()
-																, searchDTO.getType()
-																, searchDTO.getStatus());
+															, searchDTO.getType()
+															, searchDTO.getStatus());
 		model.addAttribute("userList", userList);
 		
 		// 탈퇴 회원 목록 조회
 		List<MemberDTO> userWithdraw = adminService.getUserWithdraw(searchDTO.getKeyword()
-																, searchDTO.getType()
-																, searchDTO.getStatus());
+																	, searchDTO.getStartDate()
+																	, searchDTO.getEndDate());
 		model.addAttribute("userWithdraw", userWithdraw);
 		
 		return "admin/member/userList";
@@ -89,14 +89,14 @@ public class AdminController {
 		//-----------------------------------------------------------
 		// 전체 회원 목록 조회
 		List<MemberDTO> comList = adminService.getComList(searchDTO.getKeyword()
-																, searchDTO.getType()
-																, searchDTO.getStatus());
+														, searchDTO.getType()
+														, searchDTO.getStatus());
 		model.addAttribute("comList", comList);
 		
 		// 탈퇴 회원 목록 조회
 		List<MemberDTO> comWithdraw = adminService.getComWithdraw(searchDTO.getKeyword()
-																, searchDTO.getType()
-																, searchDTO.getStatus());
+																, searchDTO.getStartDate()
+																, searchDTO.getEndDate());
 		model.addAttribute("comWithdraw", comWithdraw);
 		 
 		return "admin/member/comList";

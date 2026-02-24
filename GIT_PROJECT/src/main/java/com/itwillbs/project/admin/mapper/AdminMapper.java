@@ -25,8 +25,8 @@ public interface AdminMapper {
 	
 	// 탈퇴 회원 목록 조회
 	List<MemberDTO> selectUserWithdraw(@Param("keyword") String keyword
-									,@Param("type") String type
-									,@Param("status") String status);
+									,@Param("startDate") String startDate
+									,@Param("endDate") String endDate);
 	
 	// 기업회원 목록 조회
 	List<MemberDTO> selectComList(@Param("keyword") String keyword
@@ -35,8 +35,8 @@ public interface AdminMapper {
 	
 	// 탈퇴 회원 목록 조회
 	List<MemberDTO> selectComWithdraw(@Param("keyword") String keyword
-									,@Param("type") String type
-									,@Param("status") String status);
+									,@Param("startDate") String startDate
+									,@Param("endDate") String endDate);
 	
 	//========================================================================
 	// 공지사항 리스트 조회

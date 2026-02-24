@@ -23,7 +23,7 @@
 
       <!-- 3. 링크 영역 -->
       <div class="col-md-5 mb-3 text-md-end">
-        <a href="#" class="footer-link">고객센터</a> |
+        <a href="<c:url value="/help/helpWord" />" class="footer-link">고객센터</a> |
         <a href="#" class="footer-link">개인정보처리방침</a> |
         <a href="#" class="footer-link">이용 약관</a> |
         <a href="#" class="footer-link">자주하는질문</a>

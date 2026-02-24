@@ -1,4 +1,19 @@
 @charset "UTF-8";
+/* header 영역 */
+#header-upper{
+	background-color: #FFFFFF;
+	height: 90px;
+}
+#header-bottom{
+	background-color: #FFFFFF;
+	color : #191970;
+}
+
+.nav-link{
+	color: #0047AB;
+}
+
+
 
 /* 공통 CTA 카드 스타일 */
 .cta-card {

@@ -49,12 +49,8 @@
 			
 		<!-- 3팀 기업공고/로그인/마이페이지  -->
 			<h1> TEAM3 Area</h1>
-			<h3><a href="<c:url value="/job/JobPosting" />">JobPosting</a></h3>
-			<h3><a href="<c:url value="/job/JobList" />">JobLIst</a></h3>
 			<h3><a href="<c:url value="/job/JobDetail" />">JobDetail</a></h3>
 			<h3><a href="<c:url value="/job/JobManagement" />">JobManagement</a></h3>
-			<h3><a href="<c:url value="/help/helpWord" />">Help</a></h3>
-			<h3><a href="<c:url value="/board" />">커뮤니티</a></h3>
 		</main>
 		<%-- footer area --%>
 		<%@ include file="/WEB-INF/views/inc/footer.jspf" %>

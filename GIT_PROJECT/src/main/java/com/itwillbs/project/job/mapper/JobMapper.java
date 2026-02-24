@@ -1,6 +1,7 @@
 package com.itwillbs.project.job.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -17,5 +18,7 @@ public interface JobMapper {
 			@Param("eduType") String eduType, 
 			@Param("selectedItems") List<String> selectedItems
 			);
+
+	List<Map<String, String>> getExistingRegions();
 
 }

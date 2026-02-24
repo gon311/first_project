@@ -148,14 +148,15 @@
 </div>
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 <script>
-	const regionData = {
-	    "서울": ["강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"],
-	    "경기": ["수원시", "용인시", "성남시", "부천시", "화성시", "안산시", "안양시", "평택시", "시흥시", "김포시", "파주시", "의정부시"],
-	    "인천": ["계양구", "미추홀구", "남동구", "동구", "부평구", "서구", "연수구", "중구"], 
-	    "부산": ["강서구", "금정구", "남구", "동래구", "부산진구", "북구", "사상구", "사하구", "수영구", "연제구", "해운대구"],
-	    "대구": ["남구", "달서구", "동구", "북구", "서구", "수성구", "중구", "달성군"],
-	    "대전": ["대덕구", "동구", "서구", "유성구", "중구"] 
-	};
+	const regionData = {};
+	
+	<c:forEach var="reg" items="${existRegions}">
+	    if(!regionData['${reg.city}']) {
+	        regionData['${reg.city}'] = [];
+	    }
+	    regionData['${reg.city}'].push('${reg.district}');
+	</c:forEach>
+	
 
 	const jobData = {
 	    "기획·전략": ["경영기획", "전략기획", "사업개발", "서비스기획", "데이터분석"],
@@ -246,7 +247,7 @@
     function resetAll() {
         location.href = "JobList";
     }
-
+    
     document.addEventListener('DOMContentLoaded', renderMainCategory);
 </script>
 </body>

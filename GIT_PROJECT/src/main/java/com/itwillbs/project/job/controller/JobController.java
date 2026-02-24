@@ -1,6 +1,7 @@
 package com.itwillbs.project.job.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -49,9 +50,12 @@ public class JobController {
 					   @RequestParam(value="selected_items", required=false) List<String> selectedItems) { 
 	    
 	    // 두 필터 조건을 모두 서비스에 전달
-	    List<JobDTO> jobList = jobService.getJobList(expType, eduType, selectedItems); 
+	    List<JobDTO> jobList = jobService.getJobList(expType, eduType, selectedItems);
+	    List<Map<String, String>> existRegions = jobService.getExistingRegions();
 	    
 	    model.addAttribute("jobList", jobList);
+	    model.addAttribute("existRegions", existRegions);
+	    
 	    return "/job/job_list";
 	}
 	

@@ -4,6 +4,10 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.project.my.mapper.MyMapper">
 
+<!-- ==============================
+     resultMap
+============================== -->
+	<!-- MyDTO -->
 	<resultMap id="userMap" type="com.itwillbs.project.my.dto.MyDTO">
 	  <id     property="userId"   column="user_id" />
 	  <result property="email"    column="email" />
@@ -11,6 +15,26 @@
 	  <result property="phone"    column="phone" />
 	  <result property="userType" column="user_type" />
 	</resultMap>
+	
+	<!-- MyResumeDTO -->
+	<resultMap id="resumeMap" type="com.itwillbs.project.my.dto.MyResumeDTO">
+	  <id     property="resumeMyId" column="resume_my_id"/>
+	
+	  <result property="userId"     column="user_id"/>
+	  <result property="resumeId"   column="resume_id"/>
+	
+	  <result property="title"      column="title"/>
+	  <result property="status"     column="status"/>
+	  <result property="memo"       column="memo"/>
+	
+	  <result property="createdAt"  column="created_at"/>
+	  <result property="updatedAt"  column="updated_at"/>
+	  <result property="isDeleted"  column="is_deleted"/>
+	  <result property="updatedAtStr" column="updated_at_str"/>
+	</resultMap>
+	
+	
+	
 	
 <!-- ==============================
      내정보 조회
@@ -52,5 +76,52 @@
 		SET password = #{password}
 		WHERE email = #{sId}
 	</update>
+	
+<!-- ==============================
+     이력서 내력조회 , 최근
+     parameter: MyResumeDTO.java
+     result: Long
+============================== -->	
+	<select id="selectMyResumeList" resultMap="resumeMap">
+	  SELECT
+	      resume_my_id
+	    , user_id
+	    , resume_id
+	    , title
+	    , status
+	    , memo
+	    , created_at
+	    , updated_at
+	    , DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i') AS updated_at_str
+	    , is_deleted
+	  FROM resume_my
+	  WHERE user_id = #{userId}
+	    AND is_deleted = 0
+	  ORDER BY updated_at DESC, resume_my_id DESC
+	</select>
+
+	<select id="selectTopResume" resultMap="resumeMap">
+		SELECT
+			resume_my_id
+			, user_id
+			, resume_id
+			, title
+			, status
+			, memo
+			, created_at
+			, updated_at
+			, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i') AS updated_at_str
+			, is_deleted
+		FROM resume_my
+		WHERE user_id = #{userId}
+			AND is_deleted = 0
+		ORDER BY
+			(status = 'COMPLETE') DESC
+			, updated_at DESC
+			, resume_my_id DESC
+		LIMIT 1
+	</select>
+	
+
 	
 </mapper>

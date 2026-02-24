@@ -1,5 +1,7 @@
 package com.itwillbs.project.my.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.my.dto.MyDTO;
+import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.PasswordChangeDTO;
 import com.itwillbs.project.my.service.MyService;
 
@@ -34,27 +37,17 @@ public class MyController {
 	public String myInfo(HttpSession session, Model model, MyDTO myDTO) {
 	 
 	    //로그인 체크
-	    String sId = (String) session.getAttribute("sId");
+	    String sId = (String) session.getAttribute("sId"); 
 	    if (sId == null) return "redirect:/user/login";
 
 	    model.addAttribute("currentMenu", "myInfo");
 	    MyDTO user = myService.getUser(sId);
 	    model.addAttribute("loginUser", user);
-
-	    log.debug("user: {}", user);
+	    
 
 	    return "/my/myInfo";
 	}
 	
-
-	// -------------------------------------------
-	@GetMapping("/test/login")
-	public String testLogin(HttpSession session) {
-	    session.setAttribute("sId", "test@test.com"); // DB에 존재하는 이메일로 로그인
-	    return "redirect:/my/myInfo";
-	}
-	// 임시 로그인
-	// -------------------------------------------
 
 	// 내정보 수정
 	@GetMapping("/updateInfo")
@@ -109,7 +102,7 @@ public class MyController {
 	    // 조작 방지: 이메일은 세션 기준으로 고정 (WHERE email에 쓸 값)
 	    myDTO.setEmail(sId);
 
-	    // 디버깅 로그(수정 안되면 이거부터 확인)
+	    // 디버깅 로그
 	    log.debug("[updateInfo POST] sId={}, userName={}, phone={}",
 	            sId, myDTO.getUserName(), myDTO.getPhone());
 
@@ -185,10 +178,37 @@ public class MyController {
 
 	// 이력서 관리
 	@GetMapping("/myResume")
-	public String myResume(Model model) {
+	public String myResume(Model model, HttpSession session) {
 	    model.addAttribute("currentMenu", "resume"); // 사이드바 '이력서 관리' 활성
+	    
+	    //로그인 체크
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+	    
+	    // sId -> userId 얻기 (myInfo랑 동일)
+	    MyDTO user = myService.getUser(sId);
+	    if (user == null) return "redirect:/user/login";
+	    Long userId = user.getUserId();
+
+	    // 3) (핵심) 내 이력서 목록 조회
+	    List<MyResumeDTO> myResumes = myService.getMyResumeList(userId);
+	    MyResumeDTO topResume = myService.getTopResume(userId);
+
+	    // 4) 모델에 담아서 JSP로 전달
+	    model.addAttribute("myResumes", myResumes);
+	    model.addAttribute("topResume", topResume);
+
 	    return "/my/myResume";
 	}
+
+
+	
+	
+	
+	
+	
+	
+	
 	
 	// 자소서 관리
 	@GetMapping("/myReview")

@@ -243,7 +243,7 @@
             </div>
 
             <textarea class="editor-area" name="content" id="content"
-                      placeholder="등록한 글은 사용하는 닉네임으로 등록됩니다.&#10;* 타인의 권리를 침해하거나 부적절한 내용은 사전 공지 없이 삭제될 수 있어요.&#10;"
+                      placeholder="등록한 글은 사용하는 닉네임으로 등록됩니다.&#10;* 타인의 권리를 침해하거나 부적절한 내용은 사전 공지 없이 삭제될 수 있어요..&#10;"
                       maxlength="5000" required></textarea>
           </div>
 

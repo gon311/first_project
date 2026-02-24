@@ -7,33 +7,28 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-// ---------------------------------------------------------
-// ✅ (목록) 이력서 관리(myResume.jsp) - 리스트 1줄에 필요한 값
-// ---------------------------------------------------------
-// [이력서-목록]
-//  - resumeId
-//  - title
-//  - status(DRAFT/COMPLETE)
-//  - representative(true/false)
-//  - updatedAt
-//
-// (선택) 화면에서 보여주면 추가
-//  - careerType(신입/경력)
-//  - desiredJob / desiredRegion
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 public class MyResumeDTO {
-	
-    private int resumeId;              // resume.resume_id (INT PK)
-    private String title;              // resume.title (VARCHAR)
-    private String status;             // resume.status ("DRAFT" / "COMPLETE")
-    private String representative;     // resume.is_representative -> "Y"/"N"로 변환해서 담기(권장)
-    private LocalDateTime updatedAt;   // resume.updated_at (DATETIME)
 
-    // (선택) 화면 표시용
-    private String careerType;         // "신입" / "경력" (경력 테이블 존재 여부로 계산)
-	
+    // ===== 식별/관계키 =====
+    private Long resumeMyId;      // resume_my_id (PK)
+    private Long userId;          // user_id (FK) - 보통 서버 내부 검증용
+    private Integer resumeId;     // resume_id (FK)
+
+    // ===== 목록/편집에 필요한 값 =====
+    private String title;         // title
+    private String status;        // status (추천: enum)
+    private String memo;          // memo
+
+    // ===== 시간/삭제 =====
+    private LocalDateTime createdAt; // created_at
+    private LocalDateTime updatedAt; // updated_at
+    private Integer isDeleted;     // is_deleted (0/1)  (추천: Boolean으로 매핑)
+    
+    private String updatedAtStr; // JSP 표시용(포맷된 문자열)
+    
 }

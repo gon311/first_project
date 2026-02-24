@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <title>채용공고 등록</title>
 <style>
-    body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; padding: 20px; }
+    body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; }
     .container { max-width: 900px; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: auto; }
     .form-group { display: flex; align-items: flex-start; margin-bottom: 20px; }
     .label-box { width: 150px; font-weight: bold; padding-top: 10px; }

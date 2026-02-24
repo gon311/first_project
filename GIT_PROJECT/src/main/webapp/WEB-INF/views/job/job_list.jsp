@@ -8,15 +8,15 @@
 <meta charset="UTF-8">
 <title>채용공고 목록</title>
 <style>
-    /* 1. 전체 레이아웃 */
+    /* 1. 전체 레이아웃 및 폰트 */
     body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; color: #333; }
     .main-wrapper { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
 
-    /* 2. 상단 필터 */
+    /* 2. 상단 필터 (경력/학력) */
     .filter-dropdown-row { margin-bottom: 15px; display: flex; gap: 10px; }
     .filter-select { padding: 10px 15px; border: 1px solid #ddd; border-radius: 5px; background: #fff; font-size: 14px; min-width: 150px; cursor: pointer; }
 
-    /* 3. 검색 섹션 */
+    /* 3. 검색 섹션 박스 */
     .search-section { background: #fff; border: 2px solid #333; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
     .search-tab-bar { display: flex; width: 100%; height: 60px; border-bottom: 1px solid #eee; background: #fff; }
     .tab-item { width: 150px; font-weight: bold; cursor: pointer; font-size: 16px; border-right: 1px solid #eee; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -27,15 +27,15 @@
     .search-input-area input { flex: 1; border: none; outline: none; font-size: 15px; height: 100%; }
     .btn-main-search { background: #333; color: #fff; border: none; padding: 0 30px; height: 40px; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-    /* 4. 선택 패널 */
+    /* 4. 선택 패널 (지역/직무) */
     .selection-detail-panel { display: flex; height: 350px; border-top: 1px solid #eee; }
-    .category-column { width: 220px; background: #f1f3f5; border-right: 1px solid #ddd; overflow-y: auto; list-style: none; padding: 0; }
+    .category-column { width: 220px; background: #f1f3f5; border-right: 1px solid #ddd; overflow-y: auto; list-style: none; padding: 0; margin: 0; }
     .category-column li { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #e9ecef; }
     .category-column li.active { background: #fff; color: #007bff; font-weight: bold; }
     .sub-item-column { flex: 1; padding: 25px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; overflow-y: auto; align-content: flex-start; }
     .sub-item-column label { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
 
-    /* 5. 푸터 및 디자인 버튼 */
+    /* 5. 선택 섹션 하단 푸터 및 초기화 버튼 */
     .selection-footer { padding: 15px 25px; background: #fff; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
     .selected-status { font-size: 14px; color: #666; }
     .selected-status strong { color: #007bff; font-size: 16px; margin: 0 2px; }
@@ -49,14 +49,26 @@
     .btn-reset i { font-style: normal; font-size: 16px; transition: transform 0.4s ease; }
     .btn-reset:hover i { transform: rotate(-180deg); }
 
-    /* 6. 리스트 카드 */
-    .job-list-container { margin-top: 40px; }
-    .job-card { background: #fff; padding: 25px 30px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; display: flex; align-items: center; cursor: pointer; transition: all 0.2s; }
+    /* 6. 요청하신 "채용정보" 타이틀 영역 */
+    .list-title-area {
+        margin-top: 50px; margin-bottom: 20px; display: flex; align-items: center; 
+        gap: 12px; border-bottom: 2px solid #333; padding-bottom: 15px;
+    }
+    .list-title-area h2 { margin: 0; font-size: 24px; font-weight: 800; color: #1a1a1a; }
+    .total-count { font-size: 16px; color: #666; }
+    .total-count span { color: #007bff; font-weight: 700; }
+
+    /* 7. 리스트 카드 디자인 */
+    .job-list-container { margin-top: 10px; }
+    .job-card { 
+        background: #fff; padding: 25px 30px; border-radius: 12px; margin-bottom: 15px; 
+        border: 1px solid #eee; display: flex; align-items: center; cursor: pointer; transition: all 0.2s; 
+    }
     .job-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-color: #007bff; }
-    .company-name { width: 120px; font-weight: bold; }
-    .job-title { width: 250px; font-weight: 600; padding: 0 10px; }
-    .tag { background: #f1f3f5; padding: 5px 10px; border-radius: 4px; font-size: 12px; color: #888; margin-right: 5px; }
-    .job-deadline { margin-left: auto; color: #ff4d4f; font-weight: bold; }
+    .company-name { width: 120px; font-weight: bold; font-size: 15px; }
+    .job-title { width: 350px; font-weight: 600; padding: 0 10px; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tag { background: #f1f3f5; padding: 4px 8px; border-radius: 4px; font-size: 12px; color: #666; margin-right: 5px; }
+    .job-deadline { margin-left: auto; color: #ff4d4f; font-weight: bold; font-size: 14px; }
 </style>
 </head>
 <body>
@@ -69,6 +81,7 @@
                 <option value="new" ${param.expType == 'new' ? 'selected' : ''}>신입</option>
                 <option value="career" ${param.expType == 'career' ? 'selected' : ''}>경력</option>
             </select>
+            
             <select class="filter-select" id="eduFilter" name="eduType" onchange="changeFilter()">
                 <option value="" ${empty param.eduType ? 'selected' : ''}>학력 전체</option>
                 <option value="학력무관" ${param.eduType == '학력무관' ? 'selected' : ''}>학력무관</option>
@@ -83,14 +96,16 @@
                 <div class="tab-item active" id="tabRegion" onclick="toggleTab('region')">📍 지역별</div>
                 <div class="tab-item" id="tabJob" onclick="toggleTab('job')">💼 직무별</div>
                 <div class="search-input-area">
-                    <input type="text" name="keyword" value="${param.keyword}" placeholder="키워드를 입력하세요.">
-                    <button type="submit" class="btn-main-search">검색하기</button>
+                    <input type="text" name="keyword" value="${param.keyword}" placeholder="회사명 또는 공고 제목을 검색하세요.">
+                    <button type="submit" class="btn-main-search" onclick="syncHiddenFields()">검색하기</button>
                 </div>
             </div>
+            
             <div class="selection-detail-panel">
                 <ul class="category-column" id="mainCategory"></ul>
                 <div class="sub-item-column" id="subCategory"></div>
             </div>
+
             <div class="selection-footer">
                 <div class="selected-status">선택된 조건: <strong id="selectedCount">0</strong>건</div>
                 <button type="button" class="btn-reset" onclick="resetAll()">
@@ -106,21 +121,30 @@
         </div>
     </form>
 
-    <div class="job-list-container">
-        <c:forEach var="job" items="${jobList}">
-            <div class="job-card" onclick="location.href='/job/JobDetail?jobId=${job.jobId}'">
-                <div class="company-name">${job.comName}</div>
-                <div class="job-title">${job.title}</div>
-                <div class="job-tags">
-                    <span class="tag">${job.field}</span>
-                    <span class="tag">${job.expYear}</span>
-                    <span class="tag">${job.edu}</span>
-                </div>
-                <div class="job-location">${job.displayAddress}</div>
-                <div class="job-deadline">~ ${job.closeDate} 까지</div>
-            </div>
-        </c:forEach>
+    <div class="list-title-area">
+        <h2>채용정보</h2>
+        <div class="total-count">총 <span>${jobList != null ? jobList.size() : 0}</span>건의 공고</div>
     </div>
+
+    <div class="job-list-container">
+	    <c:forEach var="job" items="${jobList}">
+	        <div class="job-card" onclick="location.href='/job/JobDetail?jobId=${job.jobId}'">
+			    <div class="company-name">${job.comName}</div>
+			    <div class="job-title">${job.title}</div>
+			    <div class="job-tags">
+			        <span class="tag">${job.field}</span>
+			        <span class="tag">${job.expYear}</span>
+			        <span class="tag">${job.edu}</span>
+			    </div>
+			    
+			    <div class="job-location" style="margin-left: 20px; font-size: 14px; color: #666; min-width: 120px;">
+			        ${job.displayAddress}
+			    </div>
+			    
+			    <div class="job-deadline">~ ${job.closeDate}</div>
+			</div>
+	    </c:forEach>
+	</div>
 </div>
 
 <script>
@@ -145,6 +169,8 @@
 	
     let currentTab = 'region';
     let savedChecks = new Set();
+    
+    // 초기 로드 시 기존 파라미터 Set에 저장
     document.querySelectorAll('.preserved-val').forEach(el => savedChecks.add(el.value));
 
     function renderMainCategory() {

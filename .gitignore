@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 빌드 결과물 제외
 **/target/
 /target/
@@ -21,3 +22,28 @@ META-INF/
 # OS 파일
 Thumbs.db
 [Dd]esktop.ini
+=======
+빌드 결과물 제외
+**/target/
+/target/
+
+이클립스 및 설정 파일 제외
+.settings/
+.classpath
+.project
+.metadata/
+bin/
+*.tmp
+*.bak
+
+Maven 및 기타 설정
+.mvn/
+*.properties
+*.mf
+*.MF
+META-INF/
+
+OS 파일
+Thumbs.db
+[Dd]esktop.ini
+>>>>>>> branch 'Team_2' of https://github.com/gon311/first_project.git

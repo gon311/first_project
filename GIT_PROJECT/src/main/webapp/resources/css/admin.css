@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+/*dropdown hover 기능 추가*/
+@media (min-width:992px){
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block !important; 
+    margin-top: 0; /* 마우스가 이동할 때 끊기지 않게 간격 제거 */
+}
+}
+/*제목 bold 처리*/
+.title thick {
+	font-weight: bold;
+}
+
+
+.content {
+  position: static;
+  border: 3px solid;
+}
+
+.mb-7 {
+  margin-bottom: 8rem !important; /* 원하는 값 */
+}
+
+.custom-width {
+    max-width: 700px;   /* 원하는 최대 너비 */
+    margin: 0 auto;     /* 중앙 정렬 */
+    padding-left: 1rem; /* 좌우 여백 최소화 */
+    padding-right: 1rem;
+}
+
+.subscription-card {
+    transition: all 0.3s ease;
+}
+
+.subscription-card:hover {
+    transform: translateY(-5px); /* 살짝 위로 이동 */
+    box-shadow: 0 0.75rem 1.5rem rgba(0,0,0,0.15); /* 그림자 강조 */
+}
+

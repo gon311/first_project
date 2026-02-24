@@ -7,13 +7,48 @@
 		 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 		 
 		 <%-- 현재 페이지(main.jsp) 전용 CSS 영역--%>
+		 <link href="<c:url value="/resources/css/mainUser.css" />" rel="stylesheet" type="text/css">
 	</head>
 	<body>
 		<%-- header area --%>
 		<%@ include file="/WEB-INF/views/inc/header.jspf" %>
 		<%-- main area --%>
 		<main>
-			<h1> Main Area</h1>
+
+		<!-- 기업 목록 노출 영역 -->
+			<div class="adMain">
+				<ul class="nav nav-pills mb-3" id="jobTabs">
+				    <li class="nav-item">
+				        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#today">
+				            오늘의 기업
+				        </button>
+				    </li>
+				    <li class="nav-item">
+				        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#popular">
+				            인기 기업
+				        </button>
+				    </li>
+				    <c:if test="${!empty sessionScope.sId}">
+					    <li class="nav-item">
+					        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#bookmark">
+					            찜한 기업
+					        </button>
+					    </li>
+				    </c:if>
+				</ul>
+				
+				<div class="cardAds">
+					이 자리에 기업 공고가 카드 형태로 들어가게 만듬 
+				</div>
+			</div>
+			<br><br><br><br><br><br>
+		<!-- AI 자소서 첨삭 시작 버튼  -->
+			<div class="btAi">
+				<input type="button" value="AI 자소서 첨삭 시작" onclick="location.href='<c:url value="/review/registForm" />'">
+			</div>
+			
+		<!-- 3팀 기업공고/로그인/마이페이지  -->
+			<h1> TEAM3 Area</h1>
 			<h3><a href="<c:url value="/job/JobPosting" />">JobPosting</a></h3>
 			<h3><a href="<c:url value="/job/JobList" />">JobLIst</a></h3>
 			<h3><a href="<c:url value="/job/JobDetail" />">JobDetail</a></h3>
@@ -28,3 +63,4 @@
 		
 	</body>
 </html>
+

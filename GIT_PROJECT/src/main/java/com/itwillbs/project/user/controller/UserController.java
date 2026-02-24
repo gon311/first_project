@@ -104,6 +104,8 @@ public class UserController {
 		
 		userService.registUser(userDTO);
 		
+		
+		
 		return "redirect:/";
 	}
 	

@@ -1,0 +1,25 @@
+@charset "UTF-8";
+/* header 영역 */
+.nav-upper {
+	background-color: #A7C7E7;
+	height: 90px;
+}
+
+/* main 영역 */
+.adMain, .btAi {
+	width: fit-content;
+	margin: 0 auto;
+	text-align: center;
+}
+
+
+/* footer 영역 */
+.footer-link {
+  color: #333;
+  text-decoration: none;
+  margin: 0 4px;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}

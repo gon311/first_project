@@ -92,7 +92,8 @@
 	        <if test="selectedItems != null and selectedItems.size > 0">
 			    AND (
 			        <foreach item="item" collection="selectedItems" separator=" OR ">
-			            j.address LIKE CONCAT('%', #{item}, '%')  OR j.field LIKE CONCAT('%', #{item}, '%') </foreach>
+			            j.address LIKE CONCAT('%', #{item}, '%')  OR j.field LIKE CONCAT('%', #{item}, '%') 
+			         </foreach>
 			    )
 			</if>
 			

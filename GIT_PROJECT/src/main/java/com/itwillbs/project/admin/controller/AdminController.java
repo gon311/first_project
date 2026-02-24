@@ -177,17 +177,6 @@ public class AdminController {
 	}
 	
 	//-----------------------------------------
-	// (사용자 페이지와 매핑 필요)
-	// 기업요금제(보류) 
-	@GetMapping("/cstore")
-	public String comStore() {
-		return "admin/store/comStore";
-	}
-	// 구직자요금제(보류)
-	@GetMapping("/ustore")
-	public String userStore() {
-		return "admin/store/userStore";
-	}
 	
 	// 구매하기(보류)
 	@GetMapping("/pay")

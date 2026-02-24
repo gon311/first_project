@@ -151,6 +151,6 @@
         <a href="#" class="page-link"><i class="fa-solid fa-angle-right"></i></a>
     </div>
 </div>
-
+<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 </body>
 </html>

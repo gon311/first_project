@@ -3,12 +3,7 @@
 
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
-<!DOCTYPE html>
-<html>
-<head>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<meta charset="UTF-8">
-<title>채용공고 등록</title>
 <style>
     body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; }
 	.container { max-width: 900px; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: 40px auto; }
@@ -34,8 +29,6 @@
     .sub-job-item { padding: 6px 12px; border: 1px solid #dee2e6; border-radius: 20px; cursor: pointer; font-size: 0.85em; background: #fff; transition: 0.2s; }
     .sub-job-item:hover, .sub-job-item.selected { background: #007bff; color: #fff; border-color: #007bff; }
 </style>
-</head>
-<body>
 
 <div class="container">
     <form action="<c:url value="/job/JobProcess" />" method="post" enctype="multipart/form-data">
@@ -191,6 +184,7 @@
 		</div>
     </form>
 </div>
+<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
 <script>
 // 1. 모집분야 데이터 정의
@@ -358,5 +352,3 @@ function execDaumPostcode() {
     }).open();
 }
 </script>
-</body>
-</html>

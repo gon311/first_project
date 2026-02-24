@@ -79,7 +79,7 @@
         </div>
     </section>
 </div>
-
+<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 <script>
     // 기획안 2페이지 로직: 입사지원 클릭 시 처리
     function checkResumeAndApply() {

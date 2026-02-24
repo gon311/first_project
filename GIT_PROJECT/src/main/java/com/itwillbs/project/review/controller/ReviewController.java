@@ -38,11 +38,11 @@ public class ReviewController {
 	
 	@PostMapping("/registText")
 	public String registText(CoverLetterDTO coverLetterDTO, HttpSession session) {
-		String sId = (String)session.getAttribute("sId");
-		log.info(">>>>>>>>>>>>>> sId : " + sId);
-		coverLetterDTO.setSId(sId);
+		Long userId = (Long)session.getAttribute("userIdx");
+		log.info(">>>>>>>>>>>>>> userId : " + userId);
+		coverLetterDTO.setUserId(userId);
 		log.info(">>>>>>>>>>> coverLetterDTO : " + coverLetterDTO);
-//		reviewService.registForm(coverLetterDTO);    // 여기서부터 작업 다시 시작 
+		reviewService.registForm(coverLetterDTO);  
 	    return "/review/reviewText";
 	}
 	// registForm 의 입력값은 따로 DB에 저장되어야, 내 자소서에서 문서를 불러올때 그 값이 유지.

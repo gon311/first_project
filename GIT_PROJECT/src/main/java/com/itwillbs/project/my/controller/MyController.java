@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.PasswordChangeDTO;
+import com.itwillbs.project.my.dto.MyReviewDTO;
 import com.itwillbs.project.my.service.MyService;
 
 import lombok.RequiredArgsConstructor;
@@ -108,8 +109,15 @@ public class MyController {
 
 	    int updated = myService.updateUser(myDTO);
 	    log.debug("[updateInfo POST] updatedRows={}", updated);
+	    
+	    // 업데이트 갱신
+	    if (updated > 0) {
+	        session.setAttribute("userName", myDTO.getUserName());
+	    }
+	    
 
 	    ra.addFlashAttribute("msg", updated > 0 ? "저장 완료!" : "저장 실패(변경된 행 0)");
+
 
 	    return "redirect:/my/myInfo";
 	}
@@ -202,18 +210,28 @@ public class MyController {
 	}
 
 
-	
-	
-	
-	
-	
-	
-	
-	
 	// 자소서 관리
 	@GetMapping("/myReview")
-	public String urlmyReview(Model model) {
+	public String urlmyReview(Model model, HttpSession session) {
 	    model.addAttribute("currentMenu", "review"); // 사이드바 '자기소개서 관리' 활성
+	    
+	    //로그인 체크
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+	    
+	    // sId -> userId 얻기 (myInfo랑 동일)
+	    MyDTO user = myService.getUser(sId);
+	    if (user == null) return "redirect:/user/login";
+	    Long userId = user.getUserId();
+	    
+	    // 3) (핵심) 내 이력서 목록 조회
+	    List<MyReviewDTO> myReviews = myService.getmyReviewList(userId);
+//	    myReviewDTO topReview = myService.getTopReview(userId);
+	    
+	    // 4) 모델에 담아서 JSP로 전달
+	    model.addAttribute("myReviews", myReviews);
+//	    model.addAttribute("topResume", topReview);
+	    
 	    return "/my/myReview";
 	}
 	

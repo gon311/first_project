@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
+import com.itwillbs.project.my.dto.MyReviewDTO;
 
 @Mapper
 public interface MyMapper {
@@ -24,6 +25,8 @@ public interface MyMapper {
 	List<MyResumeDTO> selectMyResumeList(@Param("userId") Long userId);
 
 	MyResumeDTO selectTopResume(@Param("userId") Long userId);
+
+	List<MyReviewDTO> selectMyReviewList(@Param("userId") Long userId);
 	
 	
 

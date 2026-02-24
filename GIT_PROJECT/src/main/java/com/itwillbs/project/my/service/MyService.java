@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
+import com.itwillbs.project.my.dto.MyReviewDTO;
 import com.itwillbs.project.my.mapper.MyMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,10 @@ public class MyService {
 	// 대표 설정
 	public MyResumeDTO getTopResume(Long userId) {
 		 return myMapper.selectTopResume(userId);
+	}
+
+	public List<MyReviewDTO> getmyReviewList(Long userId) {
+		return myMapper.selectMyReviewList(userId);
 	}
 
 }

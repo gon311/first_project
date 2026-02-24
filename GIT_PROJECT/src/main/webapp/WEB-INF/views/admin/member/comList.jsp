@@ -57,9 +57,10 @@
 	                            </div>
 	
 	                            <div class="col-md-3">
-	                                <label class="form-label fw-bold mb-2">구분(구현중)</label>
+	                                <label class="form-label fw-bold mb-2">구분</label>
 	                                <select class="form-select" name="type">
 	                                    <option value="">전체</option>
+	                                    <option value="basic">기본</option>
 	                                    <option value="P-C1">일반</option>
 	                                    <option value="P-C2">프리미엄</option>
 	                                </select>
@@ -123,9 +124,9 @@
 	                                onclick="location.href='coms/info?userId=${com.userId}'">
 	                                <td>${status.count}</td>
 	                                <td>${com.userId}</td>
-	                                <td>${com.userName}</td>
+	                                <td>${com.companyName}</td>
 	                                <td>${com.email}</td>
-	                                <td>-</td>
+	                                <td>${com.bizRegNo}</td>
 	                                <td>${com.phone}</td>
 	                                <td>${com.userType}</td>
 	                                <td>${com.status}</td>

@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.format.datetime.DateFormatter;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,8 +27,8 @@ public class MemberDTO {
 	private String withdrawnAt;
 	
 	// 구직자 회원 상세 정보
-	private LocalDate birthDate;
-	private char gender;
+	private String birthDate;
+	private String gender;
 	private String country;
 	private Integer passCount;
 	private Integer reportReceivedCount;
@@ -37,6 +39,10 @@ public class MemberDTO {
 	private String companyName;
 	private String ceoName;
 	private String companyAddress;
+	
+	// 구직자 회원 이용권
+	private String productId;
+	private String productName;
 	
 	public void setUserType(char userType) {
 	    this.userType = (userType == 'C') ? "기업 회원" : "구직자 회원";
@@ -60,6 +66,21 @@ public class MemberDTO {
 	public void setWithdrawnAt(LocalDateTime withdrawnAt) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm:ss");
 		this.withdrawnAt = withdrawnAt.format(dtf);
+	}
+	
+	public void setBirthDate(LocalDate birthDate) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+		this.birthDate = birthDate.format(dtf);
+	}
+	
+	public void setGender(char gender) {
+		if(gender == 'M') {
+			this.gender = "남";
+		} else if(gender == 'F') {
+			this.gender = "여";
+		} else {
+			this.gender = "공개안함";
+		}
 	}
 	
 	

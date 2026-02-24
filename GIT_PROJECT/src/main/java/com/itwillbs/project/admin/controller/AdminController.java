@@ -107,7 +107,7 @@ public class AdminController {
 	@GetMapping("/coms/info")
 	public String comInfo(Model model, MemberDTO memberDTO) {
 		
-		MemberDTO comDTO = adminService.getUserInfo(memberDTO.getUserId());
+		MemberDTO comDTO = adminService.getComInfo(memberDTO.getUserId());
 		
 		model.addAttribute("com", comDTO);
 		
@@ -140,7 +140,7 @@ public class AdminController {
 		model.addAttribute("submit", submitInfo);
 		
 		// 공고를 제출한 기업 정보
-		MemberDTO comDTO = adminService.getUserInfo(memberDTO.getUserId());
+		MemberDTO comDTO = adminService.getComInfo(memberDTO.getUserId());
 		
 		model.addAttribute("com", comDTO);
 		

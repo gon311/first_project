@@ -29,8 +29,8 @@ public class AdminService{
 	} 
 
 	// 구직자 상세 정보 조회
-	public MemberDTO getUserInfo(BigInteger id) {
-		return adminMapper.selectUserInfo(id);
+	public MemberDTO getUserInfo(BigInteger userId) {
+		return adminMapper.selectUserInfo(userId);
 	}
 	
 	// 탈퇴한 회원 목록
@@ -41,6 +41,11 @@ public class AdminService{
 	// 기업회원 목록 조회
 	public List<MemberDTO> getComList(String keyword, String type, String status) {
 		return adminMapper.selectComList(keyword, type, status);
+	}
+	
+	// 기업회원 상세 정보 조회
+	public MemberDTO getComInfo(BigInteger userId) {
+		return adminMapper.selectComInfo(userId);
 	}
 	
 	// 탈퇴한 회원 목록
@@ -104,6 +109,8 @@ public class AdminService{
 	public ProductDTO getProductInfo(String productId) {
 		return adminMapper.selectProductInfo(productId);
 	}
+
+	
 
 	
 

@@ -31,13 +31,13 @@
 								<dd class="col-8 py-2">${com.userId}</dd>
 
 								<dt class="col-4 text-secondary py-2">회사명</dt>
-								<dd class="col-8 py-2">${com.userName}</dd>
+								<dd class="col-8 py-2">${com.companyName}</dd>
 
 								<dt class="col-4 text-secondary py-2">사업자등록번호</dt>
-								<dd class="col-8 py-2">-</dd>
+								<dd class="col-8 py-2">${com.bizRegNo}</dd>
 
 								<dt class="col-4 text-secondary py-2">대표자명</dt>
-								<dd class="col-8 py-2">${com.userName}</dd>
+								<dd class="col-8 py-2">${com.ceoName}</dd>
 
 								<dt class="col-4 text-secondary py-2">전화번호</dt>
 								<dd class="col-8 py-2">${com.phone}</dd>
@@ -46,10 +46,10 @@
 								<dd class="col-8 py-2">${com.email}</dd>
 
 								<dt class="col-4 text-secondary py-2">회사 주소</dt>
-								<dd class="col-8 py-2">${submit.address}</dd>
+								<dd class="col-8 py-2">${com.companyAddress}</dd>
 
 								<dt class="col-4 text-secondary py-2">담당자명</dt>
-								<dd class="col-8 py-2">${submit.mgrName}</dd>
+								<dd class="col-8 py-2">${com.userName}</dd>
 
 								<dt class="col-4 text-secondary py-2">보유 이용권</dt>
 								<dd class="col-8 py-2">-</dd>
@@ -146,11 +146,10 @@
 								</dd>
 
 								<dt class="col-sm-3 text-secondary">접수방법</dt>
-								<dd class="col-sm-9"></dd>
+								<dd class="col-sm-9">-</dd>
 								
 								<dt class="col-sm-3 text-secondary">첨부파일</dt>
-								<dd class="col-sm-9"></dd>	
-								
+								<dd class="col-sm-9">-</dd>	
 								
 							</dl>
 

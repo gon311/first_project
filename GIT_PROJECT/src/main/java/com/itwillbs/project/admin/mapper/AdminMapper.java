@@ -17,26 +17,29 @@ import com.itwillbs.project.admin.dto.SubmitDTO;
 public interface AdminMapper {
 	// 구직자 회원 목록
 	List<MemberDTO> selectUserList(@Param("keyword") String keyword
-								,@Param("type") String type
-								,@Param("status") String status);
+								, @Param("type") String type
+								, @Param("status") String status);
 
 	// 회원 상세 정보
-	MemberDTO selectUserInfo(BigInteger id);
+	MemberDTO selectUserInfo(BigInteger userId);
 	
 	// 탈퇴 회원 목록 조회
 	List<MemberDTO> selectUserWithdraw(@Param("keyword") String keyword
-									,@Param("startDate") String startDate
-									,@Param("endDate") String endDate);
+									, @Param("startDate") String startDate
+									, @Param("endDate") String endDate);
 	
 	// 기업회원 목록 조회
 	List<MemberDTO> selectComList(@Param("keyword") String keyword
-								,@Param("type") String type
-								,@Param("status") String status);
+								, @Param("type") String type
+								, @Param("status") String status);
+	
+	// 기업회원 상세 정보 조회
+	MemberDTO selectComInfo(BigInteger userId);
 	
 	// 탈퇴 회원 목록 조회
 	List<MemberDTO> selectComWithdraw(@Param("keyword") String keyword
-									,@Param("startDate") String startDate
-									,@Param("endDate") String endDate);
+									, @Param("startDate") String startDate
+									, @Param("endDate") String endDate);
 	
 	//========================================================================
 	// 공지사항 리스트 조회
@@ -82,6 +85,8 @@ public interface AdminMapper {
 	//========================================================================
 	// 구매할 상품 상세 정보 조회(구매하기 진행)
 	ProductDTO selectProductInfo(String productId);
+
+	
 
 	
 

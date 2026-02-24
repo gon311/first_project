@@ -34,13 +34,13 @@
 							<dd class="col-8 py-2">${com.userId}</dd>
 
 							<dt class="col-4 text-secondary py-2">회사명</dt>
-							<dd class="col-8 py-2">${com.userName}</dd>
+							<dd class="col-8 py-2">${com.companyName}</dd>
 
 							<dt class="col-4 text-secondary py-2">사업자번호</dt>
-							<dd class="col-8 py-2">${com.phone}</dd>
+							<dd class="col-8 py-2">${com.bizRegNo}</dd>
 
 							<dt class="col-4 text-secondary py-2">대표자명</dt>
-							<dd class="col-8 py-2">${com.userName}</dd>
+							<dd class="col-8 py-2">${com.ceoName}</dd>
 
 							<dt class="col-4 text-secondary py-2">전화번호</dt>
 							<dd class="col-8 py-2">${com.phone}</dd>
@@ -49,10 +49,10 @@
 							<dd class="col-8 py-2">${com.email}</dd>
 
 							<dt class="col-4 text-secondary py-2">회사 주소</dt>
-							<dd class="col-8 py-2">-</dd>
+							<dd class="col-8 py-2">${com.companyAddress}</dd>
 
 							<dt class="col-4 text-secondary py-2">담당자명</dt>
-							<dd class="col-8 py-2">-</dd>
+							<dd class="col-8 py-2">${com.userName}</dd>
 
 							<dt class="col-4 text-secondary py-2">가입일자</dt>
 							<dd class="col-8 py-2">${com.joinedAt}</dd>
@@ -64,9 +64,6 @@
 
 							<dt class="col-4 text-secondary py-2">상태</dt>
 							<dd class="col-8 py-2">${com.status}</dd>
-
-							<dt class="col-4 text-secondary py-2">신고횟수</dt>
-							<dd class="col-8 py-2">-</dd>
 
 						</dl>
 

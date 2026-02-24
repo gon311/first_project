@@ -55,10 +55,10 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label class="form-label fw-bold mb-2">구분(구현중)</label>
+                                    <label class="form-label fw-bold mb-2">구분(</label>
                                     <select class="form-select" name="type">
                                         <option value="" selected>전체</option>
-                                        <option value="p">기본</option>
+                                        <option value="basic">기본</option>
                                         <option value="P-U10">10회권</option>
                                         <option value="P-U30">30회권</option>
                                         <option value="P-U60">60회권</option>

@@ -79,7 +79,7 @@
 	                            <span class="user-icon">👤</span>
 	                            <span class="fw-bold">${userId.email}</span>
 	                        </div>
-	                        <input type="radio" name="email" value="${userId.email}">
+	                        <input type="radio" name="sId" value="${userId.email}">
 	                    </label>
 					</c:forEach>
                 </div>

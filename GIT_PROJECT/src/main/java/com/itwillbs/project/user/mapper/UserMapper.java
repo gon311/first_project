@@ -13,7 +13,7 @@ public interface UserMapper {
 	//회원가입
 	void insertUser(UserDTO userDTO);
 	void insertUserPe(UserDTO userDTO);
-	void insertUserCo(@Param("user") UserDTO userDTO);
+	void insertUserCo(UserDTO userDTO);
 	void insertUserTR(UserDTO userDTO);
 	
 	// 로그인

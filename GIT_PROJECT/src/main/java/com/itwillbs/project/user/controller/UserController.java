@@ -6,6 +6,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +28,8 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Log4j2
 public class UserController {
-	private final UserService userService;
+	@Autowired
+	private UserService userService;
 	
 	// 로그인 페이지로 이동
 	@GetMapping("/login")
@@ -52,6 +54,7 @@ public class UserController {
 			return "redirect:/user/login";
 		}
 		
+		session.setAttribute("userIdx", dbUser.getUserId());
 		session.setAttribute("sId", dbUser.getEmail());
 		session.setAttribute("userName", dbUser.getUserName());
 		session.setMaxInactiveInterval(60 * 60 * 24);
@@ -100,10 +103,6 @@ public class UserController {
 		userDTO.setPassword(encryptedPassword);
 		
 		userService.registUser(userDTO);
-		
-		session.setAttribute("sId", userDTO.getEmail());
-		session.setAttribute("userName", userDTO.getUserName());
-		session.setMaxInactiveInterval(60 * 60 * 24);
 		
 		return "redirect:/";
 	}
@@ -169,10 +168,10 @@ public class UserController {
 		
 		if(ok) {
 		    ra.addFlashAttribute("msg", "비밀번호가 변경되었습니다.");
-		    return "redirect:/user/login_form";
+		    return "user/login_form";
 		} else {
 		    ra.addFlashAttribute("errorMsg", "현재 비밀번호와 동일한 비밀번호는 사용하실 수 없습니다.");
-		    return "redirect:/user/find_pw";
+		    return "user/find_pw";
 		}
 	}
 	

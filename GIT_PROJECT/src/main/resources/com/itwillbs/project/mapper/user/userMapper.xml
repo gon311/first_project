@@ -27,6 +27,7 @@
 		<result property="companyAddress" column="company_address"/>
 	</resultMap>
 	
+<!-- 	회원가입 -->
 	<insert id="insertUser" useGeneratedKeys="true" keyProperty="userId">
 	    INSERT INTO user (email, password, phone, user_name, user_type)
 	    VALUES (#{email}
@@ -50,11 +51,11 @@
 	
 	<insert id="insertUserCo">
 	    INSERT INTO USER_COMPANY (user_id, biz_reg_no, company_name, ceo_name, company_address)
-	    VALUES (#{user.userId}
-	    		, #{user.bizRegNo}
-	    		, #{user.companyName}
-	    		, #{user.userName}
-	    		, #{user.companyAddress}
+	    VALUES (#{userId}
+	    		, #{bizRegNo}
+	    		, #{companyName}
+	    		, #{ceoName}
+	    		, #{companyAddress}
 	        	
 	    )
 	</insert>
@@ -71,6 +72,7 @@
 	    </foreach>
 	</insert>
 
+<!-- 	로그인 -->
 	<select id="selectUser" resultMap="userResultMap">
 		SELECT 
 			u.*, 
@@ -82,10 +84,12 @@
 		WHERE u.email = #{email}
 	</select>
 	
+<!-- 	아이디찾기 -->
 	<select id="selectUserIdList" resultType="com.itwillbs.project.user.dto.UserDTO">
 		SELECT email from user
 	</select>
 	
+<!-- 	비밀번호찾기 -->
 	<select id="selectPassword" parameterType="string" resultType="string">
 		SELECT password
 		FROM user

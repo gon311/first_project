@@ -21,8 +21,8 @@ public class JobService {
 		jobMapper.insertJob(jobDTO);
 	}
 
-	public List<JobDTO> getJobList(String expType, String eduType) {
-	    return jobMapper.getJobList(expType, eduType);
+	public List<JobDTO> getJobList(String expType, String eduType, List<String> selectedItems) {
+	    return jobMapper.getJobList(expType, eduType, selectedItems);
 	}
 
 

@@ -45,10 +45,11 @@ public class JobController {
 	@GetMapping("/JobList")
 	public String list(Model model, 
 	                   @RequestParam(value="expType", required=false) String expType,
-	                   @RequestParam(value="eduType", required=false) String eduType) { 
+	                   @RequestParam(value="eduType", required=false) String eduType, 
+					   @RequestParam(value="selected_items", required=false) List<String> selectedItems) { 
 	    
 	    // 두 필터 조건을 모두 서비스에 전달
-	    List<JobDTO> jobList = jobService.getJobList(expType, eduType); 
+	    List<JobDTO> jobList = jobService.getJobList(expType, eduType, selectedItems); 
 	    
 	    model.addAttribute("jobList", jobList);
 	    return "/job/job_list";

@@ -89,6 +89,13 @@
 	            </choose>
 	        </if>
 	        
+	        <if test="selectedItems != null and selectedItems.size > 0">
+			    AND (
+			        <foreach item="item" collection="selectedItems" separator=" OR ">
+			            j.address LIKE CONCAT('%', #{item}, '%')  OR j.field LIKE CONCAT('%', #{item}, '%') </foreach>
+			    )
+			</if>
+			
 	        <if test="eduType != null and eduType != ''">
 			    <choose>
 			        <when test='eduType == "학력무관"'>

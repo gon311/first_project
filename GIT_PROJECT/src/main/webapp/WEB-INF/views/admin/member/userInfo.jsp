@@ -253,20 +253,22 @@
 	</main>
 
 	<script type="text/javascript">
-		function block(id) {
+		function block(userId) {
 			if(document.getElementById("block")) {
 				if(confirm("차단하시겠습니까?")) {
 					document.getElementById("block").innerText = "차단 해제";
+					location.href="<c:url value='/admin/users/block' />" + "?userId=" + userId;
 				}
 			} else {
 				if(confirm("차단 해제하시겠습니까?")) {
 					document.getElementById("active").innerText = "차단";
+					location.href="<c:url value='/admin/users/unblock' />" + "?userId=" + userId;
 				}
 			}
 
-			location.href="<c:url value='/admin/block' />" + "?id=" + id;
 
 		}
+		
 	</script>
 
 </body>

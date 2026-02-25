@@ -18,12 +18,32 @@
 		<main class="container my-4">
 			<form action="<c:url value='/resume/regist2' />" name="registForm"
 				id="registForm" method="post" novalidate>
+				
+				<!-- 히든 추가 -->
+<!-- 				업종 -->
+<!-- 					<input type="hidden" id="industryValue" name="industryValue"> -->
+<!-- 					<input type="hidden" id="industryLabel" name="industryLabel"> -->
+					
+<!-- 					직종 -->
+<!-- 					<input type="hidden" id="jobValue" name="jobValue"> -->
+<!-- 					<input type="hidden" id="jobLabel" name="jobLabel"> -->
+					
+<!-- 					기업 형태 -->
+<!-- 					<input type="hidden" id="companyTypeValue" name="companyTypeValue"> -->
+<!-- 					<input type="hidden" id="companyTypeLabel" name="companyTypeLabel"> -->
+					
+<!-- 					기업명 -->
+<!-- 					<input type="hidden" id="companyNameValue" name="companyNameValue"> -->
+<!-- 					<input type="hidden" id="companyNameLabel" name="companyNameLabel">	 -->
+				
+				
+				
 				<div class="card shadow-sm">
 					<div class="card-body p-4">
 	
-						<!-- 1. 자소서 제목 -->
+						<!-- 1. 이력서 제목 -->
 						<div class="mb-4">
-							<label for="title" class="form-label fw-semibold">자소서 제목 <span
+							<label for="title" class="form-label fw-semibold">이력서 제목 <span
 								class="text-danger">*</span></label> <input type="text"
 								class="form-control" id="title" name="title"
 								placeholder="제목을 입력해 주세요." required>
@@ -75,7 +95,12 @@
 									class="btn btn-outline-secondary chip" for="ind_edu">교육·연구</label>
 							</div>
 						</div>
-	
+						<!-- hidden input 추가 -->
+						<input type="hidden" id="industryLabel" name="industryLabel">	<!-- 업종 -->
+						<input type="hidden" id="jobGroupLabel" name="jobGroupLabel">	<!-- 직종 -->
+						<input type="hidden" id="companyTypeLabel" name="companyTypeLabel">	<!-- 기업형태 -->
+						<!-- hidden 끝. -->
+						
 						<!-- 3. 직종 + 3-1. 세부 직종 -->
 						<div class="mb-4">
 							<div class="d-flex align-items-center mb-2">
@@ -130,8 +155,8 @@
 								</div>
 							</div>
 	
-							<!-- hidden input -->
-							<input type="hidden" id="selectedJobInput" name="selectedJobInput">
+							
+						<input type="hidden" id="selectedJobInput" name="selectedJobInput">
 						</div>
 	
 						<!-- 4. 기업 형태 -->
@@ -202,8 +227,7 @@
 									class="btn btn-outline-secondary chip" for="cl_intern">인턴</label>
 							</div>
 						</div>
-
-
+					
 					<!-- 제출 버튼 -->
 					<div class="d-flex justify-content-end gap-2 mt-4">
 						<!-- 임시저장 -->
@@ -289,27 +313,104 @@
 					    { value: "SERVICE_OPERATOR", label: "서비스 운영" }
 					  ],
 					};
+			 
 			document.addEventListener("DOMContentLoaded", () => {
 			    const input = document.getElementById("title");
 			    if (input) input.focus();
+			   
 			});
+			
+			// 히든 label 값 설정
+// 			직종 Label: ${param.jobGroupLabel}<br>
+// 			기업형태 Label: ${param.companyTypeLabel}<br>
+			document.addEventListener("DOMContentLoaded", function () {
+
+    	// 공통 함수: radio 그룹 → hidden에 label 저장
+		    function bindRadioLabel(radioName, hiddenId) {
+		        const radios = document.querySelectorAll('input[name="' + radioName + '"]');
+		        const hiddenInput = document.getElementById(hiddenId);
+		
+		        if (!hiddenInput || radios.length === 0) return;
+		
+		        radios.forEach(radio => {
+		            radio.addEventListener("change", function () {
+		                // 방법 1: label for=id 찾기
+		                const label = document.querySelector('label[for="' + this.id + '"]');
+		
+		                if (label) {
+		                    hiddenInput.value = label.innerText.trim();
+		                }
+		
+		                // Bootstrap chip 구조라면 아래 한 줄로도 가능
+		                // hiddenInput.value = this.nextElementSibling.innerText.trim();
+		            });
+		        });
+		    }
+		
+			    // =========================
+			    // 업종
+			    // =========================
+			    bindRadioLabel("industry", "industryLabel");
+			
+			    // =========================
+			    // 직종
+			    // =========================
+			    bindRadioLabel("jobGroup", "jobGroupLabel");
+			
+			    // =========================
+			    // 기업형태
+			    // =========================
+			    bindRadioLabel("companyType", "companyTypeLabel");
+		
+			});
+
+			// 히든 기존 방식 
+// 			document.addEventListener("DOMContentLoaded", function () {
+// 				// 업종
+// 			    const industryRadios = document.querySelectorAll('input[name="industry"]');  
+// 			    const industryLabelInput = document.getElementById("industryLabel");
+
+// 			    industryRadios.forEach(radio => {
+// 			        radio.addEventListener("change", function () {
+// 			            const label = document.querySelector('label[for="' + this.id + '"]');
+// 			            if (label) {
+// 			                industryLabelInput.value = label.innerText.trim();
+// 			            }
+// 			        });
+// 			    });
+			    
+// 			    // 직종
+// 			    const jobGroupRadios = document.querySelectorAll('input[name="jobGroup"]');  
+// 			    const jobGroupLabelInput = document.getElementById("jobGroupLabel");
+
+// 			    jobGroupRadios.forEach(radio => {
+// 			        radio.addEventListener("change", function () {
+// 			            const label2 = document.querySelector('label[for="' + this.id + '"]');
+			            
+// 			            // ✔ label2로 수정
+// 			            if (label2) {
+// 			                jobGroupLabelInput.value = label2.innerText.trim();
+// 			            }
+// 			        });
+// 			    });
+			
+// 			});
+			
 			 
 			document.addEventListener("DOMContentLoaded", function() {
-				const radios = document.querySelectorAll('input[name="jobGroup"]');
-				const selectBox = document.getElementById("jobRole");
+				const radios = document.querySelectorAll('input[name="jobGroup"]'); //직종
+				const selectBox = document.getElementById("jobRole");  
 				const jobInput = document.getElementById("selectedJobInput");
-				
-	
+					
 				// 초기: 비활성
 				selectBox.disabled = true;
 	
-				
+				// 라디오(업종)
 				radios.forEach(radio => {
 					radio.addEventListener("change", function(){
 						const selectedGroup = this.value;
 						selectBox.innerHTML = '<option value="default" disabled selected>세부 직종을 선택하세요</option>';
-						
-						
+					
 						if (jobData[selectedGroup]) {
 							jobData[selectedGroup].forEach(sub => {
 								const opt = document.createElement('option');
@@ -352,12 +453,11 @@
 				const statusInput = document.getElementById('status');
 				const btnDraft = document.getElementById('saveDraft');
 				
-
 				btnDraft.addEventListener('click', () => {
 					statusInput.value = "2";  // 임시저장 상태로 설정 (0 : 최종저장, 1: 1단계저장, 2: 임시저장)
 				    form.submit();            // 서버로 전송
 				});
-			}   // controller에서 DB에 저장할 때, status 추가해서 저장하도록 맵핑하기 
+			});   // controller에서 DB에 저장할 때, status 추가해서 저장하도록 맵핑하기 
 		</script>
 	</body>
 </html>

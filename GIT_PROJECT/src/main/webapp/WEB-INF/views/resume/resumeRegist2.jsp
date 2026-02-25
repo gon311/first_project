@@ -9,10 +9,7 @@
 	<link href="<c:url value="/resources/css/resume.css" />" rel="stylesheet" type="text/css">
 	
 	<!-- ✅ Bootstrap CSS 삽입 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
-        rel="stylesheet" 
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
-        crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         
 </head>
 
@@ -24,14 +21,15 @@
       <!-- 제목 -->
       <div class="form-group mb-3">
       	<!-- 임시. 파라미터 첵크 -->
-      	업종:${param.industry}
-      	직종:${param.jobGroup}
-      	세부직종:${param.jobRole}
-      	기업형태:${param.companyType}
-      	지원분야:${param.appliedField}
-      	기업명(지원한):${param.companyName}
-      	경력사항:${param.careerLevel}<br>
-      	
+      	      	
+      	업종 Value: ${param.industry}<br>
+		업종 Label: ${param.industryLabel}<br>
+		직종 Value: ${param.jobGroup}<br>
+		직종 Label: ${param.jobGroupLabel}<br>
+		기업형태 Value: ${param.companyType}<br>
+		기업형태 Label: ${param.companyTypeLabel}<br>
+		
+		      	
       	
         <label for="resumeTitle" class="resume-label">제목</label>
         <input type="text" id="resumeTitle" name="resumeTitle"
@@ -351,9 +349,7 @@
   </div>
   
   <!-- ✅ Bootstrap JS 삽입 (body 끝 부분) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
-          integrity="sha384-ENjdO4Dr2bkBIFxQpeoYz1Dh8z8I4Q+7nU5lZl+cbk+6jzrWeNseyX2VINqbodZ4" 
-          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   
 </body>
 

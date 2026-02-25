@@ -1,0 +1,85 @@
+@charset "UTF-8";
+
+/* CSS - 전체 */
+.resume-body {
+    background-color: #f5f6f7;
+    font-size: 14px;
+}
+
+/* 컨테이너 */
+.resume-container {
+    max-width: 1100px;
+}
+
+/* 제목 */
+.resume-title {
+    font-weight: 600;
+}
+
+.resume-divider {
+    border-top: 2px solid #444;
+}
+
+/* 카드 */
+.resume-card {
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* 프로필 */
+.resume-photo {
+    max-width: 120px;
+}
+
+.resume-name {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.resume-text {
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* 섹션 제목 */
+.resume-section-title {
+    font-weight: 600;
+    background-color: #fafafa;
+}
+
+/* 테이블 */
+.resume-table th {
+    background-color: #f1f1f1;
+    font-weight: 600;
+}
+
+/* 우측 메뉴 */
+.resume-menu {
+    position: sticky;
+    top: 20px;
+}
+
+.resume-btn {
+    width: 100%;
+}
+
+.resume-btn-consult {
+    width: 100%;
+    font-weight: bold;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+
+    .resume-right {
+        margin-top: 20px;
+    }
+
+    .resume-menu {
+        position: static;
+    }
+
+    .resume-photo {
+        max-width: 80px;
+    }
+}

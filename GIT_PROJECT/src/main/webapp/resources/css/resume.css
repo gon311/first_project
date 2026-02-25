@@ -1,0 +1,77 @@
+@charset "UTF-8";
+
+.resume-body {
+  background-color: #f4f6f8; /* 연한 회색 배경 */
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.resume-container {
+  background-color: white;
+  padding: 30px;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.resume-title {
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.section-title {
+  margin: 30px 0 15px;
+  font-weight: bold;
+  color: #444;
+}
+
+.resume-label {
+  font-weight: bold;
+  color: #444;
+}
+
+.resume-input {
+  width: 100%;
+}
+
+/* 상세주소 박스를 주소와 같은 줄에 맞추기 */
+.d-flex.align-items-end {
+  display: flex;
+  align-items: flex-end; /* 입력창 하단을 맞춤 */
+}
+
+
+/* 이메일 입력창은 폭을 더 넓게 */
+.resume-input-wide {
+  max-width: 80%; /* 전체 폭 사용 */
+}
+
+/* 버튼 디자인 */
+.custom-btn {
+  background-color: #ffb74b !important;   /* HEX 색상 */
+  color: #fff !important;                 /* 글자색 흰색 */
+  font-weight: bold;                      /* 글자 두껍게 */
+  border: none;                           /* 기본 테두리 제거 */
+  border-radius: 6px;                     /* 모서리 약간 둥글게 */
+  padding: 10px 24px;                     /* 버튼 크기 조정 */
+  font-size: 16px;                        /* 글자 크기 */
+}
+
+.custom-btn:hover {
+  background-color: rgb(255, 170, 50) !important; /* hover 시 조금 더 진한 색상 */
+  color: #fff !important;
+}
+
+.resume-photo {
+  max-width: 150px;
+}
+
+.resume-btn {
+  background-color: #ffb545;
+  color: #fff;
+  border: none;
+}
+
+.resume-btn:hover {
+  background-color: #e69a2f;
+}

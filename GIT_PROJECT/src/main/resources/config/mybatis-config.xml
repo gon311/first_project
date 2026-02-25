@@ -14,6 +14,7 @@
 	<typeAliases>
 		<typeAlias type="com.itwillbs.project.admin.dto.MemberDTO" alias="member"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.NoticeDTO" alias="notice"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.FaqDTO" alias="faq"/>
 		<typeAlias type="com.itwillbs.project.user.dto.UserDTO" alias="user"/>
 		<typeAlias type="com.itwillbs.project.job.dto.JobDTO" alias="job"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.JobPostDTO" alias="jobPost"/>
@@ -21,6 +22,7 @@
 		<typeAlias type="com.itwillbs.project.admin.dto.PayDTO" alias="pay"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.SubmitDTO" alias="submit"/>
 		<typeAlias type="com.itwillbs.project.store.dto.StoreDTO" alias="store"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.QnaDTO" alias="qna"/>
 		
 	</typeAliases>
 </configuration>

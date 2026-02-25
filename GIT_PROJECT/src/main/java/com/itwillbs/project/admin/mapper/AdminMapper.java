@@ -6,11 +6,13 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.project.admin.dto.FaqDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.PayDTO;
 import com.itwillbs.project.admin.dto.ProductDTO;
+import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
 
 @Mapper
@@ -94,6 +96,20 @@ public interface AdminMapper {
 	//========================================================================
 	// 구매할 상품 상세 정보 조회(구매하기 진행)
 	ProductDTO selectProductInfo(String productId);
+	
+	
+	
+	// ======================================================================
+	// 1:1 문의글 관리
+
+	List<QnaDTO> getQnaList(QnaDTO qnaDTO);
+
+	List<QnaDTO> getListByStatus(String reStatus);
+	
+	// -========================================================================
+	// faq 관리
+
+	List<FaqDTO> getFaqList(FaqDTO faqDTO);
 
 	
 

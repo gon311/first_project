@@ -469,6 +469,21 @@
 			product_id = #{productId}
 	</select>
 	
+	<!--  ========================================================================= -->
+	<!-- 1:1 문의글  -->
+	<select id="getQnaList" resultType="qna">
+		select *
+		from 
+			qna
 	
 	
+	
+	</select>
+	
+	<!-- FaQ 리스트 -->
+	<select id ="getFaqList" resultType="faq">
+		SELECT *
+		FROM
+			fnq
+	</select>
 </mapper>

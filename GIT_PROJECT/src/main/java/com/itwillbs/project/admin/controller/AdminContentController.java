@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itwillbs.project.admin.dto.FaqDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
+import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.admin.service.AdminService;
 
 @Controller
@@ -80,21 +82,63 @@ public class AdminContentController {
 		return "admin/contents/jobPostDetail";
 	}
 	
+//	==============================================================================
+	
 	
 	@GetMapping("/Board")
 	public String boardList() {
 		
 		return "admin/contents/board";
 	}
-	@GetMapping("/FnQ")
-	public String fnqList() {
-		
-		return "admin/contents/fnq";
+//	==============================================================================
+
+	// FAQ 전체 목록 및 카테고리별 출력
+	@GetMapping("/FaQ")
+	public String faqList(
+	        @RequestParam(value="category", defaultValue="individual") String category,
+	        @RequestParam(value="keyword", required=false) String keyword,
+	        Model model
+	        , FaqDTO faqDTO) {
+	    
+	    // 서비스 호출 (카테고리, 키워드 포함)
+	    List<FaqDTO> faqList = adminService.getFaqList(category, keyword, faqDTO);
+	    
+	    model.addAttribute("faqList", faqList);
+	    model.addAttribute("category", category); // 탭 활성화 유지용
+	    model.addAttribute("keyword", keyword);   // 검색어 유지용
+	    
+	    return "admin/faq"; // faq.jsp로 포워딩
 	}
+
+	// 특정 게시글 상세 내용 확인
+	@GetMapping("/admin/faqMgmt")
+	public String faqDetail(@RequestParam("faqId") int faqId, Model model) {
+	    
+	    FaqDTO faq = adminService.getFaqDetail(faqId);
+	    model.addAttribute("faq", faq);
+	    
+	    return "admin/faqMgmt"; // faqMgmt.jsp(상세페이지)로 포워딩
+	}
+	
+//	===============================================================================
+//	1:1 문의글 관리
 	@GetMapping("/QnA")
-	public String qnaList() {
-		
-		return "admin/contents/qna";
+	public String qnaList(@RequestParam(value="reStatus", defaultValue="all") String reStatus, 
+			@RequestParam(value="page", defaultValue="1") int page,
+			Model model, QnaDTO qnaDTO) {
+	    List<QnaDTO> list;
+	    
+	    if("all".equals(reStatus)) {
+	        list = adminService.getQnaList(qnaDTO);
+	    } else {
+	        list = adminService.getListByStatus(reStatus); // "pending" 또는 "completed"
+	    }
+	    
+	    model.addAttribute("qnaList", list);
+	    model.addAttribute("reStatus", reStatus); // 현재 탭 활성화를 위해 전달
+	return "admin/contents/qna";
 	}
+	
+		
 	
 }

@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QnaDTO {
-	private int qna_id;
-	private String qna_title;
-	private String anq_content;
-	private int writer_id;
-	private Date reg_date;
-	private String re_status;
-	private Date re_date;
-	private String re_content;
+	private int qnaId;
+	private String qnaTitle;
+	private String qnaContent;
+	private int writerId;
+	private Date regDate;
+	private String reStatus;
+	private Date reDate;
+	private String reContent;
 	
 	
 }

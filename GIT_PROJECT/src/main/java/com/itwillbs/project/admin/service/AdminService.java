@@ -6,11 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.project.admin.dto.FaqDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.PayDTO;
 import com.itwillbs.project.admin.dto.ProductDTO;
+import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.admin.mapper.AdminMapper;
 
@@ -125,10 +127,34 @@ public class AdminService{
 	public ProductDTO getProductInfo(String productId) {
 		return adminMapper.selectProductInfo(productId);
 	}
-
 	
-
 	
+	
+	
+	// =======================================================================================
+	// 1:1문의글관리 
+
+	public List<QnaDTO> getQnaList(QnaDTO qnaDTO) {
+
+		return adminMapper.getQnaList(qnaDTO);
+	}
+	// 상태 따라 div 영역 출력
+	public List<QnaDTO> getListByStatus(String reStatus) {
+		// TODO Auto-generated method stub
+		return adminMapper.getListByStatus(reStatus);
+	}
+
+	// =====================================================================================
+	// faq
+	public List<FaqDTO> getFaqList(String category, String keyword, FaqDTO faqDTO) {
+		return adminMapper.getFaqList(faqDTO);
+	}
+
+	public FaqDTO getFaqDetail(int faqId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 

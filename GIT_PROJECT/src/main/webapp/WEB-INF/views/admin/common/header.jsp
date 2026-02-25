@@ -41,7 +41,7 @@
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/notice" />">공지사항 관리</a></li>
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/Board" />">커뮤니티 관리</a></li>
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/QnA" />">문의글 관리</a></li>
-		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/FnQ" />">FNQ 관리</a></li>
+		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/FaQ" />">FaQ 관리</a></li>
                     	</ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/banners" />">배너 관리</a></li>

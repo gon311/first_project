@@ -15,7 +15,7 @@
 		<typeAlias type="com.itwillbs.project.user.dto.UserDTO" alias="user"/>
 		<typeAlias type="com.itwillbs.project.job.dto.JobDTO" alias="job"/>
         <typeAlias type="com.itwillbs.project.admin.dto.JobPostDTO" alias="jobPost"/>
-<!--         <typeAlias type="com.itwillbs.project.admin.dto.ProductDTO" alias="product"/> -->
+        <typeAlias type="com.itwillbs.project.admin.dto.ProductDTO" alias="product"/>
 		<typeAlias type="com.itwillbs.project.review.dto.CoverLetterDTO" alias="coverletter"/>
 	</typeAliases>
 </configuration>

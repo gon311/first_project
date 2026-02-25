@@ -1,13 +1,19 @@
 package com.itwillbs.project.review.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.project.review.dto.CoverLetterDTO;
 import com.itwillbs.project.review.service.ReviewService;
@@ -39,16 +45,28 @@ public class ReviewController {
 		return "/review/reviewCopyCheck";
 	}
 	
+	// 1단계 임시저장 
+	@PostMapping("/draftSave")
+	@ResponseBody
+	public Map<String, Object> draftSave(@ModelAttribute CoverLetterDTO coverLetterDTO, HttpSession session) {
+		Long userId = (Long)session.getAttribute("userIdx");
+		coverLetterDTO.setUserId(userId);
+		reviewService.registForm(coverLetterDTO); 
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("success", true);
+		result.put("message", "임시저장이 완료되었습니다.");
+		return result;
+	}
+	
+	// 1단계 저장 후 2단계로 이동 
 	@PostMapping("/registText")
 	public String registText(CoverLetterDTO coverLetterDTO, HttpSession session, Model model) {
 		Long userId = (Long)session.getAttribute("userIdx");
-		
 		coverLetterDTO.setUserId(userId);
-		
 		reviewService.registForm(coverLetterDTO);  
 		
 		model.addAttribute(coverLetterDTO);
-		
 	    return "/review/reviewText";
 	}
 	

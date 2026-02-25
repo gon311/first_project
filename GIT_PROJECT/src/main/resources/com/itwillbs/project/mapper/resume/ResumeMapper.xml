@@ -2,38 +2,22 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itwillbs.project.job.mapper.JobMapper">
-	
+<mapper namespace="com.itwillbs.project.resume.mapper.ResumeMapper">
+<!-- 	void insertResume(ResumeDTO resumeDTO); -->
 	<insert id="insertJob">
-	    INSERT INTO JOB_POSTING (
-	        comp_id, 
-	        title, 
-	        field, 
-	        task, 
-	        exp_type, 
-	        exp_year, 
-	        edu, 
-	        emp_type, 
-	        probation, 
-	        salary, 
-	        address, 
-	        is_remote, 
-	        open_date, 
-	        close_date, 
-	        mgr_name, 
-	        mgr_phone, 
-	        mgr_email, 
-	        is_public, 
-	        post_status
+	    INSERT INTO resume (
+	        user_id,            -- 소유자 유저 ID (FK)
+	        title,				-- 제목
+		    name_kor,           -- 이력서 이름(한글)
+		    name_eng,           -- 이력서 이름(영문)
+		    name_han,                     -- 이력서 이름(한문) 
+	       
 	    ) VALUES (
-	        #{compId},       
-	        #{title}, 
-	        #{field}, 
-	        #{task}, 
-	        #{expType}, 
-	        #{expYear}, 
-	        #{edu}, 
-	        #{empType},
+	        #{user_id},       
+	        #{name_kor}, 
+	        #{name_eng}, 
+	        #{name_han}, 
+	        
 	        <choose>
 	            <when test='probation != null and probation == "Y"'>
 	                #{probation},

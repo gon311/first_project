@@ -14,19 +14,9 @@
 		<typeAlias type="com.itwillbs.project.admin.dto.NoticeDTO" alias="notice"/>
 		<typeAlias type="com.itwillbs.project.user.dto.UserDTO" alias="user"/>
 		<typeAlias type="com.itwillbs.project.job.dto.JobDTO" alias="job"/>
-<<<<<<< HEAD
-        <typeAlias type="com.itwillbs.project.admin.dto.JobPostDTO" alias="jobPost"/>
-		<typeAlias type="com.itwillbs.project.review.dto.CoverLetterDTO" alias="coverletter"/>
-=======
-		<typeAlias type="com.itwillbs.project.admin.dto.JobPostDTO" alias="jobPost"/>
->>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 		<typeAlias type="com.itwillbs.project.admin.dto.ProductDTO" alias="product"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.PayDTO" alias="pay"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.SubmitDTO" alias="submit"/>
 		<typeAlias type="com.itwillbs.project.store.dto.StoreDTO" alias="store"/>
-<<<<<<< HEAD
-=======
-		
->>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 	</typeAliases>
 </configuration>

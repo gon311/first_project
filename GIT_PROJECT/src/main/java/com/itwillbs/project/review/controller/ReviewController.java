@@ -33,7 +33,6 @@ public class ReviewController {
 		return "/review/reviewForm";
 	}
 	
-<<<<<<< HEAD
 	@GetMapping("/spellCheck")
 	public String spellCheck() {
 		
@@ -53,10 +52,6 @@ public class ReviewController {
 		Long userId = (Long)session.getAttribute("userIdx");
 		coverLetterDTO.setUserId(userId);
 		reviewService.registForm(coverLetterDTO); 
-=======
-	@PostMapping("/registText")
-	public String registText() {
->>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("success", true);
@@ -75,24 +70,11 @@ public class ReviewController {
 	    return "/review/reviewText";
 	}
 	
-	
-	
-	
 	@PostMapping("/save")
 	public String reviewSave(CoverLetterDTO coverLetterDTO) {
 		log.info(">>>>>>>>>>>>>> coverLetterDTO: " + coverLetterDTO);
 		
 		
 		return "/review/reviewSave";
-	}
-
-	@GetMapping("/spellCheck")
-	public String spellCheck() {
-		return "/review/reviewSpellCheck";
-	}
-	
-	@GetMapping("/copyCheck")
-	public String copyCheck() {
-		return "/review/reviewCopyCheck";
 	}
 }

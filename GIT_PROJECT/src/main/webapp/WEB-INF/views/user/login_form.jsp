@@ -36,6 +36,8 @@
         .bg-google { background-color: white; border: 1px solid #ddd; }
         .bg-apple { background-color: black; color: white; font-size: 24px; }
         .toggle-text { border: 1px solid #dee2e6; border-radius: 10px; padding: 1px 6px; font-size: 11px; color: #0066ff; font-weight: bold; }
+        
+        #error {color: red;}
     </style>
 </head>
 
@@ -57,17 +59,21 @@
                         <div class="col-9">
                             <div class="position-relative mb-2">
                                 <i class="fa-regular fa-user position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
-                                <input type="text" class="form-control form-control-lg ps-5" name="email" placeholder="개인 ID">
+                                <input type="text" class="form-control form-control-lg ps-5" name="email" value="${type != 'C' ? errorId : ''}" placeholder="개인 ID">
                             </div>
                             <div class="position-relative">
                                 <i class="fa-solid fa-lock position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
                                 <input type="password" class="password-input form-control form-control-lg ps-5 pe-5" name="password" placeholder="비밀번호">
                                 <i class="fa-regular fa-eye-slash position-absolute top-50 end-0 translate-middle-y me-3 password-toggle-icon" id="toggle-password"></i>
+                                <input type="hidden" id="hiddenType" name="type" value="P">
                             </div>
                         </div>
                         <div class="col-3">
                             <button class="btn btn-primary w-100 btn-big-login p-0">로그인</button>
                         </div>
+                            <div class="position-relative">
+                                <p id="error">${type != 'C' ? errorMsg : ''}</p>
+                            </div>
                     </div>
                 </form>
 
@@ -84,9 +90,9 @@
                 </div>
 
                 <div class="text-center text-secondary small">
-                    <a href="<c:url value="/user/find" />" class="text-decoration-none text-secondary">아이디 찾기</a>
+                    <a href="<c:url value="/user/find?type=id" />" class="text-decoration-none text-secondary">아이디 찾기</a>
                     <span class="mx-2 text-black-50">|</span>
-                    <a href="<c:url value="/user/find" />" class="text-decoration-none text-secondary">비밀번호 찾기</a>
+                    <a href="<c:url value="/user/find?type=pw" />" class="text-decoration-none text-secondary">비밀번호 찾기</a>
                     <span class="mx-2 text-black-50">|</span>
                     <a href="<c:url value="/user/regist?id=pe"/>" class="text-decoration-none fw-bold text-primary">회원가입</a>
                 </div>
@@ -98,16 +104,20 @@
                         <div class="col-9">
                             <div class="position-relative mb-2">
                                 <i class="fa-regular fa-building position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
-                                <input type="text" class="form-control form-control-lg ps-5" name="email" placeholder="기업 ID">
+                                <input type="text" class="form-control form-control-lg ps-5" name="email" value="${type == 'C' ? errorId : ''}" placeholder="기업 ID">
                             </div>
                             <div class="position-relative">
                                 <i class="fa-solid fa-lock position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
                                 <input type="password" class="password-input form-control form-control-lg ps-5" name="password" placeholder="비밀번호">
                                 <i class="fa-regular fa-eye-slash position-absolute top-50 end-0 translate-middle-y me-3 password-toggle-icon" id="toggle-password"></i>
                             </div>
+                                <input type="hidden" id="hiddenType" name="type" value="C">
                         </div>
                         <div class="col-3">
                             <button class="btn btn-primary w-100 btn-big-login p-0">로그인</button>
+                        </div>
+                        <div class="position-relative">
+                        	<p id="error">${type == 'C' ? errorMsg : ''}</p>
                         </div>
                     </div>
                 </form>
@@ -115,9 +125,9 @@
                     IP보안 <span class="ms-2 toggle-text cursor-pointer">ON</span>
                 </div>
                 <div class="text-center text-secondary small mt-5">
-                    <a href="<c:url value="/user/find" />" class="text-decoration-none text-secondary">아이디 찾기</a>
+                    <a href="<c:url value="/user/find?type=id" />" class="text-decoration-none text-secondary">아이디 찾기</a>
                     <span class="mx-2 text-black-50">|</span>
-                    <a href="<c:url value="/user/find" />" class="text-decoration-none text-secondary">비밀번호 찾기</a>
+                    <a href="<c:url value="/user/find?type=pw" />" class="text-decoration-none text-secondary">비밀번호 찾기</a>
                     <span class="mx-2 text-black-50">|</span>
                     <a href="<c:url value="/user/regist?id=co" />" class="text-decoration-none fw-bold text-primary">기업회원가입</a>
                 </div>
@@ -129,6 +139,7 @@
     <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
 	<script>
+		
 	    function switchTab(type) {
 	        const tabs = document.querySelectorAll('.tab-btn');
 	        const contents = document.querySelectorAll('.tab-content-area');
@@ -179,6 +190,24 @@
 	            }
 	        });
 	    });
+	    
+	    
+	    window.onload = function() {
+	        // 1. EL식으로 가져오는 값 (서버에서 바로 보낼 때)
+	        const serverType = "${type}"; 
+	        
+	        // 2. URL에서 직접 가져오는 값 (redirect로 ?type=C가 붙어올 때)
+	        const urlParams = new URLSearchParams(window.location.search);
+	        const urlType = urlParams.get('type');
+
+	        const finalType = serverType || urlType;
+
+	        if (finalType === 'C') {
+	            switchTab('corporate');
+	        } else {
+	            switchTab('personal'); // 기본값 P
+	        }
+	    };
 	</script>
 </body>
 </html>

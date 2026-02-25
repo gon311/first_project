@@ -13,9 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.project.common.exception.BackwardException;
 import com.itwillbs.project.user.dto.NewPasswordDTO;
 import com.itwillbs.project.user.dto.UserDTO;
 import com.itwillbs.project.user.service.UserService;
@@ -33,8 +33,13 @@ public class UserController {
 	
 	// 로그인 페이지로 이동
 	@GetMapping("/login")
-	public String login() {
+	public String login(HttpSession session) {
 		
+		String sId = (String)session.getAttribute("sId");
+		
+		if(sId != null) { // 세션에 로그인 아이디가 있을 경우
+			throw new BackwardException("잘못된 접근입니다!");
+		}
 		return "/user/login_form";
 	}
 	
@@ -42,15 +47,18 @@ public class UserController {
 	@PostMapping("/login")
 	public String loginP(UserDTO userDTO, BCryptPasswordEncoder passwordEncoder,
 						 HttpSession session, HttpServletResponse response,
-						 RedirectAttributes ra, String rememberId) {
+						 RedirectAttributes ra, String rememberId, String type) {
 		
 		UserDTO dbUser = userService.getUser(userDTO.getEmail());
-		System.out.println(dbUser);
-		if(dbUser == null || !passwordEncoder.matches(userDTO.getPassword(), dbUser.getPassword())) {
-			session.setAttribute("errorMsg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+		ra.addFlashAttribute("type", type);
+		
+		if(dbUser == null || !dbUser.getUserType().equals(type) || !passwordEncoder.matches(userDTO.getPassword(), dbUser.getPassword())) {
+			ra.addFlashAttribute("errorMsg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			ra.addFlashAttribute("errorId", userDTO.getEmail());
 			return "redirect:/user/login";
 		} else if(dbUser.getStatus().equals("WITHDRAWN")) { // 로그인은 성공이지만, 탈퇴한 회원일 경우
-			session.setAttribute("errorMsg", "탈퇴한 회원입니다!");
+			ra.addFlashAttribute("errorMsg", "탈퇴한 회원입니다!");
+			ra.addFlashAttribute("errorId", userDTO.getEmail());
 			return "redirect:/user/login";
 		}
 		
@@ -103,6 +111,11 @@ public class UserController {
 		userDTO.setPassword(encryptedPassword);
 		
 		userService.registUser(userDTO);
+		
+		session.setAttribute("userIdx", userDTO.getUserId());
+		session.setAttribute("sId", userDTO.getEmail());
+		session.setAttribute("userName", userDTO.getUserName());
+		session.setMaxInactiveInterval(60 * 60 * 24);
 		
 		return "redirect:/";
 	}

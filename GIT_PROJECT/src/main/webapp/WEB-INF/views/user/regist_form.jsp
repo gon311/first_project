@@ -362,6 +362,24 @@
         const startDateInput = document.getElementById('birth');
         const today = new Date().toISOString().split('T')[0];
         startDateInput.max = today;
+        
+        //페이지로드시 셀렉트되는 타입
+	    window.onload = function() {
+	        // 1. EL식으로 가져오는 값 (서버에서 바로 보낼 때)
+	        const serverType = "${id}"; 
+	        
+	        // 2. URL에서 직접 가져오는 값 (redirect로 ?type=C가 붙어올 때)
+	        const urlParams = new URLSearchParams(window.location.search);
+	        const urlType = urlParams.get('id');
+
+	        const finalType = serverType || urlType;
+
+	        if (finalType === 'co') {
+	            switchTab('C');
+	        } else {
+	            switchTab('P'); // 기본값 P
+	        }
+	    };
 
     </script>
 </body>

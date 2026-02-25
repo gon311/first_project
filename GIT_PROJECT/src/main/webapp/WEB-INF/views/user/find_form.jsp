@@ -380,6 +380,24 @@
             const el = document.getElementById(id);
             el.style.display = (el.style.display === 'block') ? 'none' : 'block';
         }
+        
+        // 로드시 셀렉트가 다름
+	    window.onload = function() {
+	        // 1. EL식으로 가져오는 값 (서버에서 바로 보낼 때)
+	        const serverType = "${type}"; 
+	        
+	        // 2. URL에서 직접 가져오는 값 (redirect로 ?type=C가 붙어올 때)
+	        const urlParams = new URLSearchParams(window.location.search);
+	        const urlType = urlParams.get('type');
+
+	        const finalType = serverType || urlType;
+
+	        if (finalType === 'id') {
+	            switchTab('id');
+	        } else {
+	            switchTab('pw'); // 기본값 P
+	        }
+	    };
     </script>
 </body>
 </html>

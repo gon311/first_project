@@ -9,10 +9,6 @@
 <title>채용공고 목록</title>
 <style>
     /* 1. 전체 레이아웃 및 폰트 */
-<<<<<<< HEAD
-    body { /* font-family: 'Pretendard', sans-serif; */ background-color: #f8f9fa; margin: 0; padding: 0; color: #333; }
-    .main-wrapper { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
-=======
     body {
         /* font-family: 'Pretendard', sans-serif; */
         background-color: #f8f9fa;

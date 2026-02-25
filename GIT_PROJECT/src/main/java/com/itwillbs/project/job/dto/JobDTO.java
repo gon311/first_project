@@ -64,7 +64,9 @@ public class JobDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate closeDate;  // 접수 마감일 (name="close_date") [cite: 36]
     private Integer postStatus;       // 모집 상태 (1: 모집중 등) [cite: 31]
-    
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime regDate;  // 공고 등록 일 시간.
+    private int postCheck;
     // 추가 할 데이터
     private String companyName;
     
@@ -76,12 +78,8 @@ public class JobDTO {
     	if ("Y".equals(this.expNone)) {
             return "경력무관";
         }
-        // 2. 신입인 경우
-        if ("new".equals(this.expType)) {
-            return "신입";
-        }
-        
-        // 3. 경력직인 경우 범위를 문자열로 결합 (예: "1~3")
+    	
+        // 2. 경력직인 경우 범위를 문자열로 결합 (예: "1~3")
         if (minExp != null && maxExp != null) {
             return minExp + "~" + maxExp;
         }

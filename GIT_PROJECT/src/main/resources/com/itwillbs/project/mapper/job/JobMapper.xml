@@ -3,6 +3,38 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.project.job.mapper.JobMapper">
+
+<resultMap id="JobResultMap" type="com.itwillbs.project.job.dto.JobDTO">
+	<id property="jobId" column="job_id"/>
+	<result property="compId" column="comp_id"/>
+	
+	<result property="title" column="title"/>
+	<result property="field" column="field"/>
+	<result property="task" column="task"/>
+	
+	<result property="empType" column="emp_type"/>
+	<result property="probation" column="probation"/>
+	<result property="expType" column="exp_type"/>
+	<result property="expYear" column="exp_year"/>
+	<result property="edu" column="edu"/>
+	<result property="salary" column="salary"/>
+	
+	<result property="address" column="address"/>
+	<result property="isRemote" column="is_remote"/>
+	
+	<result property="mgrName" column="mgr_name"/>
+	<result property="mgrPhone" column="mgr_phone"/>
+	<result property="mgrEmail" column="mgr_email"/>
+	<result property="isPublic" column="is_public"/>
+	
+	<result property="openDate" column="open_date"/>
+	<result property="closeDate" column="close_date"/>
+	<result property="postStatus" column="post_status"/>
+	<result property="regDate" column="reg_date"/>
+	<result property="postCheck" column="post_check"/>
+	
+	<result property="companyName" column="company_name"/>
+	</resultMap>
 	
 	<insert id="insertJob">
 	    INSERT INTO JOB_POSTING (
@@ -69,9 +101,10 @@
 	        j.title,
 	        j.field,
 	        CASE 
-	            WHEN j.exp_year = '0' OR j.exp_year LIKE '%신입%' THEN '신입'
-	            ELSE '경력'
-	        END as expYear,
+		        WHEN j.exp_year IS NULL THEN '경력 무관'
+		        WHEN j.exp_year = '0' OR j.exp_year LIKE '%신입%' THEN '신입'
+		        ELSE '경력'
+		    END as expYear,
 	        j.edu,
 	        j.address,
 	        j.close_date as closeDate
@@ -120,17 +153,37 @@
 	      AND address IS NOT NULL
 	</select>
 	
-	<select id="getJobListDetail" resultType="job" parameterType="long">
-		SELECT c.company_name AS companyName, 
-			p.title, 
-			p.exp_year AS expYear, 
-			p.edu, 
-			p.emp_type AS empType, 
-			p.salary, 
-			p.address
+	<select id="getJobListDetail" parameterType="long" resultMap="JobResultMap">
+		SELECT 
+			p.job_id,        
+	        p.comp_id,       
+	        c.company_name,
+	        p.title,         
+	        p.field,         
+	        p.task,          
+	        p.emp_type,      
+	        p.probation,     
+	        CASE 
+		        WHEN p.exp_year IS NULL THEN '경력 무관'
+		        WHEN p.exp_year = '0' OR p.exp_year LIKE '%신입%' THEN '신입·경력'
+		        ELSE p.exp_year
+		    END as exp_year,
+	        p.edu,           
+	        p.salary,        
+	        p.address,       
+	        p.is_remote,     
+	        p.mgr_name,      
+	        p.mgr_phone,     
+	        p.mgr_email,     
+	        p.is_public,     
+	        p.open_date,     
+	        p.close_date,    
+	        p.post_status,   
+	        p.reg_date,      
+	        p.post_check
 		FROM job_posting p JOIN user_company c
 		ON p.comp_id = c.user_id
-		WHERE p.job_id = #{jobId};
+		WHERE p.job_id = #{jobId}
 	</select>
 	
 	

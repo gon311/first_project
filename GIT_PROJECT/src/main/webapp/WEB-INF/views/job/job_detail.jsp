@@ -137,20 +137,21 @@
 
     <section class="info-summary-grid">
         <div class="left-info">
+<%--             <div class="info-item"><span class="info-label">경력</span><span class="info-value">${post.expType == 'career' ? '경력' : '신입·경력'} ${post.expYear != null ? post.expYear : '경력 무관'}</span></div> --%>
             <div class="info-item"><span class="info-label">경력</span><span class="info-value">${post.expYear}</span></div>
             <div class="info-item"><span class="info-label">학력</span><span class="info-value">${post.edu}</span></div>
-            <div class="info-item"><span class="info-label">근무형태</span><span class="info-value">${post.empType}</span></div>
+            <div class="info-item"><span class="info-label">근무형태</span><span class="info-value">${post.empType} ${post.probation == 'Y' ? '수습기간 있음' : ''}</span></div>
         </div>
         <div class="right-info">
-            <div class="info-item"><span class="info-label">급여</span><span class="info-value">면접 후 결정</span></div>
-            <div class="info-item"><span class="info-label">근무지역</span><span class="info-value">서울 강남구 ... <a href="#">[지도]</a></span></div>
+            <div class="info-item"><span class="info-label">급여</span><span class="info-value">${post.salary}</span></div>
+            <div class="info-item"><span class="info-label">근무지역</span><span class="info-value">${post.address}<a href="#">[지도]</a></span></div>
         </div>
     </section>
 
     <section class="detail-content-body">
         <div style="padding-top: 150px;">
-            <h3>~ 지원 분야 상세내용 및 조건, 우대사항 등 ~</h3>
-            <p>기업 회원이 에디터로 작성하는 영역입니다.</p>
+            <h3>모직 직무 분야 : ${post.field}</h3>
+            <p>${post.task}</p>
         </div>
     </section>
 

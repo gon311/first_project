@@ -37,9 +37,9 @@ public class JobController {
 	@PostMapping("/JobProcess")
 	public String posting(JobDTO jobDTO, HttpSession session) {
 		
-		System.out.println(jobDTO.getAddress());
+//		System.out.println(jobDTO.getAddress());
 		jobService.jobInsert(jobDTO);
-		System.out.println(jobDTO);
+//		System.out.println(jobDTO);
 		return "redirect:/job/JobList";
 	}
 	
@@ -65,7 +65,7 @@ public class JobController {
 //		System.out.println(jobId);
 		JobDTO post = jobService.getJobListDetail(jobId);
 //		System.out.println("! = " + post.getCompanyName());
-//		System.out.println(post.getExpYear());
+		System.out.println(post.getExpYear());
 		model.addAttribute("post", post);
 		
 		return "/job/job_detail";

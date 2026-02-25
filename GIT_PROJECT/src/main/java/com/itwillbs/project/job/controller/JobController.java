@@ -60,7 +60,13 @@ public class JobController {
 	}
 	
 	@GetMapping("/JobDetail")
-	public String relay() {
+	public String jobDetail(@RequestParam("jobId") Long jobId, Model model) {
+		
+//		System.out.println(jobId);
+		JobDTO post = jobService.getJobListDetail(jobId);
+//		System.out.println("! = " + post.getCompanyName());
+//		System.out.println(post.getExpYear());
+		model.addAttribute("post", post);
 		
 		return "/job/job_detail";
 	}

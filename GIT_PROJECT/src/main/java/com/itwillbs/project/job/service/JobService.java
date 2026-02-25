@@ -30,5 +30,9 @@ public class JobService {
 		return jobMapper.getExistingRegions();
 	}
 
+	public JobDTO getJobListDetail(Long jobId) {
+		return jobMapper.getJobListDetail(jobId);
+	}
+
 
 }

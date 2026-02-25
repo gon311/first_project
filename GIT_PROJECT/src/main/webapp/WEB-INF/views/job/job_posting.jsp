@@ -243,11 +243,11 @@
 		        </select>
 		        <span style="margin: 0 5px;">~</span>
 		        <select name="maxExp" id="maxExp" style="width: 140px; display:inline-block;">
-		            <option value="3">3년 이하</option>
-		            <option value="5">5년 이하</option>
-		            <option value="8">8년 이하</option>
-		            <option value="10">10년 이하</option>
-		            <option value="99">제한 없음</option>
+		            <option value="3년">3년 이하</option>
+		            <option value="5년">5년 이하</option>
+		            <option value="8년">8년 이하</option>
+		            <option value="10년">10년 이하</option>
+		            <option value="제한 없음">제한 없음</option>
 		        </select>
 		        <label style="margin-left: 15px;">
 		            <input type="checkbox" name="expNone" id="expNone"> 경력무관
@@ -382,10 +382,10 @@ document.addEventListener("DOMContentLoaded", function() {
     if (minSelect && maxSelect) {
         minSelect.addEventListener('change', function() {
             const minVal = parseInt(this.value);
-            if (minVal === 0 || minVal === 1) maxSelect.value = "3";
-            else if (minVal === 3) maxSelect.value = "5";
-            else if (minVal === 5) maxSelect.value = "8";
-            else if (minVal === 10) maxSelect.value = "99";
+            if (minVal === 0 || minVal === 1) maxSelect.value = "3년";
+            else if (minVal === 3) maxSelect.value = "5년";
+            else if (minVal === 5) maxSelect.value = "8년";
+            else if (minVal === 10) maxSelect.value = "제한 없음";
         });
     }
 

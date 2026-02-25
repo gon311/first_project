@@ -21,4 +21,6 @@ public interface JobMapper {
 
 	List<Map<String, String>> getExistingRegions();
 
+	JobDTO getJobListDetail(Long jobId);
+
 }

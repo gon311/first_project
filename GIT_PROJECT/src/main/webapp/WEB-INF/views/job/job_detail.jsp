@@ -128,21 +128,21 @@
 <div class="job-detail-container">
     <header class="job-header">
         <div class="company-info">
-            <p style="color: #666; margin-bottom: 5px;">(주)회사이름</p>
-            <h1>모집하는 분야 및 제목이 이곳에 들어갑니다</h1>
+            <p style="color: #666; margin-bottom: 5px;">${post.companyName}</p>
+            <h1>${post.title}</h1>
+            
         </div>
         <button type="button" class="apply-btn" onclick="checkResumeAndApply()">입사지원</button>
     </header>
 
     <section class="info-summary-grid">
         <div class="left-info">
-            <div class="info-item"><span class="info-label">경력</span><span class="info-value">신입·경력</span></div>
-            <div class="info-item"><span class="info-label">학력</span><span class="info-value">학력무관</span></div>
-            <div class="info-item"><span class="info-label">근무형태</span><span class="info-value">정규직, 계약직</span></div>
+            <div class="info-item"><span class="info-label">경력</span><span class="info-value">${post.expYear}</span></div>
+            <div class="info-item"><span class="info-label">학력</span><span class="info-value">${post.edu}</span></div>
+            <div class="info-item"><span class="info-label">근무형태</span><span class="info-value">${post.empType}</span></div>
         </div>
         <div class="right-info">
             <div class="info-item"><span class="info-label">급여</span><span class="info-value">면접 후 결정</span></div>
-            <div class="info-item"><span class="info-label">근무일시</span><span class="info-value">주 5일(월~금) 09:00 ~ 18:00</span></div>
             <div class="info-item"><span class="info-label">근무지역</span><span class="info-value">서울 강남구 ... <a href="#">[지도]</a></span></div>
         </div>
     </section>

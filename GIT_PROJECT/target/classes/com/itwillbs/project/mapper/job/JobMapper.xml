@@ -119,6 +119,26 @@
 	    WHERE post_status = 1 
 	      AND address IS NOT NULL
 	</select>
+	
+	<select id="getJobListDetail" resultType="job" parameterType="long">
+		SELECT c.company_name AS companyName, 
+			p.title, 
+			p.exp_year AS expYear, 
+			p.edu, 
+			p.emp_type AS empType, 
+			p.salary, 
+			p.address
+		FROM job_posting p JOIN user_company c
+		ON p.comp_id = c.user_id
+		WHERE p.job_id = #{jobId};
+	</select>
+	
+	
+	
+	
+	
+	
+	
 </mapper>
 
 

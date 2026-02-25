@@ -65,6 +65,9 @@ public class JobDTO {
     private LocalDate closeDate;  // 접수 마감일 (name="close_date") [cite: 36]
     private Integer postStatus;       // 모집 상태 (1: 모집중 등) [cite: 31]
     
+    // 추가 할 데이터
+    private String companyName;
+    
     /**
      * DB의 exp_year 컬럼에 저장될 값을 생성하는 메서드
      */

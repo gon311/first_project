@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -83,7 +84,7 @@
                     </div>
                 </div>
                 
-                <!-- 정렬 -->
+                <!-- 정렬(구현중) -->
 	            <div class="d-flex justify-content-end mt-3 mb-2">
 	                <form action="<c:url value='/admin/users' />" method="get">
 	                    <input type="hidden" name="activeTab" value="all"/>
@@ -224,7 +225,21 @@
                                     <td>${withdraw.phone}</td>
                                     <td>${withdraw.withdrawnAt}</td>
                                     <td>
-                                        <button class="btn btn-danger">삭제</button>
+                                    	<fmt:parseDate var="withdrawDate" value="${withdraw.withdrawnAt}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+                                    	<fmt:parseNumber var="wDate" value="${withdrawDate.time / (1000*60*60*24)}" integerOnly="true"></fmt:parseNumber>
+                                    	
+                                    	<!-- 현재 날짜 -->
+                                    	<fmt:parseDate var="today" value="${withdraw.today}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+                                    	<fmt:parseNumber var="tDay" value="${today.time / (1000*60*60*24)}" integerOnly="true"></fmt:parseNumber>
+                                    	
+                                    	<c:choose>
+                                    		<c:when test="${(tDay - wDate) < 1095}">  <!-- 탈퇴일로부터 3년이 지난 경우 -->
+		                                        <button class="btn btn-danger" onclick="deleteUser(${withdraw.userId})">삭제</button>
+                                    		</c:when>
+                                    		<c:otherwise>
+		                                        <button class="btn btn-danger" disabled>삭제</button>
+                                    		</c:otherwise>
+                                    	</c:choose>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -236,6 +251,15 @@
 
         </div>
     </main>
+    
+    <script type="text/javascript">
+    	// 회원 삭제
+    	function deleteUser(userId) {
+    		if(confirm("삭제하시겠습니까?")) {
+    			location.href="<c:url value='/admin/users/delete' />" + "?userId=" + userId;
+    		}
+    	}
+    </script>
 
 </body>
 </html>

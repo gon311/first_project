@@ -9,27 +9,118 @@
 <title>채용 공고 상세 | 프로젝트</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-    .job-detail-container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; font-family: 'Pretendard', sans-serif; }
+    /* 1. 기본 레이아웃 및 초기화 */
+    body { 
+        background-color: #f8f9fa; 
+        color: #333; 
+/*         font-family: 'Pretendard', sans-serif;  */
+        margin: 0 !important;   /* 부트스트랩 기본 마진 제거 */
+        padding: 0 !important;  /* 부트스트랩 기본 패딩 제거 */
+    }
+
+    .job-detail-container { 
+        max-width: 1100px; 
+        margin: 0 auto; 
+        padding: 40px 20px; 
+    }
     
-    /* 상단: 회사명 및 입사지원 버튼 */
-    .job-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 30px; }
-    .company-info h1 { font-size: 28px; margin-bottom: 10px; color: #333; }
-    .apply-btn { background-color: #ff4b4b; color: white; padding: 20px 60px; font-size: 20px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; }
+    /* 2. 상단: 회사명 및 입사지원 버튼 */
+    .job-header { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: flex-start; 
+        margin-bottom: 30px; 
+        border-bottom: 1px solid #eee; 
+        padding-bottom: 30px; 
+    }
 
-    /* 중단: 주요 조건 (경력, 학력 등) */
-    .info-summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background-color: #fff; border: 1px solid #eee; padding: 30px; border-radius: 12px; margin-bottom: 40px; }
-    .info-item { display: flex; margin-bottom: 15px; }
-    .info-label { width: 100px; color: #888; font-weight: 500; }
-    .info-value { color: #333; font-weight: 500; }
+    .company-info h1 { 
+        font-size: 28px; 
+        margin-bottom: 10px; 
+        color: #333; 
+    }
 
-    /* 중단: 상세 내용 영역 (노란색 영역) */
-    .detail-content-body { background-color: #fffde7; /* 기획안 색상 참고 */ min-height: 400px; padding: 40px; border: 1px dashed #ccc; margin-bottom: 40px; text-align: center; border-radius: 12px; }
+    .apply-btn { 
+        background-color: #ff4b4b; 
+        color: white; 
+        padding: 20px 60px; 
+        font-size: 20px; 
+        font-weight: bold; 
+        border: none; 
+        border-radius: 8px; 
+        cursor: pointer; 
+        transition: background-color 0.2s;
+    }
 
-    /* 하단: 기업 정보 및 지도 (하늘색 영역) */
-    .company-footer-section { background-color: #e1f5fe; /* 기획안 색상 참고 */ padding: 40px; border-radius: 12px; }
-    .footer-flex { display: flex; gap: 30px; }
-    .map-area { flex: 1; background: white; height: 200px; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 1px solid #b3e5fc; }
-    .company-stats { flex: 1; }
+    .apply-btn:hover {
+        background-color: #e63939;
+    }
+
+    /* 3. 중단: 주요 조건 (경력, 학력 등) */
+    .info-summary-grid { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 20px; 
+        background-color: #fff; 
+        border: 1px solid #eee; 
+        padding: 30px; 
+        border-radius: 12px; 
+        margin-bottom: 40px; 
+    }
+
+    .info-item { 
+        display: flex; 
+        margin-bottom: 15px; 
+    }
+
+    .info-label { 
+        width: 100px; 
+        color: #888; 
+        font-weight: 500; 
+    }
+
+    .info-value { 
+        color: #333; 
+        font-weight: 500; 
+    }
+
+    /* 4. 중단: 상세 내용 영역 (노란색 영역) */
+    .detail-content-body { 
+        background-color: #fffde7; 
+        min-height: 400px; 
+        padding: 40px; 
+        border: 1px dashed #ccc; 
+        margin-bottom: 40px; 
+        text-align: center; 
+        border-radius: 12px; 
+    }
+
+    /* 5. 하단: 기업 정보 및 지도 (하늘색 영역) */
+    .company-footer-section { 
+        background-color: #e1f5fe; 
+        padding: 40px; 
+        border-radius: 12px; 
+    }
+
+    .footer-flex { 
+        display: flex; 
+        gap: 30px; 
+    }
+
+    .map-area { 
+        flex: 1; 
+        background: white; 
+        height: 200px; 
+        border-radius: 8px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        border: 1px solid #b3e5fc; 
+    }
+
+    .company-stats { 
+        flex: 1; 
+    }
 </style>
 </head>
 <body>

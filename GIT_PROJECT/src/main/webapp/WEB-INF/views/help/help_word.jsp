@@ -11,36 +11,155 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-    /* 1. 레이아웃 초기화 및 공통 스타일 */
-    body { font-family: 'Pretendard', sans-serif; color: #333; background-color: #fff; }
-    .cs-container { max-width: 1060px; margin: 0 auto; padding: 40px 20px; }
-    
-    /* 2. 검색 섹션 */
-    .search-section { background-color: #f4f6fa; border-radius: 16px; padding: 60px 20px; text-align: center; margin-bottom: 40px; }
-    .search-section h2 { font-size: 32px; font-weight: 700; margin-bottom: 24px; }
-    .search-box { position: relative; max-width: 600px; margin: 0 auto; }
-    .search-box input { width: 100%; padding: 18px 25px; border: 2px solid #4485ff; border-radius: 50px; font-size: 16px; outline: none; box-shadow: 0 4px 10px rgba(68,133,255,0.1); }
-    .search-box i { position: absolute; right: 25px; top: 50%; transform: translateY(-50%); color: #4485ff; font-size: 20px; cursor: pointer; }
-    
-    /* 3. 회원 구분 탭 */
-    .cs-tabs { display: flex; border-bottom: 1px solid #eee; margin-bottom: 40px; justify-content: center; }
-    .tab-item { padding: 15px 50px; cursor: pointer; font-size: 18px; font-weight: 600; color: #999; border-bottom: 3px solid transparent; transition: 0.3s; }
-    .tab-item.active { color: #4485ff; border-bottom-color: #4485ff; }
-
-    /* 4. 퀵 메뉴 (그리드) */
-    .quick-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 60px; }
-    .menu-card { border: 1px solid #f0f0f0; border-radius: 12px; padding: 30px 15px; text-align: center; transition: all 0.2s; cursor: pointer; }
-    .menu-card:hover { border-color: #4485ff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transform: translateY(-5px); }
-    .menu-card i { font-size: 32px; color: #4485ff; margin-bottom: 15px; display: block; }
-    .menu-card span { font-size: 16px; font-weight: 500; }
-
-    /* 5. FAQ 섹션 */
-    .faq-section h3 { font-size: 22px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-    .faq-list { border-top: 1px solid #333; }
-    .faq-item { border-bottom: 1px solid #eee; }
-    .faq-q { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; font-weight: 500; }
-    .faq-q:hover { background-color: #f9f9f9; }
-    .faq-a { padding: 20px 25px; background-color: #fcfcfc; color: #666; display: none; border-top: 1px solid #f5f5f5; line-height: 1.6; }
+	/* 1. 레이아웃 초기화 및 공통 스타일 */
+	body {
+	    /* font-family: 'Pretendard', sans-serif; */
+	    color: #333;
+	    background-color: #fff;
+	}
+	
+	.cs-container {
+	    max-width: 1060px;
+	    margin: 0 auto;
+	    padding: 40px 20px;
+	}
+	
+	/* 2. 검색 섹션 */
+	.search-section {
+	    background-color: #f4f6fa;
+	    border-radius: 16px;
+	    padding: 60px 20px;
+	    text-align: center;
+	    margin-bottom: 40px;
+	}
+	
+	.search-section h2 {
+	    font-size: 32px;
+	    font-weight: 700;
+	    margin-bottom: 24px;
+	}
+	
+	.search-box {
+	    position: relative;
+	    max-width: 600px;
+	    margin: 0 auto;
+	}
+	
+	.search-box input {
+	    width: 100%;
+	    padding: 18px 25px;
+	    border: 2px solid #4485ff;
+	    border-radius: 50px;
+	    font-size: 16px;
+	    outline: none;
+	    box-shadow: 0 4px 10px rgba(68, 133, 255, 0.1);
+	}
+	
+	.search-box i {
+	    position: absolute;
+	    right: 25px;
+	    top: 50%;
+	    transform: translateY(-50%);
+	    color: #4485ff;
+	    font-size: 20px;
+	    cursor: pointer;
+	}
+	
+	/* 3. 회원 구분 탭 */
+	.cs-tabs {
+	    display: flex;
+	    border-bottom: 1px solid #eee;
+	    margin-bottom: 40px;
+	    justify-content: center;
+	}
+	
+	.tab-item {
+	    padding: 15px 50px;
+	    cursor: pointer;
+	    font-size: 18px;
+	    font-weight: 600;
+	    color: #999;
+	    border-bottom: 3px solid transparent;
+	    transition: 0.3s;
+	}
+	
+	.tab-item.active {
+	    color: #4485ff;
+	    border-bottom-color: #4485ff;
+	}
+	
+	/* 4. 퀵 메뉴 (그리드) */
+	.quick-menu {
+	    display: grid;
+	    grid-template-columns: repeat(4, 1fr);
+	    gap: 20px;
+	    margin-bottom: 60px;
+	}
+	
+	.menu-card {
+	    border: 1px solid #f0f0f0;
+	    border-radius: 12px;
+	    padding: 30px 15px;
+	    text-align: center;
+	    transition: all 0.2s;
+	    cursor: pointer;
+	}
+	
+	.menu-card:hover {
+	    border-color: #4485ff;
+	    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+	    transform: translateY(-5px);
+	}
+	
+	.menu-card i {
+	    font-size: 32px;
+	    color: #4485ff;
+	    margin-bottom: 15px;
+	    display: block;
+	}
+	
+	.menu-card span {
+	    font-size: 16px;
+	    font-weight: 500;
+	}
+	
+	/* 5. FAQ 섹션 */
+	.faq-section h3 {
+	    font-size: 22px;
+	    margin-bottom: 20px;
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	}
+	
+	.faq-list {
+	    border-top: 1px solid #333;
+	}
+	
+	.faq-item {
+	    border-bottom: 1px solid #eee;
+	}
+	
+	.faq-q {
+	    padding: 20px;
+	    cursor: pointer;
+	    display: flex;
+	    justify-content: space-between;
+	    font-weight: 500;
+	}
+	
+	.faq-q:hover {
+	    background-color: #f9f9f9;
+	}
+	
+	.faq-a {
+	    padding: 20px 25px;
+	    background-color: #fcfcfc;
+	    color: #666;
+	    display: none;
+	    border-top: 1px solid #f5f5f5;
+	    line-height: 1.6;
+	}
 </style>
 </head>
 <body>
@@ -80,6 +199,8 @@
         </div>
     </section>
 </div>
+
+<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

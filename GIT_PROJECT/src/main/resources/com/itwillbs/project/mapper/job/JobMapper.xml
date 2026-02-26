@@ -166,7 +166,7 @@
 	        CASE 
 		        WHEN p.exp_year IS NULL THEN '경력 무관'
 		        WHEN p.exp_year = '0' OR p.exp_year LIKE '%신입%' THEN '신입·경력'
-		        ELSE p.exp_year
+		        ELSE concat(if(p.exp_type = 'career', '경력 ', ''), p.exp_year)
 		    END as exp_year,
 	        p.edu,           
 	        p.salary,        

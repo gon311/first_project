@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class CoverLetterDTO {
 	
-	private Integer coverLetterIdx;	// 자소서 일련번호
+	private Long coverLetterIdx;	// 자소서 일련번호
 	private Long userId; 			// 사용자 식별자(user(user_id))
 	
 	private String title;			// 자소서 제목

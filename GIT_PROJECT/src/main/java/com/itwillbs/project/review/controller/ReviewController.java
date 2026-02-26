@@ -7,13 +7,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.project.review.dto.CoverLetterDTO;
@@ -66,7 +64,7 @@ public class ReviewController {
 		Long userId = (Long)session.getAttribute("userIdx");
 		coverLetterDTO.setUserId(userId);
 		reviewService.registForm(coverLetterDTO);  
-		Integer coverLetterIdx = coverLetterDTO.getCoverLetterIdx();
+		Long coverLetterIdx = coverLetterDTO.getCoverLetterIdx();
 		
 	    return "redirect:/review/" + coverLetterIdx + "/registText";
 	}
@@ -75,12 +73,14 @@ public class ReviewController {
 	@GetMapping("/registText")
 	public String registTest() {
 		return "/review/reviewText";
-	}
+	}	
 	
 	
 	// 2단계 작성 
 	@GetMapping("/{coverLetterIdx}/registText")
-	public String registText(@PathVariable Integer coverLetterIdx) {
+	public String registText(@PathVariable Long coverLetterIdx) {
+		log.info("coverletteridx : " + coverLetterIdx);
+		
 		
 		return "/review/reviewText";
 		

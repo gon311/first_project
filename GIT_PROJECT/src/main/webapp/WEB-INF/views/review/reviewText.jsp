@@ -21,12 +21,12 @@
 	
 						<!-- 제목 -->
 						<div class="mb-4">
-							<label for="title" class="form-label fw-semibold">자소서 제목 <span
+							<label for="title" class="form-label fw-semibold">자소서 제목<span
 								class="text-danger">*</span></label> <input type="text"
 								class="form-control" id="title" name="title"
 								value="${param.title}" placeholder="제목을 입력해 주세요." required>
 						</div>
-	
+						
 						<!-- 질문 선택 -->
 						<div class="mb-3">
 							<label for="question" class="form-label fw-semibold">질문 선택
@@ -91,6 +91,9 @@
 				</div>
 			</form>
 			
+			<%-- select문에서 사용할 coverLetterIdx --%>
+			<input type="hidden" id="coverLetterIdx" name="coverletterIdx" value="${coverLetterIdx}">
+			
 			<%--ChatGPT 교정 요청 시 응답 돌아올 때 까지 작업 중 오버레이 화면 --%>
 			<div id="loadingOverlay" 
 				class="position-fixed top-0 start-0 w-100 h-100 d-none"
@@ -131,6 +134,7 @@
 					document.getElementById("loadingOverlay").classList.remove("d-none");
 					
 					// 입력받은 내용 가져오기 
+					let questionCode = document.querySelector('input[name="question"]:checked')?.value;
 					let inputContent = document.getElementById("inputText").value;
 					
 					// chatGPT에 전달하기 
@@ -140,7 +144,13 @@
 								method: "POST", 
 								headers: { 
 									"Content-type": "application/json"
-								}
+								}, 
+								body: JSON.stringify({
+									coverLetterIdx : coverLetterIdx, 
+									question : questionCode,
+									inputText : inputContent
+									
+								})
 								
 							});
 							

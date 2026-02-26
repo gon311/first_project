@@ -13,7 +13,7 @@
     <div class="container w-50 my-5 mx-auto">
         <h4 class="fw-bold mb-4">새 FAQ 등록</h4>
         <div class="card shadow-sm border p-4">
-            <form action="/admin/insertFaq" method="post">
+            <form action= "<c:url value='/admin/contents/insertFaq'/>" method ="post">
                 <div class="row mb-3">
               		<%--userType 구분(구직자/기업회원) --%>
                 	<div class="col-md-6">

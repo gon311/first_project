@@ -145,13 +145,13 @@ public class AdminService{
 
 	// =====================================================================================
 	// faq
-	public List<FaqDTO> getFaqList(String category, String keyword, FaqDTO faqDTO) {
-		return adminMapper.getFaqList(faqDTO);
+	public List<FaqDTO> getFaqList(String userType, String keyword) {
+		return adminMapper.getFaqList(userType, keyword);
 	}
 
 	public FaqDTO getFaqDetail(int faqId) {
 		// TODO Auto-generated method stub
-		return null;
+		return adminMapper.getFaqDetail(faqId);
 	}
 
 	public void insertFaq(FaqDTO faqDTO) {

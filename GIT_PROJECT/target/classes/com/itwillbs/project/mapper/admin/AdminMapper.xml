@@ -278,11 +278,11 @@
 			, user_type
 			, status
 		) VALUES (
-			#{notice_title}
-			, #{notice_content}
+			#{noticeTitle}
+			, #{noticeContent}
 			, NOW()
 			,0
-			, #{user_type}
+			, #{userType}
 			, #{status}
 		)
 	</insert>
@@ -475,31 +475,52 @@
 		select *
 		from 
 			qna
-	
+		where 
+			re_status = #{reStatus}
+	<!-- ============================================================================ -->
 	
 	
 	</select>
 	
 	<!-- FaQ 리스트 -->
 	<select id ="getFaqList" resultType="faq">
-		SELECT *
+		SELECT 
+			faq_id
+			, faq_title
+			, category
+			, user_type
 		FROM
-			fnq
+			faq
+		WHERE
+			user_type = #{userType}
+			
 	</select>
 	
 	<insert id ="insertFaq" parameterType="faq">
 		INSERT INTO faq (
+			faq_title
+			, faq_content
+			, category
+			, user_type
+		) VALUES (
+			#{faqTitle}
+			, #{faqContent}
+			,#{category}
+			, #{userType}
+		)
+	</insert>
+	
+	<select id = "getFaqDetail" resultType="faq">
+		SELECT 
 			faq_id
 			, faq_title
 			, faq_content
-			, catergory
+			, category
 			, user_type
-		) VALUES (
-			#{faq_id}
-			, #{faq_title}
-			, #{faq_content}
-			,#{category}
-			, #{user_type}
-		)
-	</insert>
+		FROM
+			faq
+		WHERE 
+			faq_id = #{faqId}
+	
+	</select>
 </mapper>

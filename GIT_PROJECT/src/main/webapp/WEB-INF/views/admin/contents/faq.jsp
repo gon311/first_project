@@ -19,12 +19,12 @@
         <%-- 카테고리 탭 (기존 유지) --%>
         <ul class="nav nav-tabs border-bottom-0">
             <li class="nav-item">
-                <button class="nav-link ${category eq 'user' or empty category ? 'active fw-bold' : ''}" 
-                        onclick="location.href='?category=user'">구직자</button>
+                <button class="nav-link ${userType eq 'user' or empty userType ? 'active fw-bold' : ''}" 
+                        onclick="location.href='?userType=user'">구직자</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link ${category eq 'com' ? 'active fw-bold' : ''}" 
-                        onclick="location.href='?category=com'">기업회원</button>
+                <button class="nav-link ${userType eq 'com' ? 'active fw-bold' : ''}" 
+                        onclick="location.href='?userType=com'">기업회원</button>
             </li>
         </ul>
 
@@ -53,7 +53,7 @@
                                     <td>${faq.faqId}</td>
                                     <td class="text-start ps-4">
                                         <%-- 제목 클릭 시 상세 정보(아코디언 스타일) 확인 페이지로 이동 --%>
-                                        <a href="/admin/faqDetail?faqId=${faq.faqId}" class="text-decoration-none text-dark">${faq.faqTitle}</a>
+                                        <a href="<c:url value='/admin/contents/faqMgmt?faqId=${faq.faqId}'/> " class="text-decoration-none text-dark">${faq.faqTitle}</a>
                                     </td>
                                     <td>
                                         <button class="btn btn-sm btn-outline-danger" onclick="deleteFaq(${faq.faqId})">삭제</button>

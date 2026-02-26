@@ -9,61 +9,34 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/admin/common/header.jsp" %>
-	
-	<div class="container w-75 my-4 mx-auto">
-    <h4 class="fw-bold mb-4">FAQ 관리</h4>
+  	<div class="container-fluid mt-4">
+		<div class="card shadow-sm p-3">	
+	<div class="container w-75 my-5 mx-auto">
+    <h4 class="fw-bold mb-4">FAQ 상세 확인</h4>
+    
+    <div class="border border-primary rounded p-3 mb-4 d-flex align-items-center shadow-sm" style="border-width: 2px !important;">
+        <span class="text-primary fw-bold fs-4 me-3">Q</span>
+        <span class="fw-bold fs-5">${faq.faqTitle}</span>
+    </div>
 
-    <ul class="nav nav-tabs border-bottom-0" id="faqTab">
-        <li class="nav-item">
-            <button class="nav-link ${category eq 'user' or empty category ? 'active fw-bold' : ''}" 
-                    onclick="location.href='?category=user'">구직자</button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link ${category eq 'com' ? 'active fw-bold' : ''}" 
-                    onclick="location.href='?category=com'">기업회원</button>
-        </li>
-    </ul>
-
-    <div class="card shadow-sm" style="border-top-left-radius: 0; border: 1px solid #dee2e6;">
-        <div class="card-body p-4">
-            
-            <form action="/admin/faq" method="get" class="d-flex justify-content-end mb-4">
-                <input type="hidden" name="category" value="${category}">
-                <div class="input-group style="width: 300px;">
-                    <input type="text" name="keyword" class="form-control form-control-sm" 
-                           placeholder="제목 검색" value="${keyword}">
-                    <button class="btn btn-outline-secondary btn-sm" type="submit">검색</button>
-                </div>
-            </form>
-
-            <div class="table-responsive">
-                <table class="table table-hover text-center align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th style="width: 15%;">글 번호</th>
-                            <th style="width: 85%;">글 제목</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:choose>
-                            <c:when test="${empty faqList}">
-                                <tr><td colspan="2" class="py-5 text-muted">등록된 FAQ가 없습니다.</td></tr>
-                            </c:when>
-                            <c:otherwise>
-                                <c:forEach var="faq" items="${faqList}">
-                                    <tr onclick="location.href='/admin/faqMgmt?faqId=${faq.faqId}'" style="cursor:pointer;">
-                                        <td>${faq.faqId}</td>
-                                        <td class="text-start ps-4">${faq.faqTitle}</td>
-                                    </tr>
-                                </c:forEach>
-                            </c:otherwise>
-                        </c:choose>
-                    </tbody>
-                </table>
+    <div class="bg-light rounded p-5 mb-4 border shadow-sm">
+        <div class="text-secondary" style="line-height: 1.8; min-height: 200px;">
+            ${faq.faqContent}
+        </div>
+        <hr class="my-4">
+        <div class="d-flex justify-content-between text-muted small">
+            <div>
+<%--                 등록일 : ${faq.regDate} <span class="mx-2">|</span> 수정일 : ${faq.modDate} --%>
             </div>
+<%--             <div>조회수 : ${faq.hitCount}</div> --%>
         </div>
     </div>
-</div>
+
+    <div class="text-end">
+        <button class="btn btn-outline-dark" onclick="location.href='/admin/contents/faq'">목록으로</button>
+        <button class="btn btn-warning" onclick="location.href='/admin/faqEdit?faqId=${faq.faqId}'">수정</button>
+    </div>
+</div></div></div>
 	
 	
 	

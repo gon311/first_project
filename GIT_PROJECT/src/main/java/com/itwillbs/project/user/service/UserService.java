@@ -33,15 +33,18 @@ public class UserService {
 		
 		userMapper.insertUserTR(userDTO);
     }
-
+	
+	// 로그인
 	public UserDTO getUser(String email) {
 		return userMapper.selectUser(email);
 	}
-
-	public List<UserDTO> getUserIdList() {
-		return userMapper.selectUserIdList();
+	
+	// 아이디 찾기
+	public List<UserDTO> getUserIdList(UserDTO userDTO) {
+		return userMapper.selectUserIdList(userDTO);
 	}
-
+	
+	//비밀번호 찾기
 	public boolean newPassword(String newPass, String sId) {
 		String dbHash = userMapper.selectPassword(sId); // DB에 저장된 해시 비번
 	    if (dbHash == null) return false;

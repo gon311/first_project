@@ -20,7 +20,7 @@ public interface UserMapper {
 	UserDTO selectUser(String email);
 	
 	// 아이디 찾기
-	List<UserDTO> selectUserIdList();
+	List<UserDTO> selectUserIdList(UserDTO userDTO);
 	
 	// 비밀번호 찾기
 	String selectPassword(String sId);

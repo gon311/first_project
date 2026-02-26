@@ -79,10 +79,7 @@
 	                    <div class="col-body">
 	                        <div class="radio-row">
 	                            <label class="radio-label">
-	                                <input type="radio" name="auth_group_id" value="email" checked onclick="updateFormState('id')"> 이메일 인증
-	                            </label>
-	                            <label class="radio-label">
-	                                <input type="radio" name="auth_group_id" value="phone" onclick="updateFormState('id')"> 휴대폰 인증
+	                                <input type="radio" name="authGroupId" value="phone" onclick="updateFormState('id')" checked> 휴대폰 인증
 	                            </label>
 	                        </div>
 	
@@ -90,27 +87,10 @@
 	                            <div class="form-row">
 	                                <label class="form-label">이름</label>
 	                                <div class="form-input-group">
-	                                    <input type="text" id="id-name" placeholder="성명 입력">
+	                                    <input type="text"  id="id-name" name="userName" placeholder="성명 입력">
 	                                </div>
 	                            </div>
 	
-	                            <div id="row-id-email" class="form-row d-none">
-	                                <label class="form-label">이메일 주소</label>
-	                                <div class="form-input-group">
-	                                    <input type="text" style="width: 25%;" id="id-email-1"> @ 
-	                                    <input type="text" style="width: 25%;" id="id-email-2">
-	                                    <select style="width: 30%;" onchange="document.getElementById('id-email-2').value=this.value">
-	                                        <option value="">선택하세요</option>
-	                                        <option value="naver.com">naver.com</option>
-	                                        <option value="hanmail.net">hanmail.net</option>
-	                                        <option value="daum.net">daum.net</option>
-	                                        <option value="nate.com">nate.com</option>
-	                                        <option value="gmail.com">gmail.com</option>
-	                                        <option value="direct">직접입력</option>
-	                                    </select>
-	                                    <button class="btn-auth" onclick="sendAuthCode('id', 'email')">인증번호 전송</button>
-	                                </div>
-	                            </div>
 	
 	                            <div id="row-id-phone" class="form-row">
 	                                <label class="form-label">휴대폰 번호</label>
@@ -118,7 +98,7 @@
 	                                    <select style="width: 25%;" id="id-phone-1"><option>010</option></select> - 
 	                                    <input type="text" style="width: 25%;" id="id-phone-2" maxlength="4"> - 
 	                                    <input type="text" style="width: 25%;" id="id-phone-3" maxlength="4">
-	                                    <button class="btn-auth" onclick="sendAuthCode('id', 'phone')">인증번호 전송</button>
+	                                    <button type="button" class="btn-auth" onclick="sendAuthCode('id', 'phone')">인증번호 전송</button>
 	                                </div>
 	                            </div>
 	
@@ -138,7 +118,7 @@
 	                    <div class="col-body">
 	                        <div class="radio-row">
 	                            <label class="radio-label">
-	                                <input type="radio" name="auth_group_id" value="biz" onclick="updateFormState('id')"> 기업회원
+	                                <input type="radio" name="authGroupId" value="biz" onclick="updateFormState('id')"> 기업회원
 	                            </label>
 	                        </div>
 	
@@ -177,47 +157,27 @@
 	                    <div class="col-body">
 	                        <div class="radio-row">
 	                            <label class="radio-label">
-	                                <input type="radio" name="auth_group_pw" value="email" checked onclick="updateFormState('pw')"> 이메일 인증
-	                            </label>
-	                            <label class="radio-label">
-	                                <input type="radio" name="auth_group_pw" value="phone" onclick="updateFormState('pw')"> 휴대폰 인증
+	                                <input type="radio" name="authGroupPw" value="phone" onclick="updateFormState('pw')" checked> 휴대폰 인증
 	                            </label>
 	                        </div>
 	                        <div id="area-pw-personal" class="field-area">
 	                            <div class="form-row">
 	                                <label class="form-label">아이디</label>
-	                                <div class="form-input-group"><input type="text" placeholder="아이디 입력"></div>
+	                                <div class="form-input-group"><input type="text" na placeholder="아이디 입력"></div>
 	                            </div>
 	                            <div class="form-row">
 	                                <label class="form-label">이름</label>
-	                                <div class="form-input-group"><input type="text" id="pw-name" placeholder="성명 입력"></div>
+	                                <div class="form-input-group"><input type="text" id="pw-name" name="userName" placeholder="성명 입력"></div>
 	                            </div>
 	
-	                            <div id="row-pw-email" class="form-row">
-	                                <label class="form-label">이메일 주소</label>
-	                                <div class="form-input-group">
-	                                    <input type="text" style="width: 25%;" id="pw-email-1"> @ 
-	                                    <input type="text" style="width: 25%;" id="pw-email-2">
-	                                    <select style="width: 30%;" onchange="document.getElementById('pw-email-2').value=this.value">
-	                                        <option value="">선택하세요</option>
-	                                        <option value="naver.com">naver.com</option>
-	                                        <option value="hanmail.net">hanmail.net</option>
-	                                        <option value="daum.net">daum.net</option>
-	                                        <option value="nate.com">nate.com</option>
-	                                        <option value="gmail.com">gmail.com</option>
-	                                        <option value="direct">직접입력</option>
-	                                    </select>
-	                                    <button class="btn-auth" onclick="sendAuthCode('pw', 'email')">인증번호 전송</button>
-	                                </div>
-	                            </div>
 	
-	                            <div id="row-pw-phone" class="form-row d-none">
+	                            <div id="row-pw-phone" class="form-row">
 	                                <label class="form-label">휴대폰 번호</label>
 	                                <div class="form-input-group">
 	                                    <select style="width: 25%;"><option>010</option></select> - 
 	                                    <input type="text" style="width: 25%;" id="pw-phone-2" maxlength="4"> - 
 	                                    <input type="text" style="width: 25%;" id="pw-phone-3" maxlength="4">
-	                                    <button class="btn-auth" onclick="sendAuthCode('pw', 'phone')">인증번호 전송</button>
+	                                    <button type="button" class="btn-auth" onclick="sendAuthCode('pw', 'phone')">인증번호 전송</button>
 	                                </div>
 	                            </div>
 	                            
@@ -228,7 +188,7 @@
 	                                    <span class="timer-text" id="timer-pw"></span>
 	                                </div>
 	                            </div>
-	                        </div>
+	                       </div>
 	                    </div>
 	                </div>
 	
@@ -237,7 +197,7 @@
 	                    <div class="col-body">
 	                        <div class="radio-row">
 	                            <label class="radio-label">
-	                                <input type="radio" name="auth_group_pw" value="biz" onclick="updateFormState('pw')"> 기업회원
+	                                <input type="radio" name="authGroupPw" value="biz" onclick="updateFormState('pw')"> 기업회원
 	                            </label>
 	                        </div>
 	                        <div id="area-pw-biz" class="field-area disabled">
@@ -267,32 +227,70 @@
 
     <script>
         // 1. 탭 전환
-        function switchTab(mode) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('tab-btn-' + mode).classList.add('active');
-            
-            document.getElementById('view-id').classList.add('d-none');
-            document.getElementById('view-pw').classList.add('d-none');
-            document.getElementById('view-' + mode).classList.remove('d-none');
-            
-            const form = document.getElementById('findForm');
-            if (mode === 'id') {
-                form.action = "<c:url value='/user/findId' />";
-            } else if (mode === 'pw') {
-                form.action = "<c:url value='/user/findPw' />";
-            }
-        }
+		function switchTab(mode) {
+		    // 1. 탭 버튼 상태 변경
+		    document.querySelectorAll('.tab-nav .tab-btn').forEach(btn => btn.classList.remove('active'));
+		    document.getElementById('tab-btn-' + mode).classList.add('active');
+		    
+		    // 2. 뷰 전환 (아이디 찾기 vs 비밀번호 찾기)
+		    const viewId = document.getElementById('view-id');
+		    const viewPw = document.getElementById('view-pw');
+		    
+		    if (mode === 'id') {
+		        viewId.classList.remove('d-none');
+		        viewPw.classList.add('d-none');
+		        // 아이디 찾기 영역은 활성화, 비밀번호 찾기 영역은 비활성화
+		        toggleInputs(viewId, false);
+		        toggleInputs(viewPw, true);
+		    } else {
+		        viewId.classList.add('d-none');
+		        viewPw.classList.remove('d-none');
+		        // 비밀번호 찾기 영역은 활성화, 아이디 찾기 영역은 비활성화
+		        toggleInputs(viewPw, false);
+		        toggleInputs(viewId, true);
+		    }
+		    
+		    // 3. 폼 액션 변경 (캐멀 케이스 적용)
+		    const form = document.getElementById('findForm');
+		    form.action = mode === 'id' ? "<c:url value='/user/findId' />" : "<c:url value='/user/findPw' />";
+		
+		    // 4. 활성화된 탭 내에서도 라디오 선택 상태에 맞춰 다시 세팅 
+		    updateFormState(mode);
+		}
+		
+		// 특정 영역 안의 모든 입력 요소를 활성/비활성화 하는 보조 함수
+		function toggleInputs(container, isDisabled) {
+			const inputs = container.querySelectorAll('input, select, button');
+		    
+		    inputs.forEach(el => {
+		        // 1. 탭 자체를 비활성화해야 하는 경우 (다른 탭으로 이동 시)
+		        if (isDisabled) {
+		            el.disabled = true;
+		        } else {
+		            // 2. 현재 탭을 활성화하는 경우
+		            // 하지만 부모 요소 중 'field-area disabled' 클래스가 있다면 그 안의 요소는 계속 비활성화 유지
+		            const parentArea = el.closest('.field-area');
+		            if (parentArea && parentArea.classList.contains('disabled')) {
+		                el.disabled = true;
+		            } else {
+		                el.disabled = false;
+		            }
+		        }
+		    });
+		}
 
         // 2. 폼 상태 업데이트
         function updateFormState(mode) { 
-            const radios = document.getElementsByName('auth_group_' + mode);
+        	
+        	const capitalizedMode = mode.charAt(0).toUpperCase() + mode.slice(1);
+            const radios = document.getElementsByName('authGroup' + capitalizedMode);
+            
             let selectedValue = '';
             for(let r of radios) { if(r.checked) selectedValue = r.value; }
 
             const personalArea = document.getElementById('area-' + mode + '-personal');
             const bizArea = document.getElementById('area-' + mode + '-biz');
             
-            const emailRow = document.getElementById('row-' + mode + '-email');
             const phoneRow = document.getElementById('row-' + mode + '-phone');
             const authRow = document.getElementById('row-' + mode + '-authcode');
 
@@ -306,17 +304,15 @@
                 personalArea.classList.remove('disabled');
                 bizArea.classList.add('disabled');
 
-                if (selectedValue === 'email') {
-                    emailRow.classList.remove('d-none');
-                    phoneRow.classList.add('d-none');
-                } else {
-                    emailRow.classList.add('d-none');
+                if (selectedValue === 'phone') {
                     phoneRow.classList.remove('d-none');
+                } else {
+                    phoneRow.classList.add('d-none');
                 }
             }
         }
 
-        // 3. 인증번호 전송 (이메일/휴대폰 통합)
+        // 3. 인증번호 전송 (휴대폰 통합)
         function sendAuthCode(mode, type) {
             // mode: 'id' or 'pw'
             // type: 'email' or 'phone'
@@ -331,26 +327,14 @@
             }
 
             // 타입별 검증
-            if (type === 'email') {
-                const email1 = document.getElementById(mode + '-email-1');
-                const email2 = document.getElementById(mode + '-email-2');
-                if (!email1.value.trim() || !email2.value.trim()) {
-                    alert('이메일 주소를 올바르게 입력해 주세요.');
-                    if(!email1.value) email1.focus(); else email2.focus();
-                    return;
-                }
-                alert('인증메일이 발송되었습니다.');
-            } 
-            else if (type === 'phone') {
-                const p2 = document.getElementById(mode + '-phone-2');
-                const p3 = document.getElementById(mode + '-phone-3');
-                if (!p2.value.trim() || !p3.value.trim()) {
-                    alert('휴대폰 번호를 올바르게 입력해 주세요.');
-                    if(!p2.value) p2.focus(); else p3.focus();
-                    return;
-                }
-                alert('인증번호(SMS)가 발송되었습니다.');
-            }
+             const p2 = document.getElementById(mode + '-phone-2');
+             const p3 = document.getElementById(mode + '-phone-3');
+             if (!p2.value.trim() || !p3.value.trim()) {
+                 alert('휴대폰 번호를 올바르게 입력해 주세요.');
+                 if(!p2.value) p2.focus(); else p3.focus();
+                 return;
+             }
+             alert('인증번호(SMS)가 발송되었습니다.');
 
             // 인증번호 입력창 활성화 & 타이머 시작
             const authRow = document.getElementById('row-' + mode + '-authcode');

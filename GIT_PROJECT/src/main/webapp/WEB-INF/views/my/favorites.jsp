@@ -277,7 +277,7 @@
             <button type="button" class="btn-ghost">이동</button>
 
             <select class="select">
-              <option>전체(7)</option>
+              <option>전체</option>
               <option>분류없음</option>
             </select>
           </div>

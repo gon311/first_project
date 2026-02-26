@@ -129,9 +129,9 @@ public class UserController {
 	
 	// 아이디 찾기
 	@PostMapping("/findId")
-	public String findId(Model model) {
+	public String findId(UserDTO userDTO, Model model, String authGroupId) {
 		
-		List<UserDTO> userIdList = userService.getUserIdList();
+		List<UserDTO> userIdList = userService.getUserIdList(userDTO);
 		
 		model.addAttribute("userIdList", userIdList);
 		
@@ -140,7 +140,9 @@ public class UserController {
 	
 	// 새 비밀번호 작성 페이지
 	@PostMapping("/findPw")
-	public String findPw() {
+	public String findPw(UserDTO userDTO, RedirectAttributes ra) {
+		
+		
 		
 		return "/user/find_pw";
 	}

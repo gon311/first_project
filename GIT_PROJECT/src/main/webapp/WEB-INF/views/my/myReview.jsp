@@ -321,19 +321,19 @@
                       <!-- 액션 -->
                       <div class="d-flex align-items-center gap-2">
                         <a class="btn btn-outline-primary"
-                           href="${urlReviewEdit}?coverLetterIdx=${rv.coverLetterIdx}"
+                           href="${urlReviewEdit}?coverLetterId=${rv.coverLetterId}"
                            onclick="return confirm('자기소개서를 수정하시겠습니까?');">
                           수정
                         </a>
 
                         <a class="btn btn-light"
-                           href="${pageContext.request.contextPath}/my/review/copy?coverLetterIdx=${rv.coverLetterIdx}"
+                           href="${pageContext.request.contextPath}/my/review/copy?coverLetterId=${rv.coverLetterId}"
                            onclick="return confirm('이 자기소개서를 복사하시겠습니까?');">
                           복사
                         </a>
 
                         <a class="btn btn-outline-danger"
-                           href="${urlReviewDelete}?coverLetterIdx=${rv.coverLetterIdx}"
+                           href="${urlReviewDelete}?coverLetterId=${rv.coverLetterId}"
                            onclick="return confirm('정말 삭제하시겠습니까? 삭제 후 복구가 어려울 수 있어요.');">
                           삭제
                         </a>

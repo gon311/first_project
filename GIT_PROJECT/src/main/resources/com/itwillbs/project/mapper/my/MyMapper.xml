@@ -35,7 +35,7 @@
 	
 	<!-- MyReviewDTO -->
 	<resultMap id="reviewMap" type="com.itwillbs.project.my.dto.MyReviewDTO">
-	  <id     property="coverLetterIdx" column="cover_letter_idx"/>
+	  <id     property="coverLetterId" column="cover_letter_id"/>
 	
 	  <result property="userId"          column="user_id"/>
 	  <result property="title"           column="title"/>
@@ -150,9 +150,15 @@
 		LIMIT 1
 	</select>
 	
+<!-- ==============================
+     자소서 내력조회 , 최근
+     parameter: MyReviewDTO.java
+     result: Long
+============================== -->	
+	
 	<select id="selectMyReviewList" resultMap="reviewMap">
 		SELECT
-		    cover_letter_idx
+		    cover_letter_id
 		  , user_id
 		  , title
 		  , company_name

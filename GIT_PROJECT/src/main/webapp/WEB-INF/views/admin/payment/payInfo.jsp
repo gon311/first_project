@@ -57,7 +57,19 @@
 							<dd class="col-7 py-2">${pay.payPrice}원</dd>
 
 							<dt class="col-5 text-secondary py-2">결제상태</dt>
-							<dd class="col-7 py-2">${pay.payStatus}</dd>
+							<dd class="col-7 py-2">
+								<c:choose>
+									<c:when test="${pay.payStatus eq 'paid'}">
+										결제완료
+									</c:when>
+									<c:when test="${pay.payStatus eq 'ready'}">
+										입금대기
+									</c:when>
+									<c:otherwise>
+										결제취소
+									</c:otherwise>
+								</c:choose>
+							</dd>
 
 						</dl>
 

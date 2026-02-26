@@ -84,17 +84,15 @@
                     </div>
                 </div>
                 
-                <!-- 정렬(구현중) -->
+                <!-- 정렬 -->
 	            <div class="d-flex justify-content-end mt-3 mb-2">
-	                <form action="<c:url value='/admin/users' />" method="get">
+	                <form action="<c:url value='/admin/users' />" method="get" id="userSortForm">
 	                    <input type="hidden" name="activeTab" value="all"/>
 	                    <input type="hidden" name="keyword" value="${param.keyword}">
 	                    <input type="hidden" name="type" value="${param.type}">
 	                    <input type="hidden" name="status" value="${param.status}">
 	
-	                    <select class="form-select w-auto"
-	                            name="sort"
-	                            onchange="">
+	                    <select class="form-select w-auto" name="sort" id="userSort">
 	                        <option value="">전체</option>
 	                        <option value="new" ${param.sort eq 'new' ? 'selected' : ''}>최근 일자순</option>
 	                        <option value="old" ${param.sort eq 'old' ? 'selected' : ''}>오래된 순</option>
@@ -131,6 +129,19 @@
                             </c:forEach>
                         </tbody>
                     </table>
+                    
+                    <!-- 전체 회원 페이징(구현예정) -->
+			        <div class="d-flex flex-column align-items-center mt-3">
+			            <nav aria-label="Page navigation">
+			                <ul class="pagination pagination-sm m-0">
+			                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+			                    <c:forEach begin="1" end="5" var="i">
+			                        <li class="page-item ${i == 12 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
+			                    </c:forEach>
+			                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+			                </ul>
+			            </nav>
+					</div>
                 </div>
             </div>
 
@@ -185,16 +196,16 @@
                 
                 <!-- 정렬 -->
 	            <div class="d-flex justify-content-end mt-3 mb-2">
-	                <form action="<c:url value='/admin/users' />" method="get">
-<!-- 	                    <input type="hidden" name="activeTab" value="withdraw"/> -->
-<%-- 	                    <input type="hidden" name="keyword" value="${param.keyword}"> --%>
-<%-- 	                    <input type="hidden" name="withdrawDate" value="${param.startDate}"> --%>
-<%-- 	                    <input type="hidden" name="withdrawDate" value="${param.endDate}"> --%>
+	                <form action="<c:url value='/admin/users' />" method="get" id="withdrawSortForm">
+	                    <input type="hidden" name="activeTab" value="withdraw"/>
+	                    <input type="hidden" name="keyword" value="${param.keyword}">
+	                    <input type="hidden" name="startDate" value="${param.startDate}">
+	                    <input type="hidden" name="endDate" value="${param.endDate}">
 	
-	                    <select id="sort" class="form-select w-auto" name="sort" onchange="">
+	                    <select class="form-select w-auto" name="sort" id="withdrawSort">
 	                        <option value="">전체</option>
-	                        <option value="new" ${param.sort eq 'new' ? 'selected' : ''}>최근 탈퇴순</option>
-	                        <option value="old" ${param.sort eq 'old' ? 'selected' : ''}>오래된 탈퇴순</option>
+	                        <option value="new" ${param.sort eq 'new' ? 'selected' : ''}>최근 일자순</option>
+	                        <option value="old" ${param.sort eq 'old' ? 'selected' : ''}>오래된 순</option>
 	                        <option value="abc" ${param.sort eq 'abc' ? 'selected' : ''}>가나다 순</option>
 	                    </select>
 	                </form>
@@ -236,7 +247,7 @@
                                     <td>
                                    	  <!-- 탈퇴일로부터 3년이 지난 경우 삭제 버튼 활성화 -->
                                     	<c:choose>
-                                    		<c:when test="${(tDay - wDate) < 1095}">
+                                    		<c:when test="${(tDay - wDate) > 1095}">
 		                                        <button class="btn btn-danger" onclick="deleteUser(${withdraw.userId})">삭제</button>
                                     		</c:when>
                                     		<c:otherwise>
@@ -248,20 +259,45 @@
                             </c:forEach>
                         </tbody>
                     </table>
+                    
+                    <!-- 탈퇴회원 페이징 -->
+			        <div class="d-flex flex-column align-items-center mt-3">
+			            <nav aria-label="Page navigation">
+			                <ul class="pagination pagination-sm m-0">
+			                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+			                    <c:forEach begin="1" end="5" var="i">
+			                        <li class="page-item ${i == 12 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
+			                    </c:forEach>
+			                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+			                </ul>
+			            </nav>
+					</div>
+                   
                 </div>
-
+                
             </div>
 
         </div>
     </main>
     
-    <script type="text/javascript">
+    <script>
     	// 회원 삭제
     	function deleteUser(userId) {
     		if(confirm("삭제하시겠습니까?")) {
     			location.href="<c:url value='/admin/users/delete' />" + "?userId=" + userId;
     		}
     	}
+    	
+    	// 전체회원 정렬
+    	document.getElementById("userSort").addEventListener("change", function() {
+    		document.getElementById("userSortForm").submit();
+    	})
+    	
+    	// 탈퇴회원 정렬
+    	document.getElementById("withdrawSort").addEventListener("change", function() {
+    		document.getElementById("withdrawSortForm").submit();
+    	})
+    	
     	
     	
     </script>

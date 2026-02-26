@@ -26,8 +26,8 @@ public class AdminService{
 	private AdminMapper adminMapper;
 	
 	// 구직자 목록 조회
-	public List<MemberDTO> getUserList(String keyword, String type, String status) {
-		return adminMapper.selectUserList(keyword, type, status);
+	public List<MemberDTO> getUserList(String keyword, String type, String status, String sort) {
+		return adminMapper.selectUserList(keyword, type, status, sort); 
 	} 
 
 	// 구직자 상세 정보 조회
@@ -57,8 +57,8 @@ public class AdminService{
 	
 	//---------------------------------------------------------------------------------------------
 	// 기업회원 목록 조회
-	public List<MemberDTO> getComList(String keyword, String type, String status) {
-		return adminMapper.selectComList(keyword, type, status);
+	public List<MemberDTO> getComList(String keyword, String type, String status, String sort) {
+		return adminMapper.selectComList(keyword, type, status, sort);
 	}
 	
 	// 기업회원 상세 정보 조회
@@ -102,8 +102,8 @@ public class AdminService{
 
 	//======================================================================================
 	// 결제 내역 전체 목록 조회
-	public List<PayDTO> getPayList(String startDate, String endDate, String keyword, String userType, String payStatus) {
-		return adminMapper.selectPayList(startDate, endDate, keyword, userType, payStatus);
+	public List<PayDTO> getPayList(String startDate, String endDate, String keyword, String userType, String payStatus, String sort) {
+		return adminMapper.selectPayList(startDate, endDate, keyword, userType, payStatus, sort);
 	}
 
 	// 결제 내역 상세정보
@@ -118,8 +118,8 @@ public class AdminService{
 	
 	//========================================================================================
 	// 제출된 공고 목록 조회
-	public List<SubmitDTO> getSubmitList(String startDate, String endDate, String keyword, String submitStatus) {
-		return adminMapper.selectSubmitList(startDate, endDate, keyword, submitStatus);
+	public List<SubmitDTO> getSubmitList(String startDate, String endDate, String keyword, String submitStatus, String sort) {
+		return adminMapper.selectSubmitList(startDate, endDate, keyword, submitStatus, sort);
 	}
 	
 	// 제출된 공고 상세 조회
@@ -163,23 +163,10 @@ public class AdminService{
 		// TODO Auto-generated method stub
 		return adminMapper.getFaqDetail(faqId);
 	}
-
-<<<<<<< HEAD
-	
-
-	
-
-	
-
-	
-
-	
-=======
 	public void insertFaq(FaqDTO faqDTO) {
 		
 		adminMapper.insertFaq(faqDTO);
 	}
->>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 
 
 	

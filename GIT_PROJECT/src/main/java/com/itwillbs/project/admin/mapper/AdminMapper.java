@@ -22,7 +22,8 @@ public interface AdminMapper {
 	// 구직자 회원 목록
 	List<MemberDTO> selectUserList(@Param("keyword") String keyword
 								, @Param("type") String type
-								, @Param("status") String status);
+								, @Param("status") String status
+								, @Param("sort") String sort);
 
 	// 회원 상세 정보
 	MemberDTO selectUserInfo(long userId);
@@ -44,7 +45,8 @@ public interface AdminMapper {
 	// 기업회원 목록 조회
 	List<MemberDTO> selectComList(@Param("keyword") String keyword
 								, @Param("type") String type
-								, @Param("status") String status);
+								, @Param("status") String status
+								, @Param("sort") String sort);
 	
 	// 기업회원 상세 정보 조회
 	MemberDTO selectComInfo(long userId);
@@ -80,7 +82,8 @@ public interface AdminMapper {
 								, @Param("endDate") String endDate
 								, @Param("keyword") String keyword
 								, @Param("userType") String userType
-								, @Param("payStatus") String payStatus);
+								, @Param("payStatus") String payStatus
+								, @Param("sort") String sort);
 
 	// 결제 내역 상세 정보 조회
 	PayDTO selectPayInfo(String id);
@@ -93,7 +96,8 @@ public interface AdminMapper {
 	List<SubmitDTO> selectSubmitList(@Param("startDate") String startDate
 									, @Param("endDate") String endDate
 									, @Param("keyword") String keyword
-									, @Param("submitStatus") String submitStatus);
+									, @Param("submitStatus") String submitStatus
+									, @Param("sort") String sort);
 
 	// 제출된 공고 상세정보 조회
 	SubmitDTO selectSubmitInfo(long jobId);

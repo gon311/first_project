@@ -215,28 +215,18 @@
 										</button>
 									</c:when>	
 									<c:otherwise>
-									
+										<button id="approval" class="btn btn-primary me-2" disabled="disabled">
+											승인
+										</button>
+										<button id="defer" class="btn btn-secondary me-2" disabled="disabled">
+											보류
+										</button>
+										<button id="delete" class="btn btn-danger" disabled="disabled">
+											삭제
+										</button>
 									</c:otherwise>			
 								</c:choose>
 							
-							
-							<c:when test="${submit.postCheck == 4 || submit.postCheck == 2}">
-								<button id="approval" class="btn btn-primary me-2" disabled="disabled">
-									승인
-								</button>
-							</c:when>
-							<c:when test="${submit.postCheck == 4 || submit.postCheck == 3}">
-								<button id="approval" class="btn btn-primary me-2" disabled="disabled">
-									보류
-								</button>
-							</c:when>
-							<c:when test="">
-							
-							</c:when>
-								
-								<c:when test="${submit.postCheck == 3}">
-								</c:when>
-								
 							</div>
 
 						</div>

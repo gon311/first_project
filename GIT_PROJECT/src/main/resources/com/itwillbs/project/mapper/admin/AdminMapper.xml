@@ -50,6 +50,21 @@
 				and
 					u.user_name like concat('%',#{keyword},'%')
 			</if>
+		order by
+			<choose>
+				<when test="sort == 'old'">
+					u.joined_at asc
+				</when>
+				<when test="sort == 'new'">
+					u.joined_at desc
+				</when>
+				<when test="sort == 'abc'">
+					u.user_name asc
+				</when>
+				<otherwise>
+					u.user_id asc
+				</otherwise>
+			</choose>
 	</select>
 	
 	<!-- 구직자 회원 상세정보 조회 -->
@@ -186,6 +201,21 @@
 				and
 					c.company_name like concat('%',#{keyword},'%')
 			</if>
+		order by
+			<choose>
+				<when test="sort == 'old'">
+					u.joined_at asc
+				</when>
+				<when test="sort == 'new'">
+					u.joined_at desc
+				</when>
+				<when test="sort == 'abc'">
+					c.company_name asc
+				</when>
+				<otherwise>
+					u.user_id asc
+				</otherwise>
+			</choose>
 	</select>
 	
 	<!-- 기업 회원 상세정보 조회 -->
@@ -363,6 +393,18 @@
 				and 
 					j.post_check = #{submitStatus}
 			</if>
+		order by
+			<choose>
+				<when test="sort == 'old'">
+					j.reg_date asc
+				</when>
+				<when test="sort == 'new'">
+					j.reg_date desc
+				</when>
+				<otherwise>
+					j.job_id asc
+				</otherwise>
+			</choose>
 	</select>
 	
 	<!-- 제출된 공고 상세정보 조회 -->
@@ -439,6 +481,18 @@
 				and 
 					p.pay_status = #{payStatus}
 			</if>
+		order by
+			<choose>
+				<when test="sort == 'old'">
+					p.pay_date asc
+				</when>
+				<when test="sort == 'new'">
+					p.pay_date desc
+				</when>
+				<otherwise>
+					p.pay_id asc
+				</otherwise>
+			</choose>
 	</select>
 	
 	<!-- 결제 내역 상세정보 조회 -->

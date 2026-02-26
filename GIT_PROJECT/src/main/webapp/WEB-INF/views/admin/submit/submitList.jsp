@@ -72,19 +72,24 @@
 		    </div>
 		</div>
 	
-		<!-- 정렬 Select Box -->
-		<div class="d-flex justify-content-end mt-3">
-		    <select class="form-select w-auto" id="sort" onchange="">
-		        <option value="">전체</option>
-		        <option value="new" ${param.sort == 'new' ? 'selected' : ''}>최근 일자순</option>
-		        <option value="old" ${param.sort == 'old' ? 'selected' : ''}>오래된 순</option>
-		        <option value="abc" ${param.sort == 'abc' ? 'selected' : ''}>가나다 순</option>
-		    </select>
-		</div>
+		<!-- 정렬 -->
+        <div class="d-flex justify-content-end mt-3 mb-2">
+            <form action="<c:url value='/admin/submits' />" method="get" id="submitSortForm">
+                <input type="hidden" name="activeTab" value="withdraw"/>
+                <input type="hidden" name="keyword" value="${param.keyword}">
+                <input type="hidden" name="startDate" value="${param.startDate}">
+                <input type="hidden" name="endDate" value="${param.endDate}">
+                <input type="hidden" name="submitStatus" value="${param.submitStatus}">
+
+                <select class="form-select w-auto" name="sort" id="submitSort">
+                    <option value="">전체</option>
+                    <option value="new" ${param.sort eq 'new' ? 'selected' : ''}>최근 일자순</option>
+                    <option value="old" ${param.sort eq 'old' ? 'selected' : ''}>오래된 순</option>
+                </select>
+            </form>
+        </div>
 	
-		<!-- 탭 콘텐츠 -->
 		<div class="tab-content mt-3" id="memberTabContent">
-			<!-- 전체 회원 -->
 			<table class="table table-hover table-bordered align-middle text-center">
 				<thead class="table-light">
 					<tr>
@@ -128,8 +133,31 @@
 				</tbody>
 
 			</table>
+			
+			<!-- 페이징(구현예정) -->
+	        <div class="d-flex flex-column align-items-center mt-3">
+	            <nav aria-label="Page navigation">
+	                <ul class="pagination pagination-sm m-0">
+	                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+	                    <c:forEach begin="1" end="5" var="i">
+	                        <li class="page-item ${i == 12 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
+	                    </c:forEach>
+	                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+	                </ul>
+	            </nav>
+			</div>
+			
 		</div>
 	
 	</main>
+	
+	<script>
+		// 제출된 공고 목록 정렬
+		document.getElementById("submitSort").addEventListener("change", function() {
+			document.getElementById("submitSortForm").submit();
+		})
+	
+	</script>
+	
 </body>
 </html>

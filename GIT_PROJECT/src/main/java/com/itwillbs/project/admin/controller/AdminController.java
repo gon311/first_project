@@ -35,6 +35,7 @@ public class AdminController {
 	// 구직자 회원 목록(정렬 구현중)
 	@GetMapping("/users")
 	public String userList(@RequestParam(name="activeTab", defaultValue="all") String activeTab
+							, @RequestParam(value="page", defaultValue="1") int page
 							, Model model
 							, SearchDTO searchDTO
 							, String sort) {
@@ -44,7 +45,8 @@ public class AdminController {
 		// 전체 회원 목록 조회
 		List<MemberDTO> userList = adminService.getUserList(searchDTO.getKeyword()
 															, searchDTO.getType()
-															, searchDTO.getStatus());
+															, searchDTO.getStatus()
+															, sort);
 		model.addAttribute("userList", userList);
 		
 		// 탈퇴 회원 목록 조회
@@ -101,14 +103,16 @@ public class AdminController {
 	@GetMapping("/coms")
 	public String comList(@RequestParam(defaultValue="all") String activeTab
 							, Model model
-							, SearchDTO searchDTO) {
+							, SearchDTO searchDTO
+							, String sort) {
 		// tab 파라미터가 없으면 기본값 "all"로 설정됨
 		model.addAttribute("activeTab", activeTab); 
 		//-----------------------------------------------------------
 		// 전체 회원 목록 조회
 		List<MemberDTO> comList = adminService.getComList(searchDTO.getKeyword()
 														, searchDTO.getType()
-														, searchDTO.getStatus());
+														, searchDTO.getStatus()
+														, sort);
 		model.addAttribute("comList", comList);
 		
 		// 탈퇴 회원 목록 조회
@@ -154,12 +158,13 @@ public class AdminController {
 	// [ 제출된 공고 관리 ](상세정보 구현 예정)
 	// 제출된 공고 목록 조회
 	@GetMapping("/submits")
-	public String submitList(SubmitDTO submitDTO, Model model, SearchDTO searchDTO) {
+	public String submitList(SubmitDTO submitDTO, Model model, SearchDTO searchDTO, String sort) {
 		
 		List<SubmitDTO> submitList = adminService.getSubmitList(searchDTO.getStartDate()
 																, searchDTO.getEndDate()
 																, searchDTO.getKeyword()
-																, searchDTO.getSubmitStatus());
+																, searchDTO.getSubmitStatus()
+																, sort);
 		
 		model.addAttribute("submitList", submitList);
 		
@@ -202,12 +207,13 @@ public class AdminController {
 	// [ 결제 관리 ]
 	// 결제 내역 목록 조회
 	@GetMapping("/payments")
-	public String payList(PayDTO payDTO, Model model, SearchDTO searchDTO) {
+	public String payList(PayDTO payDTO, Model model, SearchDTO searchDTO, String sort) {
 		List<PayDTO> payList = adminService.getPayList(searchDTO.getStartDate()
 													, searchDTO.getEndDate()
 													, searchDTO.getKeyword()
 													, searchDTO.getUserType()
-													, searchDTO.getPayStatus());
+													, searchDTO.getPayStatus()
+													, sort);
 		model.addAttribute("payList", payList);
 		
 		return "admin/payment/payList"; 

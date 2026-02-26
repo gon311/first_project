@@ -87,15 +87,13 @@
 	            
 	            <!-- 정렬 -->
 	            <div class="d-flex justify-content-end mt-3 mb-2">
-	                <form action="<c:url value='/admin/coms' />" method="get">
+	                <form action="<c:url value='/admin/coms' />" method="get" id="comSortForm">
 	                    <input type="hidden" name="activeTab" value="all"/>
 	                    <input type="hidden" name="keyword" value="${param.keyword}">
 	                    <input type="hidden" name="type" value="${param.type}">
 	                    <input type="hidden" name="status" value="${param.status}">
 	
-	                    <select class="form-select w-auto"
-	                            name="sort"
-	                            onchange="">
+	                    <select class="form-select w-auto" name="sort" id="comSort">
 	                        <option value="">전체</option>
 	                        <option value="new" ${param.sort eq 'new' ? 'selected' : ''}>최근 일자순</option>
 	                        <option value="old" ${param.sort eq 'old' ? 'selected' : ''}>오래된 순</option>
@@ -135,6 +133,20 @@
 	                        </c:forEach>
 	                    </tbody>
 	                </table>
+	                
+	                <!-- 전체회원 페이징(구현예정) -->
+			        <div class="d-flex flex-column align-items-center mt-3">
+			            <nav aria-label="Page navigation">
+			                <ul class="pagination pagination-sm m-0">
+			                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+			                    <c:forEach begin="1" end="5" var="i">
+			                        <li class="page-item ${i == 12 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
+			                    </c:forEach>
+			                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+			                </ul>
+			            </nav>
+					</div>
+	                
 	            </div>
 	        </div>
 	
@@ -189,17 +201,15 @@
 	            
 	            <!-- 정렬 -->
 	            <div class="d-flex justify-content-end mt-3 mb-2">
-	                <form action="<c:url value='/admin/coms' />" method="get">
+	                <form action="<c:url value='/admin/coms' />" method="get" id="withdrawSortForm">
 	                    <input type="hidden" name="activeTab" value="withdraw"/>
 	                    <input type="hidden" name="keyword" value="${param.keyword}">
 	                    <input type="hidden" name="withdrawDate" value="${param.withdrawDate}">
 	
-	                    <select class="form-select w-auto"
-	                            name="sort"
-	                            onchange="">
+	                    <select class="form-select w-auto" name="sort" id="withdrawSort">
 	                        <option value="">전체</option>
-	                        <option value="new" ${param.sort eq 'new' ? 'selected' : ''}>최근 탈퇴순</option>
-	                        <option value="old" ${param.sort eq 'old' ? 'selected' : ''}>오래된 탈퇴순</option>
+	                        <option value="new" ${param.sort eq 'new' ? 'selected' : ''}>최근 일자순</option>
+	                        <option value="old" ${param.sort eq 'old' ? 'selected' : ''}>오래된 순</option>
 	                        <option value="abc" ${param.sort eq 'abc' ? 'selected' : ''}>가나다 순</option>
 	                    </select>
 	                </form>
@@ -253,10 +263,37 @@
 	                        </c:forEach>
 	                    </tbody>
 	                </table>
+	                
+	                <!-- 탈퇴회원 페이징(구현예정) -->
+			        <div class="d-flex flex-column align-items-center mt-3">
+			            <nav aria-label="Page navigation">
+			                <ul class="pagination pagination-sm m-0">
+			                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+			                    <c:forEach begin="1" end="5" var="i">
+			                        <li class="page-item ${i == 12 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
+			                    </c:forEach>
+			                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+			                </ul>
+			            </nav>
+					</div>
+	                
 	            </div>
 	
 	        </div>
 	    </div>
 	</main>
+	
+	<script>
+		// 전체회원 정렬
+		document.getElementById("comSort").addEventListener("change", function() {
+			document.getElementById("comSortForm").submit();
+		})
+		
+		// 탈퇴회원 정렬
+		document.getElementById("withdrawSort").addEventListener("change", function() {
+			document.getElementById("withdrawSortForm").submit();
+		})
+	</script>
+	
 </body>
 </html>

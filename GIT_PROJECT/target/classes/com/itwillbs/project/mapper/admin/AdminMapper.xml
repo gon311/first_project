@@ -308,7 +308,7 @@
 	
 	<!-- ================================================================================== -->
 	<!--  채용공고 목록 조회 -->
-	<select id="getJobPostList" resultType="jobPost">
+	<select id="getJobPostList" resultType="job">
 		SELECT job_id <!-- 공고 id -->
 			, comp_id
 			, title
@@ -319,7 +319,7 @@
 		FROM job_posting
 	</select>
 	
-	<select id="getJobPostById" resultType ="jobPost">
+	<select id="getJobPostById" resultType ="job">
 		SELECT *
 		FROM job_posting
 		WHERE job_id = #{job_id}

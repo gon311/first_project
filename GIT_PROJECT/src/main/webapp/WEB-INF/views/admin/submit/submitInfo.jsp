@@ -74,7 +74,20 @@
 						<div class="d-flex justify-content-between align-items-center">
 							<h5 class="mb-0 fw-bold">공고 상세 검토</h5>
 							<span class="badge bg-warning text-dark px-3 py-2">
-								${submit.postCheck}
+								<c:choose>
+									<c:when test="${submit.postCheck == 1}">
+										검토전
+									</c:when>
+									<c:when test="${submit.postCheck == 2}">
+										승인
+									</c:when>
+									<c:when test="${submit.postCheck == 3}">
+										보류
+									</c:when>
+									<c:otherwise>
+										삭제됨
+									</c:otherwise>
+								</c:choose>
 							</span>
 						</div>
 					</div>
@@ -84,7 +97,8 @@
 						<div class="mb-4 position-relative">
 						    <h4 class="fw-bold mb-1">${submit.title}</h4>
 						    <small class="text-muted position-absolute bottom-0 end-0">
-								제출일 : ${submit.regDate}
+						    	<fmt:parseDate var="regDate" value="${submit.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+								제출일 : <fmt:formatDate value="${regDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
 						    </small>
 						</div>
 
@@ -108,7 +122,7 @@
 								<dt class="col-sm-3 text-secondary">고용형태</dt>
 								<dd class="col-sm-9">${submit.empType}</dd>
 								
-								<dt class="col-sm-3 text-secondary">수습기간 여부</dt>
+								<dt class="col-sm-3 text-secondary">수습기간</dt>
 								<dd class="col-sm-9">${submit.probation}</dd>
 
 								<dt class="col-sm-3 text-secondary">경력</dt>
@@ -166,15 +180,63 @@
 							</p>
 
 							<div class="mt-2 mt-md-0">
-								<button class="btn btn-primary me-2">
+								<c:choose>
+									<c:when test="${submit.postCheck == 1}">
+										<button id="approval" class="btn btn-primary me-2" onclick="changeApproval(${submit.jobId})">
+											승인
+										</button>
+										<button id="defer" class="btn btn-secondary me-2" onclick="changeDefer(${submit.jobId})">
+											보류
+										</button>
+										<button id="delete" class="btn btn-danger" onclick="changeDelete(${submit.jobId})">
+											삭제
+										</button>
+									</c:when>	
+									<c:when test="${submit.postCheck == 2}">
+										<button id="approval" class="btn btn-primary me-2" disabled="disabled">
+											승인
+										</button>
+										<button id="defer" class="btn btn-secondary me-2" onclick="changeDefer(${submit.jobId})">
+											보류
+										</button>
+										<button id="delete" class="btn btn-danger" onclick="changeDelete(${submit.jobId})">
+											삭제
+										</button>
+									</c:when>		
+									<c:when test="${submit.postCheck == 3}">
+										<button id="approval" class="btn btn-primary me-2" onclick="changeApproval(${submit.jobId})">
+											승인
+										</button>
+										<button id="defer" class="btn btn-secondary me-2" disabled="disabled">
+											보류
+										</button>
+										<button id="delete" class="btn btn-danger" onclick="changeDelete(${submit.jobId})">
+											삭제
+										</button>
+									</c:when>	
+									<c:otherwise>
+									
+									</c:otherwise>			
+								</c:choose>
+							
+							
+							<c:when test="${submit.postCheck == 4 || submit.postCheck == 2}">
+								<button id="approval" class="btn btn-primary me-2" disabled="disabled">
 									승인
 								</button>
-								<button class="btn btn-secondary me-2">
+							</c:when>
+							<c:when test="${submit.postCheck == 4 || submit.postCheck == 3}">
+								<button id="approval" class="btn btn-primary me-2" disabled="disabled">
 									보류
 								</button>
-								<button class="btn btn-danger">
-									삭제
-								</button>
+							</c:when>
+							<c:when test="">
+							
+							</c:when>
+								
+								<c:when test="${submit.postCheck == 3}">
+								</c:when>
+								
 							</div>
 
 						</div>
@@ -195,6 +257,26 @@
 		</div>
 
 	</main>
+	
+	<script>
+		function changeApproval(jobId) {
+			if(confirm("해당 공고를 승인하시겠습니까?")) {
+				location.href="<c:url value='/admin/submits/status' />" + "?jobId=" + jobId + "&postCheck=" + 2;
+			}
+		}
+		
+		function changeDefer(jobId) {
+			if(confirm("해당 공고를 보류하시겠습니까?")) {
+				location.href="<c:url value='/admin/submits/status' />" + "?jobId=" + jobId + "&postCheck=" + 3;
+			}
+		}
+		
+		function changeDelete(jobId) {
+			if(confirm("해당 공고를 삭제하시겠습니까?")) {
+				location.href="<c:url value='/admin/submits/status' />" + "?jobId=" + jobId + "&postCheck=" + 4;
+			}
+		}
+	</script>
 
 </body>
 </html>

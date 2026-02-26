@@ -23,16 +23,16 @@ public interface AdminMapper {
 								, @Param("status") String status);
 
 	// 회원 상세 정보
-	MemberDTO selectUserInfo(BigInteger userId);
+	MemberDTO selectUserInfo(long userId);
 	
 	// 회원 차단
-	void updateUserBlock(BigInteger userId);
+	void updateUserBlock(long userId);
 	
 	// 회원 차단 해제
-	void updateUserUnblock(BigInteger userId);
+	void updateUserUnblock(long userId);
 	
 	// 탈퇴한 회원 삭제
-	void deleteUserInfo(BigInteger userId);
+	void deleteUserInfo(long userId);
 	
 	// 탈퇴 회원 목록 조회
 	List<MemberDTO> selectUserWithdraw(@Param("keyword") String keyword
@@ -45,7 +45,7 @@ public interface AdminMapper {
 								, @Param("status") String status);
 	
 	// 기업회원 상세 정보 조회
-	MemberDTO selectComInfo(BigInteger userId);
+	MemberDTO selectComInfo(long userId);
 	
 	// 탈퇴 회원 목록 조회
 	List<MemberDTO> selectComWithdraw(@Param("keyword") String keyword
@@ -82,6 +82,9 @@ public interface AdminMapper {
 
 	// 결제 내역 상세 정보 조회
 	PayDTO selectPayInfo(String id);
+	
+	// 결제 취소
+	void updatePayCancel(long payId);
 
 	//========================================================================
 	// 제출된 공고 목록 조회
@@ -91,8 +94,11 @@ public interface AdminMapper {
 									, @Param("submitStatus") String submitStatus);
 
 	// 제출된 공고 상세정보 조회
-	SubmitDTO selectSubmitInfo(BigInteger id);
-
+	SubmitDTO selectSubmitInfo(long jobId);
+	
+	// 공고 상태 변경
+	void updateSubmitStatus(@Param("jobId") long jobId, @Param("postCheck") Integer postCheck);
+	
 	//========================================================================
 	// 구매할 상품 상세 정보 조회(구매하기 진행)
 	ProductDTO selectProductInfo(String productId);
@@ -110,6 +116,14 @@ public interface AdminMapper {
 	// faq 관리
 
 	List<FaqDTO> getFaqList(FaqDTO faqDTO);
+
+	
+
+	
+
+	
+
+	
 
 	
 

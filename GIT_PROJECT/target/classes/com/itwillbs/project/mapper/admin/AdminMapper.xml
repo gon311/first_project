@@ -107,7 +107,7 @@
 			user_id = #{userId}
 	</delete>
 	
-	<!-- 구직자 탈퇴회원 목록 조회 -->
+	<!-- 구직자 탈퇴회원 조회 -->
 	<select id="selectUserWithdraw" resultType="member">
 		select 
 			u.user_id
@@ -116,29 +116,20 @@
 			, u.phone
 			, u.user_type
 			, u.status
-			, u.joined_at
 			, u.withdrawn_at
-			, p.birth_date
-			, p.gender
-			, p.country
-			, p.pass_count
-			, p.report_received_count
-			, p.profile_url
 		from 
-			user u join user_person p
-		on
-			u.user_id = p.user_id
+			user u
 		where
-			u.user_type = 'p'
+			user_type = 'p'
 		and
-			u.status = 'WITHDRAWN'
+			status = 'WITHDRAWN'
 			<if test="keyword != null and !keyword.equals('')">
 				and
-					u.user_name like concat('%',#{keyword},'%')
+					user_name like concat('%',#{keyword},'%')
 			</if>
 			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
 				and 
-					date(u.withdrawn_at) between #{startDate} and #{endDate}
+					date(withdrawn_at) between #{startDate} and #{endDate}
 			</if>
 	</select>
 	
@@ -379,8 +370,29 @@
 		select *
 		from job_posting
 		where 
-			job_id = #{id}
+			job_id = #{jobId}
 	</select>
+	
+	<!-- 제출된 공고 상태 변경(compId = #compId 인 공고) -->
+	<update id="updateSubmitStatus">
+		update
+			job_posting
+		set
+			<choose>
+				<when test="postCheck == 2">
+					post_check = 2
+				</when>
+				<when test="postCheck == 3">
+					post_check = 3
+				</when>
+				<otherwise>
+					post_check = 4
+				</otherwise>
+			</choose>
+		where
+			job_id = #{jobId}
+	</update>
+	
 	
 	<!-- ================================================================================== -->
 	<!-- 결제 목록 조회 -->
@@ -458,6 +470,16 @@
 		where
 			p.pay_id = #{id}
 	</select>
+	
+	<!-- 결제 취소 -->
+	<update id="updatePayCancel">
+		update
+			pay
+		set
+			pay_status = 3
+		where
+			pay_id = #{payId}
+	</update>
 	
 	<!-- ===================================================================== -->
 	<!-- 구매할 상품 정보 조회 -->

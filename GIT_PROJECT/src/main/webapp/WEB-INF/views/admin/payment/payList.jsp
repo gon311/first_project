@@ -114,13 +114,28 @@
 						<tr class="clickable-row" onclick="location.href='payments/info?payId=${pay.payId}'">
 							<td>${status.count}</td>
 							<td>${pay.payId}</td>
-							<td>${pay.payDate}</td>
+							<td>
+								<fmt:parseDate var="payDate" value="${pay.payDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+								<fmt:formatDate value="${payDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+							</td>
 							<td>${pay.productName}</td>
 							<td>${pay.userId}</td>
 							<td>${pay.userType}</td>
 							<td>${pay.payPrice}원</td>
 							<td>${pay.payMethod}</td>
-							<td>${pay.payStatus}</td>
+							<td>
+								<c:choose>
+									<c:when test="${pay.payStatus eq 'paid'}">
+										결제완료
+									</c:when>
+									<c:when test="${pay.payStatus eq 'wait'}">
+										입금대기
+									</c:when>
+									<c:otherwise>
+										결제취소
+									</c:otherwise>
+								</c:choose>
+							</td>
 						</tr>
 					</c:forEach>
 				</tbody>

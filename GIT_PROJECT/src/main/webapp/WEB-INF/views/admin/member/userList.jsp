@@ -186,13 +186,12 @@
                 <!-- 정렬 -->
 	            <div class="d-flex justify-content-end mt-3 mb-2">
 	                <form action="<c:url value='/admin/users' />" method="get">
-	                    <input type="hidden" name="activeTab" value="withdraw"/>
-	                    <input type="hidden" name="keyword" value="${param.keyword}">
-	                    <input type="hidden" name="withdrawDate" value="${param.withdrawDate}">
+<!-- 	                    <input type="hidden" name="activeTab" value="withdraw"/> -->
+<%-- 	                    <input type="hidden" name="keyword" value="${param.keyword}"> --%>
+<%-- 	                    <input type="hidden" name="withdrawDate" value="${param.startDate}"> --%>
+<%-- 	                    <input type="hidden" name="withdrawDate" value="${param.endDate}"> --%>
 	
-	                    <select class="form-select w-auto"
-	                            name="sort"
-	                            onchange="">
+	                    <select id="sort" class="form-select w-auto" name="sort" onchange="">
 	                        <option value="">전체</option>
 	                        <option value="new" ${param.sort eq 'new' ? 'selected' : ''}>최근 탈퇴순</option>
 	                        <option value="old" ${param.sort eq 'old' ? 'selected' : ''}>오래된 탈퇴순</option>
@@ -217,23 +216,27 @@
                         </thead>
                         <tbody>
                             <c:forEach var="withdraw" varStatus="status" items="${userWithdraw}">
+                               	<!-- 탈퇴 일자(일 계산) -->
+                               	<fmt:parseDate var="withdrawDate" value="${withdraw.withdrawnAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+                               	<fmt:parseNumber var="wDate" value="${withdrawDate.time / (1000*60*60*24)}" integerOnly="true" />
+                                    	
+                               	<!-- 현재 날짜(일 계산) -->
+                               	<fmt:parseDate var="today" value="${withdraw.today}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+                               	<fmt:parseNumber var="tDay" value="${today.time / (1000*60*60*24)}" integerOnly="true" />
+                               	
                                 <tr>
                                     <td>${status.count}</td>
                                     <td>${withdraw.userId}</td>
                                     <td>${withdraw.userName}</td>
                                     <td>${withdraw.email}</td>
                                     <td>${withdraw.phone}</td>
-                                    <td>${withdraw.withdrawnAt}</td>
                                     <td>
-                                    	<fmt:parseDate var="withdrawDate" value="${withdraw.withdrawnAt}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
-                                    	<fmt:parseNumber var="wDate" value="${withdrawDate.time / (1000*60*60*24)}" integerOnly="true"></fmt:parseNumber>
-                                    	
-                                    	<!-- 현재 날짜 -->
-                                    	<fmt:parseDate var="today" value="${withdraw.today}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-                                    	<fmt:parseNumber var="tDay" value="${today.time / (1000*60*60*24)}" integerOnly="true"></fmt:parseNumber>
-                                    	
+                                    	<fmt:formatDate value="${withdrawDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
+                                    </td>
+                                    <td>
+                                   	  <!-- 탈퇴일로부터 3년이 지난 경우 삭제 버튼 활성화 -->
                                     	<c:choose>
-                                    		<c:when test="${(tDay - wDate) < 1095}">  <!-- 탈퇴일로부터 3년이 지난 경우 -->
+                                    		<c:when test="${(tDay - wDate) < 1095}">
 		                                        <button class="btn btn-danger" onclick="deleteUser(${withdraw.userId})">삭제</button>
                                     		</c:when>
                                     		<c:otherwise>
@@ -259,6 +262,8 @@
     			location.href="<c:url value='/admin/users/delete' />" + "?userId=" + userId;
     		}
     	}
+    	
+    	
     </script>
 
 </body>

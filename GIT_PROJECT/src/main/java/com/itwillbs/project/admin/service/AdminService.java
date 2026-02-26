@@ -31,22 +31,22 @@ public class AdminService{
 	} 
 
 	// 구직자 상세 정보 조회
-	public MemberDTO getUserInfo(BigInteger userId) {
+	public MemberDTO getUserInfo(long userId) {
 		return adminMapper.selectUserInfo(userId);
 	}
 	
 	// 회원 차단
-	public void blockUser(BigInteger userId) {
+	public void blockUser(long userId) {
 		adminMapper.updateUserBlock(userId);
 	}
 	
 	// 회원 차단 해제
-	public void unblockUser(BigInteger userId) {
+	public void unblockUser(long userId) {
 		adminMapper.updateUserUnblock(userId);
 	}
 	
 	// 탈퇴한 회원 삭제
-	public void deleteUser(BigInteger userId) {
+	public void deleteUser(long userId) {
 		adminMapper.deleteUserInfo(userId);
 	}
 	
@@ -62,7 +62,7 @@ public class AdminService{
 	}
 	
 	// 기업회원 상세 정보 조회
-	public MemberDTO getComInfo(BigInteger userId) {
+	public MemberDTO getComInfo(long userId) {
 		return adminMapper.selectComInfo(userId);
 	}
 	
@@ -111,6 +111,11 @@ public class AdminService{
 		return adminMapper.selectPayInfo(id);
 	}
 	
+	// 결제 취소
+	public void changePayCancel(long payId) {
+		adminMapper.updatePayCancel(payId);
+	}
+	
 	//========================================================================================
 	// 제출된 공고 목록 조회
 	public List<SubmitDTO> getSubmitList(String startDate, String endDate, String keyword, String submitStatus) {
@@ -118,10 +123,15 @@ public class AdminService{
 	}
 	
 	// 제출된 공고 상세 조회
-	public SubmitDTO getSubmitInfo(BigInteger id) {
-		return adminMapper.selectSubmitInfo(id);
+	public SubmitDTO getSubmitInfo(long jobId) {
+		return adminMapper.selectSubmitInfo(jobId);
 	}
-
+	
+	// 공고 상태 변경
+	public void changeSubmitStatus(long jobId, Integer postCheck) {
+		adminMapper.updateSubmitStatus(jobId, postCheck);
+	}
+	
 	//========================================================================================
 	// 구매할 상품 정보(구매하기 진행)
 	public ProductDTO getProductInfo(String productId) {
@@ -154,6 +164,16 @@ public class AdminService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 	

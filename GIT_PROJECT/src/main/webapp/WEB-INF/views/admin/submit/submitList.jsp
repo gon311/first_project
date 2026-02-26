@@ -102,9 +102,27 @@
 							<td>${status.count}</td>
 							<td>${submit.jobId}</td>
 							<td>${submit.title}</td>
-							<td>${submit.regDate}</td>
+							<td>
+								<fmt:parseDate var="regDate" value="${submit.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+								<fmt:formatDate value="${regDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+							</td>
 							<td>${submit.companyName}</td>
-							<td>${submit.postCheck}</td>
+							<td>
+								<c:choose>
+									<c:when test="${submit.postCheck == 1}">
+										검토전
+									</c:when>
+									<c:when test="${submit.postCheck == 2}">
+										승인
+									</c:when>
+									<c:when test="${submit.postCheck == 3}">
+										보류
+									</c:when>
+									<c:otherwise>
+										삭제됨
+									</c:otherwise>
+								</c:choose>
+							</td>
 						</tr>
 					</c:forEach>
 				</tbody>

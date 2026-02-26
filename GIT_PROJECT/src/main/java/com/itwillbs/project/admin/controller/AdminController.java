@@ -134,7 +134,7 @@ public class AdminController {
 	}
 	
 	// 기업회원 차단
-	@GetMapping("/coms//block")
+	@GetMapping("/coms/block")
 	public String comBlock(MemberDTO memberDTO, RedirectAttributes ra) {
 		adminService.blockUser(memberDTO.getUserId());
 		ra.addAttribute("userId", memberDTO.getUserId());
@@ -184,6 +184,20 @@ public class AdminController {
 	}
 	
 	
+	// 공고 상태 변경
+	@GetMapping("/submits/status")
+	public String submitStatus(long jobId, Integer postCheck, RedirectAttributes ra) {
+		SubmitDTO submitDTO = adminService.getSubmitInfo(jobId);
+		adminService.changeSubmitStatus(submitDTO.getJobId(), postCheck);
+		
+		ra.addAttribute("jobId", jobId);
+		ra.addAttribute("userId", submitDTO.getCompId());
+		
+		return "redirect:/admin/submits/info";
+	}
+	
+	 
+	
 	//===========================================================================
 	// [ 결제 관리 ]
 	// 결제 내역 목록 조회
@@ -209,6 +223,15 @@ public class AdminController {
 		
 		return "admin/payment/payInfo";
 		
+	}
+	
+	// 결제 취소
+	@GetMapping("/payments/cancel")
+	public String payCancel(long payId, RedirectAttributes ra) {
+		adminService.changePayCancel(payId);
+		ra.addAttribute("payId", payId);
+		
+		return "redirect:/admin/payments/info";
 	}
 	
 	//-----------------------------------------

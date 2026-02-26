@@ -49,11 +49,17 @@
 								<dd class="col-8 py-2">${user.country}</dd>
 
 								<dt class="col-4 text-secondary py-2">가입일자</dt>
-								<dd class="col-8 py-2">${user.joinedAt}</dd>
+								<dd class="col-8 py-2">
+									<fmt:parseDate var="joinDate" value="${user.joinedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+                           			<fmt:formatDate value="${joinDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
+								</dd>
 								
 								<c:if test="${user.status eq '탈퇴'}">
 									<dt class="col-4 text-secondary py-2">탈퇴일자</dt>
-									<dd class="col-8 py-2">${user.withdrawnAt}</dd>
+									<dd class="col-8 py-2">
+                               			<fmt:parseDate var="withdrawDate" value="${user.withdrawnAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+                               			<fmt:formatDate value="${withdrawDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
+									</dd>
 								</c:if>
 
 								<dt class="col-4 text-secondary py-2">상태</dt>

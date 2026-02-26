@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +42,10 @@
 							<dd class="col-7 py-2">${pay.userType}</dd>
 
 							<dt class="col-5 text-secondary py-2">결제일시</dt>
-							<dd class="col-7 py-2">${pay.payDate}</dd>
+							<dd class="col-7 py-2">
+								<fmt:parseDate var="payDate" value="${pay.payDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+								<fmt:formatDate value="${payDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+							</dd>
 
 							<dt class="col-5 text-secondary py-2">결제 상품명</dt>
 							<dd class="col-7 py-2">${pay.productName}</dd>
@@ -57,9 +62,18 @@
 						</dl>
 
 						<div class="text-end mt-4">
-							<button type="button" id="cancel" class="btn btn-danger">
-								결제 취소
-							</button>
+							<c:choose>
+								<c:when test="${pay.payStatus eq 'cancelled'}">
+									<button type="button" id="cancel" class="btn btn-danger" disabled="disabled">
+										결제 취소
+									</button>
+								</c:when>
+								<c:otherwise>
+									<button type="button" id="cancel" class="btn btn-danger" onclick="payCancel(${pay.payId})">
+										결제 취소
+									</button>
+								</c:otherwise>
+							</c:choose>
 						</div>
 
 					</div>
@@ -77,8 +91,12 @@
 
 	</main>
 
-	<script type="text/javascript">
-		// 결제 취소 시 실행
+	<script>
+		function payCancel(payId) {
+			if(confirm("결제를 취소하시겠습니까?")) {
+				location.href="<c:url value='/admin/payments/cancel' />" + "?payId=" + payId; 
+			}
+		}
 	</script>
 
 </body>

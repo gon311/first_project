@@ -49,8 +49,8 @@ CONSTRAINT `check_date` CHECK (`open_date` <= `close_date`)
 @Setter
 @ToString
 public class SubmitDTO {
-	private BigInteger jobId; // job_id
-	private BigInteger compId;
+	private long jobId; // job_id
+	private long compId;
 	private String companyName;
 	private String title;
 	private String field;
@@ -70,26 +70,20 @@ public class SubmitDTO {
 	private Date openDate;
 	private Date closeDate;
 	private int postStatus;
-	private String regDate;
-	private String postCheck;
+	private LocalDateTime regDate;
+	private Integer postCheck;
 	
-	public void setRegDate(LocalDateTime regDate) {
-		String pattern = "yyyy년 MM월 dd일 HH시 mm분 ss초";
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(pattern);
-		
-		this.regDate = regDate.format(dtf);
-		
-	}
-	
-	public void setPostCheck(Integer postCheck) {
-		if(postCheck == 1) {
-			this.postCheck = "검토전";
-		} else if(postCheck == 2) {
-			this.postCheck = "승인";
-		} else if(postCheck == 3) {
-			this.postCheck = "보류";
-		}
-	}
+//	public void setPostCheck(Integer postCheck) {
+//		if(postCheck == 1) {
+//			this.postCheck = "검토전";
+//		} else if(postCheck == 2) {
+//			this.postCheck = "승인";
+//		} else if(postCheck == 3) {
+//			this.postCheck = "보류";
+//		} else if(postCheck == 4) {
+//			this.postCheck = "삭제";
+//		}
+//	}
 	
 	
 }

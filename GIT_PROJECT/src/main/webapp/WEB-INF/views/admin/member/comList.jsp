@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -220,16 +221,34 @@
 	                    </thead>
 	                    <tbody>
 	                        <c:forEach var="withdraw" varStatus="status" items="${comWithdraw}">
+	                        	<!-- 탈퇴 일자(일 계산) -->
+                               	<fmt:parseDate var="withdrawDate" value="${withdraw.withdrawnAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+                               	<fmt:parseNumber var="wDate" value="${withdrawDate.time / (1000*60*60*24)}" integerOnly="true" />
+                                    	
+                               	<!-- 현재 날짜(일 계산) -->
+                               	<fmt:parseDate var="today" value="${withdraw.today}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+                               	<fmt:parseNumber var="tDay" value="${today.time / (1000*60*60*24)}" integerOnly="true" />
+                               	
 	                            <tr>
 	                                <td>${status.count}</td>
 	                                <td>${withdraw.userId}</td>
 	                                <td>${withdraw.userName}</td>
 	                                <td>${withdraw.email}</td>
 	                                <td>${withdraw.phone}</td>
-	                                <td>${withdraw.withdrawnAt}</td>
 	                                <td>
-	                                    <button class="btn btn-danger">삭제</button>
-	                                </td>
+                                    	<fmt:formatDate value="${withdrawDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
+                                    </td>
+                                    <td>
+                                   	  <!-- 탈퇴일로부터 3년이 지난 경우 삭제 버튼 활성화 -->
+                                    	<c:choose>
+                                    		<c:when test="${(tDay - wDate) < 1095}">
+		                                        <button class="btn btn-danger" onclick="deleteUser(${withdraw.userId})">삭제</button>
+                                    		</c:when>
+                                    		<c:otherwise>
+		                                        <button class="btn btn-danger" disabled>삭제</button>
+                                    		</c:otherwise>
+                                    	</c:choose>
+                                    </td>
 	                            </tr>
 	                        </c:forEach>
 	                    </tbody>

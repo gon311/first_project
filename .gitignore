@@ -21,3 +21,6 @@ META-INF/
 OS 파일
 Thumbs.db
 [Dd]esktop.ini
+
+## 개발자가 추가한 제외 항목 
+application.properties 

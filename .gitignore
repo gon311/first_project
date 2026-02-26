@@ -1,8 +1,8 @@
-빌드 결과물 제외
+# 빌드 결과물 제외
 **/target/
 /target/
 
-이클립스 및 설정 파일 제외
+# 이클립스 및 설정 파일 제외
 .settings/
 .classpath
 .project
@@ -11,14 +11,14 @@ bin/
 *.tmp
 *.bak
 
-Maven 및 기타 설정
+# Maven 및 기타 설정
 .mvn/
 *.properties
 *.mf
 *.MF
 META-INF/
 
-OS 파일
+# OS 파일
 Thumbs.db
 [Dd]esktop.ini
 

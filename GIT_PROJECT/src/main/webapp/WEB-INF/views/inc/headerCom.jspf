@@ -37,6 +37,7 @@
 
   <%-- 하단: 메인 메뉴 바 + 전체 메뉴 버튼 --%>
   <%-- 차후 url 교체 --%>
+<<<<<<< HEAD
   <section id="header-bottom">
 	  <nav id="globalMenu" class="site-nav navbar navbar-expand border-bottom">
 	    <div class="container-fluid">
@@ -97,4 +98,64 @@
 	    </div>
 	  </nav>
   </section>
+=======
+  <nav id="globalMenu" class="site-nav navbar navbar-expand bg-light border-bottom">
+    <div class="container-fluid">
+      <!-- 메인 메뉴 -->
+      <ul class="navbar-nav main-menu gap-3">
+
+        <!-- 고용관리 -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle fw-semibold"
+            href="#"
+            id="dropdownReview"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            고용관리
+          </a>
+          <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownReview" id="submenu-review">
+            <li><a class="dropdown-item" href="<c:url value='/job/JobPosting' />">공고 등록</a></li>
+            <li><a class="dropdown-item" href="<c:url value='#' />">내 공고</a></li>
+          </ul>
+        </li>
+
+        <!-- 요금제 (하위메뉴 없음) -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="<c:url value='/store/cstore' />">요금제</a>
+        </li>
+
+        <!-- 커뮤니티 -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle fw-semibold"
+            href="#"
+            id="dropdownBoard"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            커뮤니티
+          </a>
+          <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownBoard" id="submenu-board">
+            <li><a class="dropdown-item" href="<c:url value='/board/board' />">자유게시판</a></li>
+            <li><a class="dropdown-item" href="<c:url value='/board/intvReview' />">면접후기</a></li>
+          </ul>
+        </li>
+
+      </ul>
+
+      <!-- 우측: 전체 메뉴 버튼 -->
+      <div class="ms-auto">
+        <button id="toggleAllBtn"
+                class="btn btn-outline-secondary btn-sm"
+                aria-expanded="false"
+                aria-controls="globalMenu"
+                type="button">
+          전체 메뉴
+        </button>
+      </div>
+    </div>
+  </nav>
+>>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 </header>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.project.job.mapper.JobMapper">
+	
+	<insert id="insertJob">
+	    INSERT INTO JOB_POSTING (
+	        comp_id, 
+	        title, 
+	        field, 
+	        task, 
+	        exp_type, 
+	        exp_year, 
+	        edu, 
+	        emp_type, 
+	        probation, 
+	        salary, 
+	        address, 
+	        is_remote, 
+	        open_date, 
+	        close_date, 
+	        mgr_name, 
+	        mgr_phone, 
+	        mgr_email, 
+	        is_public, 
+	        post_status
+	    ) VALUES (
+	        #{compId},       
+	        #{title}, 
+	        #{field}, 
+	        #{task}, 
+	        #{expType}, 
+	        #{expYear}, 
+	        #{edu}, 
+	        #{empType},
+	        <choose>
+	            <when test='probation != null and probation == "Y"'>
+	                #{probation},
+	            </when>
+	            <otherwise>
+	                DEFAULT,
+	            </otherwise>
+	        </choose>
+	        #{salary}, 
+	        #{address},
+	        <choose>
+	            <when test='isRemote != null and isRemote == "Y"'>
+	                #{isRemote},
+	            </when>
+	            <otherwise>
+	                DEFAULT,
+	            </otherwise>
+	        </choose>
+	        #{openDate}, 
+	        #{closeDate}, 
+	        #{mgrName}, 
+	        #{mgrPhone}, 
+	        LOWER(#{mgrEmail}),
+	        #{isPublic}, 
+	        1                )
+	</insert>	
+	
+	<select id="getJobList" resultType="job">
+	    SELECT 
+	        j.job_id as jobId,
+	        j.comp_id as compId,
+	        u.company_name as comName,
+	        j.title,
+	        j.field,
+	        CASE 
+	            WHEN j.exp_year = '0' OR j.exp_year LIKE '%신입%' THEN '신입'
+	            ELSE '경력'
+	        END as expYear,
+	        j.edu,
+	        j.address,
+	        j.close_date as closeDate
+	    FROM JOB_POSTING j JOIN USER_COMPANY u
+		ON j.comp_id = u.user_id
+	    <where>
+	        <if test="expType != null and expType != ''">
+	            <choose>
+	                <when test="expType == 'new'">
+	                    AND (j.exp_type = 'new' OR j.exp_year = '0')
+	                </when>
+	                <when test="expType == 'career'">
+	                    AND j.exp_type = 'career'
+	                </when>
+	            </choose>
+	        </if>
+	        
+	        <if test="selectedItems != null and selectedItems.size > 0">
+			    AND (
+			        <foreach item="item" collection="selectedItems" separator=" OR ">
+			            j.address LIKE CONCAT('%', #{item}, '%')  OR j.field LIKE CONCAT('%', #{item}, '%') 
+			         </foreach>
+			    )
+			</if>
+			
+	        <if test="eduType != null and eduType != ''">
+			    <choose>
+			        <when test='eduType == "학력무관"'>
+			            AND j.edu = '학력무관'
+			        </when>
+			        <otherwise>
+			            AND (j.edu = #{eduType} OR j.edu = '학력무관')
+			        </otherwise>
+			    </choose>
+			</if>
+	    </where>
+	    ORDER BY j.job_id DESC
+	</select>
+	
+	<select id="getExistingRegions" resultType="map">
+	    SELECT DISTINCT 
+	        SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 1) as city,
+	        SUBSTRING_INDEX(SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 2), ' ', -1) as district
+	    FROM JOB_POSTING
+	    WHERE post_status = 1 
+	      AND address IS NOT NULL
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

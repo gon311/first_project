@@ -70,9 +70,6 @@ public class ReviewController {
 	    return "/review/reviewText";
 	}
 	
-	
-	
-	
 	@PostMapping("/save")
 	public String reviewSave(CoverLetterDTO coverLetterDTO) {
 		log.info(">>>>>>>>>>>>>> coverLetterDTO: " + coverLetterDTO);
@@ -80,5 +77,4 @@ public class ReviewController {
 		
 		return "/review/reviewSave";
 	}
-
 }

@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.project.admin.mapper.AdminMapper">
+
+	<!-- 구직자 목록 조회 -->
+	<select id="selectUserList" resultType="member">
+		select 
+			u.user_id
+			, u.user_name
+			, u.email
+			, u.phone
+			, u.user_type
+			, u.status
+			, u.joined_at
+			, u.withdrawn_at
+			, p.product_id
+			, pd.product_name
+		from 
+			user u left outer join pay p
+		on
+			u.user_id = p.user_id
+		left outer join
+			product pd
+		on
+			p.product_id = pd.product_id
+		where
+			u.user_type = 'p'
+			<choose>
+				<when test="type != null and type.equals('basic')">
+					and
+						p.product_id is null
+				</when>
+				<when test="type != null and !type.equals('')">
+					and
+						p.product_id = #{type}
+				</when>
+				<otherwise>
+					and 
+						1=1
+				</otherwise>
+			</choose>
+			<if test="status != null and !status.equals('')">
+				and
+					u.status = #{status}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and
+					u.user_name like concat('%',#{keyword},'%')
+			</if>
+	</select>
+	
+	<!-- 구직자 회원 상세정보 조회 -->
+	<select id="selectUserInfo" resultType="member">
+		select 
+			u.user_id
+			, u.user_name
+			, u.email
+			, u.phone
+			, u.user_type
+			, u.status
+			, u.joined_at
+			, u.withdrawn_at
+			, p.birth_date
+			, p.gender
+			, p.country
+			, p.pass_count
+			, p.report_received_count
+			, p.profile_url
+		from 
+			user u join user_person p
+		on
+			u.user_id = p.user_id
+		where
+			u.user_id = #{userId}
+		
+	</select>
+	
+	<!-- 회원 차단 -->
+	<update id="updateUserBlock">
+		update
+			user
+		set
+			status = 'suspended'
+		where
+			user_id = #{userId}
+	</update>
+	
+	<!-- 회원 차단해제 -->
+	<update id="updateUserUnblock">
+		update
+			user
+		set
+			status = 'active'
+		where
+			user_id = #{userId}
+	</update>
+	
+	<!-- 탈퇴한 회원 삭제 -->
+	<delete id="deleteUserInfo">
+		delete
+		from
+			user
+		where
+			user_id = #{userId}
+	</delete>
+	
+	<!-- 구직자 탈퇴회원 목록 조회 -->
+	<select id="selectUserWithdraw" resultType="member">
+		select 
+			u.user_id
+			, u.user_name
+			, u.email
+			, u.phone
+			, u.user_type
+			, u.status
+			, u.joined_at
+			, u.withdrawn_at
+			, p.birth_date
+			, p.gender
+			, p.country
+			, p.pass_count
+			, p.report_received_count
+			, p.profile_url
+		from 
+			user u join user_person p
+		on
+			u.user_id = p.user_id
+		where
+			u.user_type = 'p'
+		and
+			u.status = 'WITHDRAWN'
+			<if test="keyword != null and !keyword.equals('')">
+				and
+					u.user_name like concat('%',#{keyword},'%')
+			</if>
+			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+				and 
+					date(u.withdrawn_at) between #{startDate} and #{endDate}
+			</if>
+	</select>
+	
+	<!-- 기업회원 목록 조회 -->
+	<select id="selectComList" resultType="member">
+		select 
+			u.user_id
+			, u.user_name
+			, u.email
+			, u.phone
+			, u.user_type
+			, u.status
+			, u.joined_at
+			, u.withdrawn_at
+			, c.biz_reg_no
+			, c.company_name
+			, c.ceo_name
+			, c.company_address
+			, p.product_id
+			, pd.product_name
+		from 
+			user u join user_company c
+		on
+			u.user_id = c.user_id
+		left outer join
+			pay p
+		on
+			u.user_id = p.user_id
+		left outer join
+			product pd
+		on
+			p.product_id = pd.product_id
+		where
+			u.user_type = 'c'
+			<choose>
+				<when test="type != null and type.equals('basic')">
+					and
+						p.product_id is null
+				</when>
+				<when test="type != null and !type.equals('')">
+					and
+						p.product_id = #{type}
+				</when>
+				<otherwise>
+					and 
+						1=1
+				</otherwise>
+			</choose>
+			<if test="status != null and !status.equals('')">
+				and
+					u.status = #{status}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and
+					c.company_name like concat('%',#{keyword},'%')
+			</if>
+	</select>
+	
+	<!-- 기업 회원 상세정보 조회 -->
+	<select id="selectComInfo" resultType="member">
+		select 
+			u.user_id
+			, u.user_name
+			, u.email
+			, u.phone
+			, u.user_type
+			, u.status
+			, u.joined_at
+			, u.withdrawn_at
+			, c.biz_reg_no
+			, c.company_name
+			, c.ceo_name
+			, c.company_address
+		from 
+			user u join user_company c
+		on
+			u.user_id = c.user_id
+		where
+			u.user_id = #{userId}
+		
+	</select>
+	
+	<!-- 기업 탈퇴회원 목록 조회 -->
+	<select id="selectComWithdraw" resultType="member">
+		select 
+			u.user_id
+			, u.user_name
+			, u.email
+			, u.phone
+			, u.user_type
+			, u.status
+			, u.joined_at
+			, u.withdrawn_at
+			, c.biz_reg_no
+			, c.company_name
+			, c.ceo_name
+			, c.company_address
+		from 
+			user u join user_company c
+		on
+			u.user_id = c.user_id
+		where
+			u.user_type = 'c'
+		and
+			u.status = 'WITHDRAWN'
+			<if test="keyword != null and !keyword.equals('')">
+				and
+					c.company_name like concat('%',#{keyword},'%')
+			</if>
+			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+				and 
+					date(u.withdrawn_at) between #{startDate} and #{endDate}
+			</if>
+	</select>
+	
+	<!-- ==================================================================== -->
+	<!-- 공지사항 리스트 조회 -->
+	<select id="getNoticeList" resultType="notice">
+		SELECT
+		 	notice_id
+		 	, notice_title
+		 	, notice_content
+		 	, reg_date
+		 	, readcount
+		 	, user_type
+		 	, update_date
+		 	, status
+		 FROM notice
+	</select>
+	<!-- 공지사항 작성 -->
+	<insert id ="insertNotice" parameterType="notice">
+		INSERT INTO notice (
+			notice_title
+			, notice_content
+			, reg_date
+			, readcount
+			, user_type
+			, status
+		) VALUES (
+			#{notice_title}
+			, #{notice_content}
+			, NOW()
+			,0
+			, #{user_type}
+			, #{status}
+		)
+	</insert>
+	<!-- 공지사항 상세 조회 -->
+	<select id="getNoticeById" resultType = "notice">
+		SELECT 
+			notice_id
+			, notice_title
+			, notice_content
+			, reg_date
+			, readcount
+		FROM notice
+		WHERE notice_id = #{notice_id}
+	
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateReadCount">
+		UPDATE notice
+		SET readcount = readcount + 1
+		WHERE notice_id = #{notice_id}
+	</update>
+	
+	<!-- ================================================================================== -->
+	<!--  채용공고 목록 조회 -->
+	<select id="getJobPostList" resultType="job">
+		SELECT job_id <!-- 공고 id -->
+			, comp_id
+			, title
+			, field
+			, open_date
+			, close_date
+			, post_check
+		FROM job_posting
+	</select>
+	
+	<select id="getJobPostById" resultType ="job">
+		SELECT *
+		FROM job_posting
+		WHERE job_id = #{job_id}
+	
+	</select>
+		
+	
+	<!-- ================================================================================== -->
+	<!-- 제출된 공고 목록 조회 -->
+	<select id="selectSubmitList" resultType="submit">
+		select 
+			j.job_id
+			,j.comp_id
+			,c.company_name
+			,j.title
+			,j.field
+			,j.task
+			,j.emp_type
+			,j.probation
+			,j.exp_type
+			,j.exp_year
+			,j.edu
+			,j.salary
+			,j.address
+			,j.is_remote
+			,j.mgr_name
+			,j.mgr_phone
+			,j.mgr_email
+			,j.is_public
+			,j.open_date
+			,j.close_date
+			,j.post_status
+			,j.reg_date
+			,j.post_check
+		from 
+			job_posting j join user_company c
+		on
+			j.comp_id = c.user_id
+		where
+			1=1
+			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+				and 
+					date(j.reg_date) between #{startDate} and #{endDate}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and 
+					c.company_name like concat('%',#{keyword},'%')
+			</if>
+			<if test="submitStatus != null and !submitStatus.equals('')">
+				and 
+					j.post_check = #{submitStatus}
+			</if>
+	</select>
+	
+	<!-- 제출된 공고 상세정보 조회 -->
+	<select id="selectSubmitInfo" resultType="submit">
+		select *
+		from job_posting
+		where 
+			job_id = #{id}
+	</select>
+	
+	<!-- ================================================================================== -->
+	<!-- 결제 목록 조회 -->
+	<select id="selectPayList" resultType="pay">
+		select 
+			p.pay_id
+			, p.user_id
+			, u.user_name
+			, u.phone
+			, u.user_type
+			, p.product_id
+			, pd.product_name
+			, p.pay_method
+			, p.card_name
+			, p.bank_name
+			, p.deposit_account
+			, p.deposit_name
+			, p.pay_price
+			, p.pay_date
+			, p.pay_status
+		from 
+			pay p join product pd
+		on 
+			p.product_id = pd.product_id
+		join
+			user u
+		on 
+			p.user_id = u.user_id
+		where
+			1=1
+			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+				and 
+					date(p.pay_date) between #{startDate} and #{endDate}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and 
+					pd.product_name like concat('%',#{keyword},'%')
+			</if>
+			<if test="userType != null and !userType.equals('')">
+				and 
+					u.user_type = #{userType}
+			</if>
+			<if test="payStatus != null and !payStatus.equals('')">
+				and 
+					p.pay_status = #{payStatus}
+			</if>
+	</select>
+	
+	<!-- 결제 내역 상세정보 조회 -->
+	<select id="selectPayInfo" resultType="pay">
+		select 
+			p.pay_id
+			, p.user_id
+			, u.user_name
+			, u.phone
+			, u.user_type
+			, p.product_id
+			, pd.product_name
+			, p.pay_method
+			, p.card_name
+			, p.bank_name
+			, p.deposit_account
+			, p.deposit_name
+			, p.pay_price
+			, p.pay_date
+			, p.pay_status
+		from 
+			pay p join product pd
+		on 
+			p.product_id = pd.product_id
+		join
+			user u
+		on 
+			p.user_id = u.user_id
+		where
+			p.pay_id = #{id}
+	</select>
+	
+	<!-- ===================================================================== -->
+	<!-- 구매할 상품 정보 조회 -->
+	<select id="selectProductInfo" resultType="product">
+		select	*
+		from
+			product
+		where
+			product_id = #{productId}
+	</select>
+	
+	
+	
+</mapper>

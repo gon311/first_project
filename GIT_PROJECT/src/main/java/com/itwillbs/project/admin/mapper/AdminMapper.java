@@ -17,6 +17,8 @@ import com.itwillbs.project.admin.dto.SubmitDTO;
 
 @Mapper
 public interface AdminMapper {
+
+
 	// 구직자 회원 목록
 	List<MemberDTO> selectUserList(@Param("keyword") String keyword
 								, @Param("type") String type
@@ -117,7 +119,7 @@ public interface AdminMapper {
 
 	List<FaqDTO> getFaqList(FaqDTO faqDTO);
 
-	
+	void insertFaq(FaqDTO faqDTO);
 
 	
 

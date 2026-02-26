@@ -95,7 +95,7 @@ public class AdminContentController {
 	// FAQ 전체 목록 및 카테고리별 출력
 	@GetMapping("/FaQ")
 	public String faqList(
-	        @RequestParam(value="category", defaultValue="individual") String category,
+	        @RequestParam(value="category", defaultValue="user") String category,
 	        @RequestParam(value="keyword", required=false) String keyword,
 	        Model model
 	        , FaqDTO faqDTO) {
@@ -107,18 +107,32 @@ public class AdminContentController {
 	    model.addAttribute("category", category); // 탭 활성화 유지용
 	    model.addAttribute("keyword", keyword);   // 검색어 유지용
 	    
-	    return "admin/faq"; // faq.jsp로 포워딩
+	    return "admin/contents/faq"; // faq.jsp로 포워딩
 	}
 
 	// 특정 게시글 상세 내용 확인
-	@GetMapping("/admin/faqMgmt")
+	@GetMapping("/FaqMgmt")
 	public String faqDetail(@RequestParam("faqId") int faqId, Model model) {
 	    
 	    FaqDTO faq = adminService.getFaqDetail(faqId);
 	    model.addAttribute("faq", faq);
 	    
-	    return "admin/faqMgmt"; // faqMgmt.jsp(상세페이지)로 포워딩
+	    return "admin/contents/faqMgmt"; // faqMgmt.jsp(상세페이지)로 포워딩
 	}
+	
+	@GetMapping("/FaqWrite")
+	public String faqWrite(Model model) {
+		model.addAttribute("pageTitle", "faq제목");
+		
+		return "admin/contents/faqWrite";
+	}
+	
+	@PostMapping("/insertFaq")
+	public String faqInsert(@ModelAttribute FaqDTO faqDTO) {
+		adminService.insertFaq(faqDTO);
+		return "redirect:/admin/contents/faq";
+	}
+	
 	
 //	===============================================================================
 //	1:1 문의글 관리

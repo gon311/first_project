@@ -508,4 +508,20 @@
 		FROM
 			fnq
 	</select>
+	
+	<insert id ="insertFaq" parameterType="faq">
+		INSERT INTO faq (
+			faq_id
+			, faq_title
+			, faq_content
+			, catergory
+			, user_type
+		) VALUES (
+			#{faq_id}
+			, #{faq_title}
+			, #{faq_content}
+			,#{category}
+			, #{user_type}
+		)
+	</insert>
 </mapper>

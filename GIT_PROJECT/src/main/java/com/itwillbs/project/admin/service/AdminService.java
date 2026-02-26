@@ -150,7 +150,6 @@ public class AdminService{
 	}
 	// 상태 따라 div 영역 출력
 	public List<QnaDTO> getListByStatus(String reStatus) {
-		// TODO Auto-generated method stub
 		return adminMapper.getListByStatus(reStatus);
 	}
 
@@ -165,6 +164,7 @@ public class AdminService{
 		return null;
 	}
 
+<<<<<<< HEAD
 	
 
 	
@@ -174,6 +174,12 @@ public class AdminService{
 	
 
 	
+=======
+	public void insertFaq(FaqDTO faqDTO) {
+		
+		adminMapper.insertFaq(faqDTO);
+	}
+>>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 
 
 	

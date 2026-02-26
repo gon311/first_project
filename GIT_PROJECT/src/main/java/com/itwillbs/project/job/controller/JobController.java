@@ -70,6 +70,17 @@ public class JobController {
 		
 		return "/job/job_detail";
 	}
+	@GetMapping("/JobDetail2")
+	public String jobDetail2(@RequestParam("jobId") Long jobId, Model model) {
+		
+//		System.out.println(jobId);
+		JobDTO post = jobService.getJobListDetail(jobId);
+//		System.out.println("! = " + post.getCompanyName());
+		System.out.println(post.getExpYear());
+		model.addAttribute("post", post);
+		
+		return "/job/job_detail2";
+	}
 	
 	@GetMapping("/JobManagement")
 	public String management() {

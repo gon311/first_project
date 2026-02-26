@@ -38,25 +38,25 @@
 	
 	<insert id="insertJob">
 	    INSERT INTO JOB_POSTING (
-	        comp_id, 
-	        title, 
-	        field, 
-	        task, 
-	        exp_type, 
-	        exp_year, 
-	        edu, 
-	        emp_type, 
-	        probation, 
-	        salary, 
-	        address, 
-	        is_remote, 
-	        open_date, 
-	        close_date, 
-	        mgr_name, 
-	        mgr_phone, 
-	        mgr_email, 
-	        is_public, 
-	        post_status
+	        comp_id 
+	        , title 
+	        , field 
+	        , task
+	        , exp_type 
+	        , exp_year 
+	        , edu 
+	        , emp_type 
+	        , probation 
+	        , salary 
+	        , address 
+	        , is_remote 
+	        , open_date 
+	        , close_date 
+	        , mgr_name 
+	        , mgr_phone 
+	        , mgr_email 
+	        , is_public 
+	        , post_status
 	    ) VALUES (
 	        #{compId},       
 	        #{title}, 
@@ -95,19 +95,19 @@
 	
 	<select id="getJobList" resultType="job">
 	    SELECT 
-	        j.job_id as jobId,
-	        j.comp_id as compId,
-	        u.company_name as comName,
-	        j.title,
-	        j.field,
-	        CASE 
+	        j.job_id as jobId
+	        , j.comp_id as compId
+	        , u.company_name as comName
+	        , j.title
+	        , j.field
+	        , CASE 
 		        WHEN j.exp_year IS NULL THEN '경력 무관'
 		        WHEN j.exp_year = '0' OR j.exp_year LIKE '%신입%' THEN '신입'
 		        ELSE '경력'
-		    END as expYear,
-	        j.edu,
-	        j.address,
-	        j.close_date as closeDate
+		    END as expYear
+	        , j.edu
+	        , j.address
+	        , j.close_date as closeDate
 	    FROM JOB_POSTING j JOIN USER_COMPANY u
 		ON j.comp_id = u.user_id
 	    <where>
@@ -146,8 +146,8 @@
 	
 	<select id="getExistingRegions" resultType="map">
 	    SELECT DISTINCT 
-	        SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 1) as city,
-	        SUBSTRING_INDEX(SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 2), ' ', -1) as district
+	        SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 1) as city
+	        , SUBSTRING_INDEX(SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 2), ' ', -1) as district
 	    FROM JOB_POSTING
 	    WHERE post_status = 1 
 	      AND address IS NOT NULL
@@ -155,32 +155,32 @@
 	
 	<select id="getJobListDetail" parameterType="long" resultMap="JobResultMap">
 		SELECT 
-			p.job_id,        
-	        p.comp_id,       
-	        c.company_name,
-	        p.title,         
-	        p.field,         
-	        p.task,          
-	        p.emp_type,      
-	        p.probation,     
-	        CASE 
-		        WHEN p.exp_year IS NULL THEN '경력 무관'
-		        WHEN p.exp_year = '0' OR p.exp_year LIKE '%신입%' THEN '신입·경력'
-		        ELSE concat(if(p.exp_type = 'career', '경력 ', ''), p.exp_year)
-		    END as exp_year,
-	        p.edu,           
-	        p.salary,        
-	        p.address,       
-	        p.is_remote,     
-	        p.mgr_name,      
-	        p.mgr_phone,     
-	        p.mgr_email,     
-	        p.is_public,     
-	        p.open_date,     
-	        p.close_date,    
-	        p.post_status,   
-	        p.reg_date,      
-	        p.post_check
+			p.job_id
+	        , p.comp_id
+	        , c.company_name
+	        , p.title      
+	        , p.field       
+	        , p.task          
+	        , p.emp_type      
+	        , p.probation     
+	        , CASE 
+	          	WHEN p.exp_year IS NULL THEN '경력 무관'
+	          	WHEN p.exp_year = '0' OR p.exp_year LIKE '%신입%' THEN '신입·경력'
+	        	ELSE concat(if(p.exp_type = 'career', '경력 ', ''), p.exp_year)
+		     END as exp_year
+	        , p.edu           
+	        , p.salary        
+	        , p.address  
+	        , p.is_remote     
+	        , p.mgr_name      
+	        , p.mgr_phone     
+	        , p.mgr_email     
+	        , p.is_public     
+	        , p.open_date     
+	        , p.close_date    
+	        , p.post_status   
+	        , p.reg_date
+	        , p.post_check
 		FROM job_posting p JOIN user_company c
 		ON p.comp_id = c.user_id
 		WHERE p.job_id = #{jobId}

@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>채용공고 목록</title>
 <style>
     /* 1. 전체 레이아웃 및 폰트 */
     body {

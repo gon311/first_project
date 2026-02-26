@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,15 +60,23 @@ public class ReviewController {
 		return result;
 	}
 	
-	// 1단계 저장 후 2단계로 이동 
+	// 1단계 저장 후 coverLetterIdx를 주소에 넣어서 redirect
 	@PostMapping("/registText")
-	public String registText(CoverLetterDTO coverLetterDTO, HttpSession session, Model model) {
+	public String registText(CoverLetterDTO coverLetterDTO, HttpSession session) {
 		Long userId = (Long)session.getAttribute("userIdx");
 		coverLetterDTO.setUserId(userId);
 		reviewService.registForm(coverLetterDTO);  
+		Integer coverLetterIdx = coverLetterDTO.getCoverLetterIdx();
 		
-		model.addAttribute(coverLetterDTO);
-	    return "/review/reviewText";
+	    return "redirect:/review/" + coverLetterIdx + "/registText";
+	}
+	
+	// 2단계 작성 
+	@GetMapping("/{coverLetterIdx}/registText")
+	public String registText(@PathVariable Integer coverLetterIdx) {
+		
+		return "/review/registText";
+		
 	}
 	
 	

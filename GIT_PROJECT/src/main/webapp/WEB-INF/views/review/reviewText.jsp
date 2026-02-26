@@ -67,11 +67,13 @@
 							<div class="col-12 col-lg-6">
 								<label for="inputText" class="form-label">입력</label>
 								<textarea id="inputText" name="inputText" class="form-control"
-									rows="18"></textarea>
+									rows="18" placeholder="키워드 또는 문장을 입력해주세요."></textarea>
 							</div>
 							<div class="col-12 col-lg-6">
 								<label for="outputText" class="form-label">출력</label>
-								<textarea id="outputText" class="form-control" rows="18"></textarea>
+								<textarea id="outputText" class="form-control" rows="18">
+									<c:if test="${not empty response}">${response}</c:if>
+								</textarea>
 							</div>
 						</div>
 	

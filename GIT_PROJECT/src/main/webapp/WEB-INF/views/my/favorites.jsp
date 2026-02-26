@@ -288,12 +288,15 @@
               <option>진행중</option>
               <option>마감</option>
             </select>
-
-            <select class="select">
-              <option>5개씩</option>
-              <option>10개씩</option>
-              <option>15개씩</option>
-            </select>
+			
+			<!-- 셀렉트 (갯수) -->
+			<select class="select"
+			        onchange="location.href='${urlFavorites}?page=1&size=' + this.value
+			          + '&status=${status}&excludeApplied=${excludeApplied}&keyword=${keyword}'">
+			  <option value="5"  ${pager.size==5  ? 'selected' : ''}>5개씩</option>
+			  <option value="10" ${pager.size==10 ? 'selected' : ''}>10개씩</option>
+			  <option value="15" ${pager.size==15 ? 'selected' : ''}>15개씩</option>
+			</select>
 
             <label style="display:flex; align-items:center; gap:6px; font-weight:900; color:#374151;">
               <input type="checkbox" class="chk"> 지원한 공고 제외
@@ -375,6 +378,8 @@
 			      </div>
 			    </div>
 			  </c:forEach>
+			  
+			  <!-- 페이징 -->
 			  
 				<c:if test="${pager.total > 0}">
 				  <div class="pager">

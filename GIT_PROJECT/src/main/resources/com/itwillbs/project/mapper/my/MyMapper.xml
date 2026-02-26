@@ -219,7 +219,11 @@
 	LIMIT #{page.offset, jdbcType=INTEGER}, #{page.safeSize, jdbcType=INTEGER}
 </select>
 
-
+<!-- ==============================
+     관심공고
+     parameter: FavoriteJobCond.java
+     result: Long
+============================== -->	
 
 <select id="selectFavoriteJobCount"
         parameterType="com.itwillbs.project.my.dto.FavoriteJobCond"
@@ -256,6 +260,14 @@
 	  )
 	</if>
 </select>
+
+<!-- ==============================
+    결제내역
+     parameter:
+     result: 
+============================== -->	
+
+
 
 
 	

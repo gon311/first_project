@@ -1,0 +1,64 @@
+@charset "UTF-8";
+
+body {
+    background-color: #f8f9fa;
+}
+
+.section-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+
+.profile-box {
+    width: 150px;
+    height: 180px;
+    background-color: #e9ecef;
+    border-radius: 10px;
+}
+
+/* 반응형 보정 */
+@media (max-width: 768px) {
+    .profile-box {
+        width: 120px;
+        height: 150px;
+    }
+
+    .section-title {
+        font-size: 16px;
+    }
+}
+
+/* 좌우 공백 영역 */
+.side-space {
+  background-color: #f0f0f0; /* 옅은 회색 */
+  min-height: 100vh;        /* 화면 전체 높이 */
+}
+
+/* 중앙 메인폼 */
+.main-form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+
+
+/* 주소 입력창 반으로 줄이기 */
+.address-half {
+  width: 50%;
+}
+
+/* 반응형에서 모바일일 경우 전체 너비로 */
+@media (max-width: 768px) {
+  .address-half {
+    width: 100%;
+  }
+}

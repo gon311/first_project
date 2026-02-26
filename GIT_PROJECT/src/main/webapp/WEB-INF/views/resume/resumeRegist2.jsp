@@ -2,117 +2,113 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
-	<link href="<c:url value="/resources/css/resume.css" />" rel="stylesheet" type="text/css">
-	
-	<!-- ✅ Bootstrap CSS 삽입 -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        
+    <meta charset="UTF-8">
+    <title>이력서 작성</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/resume.css">
 </head>
 
 <body class="resume-body">
-  <div class="container resume-container">
-    <h1 class="resume-title text-center">이력서</h1>
+  <div class="container-fluid">
+    <div class="row">
+      
+      <!-- 좌측 공백 영역 -->
+      <div class="col-12 col-md-2 side-space"></div>
+      
+      <!-- 중앙 메인폼 -->
+      <div class="col-12 col-md-8 main-form">
+        <form action="<c:url value='/resume/resumeRegist' />" method="post" class="resume-form">
+          
+          <!-- 제목 -->
+          <div class="card section-card mb-4">
+            <div class="card-header section-title">
+              제목 <span class="text-danger">(필수)</span>
+            </div>
+            <div class="card-body">
+              <div class="form-group mb-3">
+                <label for="resumeTitle" class="resume-label">제목</label>
+                <input type="text" id="resumeTitle" name="resumeTitle"
+                       value="${param.title}" 
+                       class="form-control resume-input" 
+                       placeholder="제목을 입력해주세요.">
+              </div>
+            </div>
+          </div>
 
-    <form action="<c:url value='/resume/resumeRegist' />" method="post" class="resume-form">
-      <!-- 제목 -->
-      <div class="form-group mb-3">
-      	<!-- 임시. 파라미터 첵크 -->
-      	      	
-      	업종 Value: ${param.industry}<br>
-		업종 Label: ${param.industryLabel}<br>
-		직종 Value: ${param.jobGroup}<br>
-		직종 Label: ${param.jobGroupLabel}<br>
-		기업형태 Value: ${param.companyType}<br>
-		기업형태 Label: ${param.companyTypeLabel}<br>
-		
-		      	
-      	
-        <label for="resumeTitle" class="resume-label">제목</label>
-        <input type="text" id="resumeTitle" name="resumeTitle"
-        		value="${param.title}" 
-               class="form-control resume-input" 
-               placeholder="제목을 입력해주세요.">
-      </div>
 
-      <!-- 사진 -->
-		<!-- 기본 정보 -->
-<div class="row mb-3">
-  <!-- 사진 -->
-  <div class="col-md-4 col-sm-12 text-center">
-    <img src="<c:url value='/resources/images/sam_face_1.png' />" alt="photo" class="img-thumbnail resume-photo mb-2">
-    <input type="button" value="사진 첨부" class="btn resume-btn btn-sm">
-  </div>
+    <!-- ================= 기본 인적사항 ================= -->
+    <div class="card section-card mb-5">
+        <div class="card-header section-title">
+            기본인적사항 <span class="text-danger">(필수)</span>
+        </div>
 
-  <!-- 이름 및 나머지 기본정보 -->
-  <div class="col-md-8 col-sm-12">
-    <div class="row mb-3">
-      <!-- 이름 -->
-      <div class="col-md-6 col-sm-12">
-        <label class="resume-label">이름</label>
-        <input type="text" name="name" class="form-control resume-input" placeholder="한글 이름 입력">
-      </div>
-      <!-- 생년월일 -->
-      <div class="col-md-6 col-sm-12">
-        <label class="resume-label">생년 월일</label>
-        <input type="date" name="birth" class="form-control resume-input">
-      </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- 사진 영역 -->
+                <div class="col-12 col-md-3 text-center mb-4">
+                    <div class="profile-box mx-auto mb-3"></div>
+                    <button class="btn btn-outline-secondary btn-sm">사진 첨부</button>
+                </div>
+
+                <!-- 입력 영역 -->
+                <div class="col-12 col-md-9">
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">이름</label>
+                            <input type="text" class="form-control">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">생년월일</label>
+                            <input type="date" class="form-control">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">이름(영문)</label>
+                            <input type="text" class="form-control">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">성별</label>
+                            <select class="form-select">
+                                <option selected>-선택-</option>
+                                <option>남</option>
+                                <option>여</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">전화번호</label>
+                            <input type="text" class="form-control">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">이메일</label>
+                            <input type="email" class="form-control">
+                        </div>
+
+                        <div class="col-md-12">
+						  <label class="form-label">주소</label>
+						  <div class="d-flex gap-2 mt-1">
+						    <input type="text" name="address1" class="form-control address-half" placeholder="주소 입력">
+						    <input type="text" name="address2" class="form-control address-half" placeholder="상세주소 입력">
+						  </div>
+						</div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="row mb-3">
-      <!-- 이름(영문) -->
-      <div class="col-md-6 col-sm-12">
-        <label class="resume-label">이름(영문)</label>
-        <input type="text" name="nameEng" class="form-control resume-input" placeholder="영문 이름 입력">
-      </div>
-      <!-- 성별 -->
-      <div class="col-md-6 col-sm-12">
-        <label class="resume-label">성별</label>
-        <select name="gender" class="form-control resume-input">
-          <option>-선택-</option>
-          <option>남성</option>
-          <option>여성</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <!-- 이름(한문) -->
-      <div class="col-md-6 col-sm-12">
-        <label class="resume-label">이름(한문)</label>
-        <input type="text" name="nameHanj" class="form-control resume-input" placeholder="한문 이름 입력">
-      </div>
-      <!-- 전화번호 -->
-      <div class="col-md-6 col-sm-12">
-        <label class="resume-label">전화번호</label>
-        <input type="text" name="phone" class="form-control resume-input" placeholder="전화번호 입력(-제외)">
-      </div>
-    </div>
-
-    <!-- 이메일은 단독으로 한 줄 -->
-    <div class="row mb-3">
-      <div class="col-md-12 col-sm-12">
-        <label class="resume-label">이메일</label>
-        <input type="text" name="email" class="form-control resume-input resume-input-wide" placeholder="이메일 입력">
-      </div>
-    </div>
-
-    <!-- 주소와 상세주소 같은 행에 나란히 배치 -->
-    <div class="row mb-3">
-      <div class="col-md-6 col-sm-12">
-        <label class="resume-label">주소</label>
-        <input type="text" name="address1" class="form-control resume-input" placeholder="주소 입력">
-      </div>
-      <div class="col-md-6 col-sm-12 d-flex align-items-end">
-        <!-- 상세주소는 라벨 없이 텍스트박스만 -->
-        <input type="text" name="address2" class="form-control resume-input" placeholder="상세주소 입력">
-      </div>
-    </div>
-  </div>
-</div>
 
       <!-- 사회형평적 인재 우대사항 -->
      <h3 class="section-title text-center">사회형평적 인재 우대사항(필수)</h3>
@@ -344,14 +340,21 @@
 		  <button type="submit" class="btn custom-btn">저장</button>
 		</div>
 
-
     </form>
   </div>
+
+	<!-- 우측 공백 영역 -->
+      <div class="col-12 col-md-2 side-space"></div>
+    </div>
+  </div>
   
-  <!-- ✅ Bootstrap JS 삽입 (body 끝 부분) -->
+    <!-- ✅ Bootstrap JS 삽입 (body 끝 부분) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  
 </body>
+  
+
+  
+
 
 </html>
 

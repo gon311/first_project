@@ -71,11 +71,18 @@ public class ReviewController {
 	    return "redirect:/review/" + coverLetterIdx + "/registText";
 	}
 	
+	// 임시) 
+	@GetMapping("/registText")
+	public String registTest() {
+		return "/review/reviewText";
+	}
+	
+	
 	// 2단계 작성 
 	@GetMapping("/{coverLetterIdx}/registText")
 	public String registText(@PathVariable Integer coverLetterIdx) {
 		
-		return "/review/registText";
+		return "/review/reviewText";
 		
 	}
 	

@@ -90,6 +90,18 @@
 					</div>
 				</div>
 			</form>
+			
+			<%--ChatGPT 교정 요청 시 응답 돌아올 때 까지 작업 중 오버레이 화면 --%>
+			<div id="loadingOverlay" 
+				class="position-fixed top-0 start-0 w-100 h-100 d-none"
+				style="background: rgba(0,0,0,0.4); z-index: 9999">
+				<div class="d-flex justify-content-center align-items-center h-100">
+					<div class="text-center text-white">
+						<div class="spinner-border" role="status"></div>
+						<div class="mt-3">교정 중...</div>
+					</div>
+				</div>
+			</div>
 		</main>
 		<%-- footer area --%>
 		<%@ include file="/WEB-INF/views/inc/footer.jspf"%>
@@ -114,7 +126,33 @@
 					updateCount();
 				});
 				
-// 				2) 적용하기 버튼 
+// 				2) 생성하기 버튼
+				document.getElementById("generate").addEventListener('click', () => {
+					document.getElementById("loadingOverlay").classList.remove("d-none");
+					
+					// 입력받은 내용 가져오기 
+					let inputContent = document.getElementById("inputText").value;
+					
+					// chatGPT에 전달하기 
+					async function requestGenerate() {
+						try {
+							const = response = await fetch("<c:url value="/gpt/generateContent" />", {
+								method: "POST", 
+								headers: { 
+									"Content-type": "application/json"
+								}
+								
+							});
+							
+						} catch(error) {
+							
+						}
+					}
+					
+				});
+				
+				
+// 				3) 적용하기 버튼 
 				document.addEventListener('DOMContentLoaded', () => {
 					const applyBtn = document.getElementById('apply');
 					const inputArea = document.getElementById('inputText');

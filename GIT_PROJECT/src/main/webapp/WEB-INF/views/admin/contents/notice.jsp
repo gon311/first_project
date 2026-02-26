@@ -53,15 +53,15 @@
 	                	<c:when test="${not empty noticeList}">
 	                    <c:forEach items="${noticeList}" var="notice">
 	                        <tr>
-	                            <td>${notice.notice_id}</td>
+	                            <td>${notice.noticeId}</td>
 	                            <td class="text-start">
-	                                <a href="<c:url value='/admin/contents/noticeDetail?notice_id=${notice.notice_id}' />" class="  text-decoration-none text-dark">
-	                                    ${notice.notice_title}
+	                                <a href="<c:url value='/admin/contents/noticeDetail?notice_id=${notice.noticeId}' />" class="  text-decoration-none text-dark">
+	                                    ${notice.noticeTitle}
 	                                </a>
 	                            </td>
-	                            <td>${notice.reg_date}</td>
+	                            <td>${notice.regDate}</td>
 	                            <td><span>  ${notice.status == 'Y' ? '게시 중' : '임시저장'}</span></td>
-	                            <td>${notice.user_type}</td>
+	                            <td>${notice.userType}</td>
 	                        </tr>
 	                        
 

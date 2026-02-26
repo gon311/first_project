@@ -22,31 +22,5 @@ OS 파일
 Thumbs.db
 [Dd]esktop.ini
 
-<<<<<<< HEAD
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Windows Installer files
-*.cab
-*.msi
-*.msix
-*.msm
-*.msp
-
-# Windows shortcuts
-*.lnk
-
-# End of https://www.toptal.com/developers/gitignore/api/java,eclipse,maven,windows
-
-# 개발자가 추가한 제외 항목
-application.properties
-
-
-
-
-
-
-=======
 ## 개발자가 추가한 제외 항목 
 application.properties 
->>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git

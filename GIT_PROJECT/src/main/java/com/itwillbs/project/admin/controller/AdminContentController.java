@@ -53,8 +53,8 @@ public class AdminContentController {
 	}
 	
 	@GetMapping("/noticeDetail")
-	public String noticeDetail(@RequestParam("notice_id") int notice_id, Model model) {
-		NoticeDTO noticeDTO =adminService.getNoticeDetail(notice_id);
+	public String noticeDetail(@RequestParam("noticeId") int noticeId, Model model) {
+		NoticeDTO noticeDTO =adminService.getNoticeDetail(noticeId);
 		model.addAttribute("noticeDTO", noticeDTO); 
 //		System.out.println("데이터 결과값: " + noticeDTO.toString());
 //		System.out.println("제목 리턴값: " + noticeDTO);
@@ -95,16 +95,18 @@ public class AdminContentController {
 	// FAQ 전체 목록 및 카테고리별 출력
 	@GetMapping("/FaQ")
 	public String faqList(
-	        @RequestParam(value="category", defaultValue="user") String category,
+	        @RequestParam(value="userType", defaultValue="user") String userType,
 	        @RequestParam(value="keyword", required=false) String keyword,
+	   
 	        Model model
 	        , FaqDTO faqDTO) {
 	    
 	    // 서비스 호출 (카테고리, 키워드 포함)
-	    List<FaqDTO> faqList = adminService.getFaqList(category, keyword, faqDTO);
+	    List<FaqDTO> faqList = adminService.getFaqList(userType, keyword);
+	    System.out.println(faqList);
 	    
 	    model.addAttribute("faqList", faqList);
-	    model.addAttribute("category", category); // 탭 활성화 유지용
+	    model.addAttribute("userType", userType); // 탭 활성화 유지용
 	    model.addAttribute("keyword", keyword);   // 검색어 유지용
 	    
 	    return "admin/contents/faq"; // faq.jsp로 포워딩
@@ -116,22 +118,26 @@ public class AdminContentController {
 	    
 	    FaqDTO faq = adminService.getFaqDetail(faqId);
 	    model.addAttribute("faq", faq);
+	    System.out.println(faq.getFaqId());
 	    
 	    return "admin/contents/faqMgmt"; // faqMgmt.jsp(상세페이지)로 포워딩
 	}
 	
 	@GetMapping("/FaqWrite")
 	public String faqWrite(Model model) {
-		model.addAttribute("pageTitle", "faq제목");
 		
 		return "admin/contents/faqWrite";
 	}
 	
 	@PostMapping("/insertFaq")
 	public String faqInsert(@ModelAttribute FaqDTO faqDTO) {
+//		System.out.println(faqDTO.toString());
 		adminService.insertFaq(faqDTO);
-		return "redirect:/admin/contents/faq";
+//		return "redirect:/admin/contents/faq";
+		return "redirect:/admin/contents/FaQ?userType=" + faqDTO.getUserType();
 	}
+	
+
 	
 	
 //	===============================================================================

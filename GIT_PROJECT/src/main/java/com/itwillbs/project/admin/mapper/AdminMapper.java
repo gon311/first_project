@@ -117,9 +117,12 @@ public interface AdminMapper {
 	// -========================================================================
 	// faq 관리
 
-	List<FaqDTO> getFaqList(FaqDTO faqDTO);
+	List<FaqDTO> getFaqList(@Param("userType") String userType
+							, @Param("keyword") String keyword);
 
 	void insertFaq(FaqDTO faqDTO);
+
+	FaqDTO getFaqDetail(int faqId);
 
 	
 

@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.project.my.dto.FavoriteJobCond;
+import com.itwillbs.project.my.dto.FavoriteJobRowDTO;
 import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.MyReviewDTO;
@@ -27,6 +29,10 @@ public interface MyMapper {
 	MyResumeDTO selectTopResume(@Param("userId") Long userId);
 
 	List<MyReviewDTO> selectMyReviewList(@Param("userId") Long userId);
+
+	List<FavoriteJobRowDTO> selectFavoriteJobList(FavoriteJobCond cond);
+
+	int selectFavoriteJobCount(FavoriteJobCond cond);
 	
 	
 

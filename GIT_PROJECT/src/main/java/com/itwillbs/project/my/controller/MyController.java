@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.project.common.paging.PageRes;
+import com.itwillbs.project.my.dto.FavoriteJobCond;
+import com.itwillbs.project.my.dto.FavoriteJobRowDTO;
 import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.PasswordChangeDTO;
@@ -236,10 +239,51 @@ public class MyController {
 	}
 	
 	
-	// 관심 목록
+	// 관심 목록(관심공고)
 	@GetMapping("/favorites")
-	public String favorites(Model model) {
-	    model.addAttribute("currentMenu", "favorites"); // 사이드바 '관심 목록' 활성
+	public String favorites(
+	        HttpSession session,
+	        Model model,
+	        @RequestParam(required = false) String keyword,
+	        @RequestParam(defaultValue = "ALL") String status,
+	        @RequestParam(defaultValue = "false") boolean excludeApplied,
+	        @RequestParam(defaultValue = "1") int page,
+	        @RequestParam(defaultValue = "5") int size   // ✅ default 5
+	) {
+		// 로그인 체크
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    model.addAttribute("currentMenu", "favorites");
+
+	    MyDTO user = myService.getUser(sId);
+	    model.addAttribute("loginUser", user);
+
+	    FavoriteJobCond cond = new FavoriteJobCond();
+	    cond.setUserId(user.getUserId());
+	    cond.setKeyword(keyword);
+	    cond.setStatus(status);
+	    cond.setExcludeApplied(excludeApplied);
+
+	    // ✅ 공통 PageReq로 세팅
+	    cond.getPage().setPage(page);
+	    cond.getPage().setSize(size);
+
+	    // ✅ 조회
+	    List<FavoriteJobRowDTO> favorites = myService.getFavoriteJobList(cond);
+	    int total = myService.getFavoriteJobCount(cond);
+
+	    // ✅ 페이징 응답
+	    PageRes pager = PageRes.of(cond.getPage(), total);
+
+	    model.addAttribute("favorites", favorites);
+	    model.addAttribute("pager", pager);
+
+	    // 화면에서 필터 값 유지
+	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("status", status);
+	    model.addAttribute("excludeApplied", excludeApplied);
+
 	    return "/my/favorites";
 	}
 	

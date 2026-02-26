@@ -290,9 +290,9 @@
             </select>
 
             <select class="select">
-              <option>20개씩</option>
+              <option>5개씩</option>
               <option>10개씩</option>
-              <option>50개씩</option>
+              <option>15개씩</option>
             </select>
 
             <label style="display:flex; align-items:center; gap:6px; font-weight:900; color:#374151;">
@@ -309,121 +309,103 @@
 
         <%-- =========================
              리스트 영역
-             - 나중에 c:forEach로 교체하면 자동으로 줄 추가됨
+             c:forEach로 교체하면 자동으로 줄 추가됨
              - 화면정의서 포인트:
                (1) 제목 클릭 → 채용 상세로 이동
                (2) 입사지원 버튼(팝업/이동은 나중)
                (3) 삭제(휴지통)
            ========================= --%>
-        <div class="list">
-
-          <%-- ===== 샘플 Row 1 ===== --%>
-          <div class="row-item">
-            <div class="row-left">
-              <input class="chk" type="checkbox">
-            </div>
-
-            <div class="row-mid">
-              <div class="company">에빈코리아(유)</div>
-
-              <%-- (1) 제목 클릭 이동 --%>
-              <a class="title-link" href="${urlJobDetail}?jobId=1">
-                2026년 전직군 신입/경력 채용
-              </a>
-
-              <div class="subline">신입 · 경력 · 학력무관 · 정규직 · 서울전체</div>
-            </div>
-
-            <div class="row-right">
-              <%-- (2) 입사지원 (진행중 예시) --%>
-              <button type="button" class="btn-apply"
-                      onclick="location.href='${urlApply}?jobId=1'">
-                입사지원
-              </button>
-
-              <%-- (3) 삭제(휴지통) --%>
-              <form action="${urlDeleteFav}" method="post" style="margin:0;">
-                <input type="hidden" name="jobId" value="1"/>
-                <button type="submit" class="btn-trash" title="삭제">🗑</button>
-              </form>
-
-              <div class="deadline">
-                <div class="d1">접수마감</div>
-                <div class="d2">~ 02/15(일)</div>
-              </div>
-            </div>
-          </div>
-
-          <%-- ===== 샘플 Row 2 ===== --%>
-          <div class="row-item">
-            <div class="row-left">
-              <input class="chk" type="checkbox">
-            </div>
-
-            <div class="row-mid">
-              <div class="company">(주)레이지반테크놀...</div>
-              <a class="title-link" href="${urlJobDetail}?jobId=2">
-                2026년 1분기 분야별 공개 채용
-              </a>
-              <div class="subline">신입 · 경력 · 대학(2,3년)↑ · 정규직 · 경기 수원시</div>
-            </div>
-
-            <div class="row-right">
-              <button type="button" class="btn-apply"
-                      onclick="location.href='${urlApply}?jobId=2'">
-                입사지원
-              </button>
-
-              <form action="${urlDeleteFav}" method="post" style="margin:0;">
-                <input type="hidden" name="jobId" value="2"/>
-                <button type="submit" class="btn-trash" title="삭제">🗑</button>
-              </form>
-
-              <div class="deadline">
-                <div class="d1">마감</div>
-                <div class="d2">~ 02/28(토)</div>
-              </div>
-            </div>
-          </div>
-
-          <%-- ===== 샘플 Row 3 (마감 → 버튼 비활성 예시) ===== --%>
-          <div class="row-item">
-            <div class="row-left">
-              <input class="chk" type="checkbox">
-            </div>
-
-            <div class="row-mid">
-              <div class="company">(주)위츠</div>
-              <a class="title-link" href="${urlJobDetail}?jobId=3">
-                각 부문 신입/경력 채용
-              </a>
-              <div class="subline">신입 · 경력 · 대학교(4년)↑ · 정규직 · 서울전체</div>
-            </div>
-
-            <div class="row-right">
-              <button type="button" class="btn-dead">접수마감</button>
-
-              <form action="${urlDeleteFav}" method="post" style="margin:0;">
-                <input type="hidden" name="jobId" value="3"/>
-                <button type="submit" class="btn-trash" title="삭제">🗑</button>
-              </form>
-
-              <div class="deadline">
-                <div class="d1">마감</div>
-                <div class="d2">~ 02/10(화)</div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <%-- 페이지네이션(뼈대) --%>
-        <div class="pager">
-          <a href="#" class="active">1</a>
-          <a href="#">2</a>
-          <a href="#">3</a>
-          <a href="#">다음</a>
-        </div>
+			<div class="favorites">
+			
+			  <c:if test="${empty favorites}">
+			    <div style="padding:40px 10px; color:#6b7280; font-weight:800;">
+			      관심 공고가 없어요.
+			    </div>
+			  </c:if>
+			
+			  <c:forEach var="fav" items="${favorites}">
+			    <div class="row-item">
+			      <div class="row-left">
+			        <input class="chk rowChk" type="checkbox" value="${fav.jobId}">
+			      </div>
+			
+			      <div class="row-mid">
+			        <div class="company">${fav.companyName}</div>
+			
+			        <a class="title-link" href="${urlJobDetail}?jobId=${fav.jobId}">
+			          ${fav.title}
+			        </a>
+			
+			        <div class="subline">
+			          ${fav.expType}
+			          <c:if test="${not empty fav.expYear}"> · ${fav.expYear}</c:if>
+			          <c:if test="${not empty fav.edu}"> · ${fav.edu}</c:if>
+			          <c:if test="${not empty fav.empType}"> · ${fav.empType}</c:if>
+			          <c:if test="${not empty fav.address}"> · ${fav.address}</c:if>
+			        </div>
+			      </div>
+			
+			      <div class="row-right">
+			        <c:choose>
+			          <c:when test="${!fav.closed}">
+			            <button type="button" class="btn-apply"
+			                    onclick="location.href='${urlApply}?jobId=${fav.jobId}'">
+			              입사지원
+			            </button>
+			          </c:when>
+			          <c:otherwise>
+			            <button type="button" class="btn-dead">접수마감</button>
+			          </c:otherwise>
+			        </c:choose>
+			
+			        <form action="${urlDeleteFav}" method="post" style="margin:0;">
+			          <input type="hidden" name="jobId" value="${fav.jobId}"/>
+			          <button type="submit" class="btn-trash" title="삭제">🗑</button>
+			        </form>
+			
+			        <div class="deadline">
+			          <div class="d1">
+			            <c:choose>
+			              <c:when test="${fav.closed}">마감</c:when>
+			              <c:otherwise>접수마감</c:otherwise>
+			            </c:choose>
+			          </div>
+			          <div class="d2">${fav.deadlineLabel}</div>
+			        </div>
+			      </div>
+			    </div>
+			  </c:forEach>
+			  
+				<c:if test="${pager.total > 0}">
+				  <div class="pager">
+				    <c:if test="${pager.hasPrev}">
+				      <a href="${urlFavorites}?page=${pager.page-1}&size=${pager.size}&status=${status}&excludeApplied=${excludeApplied}&keyword=${keyword}">
+				        이전
+				      </a>
+				    </c:if>
+				
+				    <c:forEach var="p" begin="${pager.startPage}" end="${pager.endPage}">
+				      <c:choose>
+				        <c:when test="${p == pager.page}">
+				          <a class="active" href="${urlFavorites}?page=${p}&size=${pager.size}&status=${status}&excludeApplied=${excludeApplied}&keyword=${keyword}">
+				            ${p}
+				          </a>
+				        </c:when>
+				        <c:otherwise>
+				          <a href="${urlFavorites}?page=${p}&size=${pager.size}&status=${status}&excludeApplied=${excludeApplied}&keyword=${keyword}">
+				            ${p}
+				          </a>
+				        </c:otherwise>
+				      </c:choose>
+				    </c:forEach>
+				
+				    <c:if test="${pager.hasNext}">
+				      <a href="${urlFavorites}?page=${pager.page+1}&size=${pager.size}&status=${status}&excludeApplied=${excludeApplied}&keyword=${keyword}">
+				        다음
+				      </a>
+				    </c:if>
+				  </div>
+				</c:if>
 
       </div>
     </section>

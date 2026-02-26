@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.project.my.dto.FavoriteJobCond;
+import com.itwillbs.project.my.dto.FavoriteJobRowDTO;
 import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.MyReviewDTO;
@@ -63,6 +65,16 @@ public class MyService {
 	public List<MyReviewDTO> getmyReviewList(Long userId) {
 		return myMapper.selectMyReviewList(userId);
 	}
+
+	public List<FavoriteJobRowDTO> getFavoriteJobList(FavoriteJobCond cond) {
+	    return myMapper.selectFavoriteJobList(cond);
+	}
+
+	public int getFavoriteJobCount(FavoriteJobCond cond) {
+	    return myMapper.selectFavoriteJobCount(cond);
+	}
+	
+	
 
 }
 

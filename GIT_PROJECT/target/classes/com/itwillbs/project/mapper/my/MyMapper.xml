@@ -46,6 +46,21 @@
 	  <result property="createdAtStr"    column="created_at_str"/>
 	</resultMap>
 	
+	  <!-- FavoriteJobRowDTO -->
+	<resultMap id="favoriteJobMap" type="com.itwillbs.project.my.dto.FavoriteJobRowDTO">
+	  <id     property="jobId"         column="job_id"/>
+	  <result property="compId"        column="comp_id"/>
+	  <result property="companyName"   column="company_name"/>
+	  <result property="title"         column="title"/>
+	  <result property="expType"       column="exp_type"/>
+	  <result property="expYear"       column="exp_year"/>
+	  <result property="edu"           column="edu"/>
+	  <result property="empType"       column="emp_type"/>
+	  <result property="address"       column="address"/>
+	  <result property="closeDate"     column="close_date"/>
+	  <result property="closed"        column="closed"/>
+	  <result property="deadlineLabel" column="deadline_label"/>
+	</resultMap>
 	
 	
 	
@@ -149,6 +164,99 @@
 		ORDER BY created_at DESC;
 	</select>
 	
+<!-- ==============================
+     관심공고
+     parameter: FavoriteJobCond.java
+     result: Long
+============================== -->		
+<select id="selectFavoriteJobList"
+        parameterType="com.itwillbs.project.my.dto.FavoriteJobCond"
+        resultMap="favoriteJobMap">
+
+	SELECT
+	    jp.job_id
+	  , jp.comp_id
+	  , uc.company_name
+	  , jp.title
+	  , jp.exp_type
+	  , jp.exp_year
+	  , jp.edu
+	  , jp.emp_type
+	  , jp.address
+	  , jp.close_date
+	  , (jp.close_date &lt; CURDATE()) AS closed
+	  , DATE_FORMAT(jp.close_date, '~ %m/%d(%a)') AS deadline_label
+	FROM JOB_SCRAP js
+	INNER JOIN JOB_POSTING jp ON jp.job_id = js.job_id
+	INNER JOIN USER_COMPANY uc ON uc.user_id = jp.comp_id
+	WHERE js.user_id = #{userId}
+
+	<if test="keyword != null and keyword != ''">
+	  AND (
+	       jp.title LIKE CONCAT('%', #{keyword}, '%')
+	    OR uc.company_name LIKE CONCAT('%', #{keyword}, '%')
+	  )
+	</if>
+
+	<if test="status == 'OPEN'">
+	  AND jp.close_date >= CURDATE()
+	</if>
+
+	<if test="status == 'CLOSED'">
+	  AND jp.close_date &lt; CURDATE()
+	</if>
+
+	<if test="excludeApplied">
+	  AND NOT EXISTS (
+	    SELECT 1
+	    FROM JOB_APPLICATION ja
+	    WHERE ja.user_id = js.user_id
+	      AND ja.job_id = js.job_id
+	  )
+	</if>
+
+	ORDER BY js.created_at DESC
+	LIMIT #{page.offset, jdbcType=INTEGER}, #{page.safeSize, jdbcType=INTEGER}
+</select>
+
+
+
+<select id="selectFavoriteJobCount"
+        parameterType="com.itwillbs.project.my.dto.FavoriteJobCond"
+        resultType="int">
+
+	SELECT
+	    COUNT(*) AS cnt
+	FROM JOB_SCRAP js
+	INNER JOIN JOB_POSTING jp ON jp.job_id = js.job_id
+	INNER JOIN USER_COMPANY uc ON uc.user_id = jp.comp_id
+	WHERE js.user_id = #{userId}
+
+	<if test="keyword != null and keyword != ''">
+	  AND (
+	       jp.title LIKE CONCAT('%', #{keyword}, '%')
+	    OR uc.company_name LIKE CONCAT('%', #{keyword}, '%')
+	  )
+	</if>
+
+	<if test="status == 'OPEN'">
+	  AND jp.close_date >= CURDATE()
+	</if>
+
+	<if test="status == 'CLOSED'">
+	  AND jp.close_date &lt; CURDATE()
+	</if>
+
+	<if test="excludeApplied">
+	  AND NOT EXISTS (
+	    SELECT 1
+	    FROM JOB_APPLICATION ja
+	    WHERE ja.user_id = js.user_id
+	      AND ja.job_id = js.job_id
+	  )
+	</if>
+</select>
+
 
 	
 </mapper>

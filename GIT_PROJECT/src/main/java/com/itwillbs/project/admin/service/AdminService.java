@@ -140,7 +140,6 @@ public class AdminService{
 	}
 	// 상태 따라 div 영역 출력
 	public List<QnaDTO> getListByStatus(String reStatus) {
-		// TODO Auto-generated method stub
 		return adminMapper.getListByStatus(reStatus);
 	}
 
@@ -153,6 +152,11 @@ public class AdminService{
 	public FaqDTO getFaqDetail(int faqId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void insertFaq(FaqDTO faqDTO) {
+		
+		adminMapper.insertFaq(faqDTO);
 	}
 
 

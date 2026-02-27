@@ -71,7 +71,7 @@
                                 <hr class="mt-1 mb-2">
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">8,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=30'">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U30'">구매하기</button>
                                 </div>
                             </div>
                         </div>

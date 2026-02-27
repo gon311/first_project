@@ -13,7 +13,7 @@
         <div class="container mt-5 custom-width">
             <h2 class="mb-4 text-center">구매하기</h2>
 
-            <form action="<c:url value='/store/pay' />" method="post" class="needs-validation" novalidate>
+            <form name="payForm" action="<c:url value='/store/pay' />" method="post" class="needs-validation" novalidate>
 
                 <!-- 주문자 정보 -->
                 <div class="card mb-4">
@@ -21,11 +21,11 @@
                         <h4 class="mb-3">주문자 정보</h4>
                         <div class="mb-3">
                             <label class="form-label">주문자명</label>
-                            <input type="text" class="form-control" name="buyerName" value="${orderInfo.userName}" readonly>
+                            <input id="userName" type="text" class="form-control" name="userName" value="${orderInfo.userName}" readonly>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">전화번호</label>
-                            <input type="text" class="form-control" name="buyerPhone" value="${orderInfo.phone}" readonly>
+                            <input id="userPhone" type="text" class="form-control" name="userPhone" value="${orderInfo.phone}" readonly>
                         </div>
                     </div>
                 </div>
@@ -36,11 +36,11 @@
                         <h4 class="mb-3">상품 정보</h4>
                         <div class="mb-3">
                             <label class="form-label">상품명</label>
-                            <input type="text" class="form-control" name="productName" value="${storeInfo.productName}" readonly>
+                            <input id="productName" type="text" class="form-control" name="productName" value="${storeInfo.productName}" readonly>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">상품 가격</label>
-                            <input type="text" class="form-control" name="productPrice" value="${storeInfo.productPrice}원" readonly>
+                            <input id="productPrice" type="text" class="form-control" name="productPrice" value="${storeInfo.productPrice}원" readonly>
                         </div>
                     </div>
                 </div>
@@ -48,9 +48,9 @@
                 <!-- 결제 수단 -->
                 <div class="card mb-4">
                     <div class="card-header fw-bold">결제 수단</div>
-                    <div class="card-body">
+                    <div id="selectMethod" class="card-body">
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="payMethod" value="credit" id="credit" 
+                            <input id="credit" class="form-check-input" type="radio" name="payMethod" value="credit" 
                             	onclick="checkMethod()" required>
                             <label class="form-check-label" for="credit">신용카드</label>
                         </div>
@@ -59,50 +59,50 @@
                         <div id="selectCredit" class="row mb-3 mx-3" style="display:none;">
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">카드사 선택</label>
-                                <select id="cardCompany" class="form-select" name="cardCompany" required>
-                                    <option>삼성카드</option>
-                                    <option>신한카드</option>
-                                    <option>KB국민카드</option>
-                                    <option>우리카드</option>
-                                    <option>비씨카드</option>
-                                    <option>롯데카드</option>
-                                    <option>현대카드</option>
-                                    <option>하나카드</option>
-                                    <option>씨티카드</option>
-                                    <option>카카오뱅크</option>
-                                    <option>광주카드</option>
-                                    <option>전북카드</option>
-                                    <option>수협카드</option>
-                                    <option>제주카드</option>
-                                    <option>신협카드</option>
-                                    <option>우체국체크카드</option>
-                                    <option>새마을금고</option>
-                                    <option>저축은행카드</option>
-                                    <option>KDB산업체크카드</option>
-                                    <option>NH카드</option>
+                                <select id="cardCompany" class="form-select" name="cardCompany">
+                                    <option value="">카드사 선택</option>
+                                    <option value="ss">삼성카드</option>
+                                    <option value="sh">신한카드</option>
+                                    <option value="kb">KB국민카드</option>
+                                    <option value="wr">우리카드</option>
+                                    <option value="bc">비씨카드</option>
+                                    <option value="rd">롯데카드</option>
+                                    <option value="hd">현대카드</option>
+                                    <option value="hn">하나카드</option>
+                                    <option value="ct">씨티카드</option>
+                                    <option value="kk">카카오뱅크</option>
+                                    <option value="kj">광주카드</option>
+                                    <option value="jb">전북카드</option>
+                                    <option value="sb">수협카드</option>
+                                    <option value="jj">제주카드</option>
+                                    <option value="cu">신협카드</option>
+                                    <option value="eb">우체국체크카드</option>
+                                    <option value="mg">새마을금고</option>
+                                    <option value="kdb">KDB산업체크카드</option>
+                                    <option value="nh">NH카드</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">할부 개월 수</label>
-                                <select id="installment" class="form-select" name="installment" required>
-                                    <option>일시불</option>
-                                    <option>2개월</option>
-                                    <option>3개월</option>
-                                    <option>4개월</option>
-                                    <option>5개월</option>
-                                    <option>6개월</option>
-                                    <option>7개월</option>
-                                    <option>8개월</option>
-                                    <option>9개월</option>
-                                    <option>10개월</option>
-                                    <option>11개월</option>
-                                    <option>12개월</option>
+                                <select id="installment" class="form-select" name="installment">
+                                    <option value="">일시불</option>
+                                    <option value="2">2개월</option>
+                                    <option value="3">3개월</option>
+                                    <option value="4">4개월</option>
+                                    <option value="5">5개월</option>
+                                    <option value="6">6개월</option>
+                                    <option value="7">7개월</option>
+                                    <option value="8">8개월</option>
+                                    <option value="9">9개월</option>
+                                    <option value="10">10개월</option>
+                                    <option value="11">11개월</option>
+                                    <option value="12">12개월</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="payMethod" value="bank" id="bank" onclick="checkMethod()">
+                            <input id="bank" class="form-check-input" type="radio" name="payMethod" value="bank" onclick="checkMethod()">
                             <label class="form-check-label" for="bank">무통장 입금</label>
                         </div>
                         
@@ -110,22 +110,23 @@
                         <div id="selectBank" class="row mx-3" style="display:none;">
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">은행 선택</label>
-                                <select class="form-select" name="bankName" required>
-                                    <option>국민은행</option>
-                                    <option>우리은행</option>
-                                    <option>신한은행</option>
-                                    <option>기업은행</option>
-                                    <option>NH농협은행</option>
-                                    <option>부산은행</option>
-                                    <option>하나은행</option>
-                                    <option>광주은행</option>
-                                    <option>우체국</option>
-                                    <option>iM뱅크</option>
+                                <select class="form-select" name="bankName">
+                                    <option value="">은행 선택</option>
+                                    <option value="kb">국민은행</option>
+                                    <option value="wr">우리은행</option>
+                                    <option value="sh">신한은행</option>
+                                    <option value="ibk">기업은행</option>
+                                    <option value="nh">NH농협은행</option>
+                                    <option value="bs">부산은행</option>
+                                    <option value="hn">하나은행</option>
+                                    <option value="kj">광주은행</option>
+                                    <option value="eb">우체국</option>
+                                    <option value="im">iM뱅크</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">입금자명</label>
-                                <input type="text" class="form-control" name="depositor" required>
+                                <input type="text" id="depositName" class="form-control" name="depositor" required>
                             </div>
                         </div>
                     </div>
@@ -170,10 +171,10 @@
 				      <div class="modal-body">
 				        <p>[유료 서비스 이용 약관]</p>
 				        <p>제1조 (목적)<br>
-							이 약관은 ㈜잡아이(이하 "회사")이 제공하는 채용 관련 상품 및 서비스 거래 플랫폼(이하 "서비스")과 관련하여 회사와 회원의 권리·의무 등 필요한 사항을 규정합니다.</p>
+							이 약관은 ㈜잡아이(이하 "회사")가 제공하는 채용 관련 상품 및 서비스 거래 플랫폼(이하 "서비스")과 관련하여 회사와 회원의 권리·의무 등 필요한 사항을 규정합니다.</p>
 				        <p>제2조 (회원)<br>
 							서비스를 이용하려는 개인 또는 법인은 이 약관을 확인하고 동의하게 됩니다.<br>
-							서비스를 이용하는 모든 회원은 ㈜사람인의 「개인회원 약관」 또는 「기업회원 약관」 동의 후 회사로부터 유효한 회원 자격을 부여받아 유지하는 개인 또는 기업회원임을 전제로 합니다. 이러한 사유로 이 약관으로 정하지 않은 사항 중 ㈜사람인의 「개인회원 약관」 또는 「기업회원 약관」으로 규정된 사항은 해당 약관의 적용을 받습니다.</p>
+							서비스를 이용하는 모든 회원은 ㈜잡아이의 「개인회원 약관」 또는 「기업회원 약관」 동의 후 회사로부터 유효한 회원 자격을 부여받아 유지하는 개인 또는 기업회원임을 전제로 합니다. 이러한 사유로 이 약관으로 정하지 않은 사항 중 ㈜사람인의 「개인회원 약관」 또는 「기업회원 약관」으로 규정된 사항은 해당 약관의 적용을 받습니다.</p>
 				      	<p>제3조 (상품)<br>
 							회사가 이 약관을 기준으로 제공하는 서비스의 구체적인 재화 및 용역(이하 "상품")은 다음과 같습니다.<br>
 							① (구직자 회원)구직자 회원의 취업을 보조하기 위하여 이미 작성된 문서의 첨삭 및/또는 신규 문서의 작성 등을 제공(이하 "AI 자소서 첨삭")하는 유상 상품<br>
@@ -229,6 +230,7 @@
     		}
     	}
     	
+    	// 유료 서비스 약관에 동의했을 경우에만 구매 버튼 활성화
     	document.getElementById("checkModal").addEventListener("click", function() {
     		if(document.getElementById("checkModal").checked) {
     			document.getElementById("btnPay").disabled = false;
@@ -236,6 +238,26 @@
     			document.getElementById("btnPay").disabled = true;
     		}
     	}) 
+    	
+    	
+//     	document.payForm.addEventListener("submit", function() {
+//     		if(!document.payForm.payMethod[0].checked && !document.payForm.payMethod[1].checked) {
+//     			document.payForm.payMethod[0].focus();
+//     			return false;
+//     		} else if(document.payForm.payMethod[0].checked && document.payForm.cardCompany.value == "") {
+//     			document.payForm.cardCompany.focus();
+//     			return false;
+//     		} else if(document.payForm.payMethod[0].checked && document.payForm.installment.value == "") {
+//     			document.payForm.installment.focus();
+//     			return false;
+//     		} else if(document.payForm.payMethod[1].checked && document.payForm.bankName.value == "") {
+//     			document.payForm.bankName.focus();
+//     			return false;
+//     		} else if(document.payForm.payMethod[1].checked && document.payForm.depositor.value == "") {
+//     			document.payForm.depositor.focus();
+//     			return false;
+//     		}
+//     	})
     </script>
 
 </body>

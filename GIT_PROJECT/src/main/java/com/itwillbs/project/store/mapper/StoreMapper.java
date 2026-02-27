@@ -12,8 +12,6 @@ public interface StoreMapper {
 	// 구매하기 페이지 내 상품 정보 출력
 	StoreDTO selectStoreInfo(String productId);
 
-//	ProductInfoDTO selectProductInfo(String productId);
-
 	// 구매하기 페이지 내 회원정보 출력
 	OrderDTO selectOrderUser(String sId);
 

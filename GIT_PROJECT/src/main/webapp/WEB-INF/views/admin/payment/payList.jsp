@@ -90,7 +90,7 @@
                 <input type="hidden" name="startDate" value="${param.startDate}">
                 <input type="hidden" name="endDate" value="${param.endDate}">
                 <input type="hidden" name="userType" value="${param.userType}">
-                <input type="hidden" name="userType" value="${param.payStatus}">
+                <input type="hidden" name="payStatus" value="${param.payStatus}">
 
                 <select class="form-select w-auto" name="sort" id="paymentSort">
                     <option value="">전체</option>

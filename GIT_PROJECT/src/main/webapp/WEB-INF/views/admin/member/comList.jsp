@@ -204,7 +204,8 @@
 	                <form action="<c:url value='/admin/coms' />" method="get" id="withdrawSortForm">
 	                    <input type="hidden" name="activeTab" value="withdraw"/>
 	                    <input type="hidden" name="keyword" value="${param.keyword}">
-	                    <input type="hidden" name="withdrawDate" value="${param.withdrawDate}">
+	                    <input type="hidden" name="startDate" value="${param.startDate}">
+	                    <input type="hidden" name="endDate" value="${param.endDate}">
 	
 	                    <select class="form-select w-auto" name="sort" id="withdrawSort">
 	                        <option value="">전체</option>

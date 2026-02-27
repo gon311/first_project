@@ -52,7 +52,8 @@ public class AdminController {
 		// 탈퇴 회원 목록 조회
 		List<MemberDTO> userWithdraw = adminService.getUserWithdraw(searchDTO.getKeyword()
 																	, searchDTO.getStartDate()
-																	, searchDTO.getEndDate());
+																	, searchDTO.getEndDate()
+																	, sort);
 		model.addAttribute("userWithdraw", userWithdraw);
 		
 		return "admin/member/userList";
@@ -118,7 +119,8 @@ public class AdminController {
 		// 탈퇴 회원 목록 조회
 		List<MemberDTO> comWithdraw = adminService.getComWithdraw(searchDTO.getKeyword()
 																, searchDTO.getStartDate()
-																, searchDTO.getEndDate());
+																, searchDTO.getEndDate()
+																, sort);
 		model.addAttribute("comWithdraw", comWithdraw);
 		 
 		return "admin/member/comList";
@@ -218,7 +220,7 @@ public class AdminController {
 		
 		return "admin/payment/payList"; 
 	}
-	
+	 
 	// 결제 내역 상세정보 조회
 	@GetMapping("/payments/info")
 	public String payInfo(Model model, PayDTO payDTO) {

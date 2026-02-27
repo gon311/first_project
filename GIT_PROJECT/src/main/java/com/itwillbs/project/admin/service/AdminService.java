@@ -51,8 +51,8 @@ public class AdminService{
 	}
 	
 	// 탈퇴한 회원 목록
-	public List<MemberDTO> getUserWithdraw(String keyword, String startDate, String endDate) {
-		return adminMapper.selectUserWithdraw(keyword, startDate, endDate);
+	public List<MemberDTO> getUserWithdraw(String keyword, String startDate, String endDate, String sort) {
+		return adminMapper.selectUserWithdraw(keyword, startDate, endDate, sort);
 	}
 	
 	//---------------------------------------------------------------------------------------------
@@ -67,8 +67,8 @@ public class AdminService{
 	}
 	
 	// 탈퇴한 회원 목록
-	public List<MemberDTO> getComWithdraw(String keyword, String startDate, String endDate) {
-		return adminMapper.selectComWithdraw(keyword, startDate, endDate);
+	public List<MemberDTO> getComWithdraw(String keyword, String startDate, String endDate, String sort) {
+		return adminMapper.selectComWithdraw(keyword, startDate, endDate, sort);
 	}
 	
 	//======================================================================================
@@ -105,7 +105,7 @@ public class AdminService{
 	public List<PayDTO> getPayList(String startDate, String endDate, String keyword, String userType, String payStatus, String sort) {
 		return adminMapper.selectPayList(startDate, endDate, keyword, userType, payStatus, sort);
 	}
-
+ 
 	// 결제 내역 상세정보
 	public PayDTO getPayInfo(String id) {
 		return adminMapper.selectPayInfo(id);

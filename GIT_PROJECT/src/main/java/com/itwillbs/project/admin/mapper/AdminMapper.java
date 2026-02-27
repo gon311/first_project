@@ -40,7 +40,8 @@ public interface AdminMapper {
 	// 탈퇴 회원 목록 조회
 	List<MemberDTO> selectUserWithdraw(@Param("keyword") String keyword
 									, @Param("startDate") String startDate
-									, @Param("endDate") String endDate);
+									, @Param("endDate") String endDate
+									, @Param("sort") String sort);
 	
 	// 기업회원 목록 조회
 	List<MemberDTO> selectComList(@Param("keyword") String keyword
@@ -54,7 +55,8 @@ public interface AdminMapper {
 	// 탈퇴 회원 목록 조회
 	List<MemberDTO> selectComWithdraw(@Param("keyword") String keyword
 									, @Param("startDate") String startDate
-									, @Param("endDate") String endDate);
+									, @Param("endDate") String endDate
+									, @Param("sort") String sort);
 	
 	//========================================================================
 	// 공지사항 리스트 조회
@@ -83,7 +85,7 @@ public interface AdminMapper {
 								, @Param("keyword") String keyword
 								, @Param("userType") String userType
 								, @Param("payStatus") String payStatus
-								, @Param("sort") String sort);
+								, @Param("sort") String sort); 
 
 	// 결제 내역 상세 정보 조회
 	PayDTO selectPayInfo(String id);

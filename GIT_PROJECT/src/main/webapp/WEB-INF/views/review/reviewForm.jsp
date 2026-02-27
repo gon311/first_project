@@ -342,7 +342,11 @@
 			    const form = document.getElementById("registForm");
 
 			    form.addEventListener("submit", function(e){
-			        if(!form.industryCode.value){
+			        if(!form.title.value){
+			            alert("제목을 입력해주세요.");
+			            e.preventDefault();
+			        }
+			        else if(!form.industryCode.value){
 			            alert("업종을 선택해주세요.");
 			            e.preventDefault();
 			        }
@@ -350,8 +354,20 @@
 			            alert("직종을 선택해주세요.");
 			            e.preventDefault();
 			        }
+			        else if(!form.roleCode.value){
+			            alert("세부직종을 선택해주세요.");
+			            e.preventDefault();
+			        }
 			        else if(!form.companyCode.value){
 			            alert("기업 형태를 선택해주세요.");
+			            e.preventDefault();
+			        }
+			        else if(!form.appliedField.value){
+			            alert("지원 분야를 작성해주세요.");
+			            e.preventDefault();
+			        }
+			        else if(!form.companyName.value){
+			            alert("회사명을 작성해주세요.");
 			            e.preventDefault();
 			        }
 			        else if(!form.careerCode.value){

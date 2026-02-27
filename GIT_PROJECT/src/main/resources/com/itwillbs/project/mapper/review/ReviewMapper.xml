@@ -16,7 +16,7 @@
 			, company_name
 			, company_idx
 			, career_idx
-			, ai_geneated
+			, ai_generated
 			, save_status
 			, created_at
 		)

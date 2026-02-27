@@ -21,17 +21,17 @@
 	
 						<!-- 제목 -->
 						<div class="mb-4">
-							<label for="title" class="form-label fw-semibold">자소서 제목 <span
+							<label for="title" class="form-label fw-semibold">자소서 제목<span
 								class="text-danger">*</span></label> <input type="text"
 								class="form-control" id="title" name="title"
-								value="${param.title}" placeholder="제목을 입력해 주세요." required>
+								value="${param.title}${coverLetterIdx}" placeholder="제목을 입력해 주세요." required>
 						</div>
-	
+						
 						<!-- 질문 선택 -->
 						<div class="mb-3">
 							<label for="question" class="form-label fw-semibold">질문 선택
 								<span class="text-danger">*</span>
-							</label> <select id="question" name="question"
+							</label> <select id="questionCode" name="questionCode"
 								class="form-select w-auto d-inline-block" required>
 								<option value="default" disabled selected>질문을 선택하세요</option>
 								<option value="MOTIVATION">지원동기</option>
@@ -66,12 +66,14 @@
 						<div class="row g-3 textarea-wrap">
 							<div class="col-12 col-lg-6">
 								<label for="inputText" class="form-label">입력</label>
-								<textarea id="inputText" name="inputText" class="form-control"
-									rows="18"></textarea>
+								<textarea id="content" name="content" class="form-control"
+									rows="18" placeholder="키워드 또는 문장을 입력해주세요."></textarea>
 							</div>
 							<div class="col-12 col-lg-6">
 								<label for="outputText" class="form-label">출력</label>
-								<textarea id="outputText" class="form-control" rows="18"></textarea>
+								<textarea id="outputText" name="outputText" class="form-control" rows="18">
+									<c:if test="${not empty response}">${response}</c:if>
+								</textarea>
 							</div>
 						</div>
 	
@@ -87,7 +89,28 @@
 	
 					</div>
 				</div>
+				
+				<%-- select문에서 사용할 coverLetterIdx --%>
+				<input type="hidden" id="coverLetterIdx" name="coverLetterIdx" value="${coverLetterIdx}">
+				<%-- ai 생성 여부  --%>
+				<input type="hidden" id="aiGenerated" name="aiGenerated" value="1">
+				<%-- 최종저장 status --%>
+				<input type="hidden" id="saveStatus" name="saveStatus" value="0">
+			
 			</form>
+			
+			
+			<%--ChatGPT 교정 요청 시 응답 돌아올 때 까지 작업 중 오버레이 화면 --%>
+			<div id="loadingOverlay" 
+				class="position-fixed top-0 start-0 w-100 h-100 d-none"
+				style="background: rgba(0,0,0,0.4); z-index: 9999">
+				<div class="d-flex justify-content-center align-items-center h-100">
+					<div class="text-center text-white">
+						<div class="spinner-border" role="status"></div>
+						<div class="mt-3">교정 중...</div>
+					</div>
+				</div>
+			</div>
 		</main>
 		<%-- footer area --%>
 		<%@ include file="/WEB-INF/views/inc/footer.jspf"%>
@@ -96,7 +119,7 @@
 		<script type="text/javascript">
 // 	 			1) 글자수 계산
 				document.addEventListener('DOMContentLoaded', () => {
-					const textarea = document.getElementById('inputText'); // 대상 textarea
+					const textarea = document.getElementById('content'); // 대상 textarea
 					const countSpan = document.getElementById('charCount'); // 숫자 표시 span
 					
 					function updateCount() {
@@ -112,10 +135,59 @@
 					updateCount();
 				});
 				
-// 				2) 적용하기 버튼 
+// 				2) 생성하기 버튼
+				document.getElementById("generate").addEventListener('click', () => {
+					document.getElementById("loadingOverlay").classList.remove("d-none");
+					
+					// 입력받은 내용 가져오기 
+					const coverLetterIdx = document.getElementById("coverLetterIdx").value;
+					const questionCode = document.querySelector('input[name="question"]:checked')?.value;
+					const inputContent = document.getElementById("content").value;
+					
+					async function requestGenerate() {
+						try {
+							// chatGPT에 전달하기 
+							const = response = await fetch("<c:url value="/gpt/generateContent" />", {
+								method: "POST", 
+								headers: { 
+									"Content-type": "application/json"
+								}, 
+								body: JSON.stringify({
+									coverLetterIdx : coverLetterIdx, 
+									questionCode : questionCode,
+									content : inputContent
+								})
+							});
+							
+							if(!response.ok) {
+								throw new Error("오류 발생!");
+							}
+							
+							// 생성된 값 화면에 출력 
+							const result = await response.json();
+							
+							const outputArea = document.getElementById("outputText");
+					        const combinedText = `[${result.title}]\n\n${result.content}`;
+					        
+					        outputArea.value = combinedText;
+							
+						} catch(error) {
+							console.error("Error:", error);
+					        alert("자기소개서 생성 중 문제가 발생했습니다.");
+					        
+						} finally {
+							
+							document.getElementById("loadingOverlay").classList.add("d-none");
+						}
+					}
+					requestGenerate();
+				});
+				
+				
+// 				3) 적용하기 버튼 
 				document.addEventListener('DOMContentLoaded', () => {
 					const applyBtn = document.getElementById('apply');
-					const inputArea = document.getElementById('inputText');
+					const inputArea = document.getElementById('content');
 					const outputArea = document.getElementById('outputText');
 					
 					applyBtn.addEventListener('click', () => {

@@ -19,7 +19,9 @@ import com.itwillbs.project.my.dto.FavoriteJobRowDTO;
 import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.PasswordChangeDTO;
+import com.itwillbs.project.my.dto.PaymentCond;
 import com.itwillbs.project.my.dto.MyReviewDTO;
+import com.itwillbs.project.my.dto.MyPaymentDTO;
 import com.itwillbs.project.my.service.MyService;
 
 import lombok.RequiredArgsConstructor;
@@ -282,10 +284,10 @@ public class MyController {
 	        HttpSession session,
 	        Model model,
 	        @RequestParam(required = false) String keyword,
-	        @RequestParam(defaultValue = "ALL") String status,
-	        @RequestParam(defaultValue = "false") boolean excludeApplied,
-	        @RequestParam(defaultValue = "1") int page,
-	        @RequestParam(defaultValue = "5") int size   // ✅ default 5
+	        @RequestParam(defaultValue = "ALL") String status, // 상황 (진행중,마감)
+	        @RequestParam(defaultValue = "false") boolean excludeApplied, // 지원한 공고
+	        @RequestParam(defaultValue = "1") int page,	// 페이지
+	        @RequestParam(defaultValue = "5") int size  // 페이지 크기
 	) {
 		// 로그인 체크
 	    String sId = (String) session.getAttribute("sId");
@@ -324,35 +326,92 @@ public class MyController {
 	    return "/my/favorites";
 	}
 	
+	
 	// 공고 삭제
 	@PostMapping("/favorites/delete")
-	public String deleteFavoriteJob(
+	public String deleteFavorite(
 	        HttpSession session,
-	        @RequestParam long jobId,
-	        @RequestParam(required = false) String keyword,
-	        @RequestParam(required = false, defaultValue = "ALL") String status,
-	        @RequestParam(required = false, defaultValue = "false") boolean excludeApplied,
-	        @RequestParam(required = false, defaultValue = "1") int page,
-	        @RequestParam(required = false, defaultValue = "5") int size
+	        @RequestParam(required = false) Long jobId,          // 단일
+	        @RequestParam(required = false) List<Long> jobIds,   // 일괄
+	        @RequestParam(defaultValue = "1") int page,
+	        @RequestParam(defaultValue = "5") int size,
+	        @RequestParam(defaultValue = "ALL") String status,
+	        @RequestParam(defaultValue = "false") boolean excludeApplied,
+	        @RequestParam(required = false) String keyword
 	) {
-	    // 로그인 체크
 	    String sId = (String) session.getAttribute("sId");
 	    if (sId == null) return "redirect:/user/login";
 
-	    MyDTO user = myService.getUser(sId);
+	    Long userId = myService.getUser(sId).getUserId();
 
-	    // ✅ 삭제 실행
-	    myService.deleteFavoriteJob(user.getUserId(), jobId);
+	    // ✅ 1) 일괄 우선
+	    if (jobIds != null && !jobIds.isEmpty()) {
+	        myService.deleteFavoriteJobs(userId, jobIds);
+	    }
+	    // ✅ 2) 단일
+	    else if (jobId != null) {
+	        myService.deleteFavoriteJob(userId, jobId);
+	    }
 
-	    // ✅ 삭제 후 다시 목록으로 (필터 유지)
-	    return "redirect:/my/favorites?page=" + page
+	    // 필터 유지 redirect
+	    String redirect = "redirect:/my/favorites?page=" + page
 	            + "&size=" + size
 	            + "&status=" + status
-	            + "&excludeApplied=" + excludeApplied
-	            + (keyword != null && !keyword.isBlank() ? "&keyword=" + keyword : "");
+	            + "&excludeApplied=" + excludeApplied;
+
+	    if (keyword != null && !keyword.isBlank()) {
+	        redirect += "&keyword=" + keyword;
+	    }
+	    return redirect;
 	}
 	
-	
+	// 결제 내역
+	@GetMapping("/payment")
+	public String paymentList(HttpSession session, 
+							  Model model,
+							  @RequestParam(defaultValue = "3m") String period,	// 목록(3개월전)
+							  @RequestParam(defaultValue = "all") String status, //상태
+							  @RequestParam(defaultValue = "") String q, //상태
+							  @RequestParam(defaultValue = "1") int page,	// 페이지
+							  @RequestParam(defaultValue = "5") int size	// 페이지 크기
+							  ) {
+	    
+		// 로그인 체크
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+	    
+	    model.addAttribute("currentMenu", "payment"); // 사이드바 '결제 내역' 활성
+	    
+	    MyDTO user = myService.getUser(sId);
+	    model.addAttribute("loginUser", user);
+	    
+	    PaymentCond cond = new PaymentCond();
+	    cond.setUserId(user.getUserId());
+	    cond.setPeriod(period);
+	    cond.setStatus(status);
+	    cond.setQ(q);
+	    
+	    // ✅ 공통 PageReq로 세팅
+	    cond.getPage().setPage(page);
+	    cond.getPage().setSize(size);
+	    
+	    // ✅ 조회
+	    List<MyPaymentDTO> payments = myService.getPaymentList(cond);
+	    int total = myService.getPaymentCount(cond);
+	    
+	    // ✅ 페이징 응답
+	    PageRes pager = PageRes.of(cond.getPage(), total);
+	    
+	    model.addAttribute("payments", payments);
+	    model.addAttribute("pager", pager);
+
+	    // 화면에서 필터 값 유지
+	    model.addAttribute("period", period);
+	    model.addAttribute("status", status);
+	    model.addAttribute("q", q);
+	    
+	    return "/my/payment";
+	}
 	
 	
 	
@@ -372,12 +431,8 @@ public class MyController {
 	    return "/my/apply";
 	}
 	
-	// 결제 내역
-	@GetMapping("/payment")
-	public String paymentList(Model model) {
-	    model.addAttribute("currentMenu", "payment"); // 사이드바 '결제 내역' 활성
-	    return "/my/payment";
-	}
+	
+
 	
 	// 추천 내역
 	@GetMapping("/recommend")

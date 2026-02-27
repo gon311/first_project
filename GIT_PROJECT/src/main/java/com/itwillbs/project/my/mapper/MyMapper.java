@@ -8,8 +8,10 @@ import org.apache.ibatis.annotations.Param;
 import com.itwillbs.project.my.dto.FavoriteJobCond;
 import com.itwillbs.project.my.dto.FavoriteJobRowDTO;
 import com.itwillbs.project.my.dto.MyDTO;
+import com.itwillbs.project.my.dto.MyPaymentDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.MyReviewDTO;
+import com.itwillbs.project.my.dto.PaymentCond;
 
 @Mapper
 public interface MyMapper {
@@ -46,6 +48,13 @@ public interface MyMapper {
 	// 관심목록 삭제
 	int deleteFavoriteJob(@Param("userId") Long userId,
             @Param("jobId") Long jobId);
+
+	int deleteFavoriteJobs(@Param("userId") Long userId,
+            @Param("jobIds") List<Long> jobIds);
+
+	//결제내역
+	List<MyPaymentDTO> selectPaymentList(PaymentCond cond);
+	int selectPaymentCount(PaymentCond cond);
 	
 	
 

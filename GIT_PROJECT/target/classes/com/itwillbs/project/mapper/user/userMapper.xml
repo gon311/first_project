@@ -93,14 +93,17 @@
 		SELECT
 			email
 			, user_type
-		from user
-		where user_type = #{userType}
-		and user_name = #{userName}
-		<if test="phone != null">
-			and phone = #{phone}
+		from user u 
+		left outer join user_person p on u.user_id = p.user_id 
+		left outer join user_company c on u.user_id = c.user_id
+		where u.user_type = #{userType}
+		<if test='userType == "P"'>
+			and u.user_name = #{userName}
+			and u.phone = #{phone}
 		</if>
-		<if test="bizRegNo != null">
-			and biz_reg_no = #{bizRegNo}
+		<if test='userType == "C"'>
+			and c.ceo_name = #{ceoName}
+			and c.biz_reg_no = #{bizRegNo}
 		</if>
 		
 	</select>

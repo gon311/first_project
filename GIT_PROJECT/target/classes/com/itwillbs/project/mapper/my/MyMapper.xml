@@ -62,7 +62,65 @@
 	  <result property="deadlineLabel" column="deadline_label"/>
 	</resultMap>
 	
-	
+	<!-- MyPaymentDTO -->
+	<resultMap id="paymentMap" type="com.itwillbs.project.my.dto.MyPaymentDTO">
+		<id 	property="payId"  		   column="pay_id"  />
+		<result property="userId" 		   column="user_id"/>
+		<result property="productId" 	   column="product_id"/>
+		<result property="payDate" 		   column="pay_date"/>
+		<result property="productName" 	   column="product_name"/>
+		<result property="payPrice" 	   column="pay_price"/>
+		<result property="payStatus" 	   column="pay_status"/>
+		<result property="payMethod" 	   column="pay_method"/>
+		<result property="payDateText" 	   column="pay_date_text"/>
+	</resultMap>
+
+<!-- ======================================== -->
+
+<!-- 공통 WHERE 절-->
+<sql id="paymentWhere">
+  WHERE p.user_id = #{userId}
+
+  <!-- 기간 필터: period = 3m/6m/1y/5y -->
+  <if test="period != null and period != ''">
+    <choose>
+      <when test="period == '3m'">
+        AND p.pay_date &gt;= DATE_SUB(NOW(), INTERVAL 3 MONTH)
+      </when>
+      <when test="period == '6m'">
+        AND p.pay_date &gt;= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+      </when>
+      <when test="period == '1y'">
+        AND p.pay_date &gt;= DATE_SUB(NOW(), INTERVAL 1 YEAR)
+      </when>
+      <when test="period == '5y'">
+        AND p.pay_date &gt;= DATE_SUB(NOW(), INTERVAL 5 YEAR)
+      </when>
+      <otherwise>
+        <!-- 아무것도 안 함-->
+      </otherwise>
+    </choose>
+  </if>
+
+  <!-- 상태 필터: status=all이면 조건 제외 -->
+  <if test="status != null and status != '' and status != 'all'">
+    <!-- DB enum이 ready/paid/cancelled라면 그대로 매칭 -->
+    AND p.pay_status = #{status}
+  </if>
+
+  <!-- 검색어: 상품명 기준 -->
+  <if test="q != null and q != ''">
+    AND pr.product_name LIKE CONCAT('%', #{q}, '%')
+  </if>
+</sql>
+
+
+<!-- ========================================= -->
+
+
+
+
+
 	
 <!-- ==============================
      내정보 조회
@@ -289,13 +347,51 @@
 	  WHERE user_id = #{userId}
 	    AND job_id  = #{jobId}
 	</delete>
+	
+	<delete id="deleteFavoriteJobs">
+	  DELETE FROM JOB_SCRAP
+	  WHERE user_id = #{userId}
+	    AND job_id IN
+	    <foreach collection="jobIds" item="id" open="(" separator="," close=")">
+	      #{id}
+	    </foreach>
+	</delete>
 
 <!-- ==============================
     결제내역
-     parameter:
+     parameter:PaymentCond.java
      result: 
 ============================== -->	
+<!-- 리스트 -->
+<select id="selectPaymentList" parameterType="com.itwillbs.project.my.dto.PaymentCond"
+        resultMap="paymentMap">
+  SELECT
+    p.pay_id,
+    p.user_id,
+    p.product_id,
+    DATE_FORMAT(p.pay_date, '%y.%m.%d %H:%i') AS pay_date_text,
+    p.pay_price,
+    p.pay_status,
+    p.pay_method,
+    pr.product_name
+  FROM PAY p
+  JOIN PRODUCT pr ON pr.product_id = p.product_id
 
+  <include refid="paymentWhere"/>
+
+  ORDER BY p.pay_date DESC
+  LIMIT #{page.offset}, #{page.safeSize}
+</select>
+
+<!-- 카운트 -->
+<select id="selectPaymentCount" parameterType="com.itwillbs.project.my.dto.PaymentCond"
+        resultType="int">
+  SELECT COUNT(*)
+  FROM PAY p
+  JOIN PRODUCT pr ON pr.product_id = p.product_id
+
+  <include refid="paymentWhere"/>
+</select>
 
 
 

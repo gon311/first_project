@@ -11,6 +11,8 @@ import com.itwillbs.project.my.dto.FavoriteJobRowDTO;
 import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.MyReviewDTO;
+import com.itwillbs.project.my.dto.MyPaymentDTO;
+import com.itwillbs.project.my.dto.PaymentCond;
 import com.itwillbs.project.my.mapper.MyMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -89,6 +91,24 @@ public class MyService {
 	public int deleteFavoriteJob(Long userId, Long jobId) {
 	    return myMapper.deleteFavoriteJob(userId, jobId);
 	}
+
+	public int deleteFavoriteJobs(Long userId, List<Long> jobIds) {
+	    return myMapper.deleteFavoriteJobs(userId, jobIds);
+	}
+	
+	// 결제 내역
+	
+	// 리스트
+	public List<MyPaymentDTO> getPaymentList(PaymentCond cond) {
+		return myMapper.selectPaymentList(cond);
+	}
+	
+	// 페이징
+	public int getPaymentCount(PaymentCond cond) {
+		return myMapper.selectPaymentCount(cond);
+	}
+
+
 	
 	
 	

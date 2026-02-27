@@ -32,7 +32,7 @@
 								<div class="border rounded-3 bg-light-subtle p-3"
 									style="height: 520px; overflow: auto;">
 									<!-- 실제 본문 컨텐츠가 들어가는 영역 -->
-									${param.inputText}
+									${param.content}
 								</div>
 							</div>
 						</div>

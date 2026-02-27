@@ -16,6 +16,7 @@
 			, company_name
 			, company_idx
 			, career_idx
+			, ai_geneated
 			, save_status
 			, created_at
 		)
@@ -29,9 +30,22 @@
 			, #{companyName}
 			, (SELECT company_idx FROM company_type WHERE company_code = #{companyCode})
 			, (SELECT career_idx FROM career_level WHERE career_code = #{careerCode})
+			, #{aiGenerated}
 			, #{saveStatus}
 			, NOW()
 		)		
 	
 	</insert>
+	
+	<update id="updateContent">
+		UPDATE cover_letter
+		SET 
+			question_idx = (SELECT 	question_idx
+							FROM 	question_category
+							WHERE 	question_code = #{questionCode})
+			, content = #{content}
+			, save_status = #{saveStatus}
+			, ai_generated = #{aiGenerated} 
+		WHERE cover_letter_idx = #{coverLetterIdx}
+	</update>
 </mapper>

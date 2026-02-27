@@ -9,5 +9,7 @@ public interface ReviewMapper {
 
 	void insertForm(CoverLetterDTO coverLetterDTO);
 
+	void updateContent(CoverLetterDTO coverLetterDTO);
+
  
 }

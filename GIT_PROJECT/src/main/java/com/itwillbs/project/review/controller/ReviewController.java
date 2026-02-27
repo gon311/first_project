@@ -81,18 +81,14 @@ public class ReviewController {
 	public String registText(@PathVariable Long coverLetterIdx) {
 		log.info("coverletteridx : " + coverLetterIdx);
 		
-		
 		return "/review/reviewText";
 		
 	}
 	
-	
-	
-	
 	@PostMapping("/save")
 	public String reviewSave(CoverLetterDTO coverLetterDTO) {
 		log.info(">>>>>>>>>>>>>> coverLetterDTO: " + coverLetterDTO);
-		
+		reviewService.saveTotal(coverLetterDTO);
 		
 		return "/review/reviewSave";
 	}

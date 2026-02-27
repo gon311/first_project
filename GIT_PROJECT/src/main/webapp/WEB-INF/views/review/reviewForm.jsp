@@ -215,8 +215,10 @@
 								다음으로</button>
 						</div>
 						
-						<!-- 임시저장/1단계저장 status -->
+						<!-- 임시저장/1단계저장 status - 1:1단계저장, 2:임시저장 -->
 						<input type="hidden" id="saveStatus" name="saveStatus" value="1">
+						<!-- ai 생성 여부  -->
+						<input type="hidden" id="aiGenerated" name="aiGenerated" value="0">
 						
 						<!-- 토스트 메세지 -->
 						<div id="toast" class="toast"></div>

@@ -26,11 +26,11 @@ public class CoverLetterDTO {
 	private String companyName;  	// 기업 이름 
 	
 	private String questionCode;	// 질문 유형 코드 
-	private String content; 		// 최종 저장된 자기소개서 본문
+	private String content; 		// 자기소개서 본문
 	
 	private Integer saveStatus;     // 저장 상태 (0: 최종저장, 1: 저장, 2: 임시저장(default)) 
 	
-	private Boolean ai_generated;   // AI 생성 여부
+	private Boolean aiGenerated;   // AI 생성 여부
 	
 	private LocalDateTime createdAt; // 생성일시
 	private LocalDateTime updatedAt; // 수정일시 

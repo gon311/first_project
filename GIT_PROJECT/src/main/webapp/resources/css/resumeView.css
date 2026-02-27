@@ -1,0 +1,93 @@
+@charset "UTF-8";
+
+/* 전체 배경과 컨테이너 */
+.resume-body {
+  background-color: #f8f9fa;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.resume-container {
+  max-width: 1200px;
+}
+
+/* 상단 타이틀 */
+.resume-header {
+  text-align: center;
+}
+
+.resume-title {
+  font-weight: bold;
+  color: #333;
+}
+
+.resume-divider {
+  border-top: 2px solid #ffb545;
+  width: 60px;
+  margin: 0 auto;
+}
+
+/* 카드 공통 */
+.resume-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* 프로필 영역 */
+.resume-photo {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.resume-name {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.resume-text {
+  margin: 0;
+  color: #555;
+}
+
+/* 테이블 */
+.resume-table th {
+  background-color: #e7e7e7; /* 변경된 헤더 배경색 */
+  color: #333;              /* 글자색은 진한 회색으로 */
+  font-weight: bold;
+}
+
+
+.resume-table td {
+  background-color: #fff;
+}
+
+/* 섹션 제목 */
+.resume-section-title {
+/*   background-color: #ffb545; */
+  background-color: #ffffff;
+  color: #000000;
+  font-weight: bold;
+}
+
+/* 오른쪽 메뉴 */
+.resume-menu {
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.resume-btn {
+  width: 100%;
+}
+
+.resume-btn-consult {
+  width: 100%;
+  background-color: #ffb545 !important;
+  color: #fff !important;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.resume-btn-consult:hover {
+  background-color: #e69c2f !important;
+  box-shadow: 0 6px 8px rgba(0,0,0,0.25);
+}

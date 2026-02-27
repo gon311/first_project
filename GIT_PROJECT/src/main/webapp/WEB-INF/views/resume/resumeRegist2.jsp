@@ -4,18 +4,39 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<%-- 	<%@ include file="/WEB-INF/views/inc/head.jspf"%> --%>
     <meta charset="UTF-8">
     <title>이력서 작성</title>
 
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/resume.css">
+    <!-- Resume CSS -->
+    <%-- 현재 페이지(main.jsp) 전용 CSS 영역--%>
+		<link href="<c:url value="/resources/css/resume.css" />" 
+			rel="stylesheet" type="text/css">
 </head>
 
 <body class="resume-body">
-  <div class="container-fluid">
+	<%-- header area --%> 
+		<%@ include file="/WEB-INF/views/inc/header.jspf"%>
+	
+	<%-- main area --%> 
+<%-- 	user Id : ${sessionScope.userIdx} --%>
+	<h5>
+	업종 : ${param.industry}
+	업종라벨 : ${param.industryLabel}<br>
+	직종 : ${param.jobGroup}
+	직종라벨 : ${param.jobGroupLabel}<br>
+	직종세부 : ${param.jobRole}
+	직종세부라벨 : ${param.jobRoleLabel}<br>
+	
+	기업형태 : ${param.companyType}
+	기업형태라벨 : ${param.companyTypeLabel}
+	기업명 : ${param.companyName}
+	</h5>
+	
+ 	<div class="container-fluid">
     <div class="row">
       
       <!-- 좌측 공백 영역 -->
@@ -23,7 +44,7 @@
       
       <!-- 중앙 메인폼 -->
       <div class="col-12 col-md-8 main-form">
-        <form action="<c:url value='/resume/resumeRegist' />" method="post" class="resume-form">
+        <form action="<c:url value='/resume/resumeSave' />" method="post" class="resume-form">
           
           <!-- 제목 -->
           <div class="card section-card mb-4">
@@ -33,7 +54,7 @@
             <div class="card-body">
               <div class="form-group mb-3">
                 <label for="resumeTitle" class="resume-label">제목</label>
-                <input type="text" id="resumeTitle" name="resumeTitle"
+                <input type="text" id="title" name="title"
                        value="${param.title}" 
                        class="form-control resume-input" 
                        placeholder="제목을 입력해주세요.">
@@ -62,36 +83,40 @@
 
                         <div class="col-md-6">
                             <label class="form-label">이름</label>
-                            <input type="text" class="form-control">
+                            <input type="text" name="name_kor" class="form-control">
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">생년월일</label>
-                            <input type="date" class="form-control">
+                            <input type="date" name="birth_date" class="form-control">
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">이름(영문)</label>
-                            <input type="text" class="form-control">
+                            <input type="text" name="name_eng" class="form-control">
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">성별</label>
-                            <select class="form-select">
+                            <select name="gender" class="form-select">
                                 <option selected>-선택-</option>
                                 <option>남</option>
                                 <option>여</option>
                             </select>
                         </div>
 
+						<div class="col-md-6">
+                            <label class="form-label">이름(한문)</label>
+                            <input type="text" name="name_han" class="form-control">
+                        </div>	
                         <div class="col-md-6">
                             <label class="form-label">전화번호</label>
-                            <input type="text" class="form-control">
+                            <input type="text" name="phone_number" class="form-control">
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">이메일</label>
-                            <input type="email" class="form-control">
+                            <input type="email" name="email" class="form-control">
                         </div>
 
                         <div class="col-md-12">
@@ -101,8 +126,6 @@
 						    <input type="text" name="address2" class="form-control address-half" placeholder="상세주소 입력">
 						  </div>
 						</div>
-
-
 
                     </div>
                 </div>
@@ -116,7 +139,7 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">보훈대상</label>
-		    <select name="veteranState" class="form-control resume-input">
+		    <select name="veteran_status" class="form-control resume-input">
 		      <option>비대상</option>
 		      <option>대상(5%)</option>
 		      <option>대상(10%)</option>
@@ -124,28 +147,28 @@
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">보훈번호</label>
-		    <input type="text" name="veteranNum" class="form-control resume-input" placeholder="보훈번호 입력">
+		    <input type="text" name="veteran_number" class="form-control resume-input" placeholder="보훈번호 입력">
 		  </div>
 		</div>
 		
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">장애여부</label>
-		    <select name="disabilYn" class="form-control resume-input">
+		    <select name="disability_status" class="form-control resume-input">
 		      <option>비대상</option>
 		      <option>대상</option>
 		    </select>
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">장애등급</label>
-		    <input type="text" name="disabilGrade" class="form-control resume-input" placeholder="장애등급 입력">
+		    <input type="text" name="disability_grade" class="form-control resume-input" placeholder="장애등급 입력">
 		  </div>
 		</div>
 		
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">다문화가정</label>
-		    <select name="multicult" class="form-control resume-input">
+		    <select name="multicultural_status" class="form-control resume-input">
 		      <option>비대상</option>
 		      <option>대상</option>
 		    </select>
@@ -155,7 +178,7 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">북한이탈주민</label>
-		    <select name="northDefector" class="form-control resume-input">
+		    <select name="north_defector" class="form-control resume-input">
 		      <option>비대상</option>
 		      <option>대상</option>
 		    </select>
@@ -165,7 +188,7 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">기초생활수급자 및 차상위계층</label>
-		    <select name="basicLive" class="form-control resume-input">
+		    <select name="low_income_status" class="form-control resume-input">
 		      <option>비대상</option>
 		      <option>대상</option>
 		    </select>
@@ -179,7 +202,7 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">군필여부</label>
-		    <select name="miliStatus" class="form-control resume-input">
+		    <select name="military_service" class="form-control resume-input">
 		      <option>비대상</option>
 		      <option>미필</option>
 		      <option>군필</option>
@@ -188,7 +211,7 @@
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">군별</label>
-		    <select name="miliType" class="form-control resume-input">
+		    <select name="military_branch" class="form-control resume-input">
 		      <option>-군별 선택-</option>
 		      <option>육군</option>
 		      <option>해군</option>
@@ -205,7 +228,7 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">계급</label>
-		    <select name="miliRank" class="form-control resume-input">
+		    <select name="military_rank" class="form-control resume-input">
 		      <option>이병</option>
 		      <option>일병</option>
 		      <option>상병</option>
@@ -225,7 +248,7 @@
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">전역사유</label>
-		    <select name="miliEnd" class="form-control resume-input">
+		    <select name="discharge_reason" class="form-control resume-input">
 		      <option>-전역 선택-</option>
 		      <option>만기 전역</option>
 		      <option>조기 전역</option>
@@ -238,18 +261,18 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">입대일</label>
-		    <input type="date" id="miliIn" class="form-control resume-input">
+		    <input type="date" name="enlist_date" id="enlist_date" class="form-control resume-input">
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">전역일</label>
-		    <input type="date" id="miliOut" class="form-control resume-input">
+		    <input type="date" name="discharge_date" id="discharge_date" class="form-control resume-input">
 		  </div>
 		</div>
 		
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">면제사유</label>
-		    <input type="text" id="miliExcept" class="form-control resume-input" placeholder="면제사유 입력">
+		    <input type="text" name="exemption_reason" id="exemption_reason" class="form-control resume-input" placeholder="면제사유 입력">
 		  </div>
 		</div>
 
@@ -259,8 +282,9 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">학력</label>
-		    <select name="eduFinal" class="form-control resume-input">
+		    <select name="education_level" class="form-control resume-input">
 		      <option>-학력 선택-</option>
+		      <option>고등학교</option>
 		      <option>대학교(2-3년제)</option>
 		      <option>대학교(4년제)</option>
 		      <option>대학원(석사)</option>
@@ -269,14 +293,14 @@
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">학교명</label>
-		    <input type="text" name="schoolName" class="form-control resume-input" placeholder="학교명 입력">
+		    <input type="text" name="school_name" class="form-control resume-input" placeholder="학교명 입력">
 		  </div>
 		</div>
 		
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">계열</label>
-		    <select name="eduType" class="form-control resume-input">
+		    <select name="department" class="form-control resume-input">
 		      <option>-계열 선택-</option>
 		      <option>인문계열</option>
 		      <option>사회계열</option>
@@ -291,7 +315,7 @@
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">전공</label>
-		    <input type="text" name="majorName" class="form-control resume-input" placeholder="전공명을 입력해주세요">
+		    <input type="text" name="major" class="form-control resume-input" placeholder="전공명을 입력해주세요">
 		  </div>
 		</div>
 		
@@ -299,8 +323,9 @@
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">학점</label>
 		    <div class="d-flex">
-		      <input type="text" name="eduScore" class="form-control resume-input me-2" placeholder="학점 입력">
-		      <select class="form-control resume-input">
+		      <input type="text" name="hakjum" class="form-control resume-input me-2" placeholder="학점 입력">
+		      <select name="hakjum_scale" class="form-control resume-input">
+		        <option>기준 학점</option>
 		        <option>4.0</option>
 		        <option>4.3</option>
 		        <option>4.5</option>
@@ -327,11 +352,11 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">입학</label>
-		    <input type="date" id="eduStartday" class="form-control resume-input">
+		    <input type="date" id="eduStartday" name="edu_start_day" class="form-control resume-input">
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">졸업</label>
-		    <input type="date" id="eduEndday" class="form-control resume-input">
+		    <input type="date" id="eduEndday" name="edu_end_day" class="form-control resume-input">
 		  </div>
 		</div>
 		
@@ -350,6 +375,11 @@
   
     <!-- ✅ Bootstrap JS 삽입 (body 끝 부분) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  
+  <%-- footer area --%>
+		<%@ include file="/WEB-INF/views/inc/footer.jspf"%>
+  
 </body>
   
 

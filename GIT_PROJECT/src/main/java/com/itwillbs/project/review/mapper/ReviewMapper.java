@@ -11,5 +11,7 @@ public interface ReviewMapper {
 
 	void updateContent(CoverLetterDTO coverLetterDTO);
 
+	void deleteData(Long coverLetterIdx);
+
  
 }

@@ -48,4 +48,9 @@
 			, ai_generated = #{aiGenerated} 
 		WHERE cover_letter_idx = #{coverLetterIdx}
 	</update>
+	
+	<delete id="deleteData">
+		DELETE FROM cover_letter
+		WHERE cover_letter_idx = #{coverLetterIdx}
+	</delete>
 </mapper>

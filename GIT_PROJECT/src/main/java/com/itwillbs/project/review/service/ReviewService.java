@@ -23,5 +23,10 @@ public class ReviewService{
 		
 	}
 
+	public void deleteData(Long coverLetterIdx) {
+		reviewMapper.deleteData(coverLetterIdx);
+		
+	}
+
 
 }

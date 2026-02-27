@@ -69,7 +69,9 @@
 										<%-- 목록으로 클릭 시 마이페이지 내 이력서/자조서 페이지로 이동 --%>
 										>목록으로</button>
 								</div>
-	
+								
+								<input type="hidden" id="coverLetterIdx" value="${coverLetterIdx}">
+								
 							</div>
 						</div>
 					</div>
@@ -82,11 +84,27 @@
 	
 		<%-- 개별 페이지 자바스크립트 영역 --%>
 		<script type="text/javascript">
+			console.log(${coverLetterIdx})
+		
 			// 1) 삭제 버튼 
-			// 삭제버튼 클릭 시 삭제하시겠습니까? 알람이 뜨고, 확인버튼 클릭 시 DB의 내용 삭제할 수 있도록 서버에 요청
-// 			function handleDelete() {
+			function handleDelete() {
+				if(!confirm("삭제하시겠습니까?")) return;
 				
-// 			}
+				const id = document.getElementById("coverLetterIdx").value;
+				
+				const form = document.createElement("form");
+				form.method = "post";
+				form.action = "<c:url value='/review/delete' />";
+				
+				const input = document.createElement("input");
+				input.type = "hidden";
+				input.name = "coverLetterIdx";
+				input.value = id;
+				
+				form.appendChild(input);
+				document.body.appendChild(form);
+				form.submit();
+			}
 			
 			
 			

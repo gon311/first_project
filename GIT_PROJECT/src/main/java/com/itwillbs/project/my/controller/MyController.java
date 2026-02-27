@@ -47,7 +47,6 @@ public class MyController {
 	    model.addAttribute("currentMenu", "myInfo");
 	    MyDTO user = myService.getUser(sId);
 	    model.addAttribute("loginUser", user);
-	    
 
 	    return "/my/myInfo";
 	}
@@ -211,6 +210,26 @@ public class MyController {
 
 	    return "/my/myResume";
 	}
+	
+	//삭제
+	@PostMapping("/resume/delete")
+	public String deleteResume(@RequestParam Long resumeMyId, HttpSession session) {
+
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    // 내꺼만 삭제되게 검증용 userId 확보
+	    MyDTO user = myService.getUser(sId);
+	    Long userId = user.getUserId();
+
+	    // 삭제(soft delete)
+	    myService.deleteResume(resumeMyId, userId);
+	    
+//	    int updated = myService.deleteResume(resumeMyId, userId);
+//	    log.info("resume delete result: {}", updated);
+
+	    return "redirect:/my/myResume";
+	}
 
 
 	// 자소서 관리
@@ -236,6 +255,24 @@ public class MyController {
 //	    model.addAttribute("topResume", topReview);
 	    
 	    return "/my/myReview";
+	}
+	
+	//삭제
+	@PostMapping("/review/delete")
+	public String deleteReview(@RequestParam Long coverLetterIdx, HttpSession session) {
+
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    MyDTO user = myService.getUser(sId);
+	    Long userId = user.getUserId();
+
+	    myService.deleteReview(userId, coverLetterIdx);
+	    
+	    int deleted = myService.deleteResume(coverLetterIdx, userId);
+	    log.info("resume delete result: {}", deleted);
+
+	    return "redirect:/my/myReview";
 	}
 	
 	
@@ -286,6 +323,37 @@ public class MyController {
 
 	    return "/my/favorites";
 	}
+	
+	// 공고 삭제
+	@PostMapping("/favorites/delete")
+	public String deleteFavoriteJob(
+	        HttpSession session,
+	        @RequestParam long jobId,
+	        @RequestParam(required = false) String keyword,
+	        @RequestParam(required = false, defaultValue = "ALL") String status,
+	        @RequestParam(required = false, defaultValue = "false") boolean excludeApplied,
+	        @RequestParam(required = false, defaultValue = "1") int page,
+	        @RequestParam(required = false, defaultValue = "5") int size
+	) {
+	    // 로그인 체크
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    MyDTO user = myService.getUser(sId);
+
+	    // ✅ 삭제 실행
+	    myService.deleteFavoriteJob(user.getUserId(), jobId);
+
+	    // ✅ 삭제 후 다시 목록으로 (필터 유지)
+	    return "redirect:/my/favorites?page=" + page
+	            + "&size=" + size
+	            + "&status=" + status
+	            + "&excludeApplied=" + excludeApplied
+	            + (keyword != null && !keyword.isBlank() ? "&keyword=" + keyword : "");
+	}
+	
+	
+	
 	
 	
 	// 지원 내역

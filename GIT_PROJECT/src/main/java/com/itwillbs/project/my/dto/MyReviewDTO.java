@@ -19,7 +19,7 @@ import lombok.ToString;
 public class MyReviewDTO {
 	
     // ===== 식별/관계키 =====
-    private Long coverLetterId;      // cover_letter_idx (PK)
+    private Long coverLetterIdx;      // cover_letter_idx (PK)
     private Long userId;          // user_id (FK)
 
     // ===== 목록/편집에 필요한 값 =====

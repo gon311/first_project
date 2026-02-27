@@ -28,11 +28,30 @@ public interface MyMapper {
 
 	MyResumeDTO selectTopResume(@Param("userId") Long userId);
 
+	// 이력서 삭제
+	int softDeleteResume(@Param("resumeMyId") Long resumeMyId,
+			@Param("userId") Long userId);
+	
+	// 자소서 리뷰
 	List<MyReviewDTO> selectMyReviewList(@Param("userId") Long userId);
-
+	
+	// 자소서 삭제
+	int deleteReview(@Param("userId") Long userId,
+            @Param("coverLetterIdx") Long coverLetterIdx);
+	
+	
+	// 관심목록
 	List<FavoriteJobRowDTO> selectFavoriteJobList(FavoriteJobCond cond);
-
 	int selectFavoriteJobCount(FavoriteJobCond cond);
+	// 관심목록 삭제
+	int deleteFavoriteJob(@Param("userId") Long userId,
+            @Param("jobId") Long jobId);
+	
+	
+
+	
+
+	
 	
 	
 

@@ -324,11 +324,11 @@
 		            이력서 수정하기
 		          </a>
 		
-		          <a class="btn btn-outline-danger"
-		             href="${urlResumeDelete}?resumeMyId=${topResume.resumeMyId}"
-		             onclick="return confirm('정말 삭제할까요? 삭제 후 복구할 수 없을 수 있어요.');">
-		            삭제
-		          </a>
+				    <form action="${urlResumeDelete}" method="post" style="display:inline;"
+				          onsubmit="return confirm('정말 삭제할까요?');">
+				      <input type="hidden" name="resumeMyId" value="${topResume.resumeMyId}" />
+				      <button type="submit" class="btn btn-outline-danger">삭제</button>
+				    </form>
 		        </div>
 		      </div>
 		
@@ -416,11 +416,11 @@
 		                  수정
 		                </a>
 		
-		                <a class="btn btn-outline-danger"
-		                   href="${urlResumeDelete}?resumeMyId=${r.resumeMyId}"
-		                   onclick="return confirm('정말 삭제할까요? 삭제 후 복구할 수 없을 수 있어요.');">
-		                  삭제
-		                </a>
+						<form action="${urlResumeDelete}" method="post" style="display:inline;"
+						      onsubmit="return confirm('정말 삭제할까요?');">
+						  <input type="hidden" name="resumeMyId" value="${r.resumeMyId}" />
+						  <button type="submit" class="btn btn-outline-danger">삭제</button>
+						</form>
 		              </div>
 		            </div>
 		

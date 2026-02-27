@@ -35,7 +35,7 @@
 	
 	<!-- MyReviewDTO -->
 	<resultMap id="reviewMap" type="com.itwillbs.project.my.dto.MyReviewDTO">
-	  <id     property="coverLetterId" column="cover_letter_id"/>
+	  <id     property="coverLetterIdx" column="cover_letter_idx"/>
 	
 	  <result property="userId"          column="user_id"/>
 	  <result property="title"           column="title"/>
@@ -150,6 +150,16 @@
 		LIMIT 1
 	</select>
 	
+	
+	<update id="softDeleteResume">
+	  UPDATE resume_my
+	  SET is_deleted = 1,
+	      updated_at = NOW()
+	  WHERE resume_my_id = #{resumeMyId}
+	    AND user_id = #{userId}
+	    AND is_deleted = 0
+	</update>
+	
 <!-- ==============================
      자소서 내력조회 , 최근
      parameter: MyReviewDTO.java
@@ -158,7 +168,7 @@
 	
 	<select id="selectMyReviewList" resultMap="reviewMap">
 		SELECT
-		    cover_letter_id
+		    cover_letter_idx
 		  , user_id
 		  , title
 		  , company_name
@@ -169,6 +179,12 @@
 		WHERE user_id = #{userId}
 		ORDER BY created_at DESC;
 	</select>
+	
+	<delete id="deleteReview">
+	  DELETE FROM cover_letter
+	  WHERE user_id = #{userId}
+	    AND cover_letter_idx = #{coverLetterIdx}
+	</delete>
 	
 <!-- ==============================
      관심공고
@@ -266,6 +282,13 @@
 	  )
 	</if>
 </select>
+
+
+	<delete id="deleteFavoriteJob">
+	  DELETE FROM JOB_SCRAP
+	  WHERE user_id = #{userId}
+	    AND job_id  = #{jobId}
+	</delete>
 
 <!-- ==============================
     결제내역

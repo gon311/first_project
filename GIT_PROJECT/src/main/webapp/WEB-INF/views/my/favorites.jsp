@@ -274,12 +274,6 @@
           <div class="toolbar-left">
             <input class="chk" type="checkbox" title="전체 선택">
             <button type="button" class="btn-ghost">삭제</button>
-            <button type="button" class="btn-ghost">이동</button>
-
-            <select class="select">
-              <option>전체</option>
-              <option>분류없음</option>
-            </select>
           </div>
 
           <div class="toolbar-right">

@@ -61,11 +61,23 @@ public class MyService {
 	public MyResumeDTO getTopResume(Long userId) {
 		 return myMapper.selectTopResume(userId);
 	}
-
+	// 이력서 삭제
+	public int deleteResume(Long resumeMyId, Long userId) {
+		return myMapper.softDeleteResume(resumeMyId, userId);
+	}
+	
+	// 자소서
 	public List<MyReviewDTO> getmyReviewList(Long userId) {
 		return myMapper.selectMyReviewList(userId);
 	}
-
+	
+	// 자소서 삭제
+	public int deleteReview(Long userId, Long coverLetterIdx) {
+		return myMapper.deleteReview(userId, coverLetterIdx);
+	}
+	
+	
+	// 관심목록
 	public List<FavoriteJobRowDTO> getFavoriteJobList(FavoriteJobCond cond) {
 	    return myMapper.selectFavoriteJobList(cond);
 	}
@@ -73,6 +85,16 @@ public class MyService {
 	public int getFavoriteJobCount(FavoriteJobCond cond) {
 	    return myMapper.selectFavoriteJobCount(cond);
 	}
+	
+	public int deleteFavoriteJob(Long userId, Long jobId) {
+	    return myMapper.deleteFavoriteJob(userId, jobId);
+	}
+	
+	
+	
+
+
+	
 	
 	
 

@@ -21,11 +21,11 @@
                         <h4 class="mb-3">주문자 정보</h4>
                         <div class="mb-3">
                             <label class="form-label">주문자명</label>
-                            <input type="text" class="form-control" name="buyerName" readonly>
+                            <input type="text" class="form-control" name="buyerName" value="${orderInfo.userName}" readonly>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">전화번호</label>
-                            <input type="text" class="form-control" name="buyerPhone" readonly>
+                            <input type="text" class="form-control" name="buyerPhone" value="${orderInfo.phone}" readonly>
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                         <div id="selectCredit" class="row mb-3 mx-3" style="display:none;">
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">카드사 선택</label>
-                                <select id="cardCompany" class="form-select" name="cardCompany">
+                                <select id="cardCompany" class="form-select" name="cardCompany" required>
                                     <option>삼성카드</option>
                                     <option>신한카드</option>
                                     <option>KB국민카드</option>
@@ -84,7 +84,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">할부 개월 수</label>
-                                <select id="installment" class="form-select" name="installment">
+                                <select id="installment" class="form-select" name="installment" required>
                                     <option>일시불</option>
                                     <option>2개월</option>
                                     <option>3개월</option>
@@ -110,7 +110,7 @@
                         <div id="selectBank" class="row mx-3" style="display:none;">
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">은행 선택</label>
-                                <select class="form-select" name="bankName">
+                                <select class="form-select" name="bankName" required>
                                     <option>국민은행</option>
                                     <option>우리은행</option>
                                     <option>신한은행</option>
@@ -125,7 +125,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">입금자명</label>
-                                <input type="text" class="form-control" name="depositor">
+                                <input type="text" class="form-control" name="depositor" required>
                             </div>
                         </div>
                     </div>
@@ -170,7 +170,7 @@
 				      <div class="modal-body">
 				        <p>[유료 서비스 이용 약관]</p>
 				        <p>제1조 (목적)<br>
-							이 약관은 ㈜사람인(이하 "회사")이 제공하는 채용 관련 상품 및 서비스 거래 플랫폼(이하 "서비스")과 관련하여 회사와 회원의 권리·의무 등 필요한 사항을 규정합니다.</p>
+							이 약관은 ㈜잡아이(이하 "회사")이 제공하는 채용 관련 상품 및 서비스 거래 플랫폼(이하 "서비스")과 관련하여 회사와 회원의 권리·의무 등 필요한 사항을 규정합니다.</p>
 				        <p>제2조 (회원)<br>
 							서비스를 이용하려는 개인 또는 법인은 이 약관을 확인하고 동의하게 됩니다.<br>
 							서비스를 이용하는 모든 회원은 ㈜사람인의 「개인회원 약관」 또는 「기업회원 약관」 동의 후 회사로부터 유효한 회원 자격을 부여받아 유지하는 개인 또는 기업회원임을 전제로 합니다. 이러한 사유로 이 약관으로 정하지 않은 사항 중 ㈜사람인의 「개인회원 약관」 또는 「기업회원 약관」으로 규정된 사항은 해당 약관의 적용을 받습니다.</p>

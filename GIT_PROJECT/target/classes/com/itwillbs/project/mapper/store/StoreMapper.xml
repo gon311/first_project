@@ -14,4 +14,14 @@
 			product_id = #{productId}
 	</select>
 	
+	<!-- 회원 정보 출력 -->
+	<select id="selectOrderUser" resultType="order">
+		select	
+			*
+		from	
+			user
+		where
+			email = #{sId}
+	</select>
+	
 </mapper>

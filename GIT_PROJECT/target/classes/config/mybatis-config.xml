@@ -22,6 +22,7 @@
 		<typeAlias type="com.itwillbs.project.admin.dto.PayDTO" alias="pay"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.SubmitDTO" alias="submit"/>
 		<typeAlias type="com.itwillbs.project.store.dto.StoreDTO" alias="store"/>
+		<typeAlias type="com.itwillbs.project.store.dto.OrderDTO" alias="order"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.QnaDTO" alias="qna"/>
 		
 	</typeAliases>

@@ -52,7 +52,7 @@
 
           <div class="mb-3">
             <label class="form-label">새 비밀번호</label>
-            <input type="hidden" name="sId" value="${param.sId }">
+            <input type="hidden" name="email" value="${param.email }">
             <input type="password" name="newPassword" class="form-control"
                    placeholder="새 비밀번호" required
                    minlength="8" maxlength="30"

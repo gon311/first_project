@@ -71,7 +71,7 @@
             <h3 class="fw-bold mb-2">아이디를 ${userIdList.size() }개 찾았어요</h3>
             <p class="text-muted mb-4">비밀번호를 잊으셨다면 아이디를 선택 후<br>'비밀번호 찾기'를 눌러 주세요.</p>
 
-            <form action="<c:url value='/user/findPw' />" method="post">
+            <form action="<c:url value='/user/findPw' />" method="get">
                 <div class="id-list-group">
 					<c:forEach var="userId" items="${userIdList}">
 						<label class="id-item w-100 m-0">
@@ -79,7 +79,7 @@
 	                            <span class="user-icon">👤</span>
 	                            <span class="fw-bold">${userId.email}</span>
 	                        </div>
-	                        <input type="radio" name="sId" value="${userId.email}">
+	                        <input type="radio" name="email" value="${userId.email}">
 	                    </label>
 					</c:forEach>
                 </div>

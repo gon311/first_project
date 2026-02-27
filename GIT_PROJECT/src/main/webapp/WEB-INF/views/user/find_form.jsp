@@ -63,6 +63,9 @@
     <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
 	<form id="findForm" action="<c:url value='/user/findId' />" method="post">
+<!-- 		휴대폰 조합 저장 -->
+		<input type="hidden" name="phone" id="final-phone"> 
+
 	    <div class="container">
 	        <nav class="tab-nav">
 	            <button type="button" class="tab-btn active" onclick="switchTab('id')" id="tab-btn-id">아이디 찾기</button>
@@ -79,7 +82,7 @@
 	                    <div class="col-body">
 	                        <div class="radio-row">
 	                            <label class="radio-label">
-	                                <input type="radio" name="authGroupId" value="phone" onclick="updateFormState('id')" checked> 휴대폰 인증
+	                                <input type="radio" name="authGroupId" value="P" onclick="updateFormState('id')" checked> 휴대폰 인증
 	                            </label>
 	                        </div>
 	
@@ -118,7 +121,7 @@
 	                    <div class="col-body">
 	                        <div class="radio-row">
 	                            <label class="radio-label">
-	                                <input type="radio" name="authGroupId" value="biz" onclick="updateFormState('id')"> 기업회원
+	                                <input type="radio" name="authGroupId" value="C" onclick="updateFormState('id')"> 기업회원
 	                            </label>
 	                        </div>
 	
@@ -128,19 +131,22 @@
 	                                    가입자명 <span class="tooltip-trigger" onclick="toggleTooltip('tt-id')">?</span>
 	                                </label>
 	                                <div class="form-input-group">
-	                                    <input type="text" id="id-biz-name">
+	                                    <input type="text" name="ceoName" id="id-biz-name">
 	                                </div>
 	                                <div id="tt-id" class="tooltip-box">
 	                                    <span class="tooltip-close" onclick="toggleTooltip('tt-id')">×</span>
 	                                    <p>회원가입 시 등록한 기업담당자<br>이름을 입력해 주세요.</p>
 	                                </div>
 	                            </div>
-	                            <div class="form-row">
-	                                <label class="form-label">사업자등록번호</label>
-	                                <div class="form-input-group">
-	                                    <input type="text" maxlength="3"> - <input type="text" maxlength="2"> - <input type="text" maxlength="5">
-	                                </div>
-	                            </div>
+	                            <div class="form-row"><label class="form-label">사업자번호</label>
+	                            	<div class="form-input-group">
+								    	<input type="text" name="bizRegNo" id="bizRegNo" 
+									           placeholder="000-00-00000" 
+									           maxlength="12"
+									           pattern="\d{3}-\d{2}-\d{5}"
+									           title="사업자등록번호 10자리를 입력해주세요.">
+	                            	</div>
+	                           </div>
 	                        </div>
 	                    </div>
 	                </div>
@@ -157,13 +163,13 @@
 	                    <div class="col-body">
 	                        <div class="radio-row">
 	                            <label class="radio-label">
-	                                <input type="radio" name="authGroupPw" value="phone" onclick="updateFormState('pw')" checked> 휴대폰 인증
+	                                <input type="radio" name="authGroupPw" value="P" onclick="updateFormState('pw')" checked> 휴대폰 인증
 	                            </label>
 	                        </div>
 	                        <div id="area-pw-personal" class="field-area">
 	                            <div class="form-row">
 	                                <label class="form-label">아이디</label>
-	                                <div class="form-input-group"><input type="text" na placeholder="아이디 입력"></div>
+	                                <div class="form-input-group"><input type="text" name="email" placeholder="아이디 입력"></div>
 	                            </div>
 	                            <div class="form-row">
 	                                <label class="form-label">이름</label>
@@ -174,7 +180,7 @@
 	                            <div id="row-pw-phone" class="form-row">
 	                                <label class="form-label">휴대폰 번호</label>
 	                                <div class="form-input-group">
-	                                    <select style="width: 25%;"><option>010</option></select> - 
+	                                    <select style="width: 25%;" id="pw-phone-1"><option>010</option></select> - 
 	                                    <input type="text" style="width: 25%;" id="pw-phone-2" maxlength="4"> - 
 	                                    <input type="text" style="width: 25%;" id="pw-phone-3" maxlength="4">
 	                                    <button type="button" class="btn-auth" onclick="sendAuthCode('pw', 'phone')">인증번호 전송</button>
@@ -197,24 +203,32 @@
 	                    <div class="col-body">
 	                        <div class="radio-row">
 	                            <label class="radio-label">
-	                                <input type="radio" name="authGroupPw" value="biz" onclick="updateFormState('pw')"> 기업회원
+	                                <input type="radio" name="authGroupPw" value="C" onclick="updateFormState('pw')"> 기업회원
 	                            </label>
 	                        </div>
 	                        <div id="area-pw-biz" class="field-area disabled">
-	                            <div class="form-row"><label class="form-label">아이디</label><div class="form-input-group"><input type="text"></div></div>
+	                            <div class="form-row"><label class="form-label">아이디</label><div class="form-input-group"><input type="text" name="email"></div></div>
 	                            <div class="form-row">
 	                                <label class="form-label">
 	                                    가입자명 <span class="tooltip-trigger" onclick="toggleTooltip('tt-id2')">?</span>
 	                                </label>
 	                                <div class="form-input-group">
-	                                    <input type="text" id="id-biz-name2">
+	                                    <input type="text" name="ceoName" id="id-biz-name2">
 	                                </div>
 	                                <div id="tt-id2" class="tooltip-box">
 	                                    <span class="tooltip-close" onclick="toggleTooltip('tt-id2')">×</span>
 	                                    <p>회원가입 시 등록한 기업담당자<br>이름을 입력해 주세요.</p>
 	                                </div>
 	                            </div>
-	                            <div class="form-row"><label class="form-label">사업자번호</label><div class="form-input-group"><input type="text"> - <input type="text"> - <input type="text"></div></div>
+	                            <div class="form-row"><label class="form-label">사업자번호</label>
+	                            	<div class="form-input-group">
+								    	<input type="text" name="bizRegNo" id="bizRegNo2" 
+									           placeholder="000-00-00000" 
+									           maxlength="12"
+									           pattern="\d{3}-\d{2}-\d{5}"
+									           title="사업자등록번호 10자리를 입력해주세요.">
+	                            	</div>
+	                           </div>
 	                        </div>
 	                    </div>
 	                </div>
@@ -225,7 +239,24 @@
 	</form>
 	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
-    <script>
+    <script>    
+		const bizInputs = document.querySelectorAll('input[name="bizRegNo"]');
+	    bizInputs.forEach(input => {
+	        input.addEventListener('input', function(e) {
+	            // 숫자만 남기기
+	            let val = e.target.value.replace(/[^0-9]/g, ''); 
+	            
+	            // 하이픈 포맷팅 (000-00-00000)
+	            if (val.length > 3 && val.length <= 5) {
+	                val = val.substring(0, 3) + '-' + val.substring(3);
+	            } else if (val.length > 5) {
+	                val = val.substring(0, 3) + '-' + val.substring(3, 5) + '-' + val.substring(5, 10);
+	            }
+	            
+	            e.target.value = val;
+	        });
+	    });
+		    
         // 1. 탭 전환
 		function switchTab(mode) {
 		    // 1. 탭 버튼 상태 변경
@@ -277,6 +308,7 @@
 		            }
 		        }
 		    });
+		    
 		}
 
         // 2. 폼 상태 업데이트
@@ -297,19 +329,23 @@
             // 인증번호창은 변경 시 숨김
             if(authRow) authRow.classList.add('d-none');
 
-            if (selectedValue === 'biz') {
+            if (selectedValue === 'C') {
                 personalArea.classList.add('disabled');
                 bizArea.classList.remove('disabled');
             } else {
                 personalArea.classList.remove('disabled');
                 bizArea.classList.add('disabled');
 
-                if (selectedValue === 'phone') {
+                if (selectedValue === 'P') {
                     phoneRow.classList.remove('d-none');
                 } else {
                     phoneRow.classList.add('d-none');
                 }
             }
+            
+            const currentView = document.getElementById('view-' + mode);
+            toggleInputs(currentView, false);
+            
         }
 
         // 3. 인증번호 전송 (휴대폰 통합)
@@ -365,6 +401,26 @@
             el.style.display = (el.style.display === 'block') ? 'none' : 'block';
         }
         
+     	// 폼 제출 시 실행되는 이벤트 리스너
+        document.getElementById('findForm').addEventListener('submit', function(e) {
+            // 현재 활성화된 탭이 무엇인지 확인 ('id' 또는 'pw')
+            const currentMode = document.getElementById('tab-btn-id').classList.contains('active') ? 'id' : 'pw';
+            
+            // 1. 해당 모드의 휴대폰 입력값 가져오기
+            const p1 = document.getElementById(currentMode + '-phone-1').value; // 010 [cite: 46, 68]
+            const p2 = document.getElementById(currentMode + '-phone-2').value; // 중간 [cite: 47, 69]
+            const p3 = document.getElementById(currentMode + '-phone-3').value; // 끝 [cite: 48, 70]
+            
+            // 2. 값 합치기 (예: 01012345678)
+            const fullPhone = p1 + "-" + p2 + "-" + p3;
+            
+            // 3. 히든 필드(id="final-phone")에 값 주입 
+            document.getElementById('final-phone').value = fullPhone;
+            
+            // (선택 사항) 제대로 합쳐졌는지 확인용 로그
+            console.log("제출되는 전체 번호: " + fullPhone);
+        });
+        
         // 로드시 셀렉트가 다름
 	    window.onload = function() {
 	        // 1. EL식으로 가져오는 값 (서버에서 바로 보낼 때)
@@ -382,6 +438,8 @@
 	            switchTab('pw'); // 기본값 P
 	        }
 	    };
+	    
+	    
     </script>
 </body>
 </html>

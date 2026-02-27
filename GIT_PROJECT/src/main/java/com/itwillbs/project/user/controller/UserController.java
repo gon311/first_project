@@ -131,6 +131,7 @@ public class UserController {
 	@PostMapping("/findId")
 	public String findId(UserDTO userDTO, Model model, String authGroupId) {
 		
+		userDTO.setUserType(authGroupId);
 		List<UserDTO> userIdList = userService.getUserIdList(userDTO);
 		
 		model.addAttribute("userIdList", userIdList);
@@ -139,10 +140,30 @@ public class UserController {
 	}
 	
 	// 새 비밀번호 작성 페이지
+	@GetMapping("/findPw")
+	public String findPw() {
+				
+		return "/user/find_pw";
+	}
+	
+	// 새 비밀번호 작성 페이지
 	@PostMapping("/findPw")
-	public String findPw(UserDTO userDTO, RedirectAttributes ra) {
+	public String findPw(UserDTO userDTO,
+						 String authGroupPw,
+						 RedirectAttributes ra) {
 		
+		userDTO.setUserType(authGroupPw);
+		UserDTO userdb = userService.getUser(userDTO.getEmail());
 		
+		if(userDTO.getUserType().equals("P")) {
+			if(userdb == null || !userDTO.getUserType().equals(userdb.getUserType()) || !userDTO.getPhone().equals(userdb.getPhone()) || !userDTO.getUserName().equals(userdb.getUserName())) {
+				return "redirect:/user/find";
+			}
+		} else if(userDTO.getUserType().equals("C")) {
+			if(userdb == null || !userDTO.getUserType().equals(userdb.getUserType()) || userDTO.getBizRegNo().equals(userdb.getBizRegNo()) || userDTO.getCeoName().equals(userdb.getCeoName())) {
+				return "redirect:/user/find";
+			}
+		} 
 		
 		return "/user/find_pw";
 	}
@@ -150,7 +171,7 @@ public class UserController {
 	// 비밀번호 변경
 	@PostMapping("/password")
 	public String password(NewPasswordDTO form,
-						   String sId,
+						   String email,
 						   HttpSession session,
 						   RedirectAttributes ra) {
 
@@ -179,7 +200,7 @@ public class UserController {
 
 	    // 서비스 호출 (여기서 현재 비번 맞는지 확인 + 업데이트)
 		
-		boolean ok = userService.newPassword(newPass, sId);
+		boolean ok = userService.newPassword(newPass, email);
 		
 		if(ok) {
 		    ra.addFlashAttribute("msg", "비밀번호가 변경되었습니다.");

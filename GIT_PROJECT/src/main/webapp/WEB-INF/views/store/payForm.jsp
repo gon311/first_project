@@ -17,8 +17,8 @@
 
                 <!-- 주문자 정보 -->
                 <div class="card mb-4">
+                    <div class="card-header fw-bold">주문자 정보</div>
                     <div class="card-body">
-                        <h4 class="mb-3">주문자 정보</h4>
                         <div class="mb-3">
                             <label class="form-label">주문자명</label>
                             <input id="userName" type="text" class="form-control" name="userName" value="${orderInfo.userName}" readonly>
@@ -32,8 +32,8 @@
 
                 <!-- 상품 정보 -->
                 <div class="card mb-4">
+                    <div class="card-header fw-bold">상품 정보</div>
                     <div class="card-body">
-                        <h4 class="mb-3">상품 정보</h4>
                         <div class="mb-3">
                             <label class="form-label">상품명</label>
                             <input id="productName" type="text" class="form-control" name="productName" value="${storeInfo.productName}" readonly>
@@ -47,7 +47,7 @@
 
                 <!-- 결제 수단 -->
                 <div class="card mb-4">
-                    <div class="card-header fw-bold">결제 수단</div>
+                    <div class="card-header fw-bold">결제 수단 <span style="color:red">*</span></div>
                     <div id="selectMethod" class="card-body">
                         <div class="form-check mb-2">
                             <input id="credit" class="form-check-input" type="radio" name="payMethod" value="credit" 
@@ -58,7 +58,7 @@
                         <!-- 신용카드를 선택한 경우 -->
                         <div id="selectCredit" class="row mb-3 mx-3" style="display:none;">
                             <div class="col-md-6 mb-2">
-                                <label class="form-label">카드사 선택</label>
+                                <label class="form-label">카드사 선택 <span style="color:red">*</span></label>
                                 <select id="cardCompany" class="form-select" name="cardCompany">
                                     <option value="">카드사 선택</option>
                                     <option value="ss">삼성카드</option>
@@ -83,7 +83,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">할부 개월 수</label>
+                                <label class="form-label">할부 개월 수 <span style="color:red">*</span></label>
                                 <select id="installment" class="form-select" name="installment">
                                     <option value="">일시불</option>
                                     <option value="2">2개월</option>
@@ -109,7 +109,7 @@
                         <!-- 무통장 입금을 선택한 경우 -->
                         <div id="selectBank" class="row mx-3" style="display:none;">
                             <div class="col-md-6 mb-2">
-                                <label class="form-label">은행 선택</label>
+                                <label class="form-label">은행 선택 <span style="color:red">*</span></label>
                                 <select class="form-select" name="bankName">
                                     <option value="">은행 선택</option>
                                     <option value="kb">국민은행</option>
@@ -125,7 +125,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">입금자명</label>
+                                <label class="form-label">입금자명 <span style="color:red">*</span></label>
                                 <input type="text" id="depositName" class="form-control" name="depositor" required>
                             </div>
                         </div>
@@ -156,7 +156,7 @@
 				<div class="form-check mb-3">
 				    <input class="form-check-input" type="checkbox" id="checkModal" required>
 			        <span data-bs-toggle="modal" data-bs-target="#termsModal" style="cursor:pointer; color:inherit; text-decoration:none;">
-			            (필수) 유료 서비스 이용 약관 동의
+			            <span style="color:red">*</span> (필수) 유료 서비스 이용 약관 동의
 			        </span>
 				</div>
 				
@@ -239,25 +239,25 @@
     		}
     	}) 
     	
-    	
-//     	document.payForm.addEventListener("submit", function() {
-//     		if(!document.payForm.payMethod[0].checked && !document.payForm.payMethod[1].checked) {
-//     			document.payForm.payMethod[0].focus();
-//     			return false;
-//     		} else if(document.payForm.payMethod[0].checked && document.payForm.cardCompany.value == "") {
-//     			document.payForm.cardCompany.focus();
-//     			return false;
-//     		} else if(document.payForm.payMethod[0].checked && document.payForm.installment.value == "") {
-//     			document.payForm.installment.focus();
-//     			return false;
-//     		} else if(document.payForm.payMethod[1].checked && document.payForm.bankName.value == "") {
-//     			document.payForm.bankName.focus();
-//     			return false;
-//     		} else if(document.payForm.payMethod[1].checked && document.payForm.depositor.value == "") {
-//     			document.payForm.depositor.focus();
-//     			return false;
-//     		}
-//     	})
+    	// 폼 제출 시 필수사항 확인
+    	document.payForm.onsubmit = function() {
+    		if(!document.payForm.payMethod[0].checked && !document.payForm.payMethod[1].checked) {
+    			document.payForm.payMethod[0].focus();
+    			return false;
+    		} else if(document.payForm.payMethod[0].checked && document.payForm.cardCompany.value == "") {
+    			document.payForm.cardCompany.focus();
+    			return false;
+    		} else if(document.payForm.payMethod[0].checked && document.payForm.installment.value == "") {
+    			document.payForm.installment.focus();
+    			return false;
+    		} else if(document.payForm.payMethod[1].checked && document.payForm.bankName.value == "") {
+    			document.payForm.bankName.focus();
+    			return false;
+    		} else if(document.payForm.payMethod[1].checked && document.payForm.depositor.value == "") {
+    			document.payForm.depositor.focus();
+    			return false;
+    		}
+    	}
     </script>
 
 </body>

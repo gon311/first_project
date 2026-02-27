@@ -135,7 +135,7 @@
 	                </table>
 	                
 	                <!-- 전체회원 페이징(구현예정) -->
-			        <div class="d-flex flex-column align-items-center mt-3">
+			        <div class="d-flex flex-column align-items-center mt-5">
 			            <nav aria-label="Page navigation">
 			                <ul class="pagination pagination-sm m-0">
 			                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
@@ -266,7 +266,7 @@
 	                </table>
 	                
 	                <!-- 탈퇴회원 페이징(구현예정) -->
-			        <div class="d-flex flex-column align-items-center mt-3">
+			        <div class="d-flex flex-column align-items-center mt-5">
 			            <nav aria-label="Page navigation">
 			                <ul class="pagination pagination-sm m-0">
 			                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>

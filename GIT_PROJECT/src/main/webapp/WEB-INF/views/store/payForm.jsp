@@ -50,43 +50,77 @@
                     <div class="card-header fw-bold">결제 수단</div>
                     <div class="card-body">
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="payMethod" value="credit" id="credit" required>
+                            <input class="form-check-input" type="radio" name="payMethod" value="credit" id="credit" 
+                            	onclick="checkMethod()" required>
                             <label class="form-check-label" for="credit">신용카드</label>
                         </div>
                         
                         <!-- 신용카드를 선택한 경우 -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
+                        <div id="selectCredit" class="row mb-3 mx-3" style="display:none;">
+                            <div class="col-md-6 mb-2">
                                 <label class="form-label">카드사 선택</label>
-                                <select class="form-select" name="cardCompany">
+                                <select id="cardCompany" class="form-select" name="cardCompany">
                                     <option>삼성카드</option>
                                     <option>신한카드</option>
-                                    <option>국민카드</option>
+                                    <option>KB국민카드</option>
+                                    <option>우리카드</option>
+                                    <option>비씨카드</option>
+                                    <option>롯데카드</option>
+                                    <option>현대카드</option>
+                                    <option>하나카드</option>
+                                    <option>씨티카드</option>
+                                    <option>카카오뱅크</option>
+                                    <option>광주카드</option>
+                                    <option>전북카드</option>
+                                    <option>수협카드</option>
+                                    <option>제주카드</option>
+                                    <option>신협카드</option>
+                                    <option>우체국체크카드</option>
+                                    <option>새마을금고</option>
+                                    <option>저축은행카드</option>
+                                    <option>KDB산업체크카드</option>
+                                    <option>NH카드</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">할부 개월 수</label>
-                                <select class="form-select" name="installment">
+                                <select id="installment" class="form-select" name="installment">
                                     <option>일시불</option>
+                                    <option>2개월</option>
                                     <option>3개월</option>
+                                    <option>4개월</option>
+                                    <option>5개월</option>
                                     <option>6개월</option>
+                                    <option>7개월</option>
+                                    <option>8개월</option>
+                                    <option>9개월</option>
+                                    <option>10개월</option>
+                                    <option>11개월</option>
+                                    <option>12개월</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="payMethod" value="bank" id="bank">
+                            <input class="form-check-input" type="radio" name="payMethod" value="bank" id="bank" onclick="checkMethod()">
                             <label class="form-check-label" for="bank">무통장 입금</label>
                         </div>
                         
                         <!-- 무통장 입금을 선택한 경우 -->
-                        <div class="row">
-                            <div class="col-md-6">
+                        <div id="selectBank" class="row mx-3" style="display:none;">
+                            <div class="col-md-6 mb-2">
                                 <label class="form-label">은행 선택</label>
                                 <select class="form-select" name="bankName">
                                     <option>국민은행</option>
                                     <option>우리은행</option>
                                     <option>신한은행</option>
+                                    <option>기업은행</option>
+                                    <option>NH농협은행</option>
+                                    <option>부산은행</option>
+                                    <option>하나은행</option>
+                                    <option>광주은행</option>
+                                    <option>우체국</option>
+                                    <option>iM뱅크</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -119,7 +153,7 @@
 
                 <!-- 약관 -->
 				<div class="form-check mb-3">
-				    <input class="form-check-input" type="checkbox" id="check" required>
+				    <input class="form-check-input" type="checkbox" id="checkModal" required>
 			        <span data-bs-toggle="modal" data-bs-target="#termsModal" style="cursor:pointer; color:inherit; text-decoration:none;">
 			            (필수) 유료 서비스 이용 약관 동의
 			        </span>
@@ -177,7 +211,7 @@
 
                 <!-- 버튼 -->
                 <div class="d-flex justify-content-center mb-4">
-                    <button type="submit" class="btn btn-primary">구매하기</button>
+                    <button id="btnPay" type="submit" class="btn btn-primary" disabled="disabled">구매하기</button>
                 </div>
             </form>
         </div>
@@ -185,6 +219,23 @@
     
     <script type="text/javascript">
     	// 결제 수단 선택에 따라 해당하는 셀렉트 박스 디스플레이
+		function checkMethod() {
+			if(document.getElementById("credit").checked) {
+    			document.getElementById("selectCredit").style.display = "block";
+    			document.getElementById("selectBank").style.display = "none";
+    		} else if(document.getElementById("bank").checked) {
+    			document.getElementById("selectCredit").style.display = "none";
+    			document.getElementById("selectBank").style.display = "block";
+    		}
+    	}
+    	
+    	document.getElementById("checkModal").addEventListener("click", function() {
+    		if(document.getElementById("checkModal").checked) {
+    			document.getElementById("btnPay").disabled = false;
+    		} else {
+    			document.getElementById("btnPay").disabled = true;
+    		}
+    	}) 
     </script>
 
 </body>

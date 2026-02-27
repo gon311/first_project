@@ -63,7 +63,7 @@
 		                </div>
 		
 		                <!-- 검색 버튼 -->
-		                <div class="col-12 d-flex justify-content-end mt-3">
+		                <div class="col-12 d-flex justify-content-end mt-5">
 		                    <button type="submit" class="btn btn-primary btn-sm px-3">검색</button>
 		                </div>
 		

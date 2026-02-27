@@ -38,7 +38,6 @@
   
   <%-- 하단: 메인 메뉴 바 + 전체 메뉴 버튼 --%>
   <%-- 차후 url 교체 --%>
-<<<<<<< HEAD
   <section id="header-bottom">
 	  <nav id="globalMenu" class="site-nav navbar navbar-expand border-bottom">
 	    <div class="container-fluid">

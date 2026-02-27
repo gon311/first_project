@@ -203,6 +203,87 @@
 	    font-size:14px;
 	    border-bottom:1px solid #f1f2f4;
 	}
+	
+	/* 모달 배경 (어둡게) */
+	.modal-overlay {
+	    display: none; /* 기본은 숨김 */
+	    position: fixed;
+	    top: 0; left: 0;
+	    width: 100%; height: 100%;
+	    background: rgba(0,0,0,0.5);
+	    z-index: 1000;
+	    justify-content: center;
+	    align-items: center;
+	}
+	
+	/* 모달 본체 */
+	.modal-content {
+	    background: #fff;
+	    width: 450px;
+	    border-radius: 12px;
+	    overflow: hidden;
+	    position: relative;
+	    animation: slideUp 0.3s ease-out; /* 아래에서 위로 올라오는 효과 */
+	}
+	
+	@keyframes slideUp {
+	    from { transform: translateY(50px); opacity: 0; }
+	    to { transform: translateY(0); opacity: 1; }
+	}
+	
+	.modal-header { padding: 20px; border-bottom: 1px solid #eee; position: relative; }
+	.close-btn { position: absolute; right: 20px; top: 15px; font-size: 24px; border: none; background: none; cursor: pointer; }
+	
+	.modal-body { padding: 20px; }
+	.job-title-mini { font-weight: bold; color: #4876ef; margin-bottom: 20px; }
+	
+	.resume-card { 
+	    border: 1px solid #e5e8ec; 
+	    padding: 15px; 
+	    border-radius: 8px; 
+	    background: #f8f9fb;
+	    margin-top: 10px;
+	}
+	
+	.final-apply-btn {
+	    width: 100%;
+	    padding: 15px;
+	    background: #ff4b4b; /* 이미지와 유사한 강조색 */
+	    color: #fff;
+	    border: none;
+	    font-size: 18px;
+	    font-weight: bold;
+	    cursor: pointer;
+	}
+	
+	.resume-card-container {
+	    max-height: 300px;
+	    overflow-y: auto; /* 이력서가 많으면 스크롤 생성 */
+	}
+	
+	.resume-card {
+	    border: 1px solid #e5e8ec;
+	    border-radius: 8px;
+	    padding: 15px;
+	    margin-bottom: 10px;
+	    cursor: pointer;
+	    transition: all 0.2s;
+	}
+	
+	/* 마우스를 올렸을 때 */
+	.resume-card:hover {
+	    background-color: #f8f9fb;
+	}
+	
+	/* 이력서가 선택되었을 때 디자인 변화 */
+	.resume-card.selected {
+	    border-color: #4876ef;
+	    background-color: #f0f4ff;
+	}
+	
+	.resume-card input[type="radio"] {
+	    display: none; /* 라디오 버튼은 숨기고 카드 전체 클릭으로 대체 */
+	}
 </style>
 </head>
 <body>
@@ -249,14 +330,62 @@
                 <ul>
                     <li>접수기간: 시작일 ${post.openDate} ~ 마감일 ${post.closeDate}</li>
                     <li>기업주소: ${post.address}</li>
-                    <li>담당자: ${post.mgrName}</li>
-                    <li>연락처: ${post.mgrPhone}</li>
-                    <li>이메일: ${post.mgrEmail}</li>
+                    
+                    <c:if test="${post.isPublic eq 'Y'}">
+			            <li>담당자: ${post.mgrName}</li>
+			            <li>연락처: ${post.mgrPhone}</li>
+			            <li>이메일: ${post.mgrEmail}</li>
+			        </c:if>
                 </ul>
             </div>
         </div>
     </section>
 </div>
+
+<div id="applyModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>${post.companyName} 입사지원</h3>
+            <button class="close-btn" onclick="closeApplyModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="job-title-mini">${post.title}</p>
+            
+            <div class="form-group">
+                <label>지원부문</label>
+                <select class="full-select">
+                    <option>지원 부문을 선택해 주세요</option>
+                    <option>${post.field}</option>
+                </select>
+            </div>
+
+            <div class="resume-section">
+                <div class="section-header">
+                    <span>선택된 이력서</span>
+                    <a href="#" class="change-link">이력서 변경 ></a>
+                </div>
+                <div class="resume-card">
+                    <p class="save-date">2026.02.09 (월) 12:42 저장</p>
+                    <p class="resume-name">작성된 이력서 제목입니다.</p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="final-apply-btn">입사지원</button>
+        </div>
+    </div>
+</div>
+
+<div class="resume-card-container">
+    <c:forEach var="resume" items="${resumeList}">
+        <div class="resume-card" onclick="selectResume('${resume.id}')">
+            <input type="radio" name="selectedResume" value="${resume.id}">
+            <p class="save-date">${resume.updateDate} 저장</p>
+            <p class="resume-name">${resume.title}</p>
+        </div>
+    </c:forEach>
+</div>
+
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
 <script>
@@ -324,6 +453,33 @@
         }
     }
     	
+    function checkResumeAndApply() {
+        // 1. 서버에서 이력서 목록 가져오기
+        fetch('/api/resumes')
+            .then(response => response.json())
+            .then(data => {
+                if(data.length > 0) {
+                    // 2. 모달 열고 목록 렌더링
+                    renderResumeList(data);
+                    document.getElementById('applyModal').style.display = 'flex';
+                } else {
+                    alert("작성된 이력서가 없습니다."); [cite: 42]
+                }
+            });
+    }
+
+    function closeApplyModal() {
+        document.getElementById('applyModal').style.display = 'none';
+    }
+
+    // 배경 클릭 시 닫기 기능
+    window.onclick = function(event) {
+        const modal = document.getElementById('applyModal');
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    
 </script>
 
 </body>

@@ -179,7 +179,7 @@
     <form action="<c:url value="/job/JobProcess" />" method="post" enctype="multipart/form-data">
         
         <div class="form-group">
-        	<input type="hidden" name="compId" value="1">
+        	<input type="hidden" name="compId" value="${userIdx}">
             <div class="label-box">공고제목 <span style="color:red">*</span></div>
             <div class="input-box"><input type="text" name="title" placeholder="디자이너 채용" required></div>
         </div>
@@ -218,7 +218,7 @@
 		    <div class="label-box">고용 형태 <span style="color:red">*</span></div>
 		    <div class="input-box">
 		        <select name="empType" required style="width: 200px; display:inline-block;">
-		            <option value="정규직">정규직</option>
+		            <option value="정규직" selected>정규직</option>
 		            <option value="계약직">계약직</option>
 		            <option value="인턴">인턴</option>
 		        </select>
@@ -232,10 +232,11 @@
 		    <div class="label-box">경력 <span style="color:red">*</span></div>
 		    <div class="input-box">
 		        <label><input type="checkbox" name="expType" value="new" class="expCheck"> 신입</label>
+		        <label><input type="checkbox" name="expType" value="newCareer" class="expCheck"> 신입·경력</label>
 		        <label style="margin-right: 15px;"><input type="checkbox" name="expType" value="career" class="expCheck" checked> 경력</label>
 		
 		        <select name="minExp" id="minExp" style="width: 140px; display:inline-block;">
-		            <option value="0">1년 미만</option>
+		            <option value="0" selected>1년 미만</option>
 		            <option value="1">1년 이상</option>
 		            <option value="3">3년 이상</option>
 		            <option value="5">5년 이상</option>
@@ -243,7 +244,7 @@
 		        </select>
 		        <span style="margin: 0 5px;">~</span>
 		        <select name="maxExp" id="maxExp" style="width: 140px; display:inline-block;">
-		            <option value="3년">3년 이하</option>
+		            <option value="3년" selected>3년 이하</option>
 		            <option value="5년">5년 이하</option>
 		            <option value="8년">8년 이하</option>
 		            <option value="10년">10년 이하</option>
@@ -259,7 +260,7 @@
             <div class="label-box">학력 <span style="color:red">*</span></div>
             <div class="input-box">
                 <select name="edu">
-                    <option>학력무관</option>
+                    <option selected>학력무관</option>
                     <option>고등학교 졸업</option>
                     <option>대학교(2,3년) 졸업</option>
                     <option>대학교(4년) 졸업</option>
@@ -272,7 +273,7 @@
             <div class="label-box">급여 <span style="color:red">*</span></div>
             <div class="input-box">
                 <select name="salary">
-                    <option>면접 후 결정</option>
+                    <option selected>면접 후 결정</option>
                     <option>회사내규에 따름</option>
                 </select>
                 <div class="info-box" style="margin-top:10px;">

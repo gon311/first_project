@@ -93,31 +93,33 @@
 	        1                )
 	</insert>	
 	
-	<select id="getJobList" resultType="job">
+	<select id="getJobList" resultMap="JobResultMap">
 	    SELECT 
-	        j.job_id as jobId
-	        , j.comp_id as compId
-	        , u.company_name as comName
+	        j.job_id
+	        , j.comp_id
+	        , u.company_name
 	        , j.title
 	        , j.field
 	        , CASE 
 		        WHEN j.exp_year IS NULL THEN '경력 무관'
-		        WHEN j.exp_year = '0' OR j.exp_year LIKE '%신입%' THEN '신입'
-		        ELSE '경력'
-		    END as expYear
+	            WHEN j.exp_type = 'new' THEN '신입'
+	            WHEN j.exp_type = 'newCareer' THEN '신입·경력'
+	            WHEN j.exp_type = 'career' THEN '경력'
+	            ELSE '정보 없음'
+		    END as exp_year
 	        , j.edu
 	        , j.address
-	        , j.close_date as closeDate
+	        , j.close_date
 	    FROM JOB_POSTING j JOIN USER_COMPANY u
 		ON j.comp_id = u.user_id
 	    <where>
 	        <if test="expType != null and expType != ''">
 	            <choose>
 	                <when test="expType == 'new'">
-	                    AND (j.exp_type = 'new' OR j.exp_year = '0')
+	                    AND (j.exp_type = 'new' OR j.exp_type = 'newCareer')
 	                </when>
 	                <when test="expType == 'career'">
-	                    AND j.exp_type = 'career'
+	                    AND (j.exp_type = 'career' OR j.exp_type = 'newCareer' OR j.exp_year IS NULL)
 	                </when>
 	            </choose>
 	        </if>
@@ -165,7 +167,8 @@
 	        , p.probation     
 	        , CASE 
 	          	WHEN p.exp_year IS NULL THEN '경력 무관'
-	          	WHEN p.exp_year = '0' OR p.exp_year LIKE '%신입%' THEN '신입·경력'
+	          	WHEN p.exp_type = 'new' THEN '신입'
+          		WHEN p.exp_type = 'newCareer' THEN '신입·경력'
 	        	ELSE concat(if(p.exp_type = 'career', '경력 ', ''), p.exp_year)
 		     END as exp_year
 	        , p.edu           

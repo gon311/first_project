@@ -350,7 +350,7 @@
     <div class="job-list-container">
 	    <c:forEach var="job" items="${jobList}">
 	        <div class="job-card" onclick="location.href='<c:url value="/job/JobDetail?jobId=${job.jobId}" />'">
-			    <div class="company-name">${job.comName}</div>
+			    <div class="company-name">${job.companyName}</div>
 			    <div class="job-title">${job.title}</div>
 			    <div class="job-tags">
 			        <span class="tag">${job.field}</span>

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.project.job.dto.JobDTO;
+import com.itwillbs.project.resume.dto.ResumeDTO;
 
 @Mapper
 public interface JobMapper {
@@ -22,5 +23,7 @@ public interface JobMapper {
 	List<Map<String, String>> getExistingRegions();
 
 	JobDTO getJobListDetail(Long jobId);
+
+	List<ResumeDTO> getMyResume();
 
 }

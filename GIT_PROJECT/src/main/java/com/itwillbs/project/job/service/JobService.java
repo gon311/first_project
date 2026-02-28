@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.project.job.dto.JobDTO;
 import com.itwillbs.project.job.mapper.JobMapper;
+import com.itwillbs.project.resume.dto.ResumeDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +33,10 @@ public class JobService {
 
 	public JobDTO getJobListDetail(Long jobId) {
 		return jobMapper.getJobListDetail(jobId);
+	}
+
+	public List<ResumeDTO> getMyResume() {
+		return jobMapper.getMyResume();
 	}
 
 

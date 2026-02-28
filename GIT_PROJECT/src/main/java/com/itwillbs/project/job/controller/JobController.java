@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.project.job.dto.JobDTO;
 import com.itwillbs.project.job.service.JobService;
+import com.itwillbs.project.resume.dto.ResumeDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -65,7 +66,7 @@ public class JobController {
 //		System.out.println(jobId);
 		JobDTO post = jobService.getJobListDetail(jobId);
 		
-		List<Resume> resumeList = resumeService.getMyResume();
+		List<ResumeDTO> resumeList = jobService.getMyResume();
 //		System.out.println("! = " + post.getCompanyName());
 //		System.out.println(post.getExpYear());
 		model.addAttribute("post", post);

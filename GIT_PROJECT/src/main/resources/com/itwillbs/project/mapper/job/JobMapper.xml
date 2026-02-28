@@ -189,6 +189,10 @@
 		WHERE p.job_id = #{jobId}
 	</select>
 	
+	<select id="getMyResume">
+		
+	</select>
+	
 	
 	
 	

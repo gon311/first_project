@@ -412,6 +412,7 @@
         <div class="modal-header">
             <h3>${post.companyName} 입사지원</h3>
             <button class="close-btn" onclick="closeApplyModal()">&times;</button>
+            <input type="hidden" name="userId" value="${userIdx}">
         </div>
         <div class="modal-body">
             <p class="job-title-mini">${post.title}</p>

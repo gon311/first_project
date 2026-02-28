@@ -64,9 +64,12 @@ public class JobController {
 		
 //		System.out.println(jobId);
 		JobDTO post = jobService.getJobListDetail(jobId);
+		
+		List<Resume> resumeList = resumeService.getMyResume();
 //		System.out.println("! = " + post.getCompanyName());
-		System.out.println(post.getExpYear());
+//		System.out.println(post.getExpYear());
 		model.addAttribute("post", post);
+		model.addAttribute("resumeList", resumeList);
 		
 		return "/job/job_detail";
 	}
@@ -76,5 +79,7 @@ public class JobController {
 		
 		return "/job/job_management";
 	}
+	
+	
 	
 }

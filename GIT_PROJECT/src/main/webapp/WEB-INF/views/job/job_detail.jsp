@@ -284,6 +284,71 @@
 	.resume-card input[type="radio"] {
 	    display: none; /* 라디오 버튼은 숨기고 카드 전체 클릭으로 대체 */
 	}
+	
+	/* 모달 배경 */
+	.apply-modal{
+	    display:none;
+	    position:fixed;
+	    z-index:1000;
+	    left:0;
+	    top:0;
+	    width:100%;
+	    height:100%;
+	    background:rgba(0,0,0,0.4);
+	}
+	
+	/* 모달 박스 */
+	.apply-modal-content{
+	    background:#fff;
+	    width:450px;
+	    margin:120px auto;
+	    border-radius:10px;
+	    padding:25px;
+	}
+	
+	/* 헤더 */
+	.apply-header{
+	    display:flex;
+	    justify-content:space-between;
+	    align-items:center;
+	    margin-bottom:20px;
+	}
+	
+	.close-btn{
+	    font-size:22px;
+	    cursor:pointer;
+	}
+	
+	/* 이력서 */
+	.resume-section{
+	    margin-bottom:20px;
+	}
+	
+	.resume-select{
+	    width:100%;
+	    padding:10px;
+	    border:1px solid #ddd;
+	    border-radius:5px;
+	}
+	
+	/* 파일 */
+	.file-section{
+	    margin-bottom:25px;
+	}
+	
+	/* 버튼 */
+	.apply-footer{
+	    text-align:right;
+	}
+	
+	.submit-btn{
+	    background:#4876ef;
+	    color:#fff;
+	    border:none;
+	    padding:10px 20px;
+	    border-radius:5px;
+	    cursor:pointer;
+	}
 </style>
 </head>
 <body>
@@ -295,7 +360,7 @@
             <h1>${post.title}</h1>
             
         </div>
-        <button type="button" class="apply-btn" onclick="checkResumeAndApply()">입사지원</button>
+        <button type="button" class="apply-btn" id="applyBtn" onclick="checkResumeAndApply()">입사지원</button>
     </header>
 
     <section class="info-summary-grid">
@@ -351,27 +416,25 @@
         <div class="modal-body">
             <p class="job-title-mini">${post.title}</p>
             
-            <div class="form-group">
-                <label>지원부문</label>
-                <select class="full-select">
-                    <option>지원 부문을 선택해 주세요</option>
-                    <option>${post.field}</option>
-                </select>
-            </div>
-
             <div class="resume-section">
-                <div class="section-header">
-                    <span>선택된 이력서</span>
-                    <a href="#" class="change-link">이력서 변경 ></a>
+                <div class="section-header" style="margin-bottom: 10px; font-weight: bold;">
+                    <span>지원할 이력서 선택</span>
                 </div>
-                <div class="resume-card">
-                    <p class="save-date">2026.02.09 (월) 12:42 저장</p>
-                    <p class="resume-name">작성된 이력서 제목입니다.</p>
+                <div class="resume-card-container" style="max-height: 250px; overflow-y: auto;">
+                    <c:forEach var="resume" items="${resumeList}">
+                        <div class="resume-card" onclick="selectResume('${resume.id}', this)">
+                            <p class="save-date">${resume.updateDate} 저장</p>
+                            <p class="resume-name">${resume.title}</p>
+                        </div>
+                    </c:forEach>
+                    <c:if test="${empty resumeList}">
+                        <p style="text-align: center; padding: 20px; color: #888;">보유 중인 이력서가 없습니다.</p>
+                    </c:if>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button class="final-apply-btn">입사지원</button>
+            <button class="final-apply-btn" onclick="submitApplication()">입사지원하기</button>
         </div>
     </div>
 </div>
@@ -384,6 +447,55 @@
             <p class="resume-name">${resume.title}</p>
         </div>
     </c:forEach>
+</div>
+
+<!-- 입사지원 모달 -->
+<div id="applyModal" class="apply-modal">
+    
+    <div class="apply-modal-content">
+
+        <!-- 상단 -->
+        <div class="apply-header">
+            <h3>입사지원</h3>
+            <span class="close-btn" id="closeModal">&times;</span>
+        </div>
+
+        <!-- 지원 폼 -->
+        <form action="/apply/submit" method="post" enctype="multipart/form-data">
+
+            <!-- 이력서 선택 -->
+            <div class="resume-section">
+                <label>저장된 이력서 선택</label>
+
+                <select name="resumeId" class="resume-select">
+                    <option value="">이력서를 선택하세요</option>
+
+                    <!-- DB에서 불러오는 부분 -->
+                    <c:forEach var="resume" items="${resumeList}">
+                        <option value="${resume.id}">
+                            ${resume.title}
+                        </option>
+                    </c:forEach>
+
+                </select>
+            </div>
+
+            <!-- 파일 첨부 -->
+            <div class="file-section">
+                <label>파일 첨부</label>
+
+                <input type="file" name="files" multiple>
+            </div>
+
+            <!-- 버튼 -->
+            <div class="apply-footer">
+                <button type="submit" class="submit-btn">지원하기</button>
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
@@ -431,18 +543,35 @@
     
     map.addControl(new maplibregl.NavigationControl());
 
-    // 기획안 2페이지 로직: 입사지원 클릭 시 처리
+	 // 기존에 두 번 선언된 checkResumeAndApply 함수를 모두 삭제하고 아래 하나로 합치세요.
     function checkResumeAndApply() {
-        // 실제 프로젝트에서는 서버와 통신하여 이력서 유무를 판단해야 합니다.
-        const hasResume = confirm("이력서가 있습니까? (테스트용 확인창)"); 
-        
-        if(hasResume) {
-            alert("작성된 이력서 선택 후 바로 지원 페이지로 이동합니다.");
-            // location.href = 'apply_direct.jsp';
+        // 1. JSP에서 서버로부터 전달받은 이력서 리스트 존재 여부 확인
+        // JSTL의 empty 연산자를 활용해 자바스크립트 변수로 변환
+        const hasResumes = ${not empty resumeList};
+
+        if (hasResumes) {
+            // 2. 이력서가 있다면 모달창 표시
+            const modal = document.getElementById('applyModal');
+            modal.style.display = 'flex';
         } else {
-            alert("작성된 이력서가 없습니다. 이력서 작성 페이지로 이동하거나 파일을 업로드해 주세요.");
-            // location.href = 'resume_write.jsp';
+            // 3. 이력서가 없다면 안내 후 작성 페이지 이동 (경로는 프로젝트에 맞게 수정)
+            if (confirm("작성된 이력서가 없습니다. 이력서 작성 페이지로 이동하시겠습니까?")) {
+                location.href = '/resume/write'; 
+            }
         }
+    }
+
+    // 이력서 카드 선택 시 시각적 효과 부여
+    function selectResume(resumeId, element) {
+        // 모든 카드의 선택 효과 제거
+        document.querySelectorAll('.resume-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        // 클릭한 카드에만 선택 효과 추가
+        element.classList.add('selected');
+        
+        // 실제 전송할 데이터(Radio 버튼 등)가 있다면 여기서 처리
+        console.log("선택된 이력서 ID:", resumeId);
     }
     
     function scrollToMap(event) {
@@ -451,21 +580,6 @@
         if (mapElement) {
             mapElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-    }
-    	
-    function checkResumeAndApply() {
-        // 1. 서버에서 이력서 목록 가져오기
-        fetch('/api/resumes')
-            .then(response => response.json())
-            .then(data => {
-                if(data.length > 0) {
-                    // 2. 모달 열고 목록 렌더링
-                    renderResumeList(data);
-                    document.getElementById('applyModal').style.display = 'flex';
-                } else {
-                    alert("작성된 이력서가 없습니다."); [cite: 42]
-                }
-            });
     }
 
     function closeApplyModal() {
@@ -479,6 +593,26 @@
             modal.style.display = "none";
         }
     }
+    
+
+    const applyBtn = document.getElementById("applyBtn");
+    const modal = document.getElementById("applyModal");
+    const closeBtn = document.getElementById("closeModal");
+
+    applyBtn.onclick = function(){
+        modal.style.display = "block";
+    }
+
+    closeBtn.onclick = function(){
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event){
+        if(event.target == modal){
+            modal.style.display = "none";
+        }
+    }
+
     
 </script>
 

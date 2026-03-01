@@ -80,6 +80,8 @@ public interface AdminMapper {
 //	채용공고 상세 조회
 	JobPostDTO getJobPostById(int jobId);
 	
+	void deleteJobPost(int jobId);
+	
 	//========================================================================
 	// 결제 목록 조회
 	List<PayDTO> selectPayList(@Param("startDate") String startDate
@@ -122,6 +124,15 @@ public interface AdminMapper {
 
 	List<QnaDTO> getListByStatus(String reStatus);
 	
+	QnaDTO getQnaById(int qnaId);
+
+	void registAnswer(QnaDTO qnaDTO);
+	
+	void deleteQna(int qnaId);
+	
+	void deleteQnaAnswer(int qnaId);
+
+	void modifyAnswer(QnaDTO qnaDTO);
 	// -========================================================================
 	// faq 관리
 
@@ -138,7 +149,13 @@ public interface AdminMapper {
 
 	List<FaqDTO> getFaqList(FaqDTO faqDTO);
 
-	void deleteJobPost(int jobId);
+
+
+
+
+
+
+
 
 	
 

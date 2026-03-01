@@ -601,15 +601,82 @@
 	<!--  ========================================================================= -->
 	<!-- 1:1 문의글  -->
 	<select id="getQnaList" resultType="qna">
-		select *
+		select 
+			qna_id
+			, qna_title
+			, writer_id
+			, reg_date
+			, re_status
 		from 
 			qna
-		where 
-			re_status = #{reStatus}
+		<where>
+			<if test="reStatus != null and reStatus != '' and reStatus != 'all'">
+				AND re_status = #{reStatus}
+			</if>
+			
+			<if test="keyword != null and keyword != ''">
+				AND qna_title LIKE ('%', #{keyword], '%')
+			</if>
+		</where>
+		ORDER BY qna_id DESC
+	</select>
+	
+	<select id = "getQnaById" resultType="qna">
+		SELECT 
+			qna_id
+			, qna_title
+			, qna_content
+			, writer_id
+			, reg_date
+			, re_status
+			, re_date
+			, re_content
+		FROM
+			qna
+		WHERE
+			qna_id = #{qnaId}
+	
+	</select>
+	<delete id="deleteQna">
+		DELETE FROM qna
+		WHERE
+			qna_id = #{qnaId}
+	</delete>
+	
+	<update id = "registAnswer">
+		UPDATE
+			qna
+		SET
+			re_status = 'completed'
+			, re_date = NOW()
+			, re_content = #{reContent}
+		WHERE
+			qna_id = #{qnaId}
+	</update>
+	
+	<update id ="deleteQnaAnswer">
+		UPDATE	
+			qna
+		SET	
+			re_status = 'pending'
+			, re_date = null
+			, re_content = null
+		WHERE
+			qna_id = #{qnaId}
+	</update>
+	
+	<update id = "modifyAnswer">
+		UPDATE
+			qna
+		SET
+			re_date = NOW()
+			, re_content = #{reContent}
+		
+	</update>
+	
 	<!-- ============================================================================ -->
 	
 	
-	</select>
 	
 	<!-- FaQ 리스트 -->
 	<select id ="getFaqList" resultType="faq">

@@ -165,6 +165,11 @@ public class AdminService{
 	public List<QnaDTO> getListByStatus(String reStatus) {
 		return adminMapper.getListByStatus(reStatus);
 	}
+	
+	public QnaDTO getQnADetail(int qnaId) {
+		return adminMapper.getQnaById(qnaId);
+	}
+
 
 	// =====================================================================================
 	// faq 목록 조회
@@ -184,6 +189,24 @@ public class AdminService{
 		adminMapper.updateFaq(faqDTO);
 	}
 
+	public void registAnswer(QnaDTO qnaDTO) {
+		adminMapper.registAnswer(qnaDTO);
+	}
+
+	public void deleteQna(int qnaId) {
+		adminMapper.deleteQna(qnaId);
+	}
+
+	public void deleteQnaAnswer(int qnaId) {
+		adminMapper.deleteQnaAnswer(qnaId);
+	}
+
+	public void modifyAnswer(QnaDTO qnaDTO) {
+		adminMapper.modifyAnswer(qnaDTO);
+		
+	}
+
+	
 
 	
 

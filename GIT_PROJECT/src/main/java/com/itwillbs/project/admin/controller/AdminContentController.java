@@ -56,9 +56,8 @@ public class AdminContentController {
 	public String noticeDetail(@RequestParam("noticeId") int noticeId, Model model) {
 		NoticeDTO noticeDTO =adminService.getNoticeDetail(noticeId);
 		model.addAttribute("noticeDTO", noticeDTO); 
-		System.out.println("데이터 결과값: " + noticeDTO.toString());
-		System.out.println("제목 리턴값: " + noticeDTO);
-		
+//		System.out.println("데이터 결과값: " + noticeDTO.toString());
+//		System.out.println("제목 리턴값: " + noticeDTO);
 		return "admin/contents/noticeDetail";
 	}
 	
@@ -189,19 +188,51 @@ public class AdminContentController {
 	public String qnaList(@RequestParam(value="reStatus", defaultValue="all") String reStatus, 
 			@RequestParam(value="page", defaultValue="1") int page,
 			Model model, QnaDTO qnaDTO) {
-	    List<QnaDTO> list;
 	    
-	    if("all".equals(reStatus)) {
-	        list = adminService.getQnaList(qnaDTO);
-	    } else {
-	        list = adminService.getListByStatus(reStatus); // "pending" 또는 "completed"
-	    }
-	    
+		qnaDTO.setReStatus(reStatus);
+		
+		List<QnaDTO> list = adminService.getQnaList(qnaDTO);
+		
 	    model.addAttribute("qnaList", list);
 	    model.addAttribute("reStatus", reStatus); // 현재 탭 활성화를 위해 전달
 	return "admin/contents/qna";
 	}
+//	1:1 문의글 상세 조회
+	@GetMapping("/QnADetail")
+	public String qnaDetail(@RequestParam("qnaId") int qnaId
+							, Model model) {
+		QnaDTO qnaDTO = adminService.getQnADetail(qnaId);
+		model.addAttribute("qnaDTO", qnaDTO);
+		return "admin/contents/qnaDetail";
+	}
 	
-		
+	// 1:1문의글 답변 등록
+	@PostMapping("/qnaAnswerSave")
+	public String qnaAnswerSave(QnaDTO qnaDTO) {
+	    adminService.registAnswer(qnaDTO);
+	    
+	    return "redirect:/admin/contents/QnADetail?qnaId=" + qnaDTO.getQnaId();
+	}
+//	1:1 문의글 답변 수정
+	@PostMapping("/qnaAnswerUpdate")
+	public String qnaAnswerUpdate(QnaDTO qnaDTO) {
+		adminService.modifyAnswer(qnaDTO);
+		return "redirect:/admin/contents/QnADetail?qnaId="+ qnaDTO.getQnaId();
+	}
 	
+//	1:1 문의글 답변 삭제
+	@GetMapping("/qnaAnswerDelete")
+	public String qnaAnswerDelete(@RequestParam("qnaId") int qnaId) {
+		adminService.deleteQnaAnswer(qnaId);
+		return "redirect:/admin/contents/QnADetail?qnaId=" + qnaId;
+	}
+	
+	
+//	1:1 문의글 삭제 
+	@GetMapping("/QnaDelete")
+	public String QnaDelete(@RequestParam("qnaId") int qnaId) {
+		adminService.deleteQna(qnaId);
+		return "redirect:/admin/contents/QnA";
+	}
 }
+

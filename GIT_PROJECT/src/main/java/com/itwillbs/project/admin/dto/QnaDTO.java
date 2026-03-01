@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QnaDTO {
+
 	private int qnaId;
 	private String qnaTitle;
 	private String qnaContent;
@@ -19,5 +20,6 @@ public class QnaDTO {
 	private Date reDate;
 	private String reContent;
 	
+	private String keyword;
 	
 }

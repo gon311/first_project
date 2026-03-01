@@ -380,7 +380,41 @@
 	            switchTab('P'); // 기본값 P
 	        }
 	    };
-
+	    
+	    // 사업자번호 입력시 이벤트
+	    document.getElementById("bizRegNo").addEventListener("blur", function() {
+	        console.log("포커스가 나갔습니다! 입력을 마쳤나요?");
+	        let content = document.getElementById("bizRegNo").value
+			let requestContent = {
+				content: content,
+			}
+	        
+			async function requestCorrectContent() {
+				try {
+					const response = await fetch("<c:url value="/biz/correctionContent" />", { // 요청 주소
+						method: "POST",						// 요청 메서드
+						headers: {							// 요청 헤더 정보들
+							"Content-type": "application/json"	// 전송 데이터 형식 : JSON 데이터
+						},
+						body: JSON.stringify(requestContent)
+					});
+					
+					console.log("response : ", response);
+					
+					if(!response.ok) {
+						throw new Error("오류 발생!");
+					}
+					
+					const result = await response.json();
+	 				document.getElementById("correctContent").innerHTML = result.corrected;
+	 				
+				} catch(error) {
+					alert("요청 오류 발생 : " + error);
+				}
+			}
+			
+			requestCorrectContent();
+	    });
     </script>
 </body>
 </html>

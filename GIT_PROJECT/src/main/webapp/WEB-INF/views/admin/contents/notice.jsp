@@ -19,10 +19,10 @@
 	                <form class="d-inline-flex gap-2">
 	                    <select class="form-select form-select-sm" style="width: 150px;">
 	                        <option value="all">전체</option>
-	                        <option value="notice_title">공지사항 명</option>
-	                        <option value="reg_date">게시 일자</option>
+	                        <option value="noticeTitle">공지사항 명</option>
+	                        <option value="regDate">게시 일자</option>
 	                        <option value="status">게시 상태</option>
-	                        <option value="user_type">회원 유형</option>
+	                        <option value="userType">회원 유형</option>
 	                    </select>
 	                    <div class="input-group input-group-sm" style="width: 300px;">
 	                        <span class="input-group-text">
@@ -55,7 +55,7 @@
 	                        <tr>
 	                            <td>${notice.noticeId}</td>
 	                            <td class="text-start">
-	                                <a href="<c:url value='/admin/contents/noticeDetail?notice_id=${notice.noticeId}' />" class="  text-decoration-none text-dark">
+	                                <a href="<c:url value='/admin/contents/noticeDetail?noticeId=${notice.noticeId}' />" class="  text-decoration-none text-dark">
 	                                    ${notice.noticeTitle}
 	                                </a>
 	                            </td>

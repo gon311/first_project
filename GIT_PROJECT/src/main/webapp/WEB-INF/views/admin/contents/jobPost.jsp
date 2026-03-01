@@ -23,7 +23,7 @@
 					        <!-- 기간별 검색 - 시작일자 -->
 					        <div class="col-md-4">
 					          <label for="period" class="form-label">기간별</label>
-					          <input type="text" class="form-control" name="startDate" placeholder="시작 일자">
+					          <input type="date" class="form-control" name="startDate" placeholder="시작 일자">
 					          
 					        </div>
 					        
@@ -49,7 +49,7 @@
 				        <div class="row my-0.5">
 				        	<!-- 기간별 검색 - 종료일자 -->
 				        	<div class="col-md-4">
-					          <input type="text" class="form-control" name="endDate" placeholder="종료 일자">
+					          <input type="date" class="form-control" name="endDate" placeholder="종료 일자">
 					          
 					        </div>
 				        </div>
@@ -86,17 +86,16 @@
 						<th>공고 상태</th>
 					</tr>
 				</thead>
-				<!-- tbody 필요 -->
 	 			<tbody>
 					<c:forEach var="jobPost" varStatus="status" items="${jobPostList}">
-						<tr onclick="location.href='<c:url value='/admin/contents/JobPostDetail?job_id=${jobPost.job_id}'/>'">
+						<tr onclick="location.href='<c:url value='/admin/contents/JobPostDetail?jobId=${jobPost.jobId}'/>'">
 							<td>${status.count }</td>
-							<td>${jobPost.job_id }</td>
-							<td>${jobPost.comp_id}</td>
+							<td>${jobPost.jobId }</td>
+							<td>${jobPost.compId}</td>
 							<td>${jobPost.title }</td>
 							<td>${jobPost.field }</td>
-							<td>${jobPost.open_date} ~ ${jobPost.close_date }</td>
-							<td>${jobPost.post_check }</td>
+							<td>${jobPost.openDate} ~ ${jobPost.closeDate }</td>
+							<td>${jobPost.postCheck }</td>
 						</tr>
 					</c:forEach>
 				</tbody>

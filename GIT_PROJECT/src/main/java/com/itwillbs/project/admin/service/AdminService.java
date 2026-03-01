@@ -88,6 +88,15 @@ public class AdminService{
 		adminMapper.insertNotice(noticeDTO);
 	}
 	
+	// 공지사항 삭제
+	public void deleteNotice(int noticeId) {
+		adminMapper.deleteNotice(noticeId);
+	}
+	
+	// 공지사항 수정
+	public void updateNotice(NoticeDTO noticeDTO) {
+		adminMapper.updateNotice(noticeDTO);
+	}
 	//========================================================================================
 	// 채용공고 리스트 조회
 	public List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO) {
@@ -95,10 +104,14 @@ public class AdminService{
 		return adminMapper.getJobPostList(jobPostDTO);
 	}
 	// 채용공고 상세 조회
-	public JobPostDTO getJobPostDetail(int job_id) {
-		return adminMapper.getJobPostById(job_id);
+	public JobPostDTO getJobPostDetail(int jobId) {
+		return adminMapper.getJobPostById(jobId);
 	}
 	
+	// 채용공고 삭제
+	public void deleteJobPost(int jobId) {
+		adminMapper.deleteJobPost(jobId);
+	}
 
 	//======================================================================================
 	// 결제 내역 전체 목록 조회
@@ -154,19 +167,28 @@ public class AdminService{
 	}
 
 	// =====================================================================================
-	// faq
-	public List<FaqDTO> getFaqList(String userType, String keyword) {
-		return adminMapper.getFaqList(userType, keyword);
+	// faq 목록 조회
+	public List<FaqDTO> getFaqList(FaqDTO faqDTO) {
+		return adminMapper.getFaqList(faqDTO);
 	}
-
-	public FaqDTO getFaqDetail(int faqId) {
-		// TODO Auto-generated method stub
-		return adminMapper.getFaqDetail(faqId);
-	}
+	// faq 글 작성
 	public void insertFaq(FaqDTO faqDTO) {
-		
 		adminMapper.insertFaq(faqDTO);
 	}
+	// faq 글 수정
+	public void deleteFaq(int faqId) {
+		adminMapper.deleteFaq(faqId);
+	}
+
+	public void updateFaq(FaqDTO faqDTO) {
+		adminMapper.updateFaq(faqDTO);
+	}
+
+
+	
+
+	
+
 
 
 	

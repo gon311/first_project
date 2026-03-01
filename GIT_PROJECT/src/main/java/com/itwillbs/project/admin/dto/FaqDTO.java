@@ -16,6 +16,8 @@ public class FaqDTO {
 	private String faqContent;
 	private String category;
 	private String userType;
+	
+	private String keyword;
 	}
 	
 	

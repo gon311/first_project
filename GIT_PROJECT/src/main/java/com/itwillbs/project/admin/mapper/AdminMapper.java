@@ -63,20 +63,22 @@ public interface AdminMapper {
 	List<NoticeDTO> getNoticeList(NoticeDTO noticeDTO);
 
 	// 공지사항 상세 조회
-	NoticeDTO getNoticeById(int notice_id);
+	NoticeDTO getNoticeById(int noticeId);
 	
 	// 공지사항 저장
 	void insertNotice(NoticeDTO noticeDTO);
 	
 	// 조회수 증가
-	void updateReadCount(int notice_id);
+	void updateReadCount(int noticeId);
+	
+	void deleteNotice(int noticeId);
 	
 	//========================================================================
 //	채용공고 리스트 조회
 	List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO);
 	
 //	채용공고 상세 조회
-	JobPostDTO getJobPostById(int job_id);
+	JobPostDTO getJobPostById(int jobId);
 	
 	//========================================================================
 	// 결제 목록 조회
@@ -128,7 +130,15 @@ public interface AdminMapper {
 
 	void insertFaq(FaqDTO faqDTO);
 
-	FaqDTO getFaqDetail(int faqId);
+	void updateNotice(NoticeDTO noticeDTO);
+
+	void deleteFaq(int faqId);
+
+	void updateFaq(FaqDTO faqDTO);
+
+	List<FaqDTO> getFaqList(FaqDTO faqDTO);
+
+	void deleteJobPost(int jobId);
 
 	
 

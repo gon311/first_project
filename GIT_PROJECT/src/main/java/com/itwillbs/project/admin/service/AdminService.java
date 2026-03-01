@@ -1,11 +1,11 @@
 package com.itwillbs.project.admin.service;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.project.admin.dto.BannerDTO;
 import com.itwillbs.project.admin.dto.FaqDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
@@ -170,7 +170,22 @@ public class AdminService{
 		return adminMapper.getQnaById(qnaId);
 	}
 
+	public void registAnswer(QnaDTO qnaDTO) {
+		adminMapper.registAnswer(qnaDTO);
+	}
 
+	public void deleteQna(int qnaId) {
+		adminMapper.deleteQna(qnaId);
+	}
+
+	public void deleteQnaAnswer(int qnaId) {
+		adminMapper.deleteQnaAnswer(qnaId);
+	}
+
+	public void modifyAnswer(QnaDTO qnaDTO) {
+		adminMapper.modifyAnswer(qnaDTO);
+		
+	}
 	// =====================================================================================
 	// faq 목록 조회
 	public List<FaqDTO> getFaqList(FaqDTO faqDTO) {
@@ -189,28 +204,18 @@ public class AdminService{
 		adminMapper.updateFaq(faqDTO);
 	}
 
-	public void registAnswer(QnaDTO qnaDTO) {
-		adminMapper.registAnswer(qnaDTO);
-	}
 
-	public void deleteQna(int qnaId) {
-		adminMapper.deleteQna(qnaId);
-	}
-
-	public void deleteQnaAnswer(int qnaId) {
-		adminMapper.deleteQnaAnswer(qnaId);
-	}
-
-	public void modifyAnswer(QnaDTO qnaDTO) {
-		adminMapper.modifyAnswer(qnaDTO);
-		
-	}
-
+//	=================================================================================================
+//	[배너관리]
 	
-
+	public List<BannerDTO> getBannerList() {
+		return adminMapper.getBannerList();
+	}
 	
+	public void modifyAdStatus(int adId, int isDisplay) {
+		adminMapper.updateBannerStatus(adId, isDisplay);
+	}
 
-	
 
 
 

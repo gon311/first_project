@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.project.admin.dto.BannerDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.PayDTO;
@@ -268,9 +269,12 @@ public class AdminController {
 	}
 	
 	//===========================================================================
-	// 배너 관리
+	// [ 배너 관리 ]
 	@GetMapping("/banners")
-	public String bannerList() {
+	public String bannerList(Model model) {
+		List<BannerDTO> adList = adminService.getBannerList();
+		model.addAttribute("adList", adList);
+	
 		return "admin/banner";
 	}
 	

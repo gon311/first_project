@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.project.admin.dto.BannerDTO;
 import com.itwillbs.project.admin.dto.FaqDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
@@ -148,6 +149,11 @@ public interface AdminMapper {
 	void updateFaq(FaqDTO faqDTO);
 
 	List<FaqDTO> getFaqList(FaqDTO faqDTO);
+
+
+	List<BannerDTO> getBannerList();
+
+	void updateBannerStatus(int adId, int isDisplay);
 
 
 

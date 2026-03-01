@@ -234,5 +234,7 @@ public class AdminContentController {
 		adminService.deleteQna(qnaId);
 		return "redirect:/admin/contents/QnA";
 	}
+//	===================================================================================
+
 }
 

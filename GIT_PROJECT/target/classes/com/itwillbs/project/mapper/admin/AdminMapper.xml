@@ -728,4 +728,41 @@
 		WHERE	
 			faq_id = #{faqId}
 	</update>
+	<!-- ===================================================================================== -->
+	<!-- 배너 관리 -->
+	<select id="getBannerList" resultType="com.itwillbs.project.admin.dto.BannerDTO">
+    SELECT 
+        b.ad_id,
+        c.company_name,
+        j.title AS job_title,
+        p.pay_date AS pay_date,       -- 시작일(결제일)
+        cp.end_date AS expiry_date,   -- 종료일
+        b.is_display
+    FROM 
+    	banner b
+    JOIN 
+    	USER_COMPANY c 
+    		ON b.comp_id = c.user_id
+    JOIN 
+   		JOB_POSTING j 
+    		ON b.job_id = j.job_id
+    LEFT JOIN 
+    	pay p ON b.comp_id = p.user_id 
+    	AND p.pay_status = 'paid'
+    LEFT JOIN 
+    	com_product cp 
+    		ON p.pay_id = cp.pay_id
+    ORDER BY b.ad_id DESC
+</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

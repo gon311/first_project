@@ -8,5 +8,5 @@ import lombok.ToString;
 @Setter
 @ToString
 public class RequestCorrectionDTO {
-	private String content;
+	private String b_no;
 }

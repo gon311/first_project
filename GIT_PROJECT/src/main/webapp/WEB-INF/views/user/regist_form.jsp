@@ -175,6 +175,11 @@
 						           title="사업자등록번호 10자리를 입력해주세요.">
 						</div>
                     </div>
+                    <div class="mb-3">
+					    <label for="correctContent" class="form-label">조회 결과</label>
+					    <div id="correctContent" class="border border-primary p-3">
+					    </div>
+					</div>
                     <div class="form-group">
                         <label>회사명 *</label>
                         <input type="text" name="companyName">
@@ -384,9 +389,9 @@
 	    // 사업자번호 입력시 이벤트
 	    document.getElementById("bizRegNo").addEventListener("blur", function() {
 	        console.log("포커스가 나갔습니다! 입력을 마쳤나요?");
-	        let content = document.getElementById("bizRegNo").value
+	        let content = document.getElementById("bizRegNo").value.replace(/-/g, ""); // 하이픈 제거
 			let requestContent = {
-				content: content,
+	        	b_no: content,
 			}
 	        
 			async function requestCorrectContent() {
@@ -406,7 +411,7 @@
 					}
 					
 					const result = await response.json();
-	 				document.getElementById("correctContent").innerHTML = result.corrected;
+	 				document.getElementById("correctContent").innerHTML = result.b_stt;
 	 				
 				} catch(error) {
 					alert("요청 오류 발생 : " + error);

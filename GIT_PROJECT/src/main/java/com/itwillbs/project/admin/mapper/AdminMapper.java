@@ -153,7 +153,8 @@ public interface AdminMapper {
 
 	List<BannerDTO> getBannerList();
 
-	void updateBannerStatus(int adId, int isDisplay);
+	void updateBannerStatus(@Param("adId") int adId
+							, @Param("isDisplay") int isDisplay);
 
 
 

@@ -740,10 +740,10 @@
         b.is_display
     FROM 
     	banner b
-    JOIN 
+    LEFT JOIN 
     	USER_COMPANY c 
     		ON b.comp_id = c.user_id
-    JOIN 
+    LEFT JOIN 
    		JOB_POSTING j 
     		ON b.job_id = j.job_id
     LEFT JOIN 
@@ -755,6 +755,14 @@
     ORDER BY b.ad_id DESC
 </select>
 	
+	<update id="updateBannerStatus">
+		UPDATE 
+			banner
+		SET
+			is_display = #{isDisplay}
+		WHERE
+			ad_id = #{adId}
+	</update>
 	
 	
 	

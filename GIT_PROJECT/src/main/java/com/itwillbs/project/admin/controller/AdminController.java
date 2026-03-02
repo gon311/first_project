@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.admin.dto.BannerDTO;
@@ -273,9 +274,25 @@ public class AdminController {
 	@GetMapping("/banners")
 	public String bannerList(Model model) {
 		List<BannerDTO> adList = adminService.getBannerList();
+		System.out.println("조회된 배너 개수: " + (adList !=null ? adList.size() : "null"));
+		
 		model.addAttribute("adList", adList);
 	
 		return "admin/banner";
+	}
+	
+	@PostMapping("/updateAdStatus")
+	@ResponseBody
+	public String updateStatus(@RequestParam("adId") int adId,
+							@RequestParam("isDisplay") int isDisplay) {
+		try {
+			adminService.modifyAdStatus(adId, isDisplay);
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+		
 	}
 	
 	//===========================================================================

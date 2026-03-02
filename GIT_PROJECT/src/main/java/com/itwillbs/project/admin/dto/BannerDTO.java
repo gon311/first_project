@@ -14,6 +14,6 @@ public class BannerDTO {
 	private String companyName;
 	private String jobTitle;
 	private Timestamp payDate;
-	private Timestamp expireDate;
+	private Timestamp expiryDate;
 	private int isDisplay;
 }

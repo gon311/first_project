@@ -2,8 +2,12 @@ package com.itwillbs.project.my.dto;
 
 import java.time.LocalDate;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
+@Getter
+@Setter
 public class FavoriteJobRowDTO {
     private Long jobId;
     private Long compId;

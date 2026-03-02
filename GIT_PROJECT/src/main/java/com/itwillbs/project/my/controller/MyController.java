@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.common.paging.PageRes;
+import com.itwillbs.project.my.dto.ApplyCond;
+import com.itwillbs.project.my.dto.ApplyRowDTO;
 import com.itwillbs.project.my.dto.FavoriteJobCond;
 import com.itwillbs.project.my.dto.FavoriteJobRowDTO;
 import com.itwillbs.project.my.dto.MyDTO;
@@ -414,21 +416,75 @@ public class MyController {
 	}
 	
 	
-	
-	// 지원 내역
+	// 지원내역
 	@GetMapping("/apply")
-	public String applyList(Model model,
-	                        @RequestParam(defaultValue="all") String tab) {
+	public String applyList(HttpSession session, Model model,
+	                        @RequestParam(defaultValue="all") String tab,
+	                        @RequestParam(defaultValue="ALL") String status,
+	                        @RequestParam(defaultValue="APPLY_DESC") String sort,
+	                        @RequestParam(required=false) String keyword,
+	                        @RequestParam(defaultValue="1") int page,
+	                        @RequestParam(defaultValue="5") int size) {
 
-	    model.addAttribute("currentMenu", "apply");  // 사이드바 '지원 내역' 활성
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    model.addAttribute("currentMenu", "apply");
+
+	    MyDTO user = myService.getUser(sId);
+
+	    ApplyCond cond = new ApplyCond();
+	    cond.setUserId(user.getUserId());
+	    cond.setTab(tab);
+	    cond.setStatus(status);
+	    cond.setSort(sort);
+	    cond.setKeyword(keyword);
+	    cond.getPage().setPage(page);
+	    cond.getPage().setSize(size);
+
+	    // ✅ 조회
+	    List<ApplyRowDTO> list = myService.getApplyList(cond);
+	    int total = myService.getApplyCount(cond);
+
+	    PageRes pager = PageRes.of(cond.getPage(), total);
+
+	    // ✅ 탭 카운트
+	    int cntAll = myService.getApplyTabCount(user.getUserId(), "all");
+	    int cntDone = myService.getApplyTabCount(user.getUserId(), "done");
+	    int cntFinal = myService.getApplyTabCount(user.getUserId(), "final");
+
 	    model.addAttribute("currentTab", tab);
+	    model.addAttribute("cntAll", cntAll);
+	    model.addAttribute("cntDone", cntDone);
+	    model.addAttribute("cntFinal", cntFinal);
 
-	    // TODO 나중에 숫자/리스트를 채우면 됨
-	    model.addAttribute("cntAll", 0);
-	    model.addAttribute("cntDone", 0);
-	    model.addAttribute("cntFinal", 0);
+	    model.addAttribute("list", list);
+	    model.addAttribute("pager", pager);
+
+	    // 필터 유지
+	    model.addAttribute("status", status);
+	    model.addAttribute("sort", sort);
+	    model.addAttribute("keyword", keyword);
 
 	    return "/my/apply";
+	}
+	
+	// 지원 취소
+	@PostMapping("/apply/cancel")
+	public String cancelApply(HttpSession session,
+	                          @RequestParam Long applyId,
+	                          RedirectAttributes ra) {
+
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    MyDTO user = myService.getUser(sId);
+
+	    int affected = myService.cancelApply(user.getUserId(), applyId);
+	    if (affected > 0) ra.addFlashAttribute("msg", "지원이 정상적으로 취소 되었습니다.");
+	    else ra.addFlashAttribute("msg", "지원 취소에 실패했습니다.");
+
+	    return "redirect:/my/apply";
 	}
 	
 	

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.project.my.dto.ApplyCond;
+import com.itwillbs.project.my.dto.ApplyRowDTO;
 import com.itwillbs.project.my.dto.FavoriteJobCond;
 import com.itwillbs.project.my.dto.FavoriteJobRowDTO;
 import com.itwillbs.project.my.dto.MyDTO;
@@ -106,6 +108,28 @@ public class MyService {
 	// 페이징
 	public int getPaymentCount(PaymentCond cond) {
 		return myMapper.selectPaymentCount(cond);
+	}
+	
+	// 지원내역
+	
+	// 지원내역 리스트
+	public List<ApplyRowDTO> getApplyList(ApplyCond cond) {
+		return myMapper.selectApplyList(cond);
+	}
+	
+	// 지원내역 총 개수
+	public int getApplyCount(ApplyCond cond) {
+		return myMapper.selectApplyCount(cond);
+	}
+	
+	// 탭별 카운트
+	public int getApplyTabCount(Long userId, String tab) {
+		return myMapper.selectApplyTabCount(userId, tab);
+	}
+		
+	// 취소
+	public int cancelApply(Long userId, Long appId) {
+	    return myMapper.deleteJobApplication(userId, appId);
 	}
 
 

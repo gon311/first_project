@@ -4,13 +4,9 @@
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
-<%-- =========================
-     URL (전부 c:url)
-     - 컨트롤러 매핑에 맞춰 value만 바꾸면 됨
-   ========================= --%>
-<c:url var="urlApplyList" value="/my/apply"/>               <%-- GET 목록 --%>
-<c:url var="urlJobDetail" value="/job/detail"/>            <%-- ?jobId= --%>
-<c:url var="urlCancelApply" value="/my/apply/cancel"/>     <%-- POST(추천) --%>
+<c:url var="urlApplyList" value="/my/apply"/>
+<c:url var="urlJobDetail" value="/job/detail"/>
+<c:url var="urlCancelApply" value="/my/apply/cancel"/>
 
 <style>
   body{ background:#f6f7fb; }
@@ -50,9 +46,7 @@
   .page-title{ font-size:1.6rem; font-weight:900; letter-spacing:-.6px; margin:0; }
   .page-desc{ color:#6b7280; font-size:.92rem; margin-top:8px; }
 
-  /* =========================
-     탭/요약 영역 (전체/지원완료/최종발표)
-     ========================= */
+  /* 탭 */
   .tabs{
     margin-top: 14px;
     display:flex;
@@ -99,18 +93,20 @@
   .summary-title{ color:#6b7280; font-weight:900; }
   .summary-num{ font-size:1.4rem; font-weight:900; color:#111827; }
 
-  /* =========================
-     필터 바 (기간/상태/정렬/검색) : 화면정의서 기반 뼈대
-     ========================= */
+  /* 필터바 */
   .filterbar{
     margin-top: 16px;
     display:flex;
-    justify-content:flex-end;
+    justify-content:space-between;
     gap: 10px;
     padding: 12px;
     border:1px solid #eef2f7;
     border-radius: 12px;
     background:#fff;
+    flex-wrap:wrap;
+  }
+  .filter-left, .filter-right{
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
   }
   .select{
     border:1px solid #dbe2ee;
@@ -127,14 +123,12 @@
     border:1px solid #dbe2ee;
     border-radius:10px;
     padding: 8px 12px;
-    min-width: 260px;
+    min-width: 280px;
   }
   .search-wrap input{ border:0; outline:none; width:220px; }
   .search-ico{ color:#94a3b8; font-size:1.1rem; }
 
-  /* =========================
-     지원내역 리스트(행)
-     ========================= */
+  /* 리스트 */
   .list{
     margin-top: 14px;
     border-top: 1px solid #eef2f7;
@@ -154,8 +148,6 @@
     padding-top: 3px;
   }
   .row-mid{ flex:1; min-width:0; }
-
-  /* (1) 제목 클릭 → 채용상세 이동 */
   .title-link{
     display:inline-block;
     font-weight:900;
@@ -168,15 +160,13 @@
     text-overflow:ellipsis;
   }
   .title-link:hover{ text-decoration:underline; }
-
   .subline{
     margin-top:6px;
     color:#6b7280;
     font-size:.92rem;
   }
-
   .row-right{
-    min-width: 240px;
+    min-width: 220px;
     display:flex;
     justify-content:flex-end;
     align-items:center;
@@ -186,27 +176,27 @@
   .status{
     font-weight:900;
     color:#111827;
-    margin-right: 8px;
     white-space:nowrap;
   }
-
-  /* (2) 지원취소 버튼 */
-  .btn-cancel{
-    background:#fff;
-    border:1px solid #cbd5e1;
-    color:#334155;
+  .badge-closed{
+    display:inline-block;
+    margin-left:8px;
+    padding: 3px 10px;
+    border-radius:999px;
+    font-size:.82rem;
     font-weight:900;
-    border-radius: 10px;
-    padding: 10px 16px;
+    background:#f1f5f9;
+    color:#64748b;
+    border:1px solid #e2e8f0;
   }
-  .btn-cancel:hover{ background:#f7f9fc; }
 
-  /* 페이지네이션(뼈대) */
+  /* 페이지네이션 */
   .pager{
     margin-top: 18px;
     display:flex;
     justify-content:center;
     gap: 8px;
+    flex-wrap:wrap;
   }
   .pager a{
     display:inline-block;
@@ -225,8 +215,12 @@
     border-color:#2563eb;
     color:#fff;
   }
+  .pager a.disabled{
+    pointer-events:none;
+    opacity:.45;
+  }
 
-  /* ✅ 빈 상태(사람인처럼 중앙 안내) */
+  /* 빈 상태 */
   .empty{
     margin-top: 34px;
     padding: 60px 0;
@@ -234,6 +228,16 @@
     color:#6b7280;
   }
   .empty .big{ font-weight:900; font-size:1.1rem; color:#111827; margin-top:10px; }
+  
+  .btn-cancel{
+  background:#fff;
+  border:1px solid #cbd5e1;
+  color:#334155;
+  font-weight:900;
+  border-radius: 10px;
+  padding: 10px 16px;
+  }
+	.btn-cancel:hover{ background:#f7f9fc; }
 </style>
 
 <main class="container-fluid px-0 mypage-wrap">
@@ -247,25 +251,27 @@
       <div class="myContent-inner">
 
         <h2 class="page-title">지원 내역</h2>
-        <div class="page-desc">지원한 공고를 확인하고, 필요 시 지원 취소를 할 수 있어요.</div>
+        <div class="page-desc">지원한 공고를 확인할 수 있어요.</div>
 
         <%-- =========================
              탭(전체/지원완료/최종발표)
-             - active는 컨트롤러에서 currentTab 내려서 처리하면 편함
            ========================= --%>
         <div class="tabs">
-          <a class="tab ${currentTab=='all' ? 'active' : ''}" href="${urlApplyList}?tab=all">
+          <a class="tab ${currentTab=='all' ? 'active' : ''}"
+             href="${urlApplyList}?tab=all&status=${status}&sort=${sort}&keyword=${keyword}&page=1&size=${pager.size}">
             전체 <span class="tab-badge">${cntAll}</span>
           </a>
-          <a class="tab ${currentTab=='done' ? 'active' : ''}" href="${urlApplyList}?tab=done">
+          <a class="tab ${currentTab=='done' ? 'active' : ''}"
+             href="${urlApplyList}?tab=done&status=${status}&sort=${sort}&keyword=${keyword}&page=1&size=${pager.size}">
             지원완료 <span class="tab-badge">${cntDone}</span>
           </a>
-          <a class="tab ${currentTab=='final' ? 'active' : ''}" href="${urlApplyList}?tab=final">
+          <a class="tab ${currentTab=='final' ? 'active' : ''}"
+             href="${urlApplyList}?tab=final&status=${status}&sort=${sort}&keyword=${keyword}&page=1&size=${pager.size}">
             최종발표 <span class="tab-badge">${cntFinal}</span>
           </a>
         </div>
 
-        <%-- 요약 박스(화면정의서처럼 숫자 보여주기) --%>
+        <%-- 요약 박스 --%>
         <div class="summary">
           <div class="summary-box">
             <div class="summary-title">지원완료</div>
@@ -277,127 +283,158 @@
           </div>
         </div>
 
-        <%-- 필터(기간/상태/정렬/검색) 뼈대 --%>
-        <div class="filterbar">
-          <select class="select">
-            <option>전체</option>
-            <option>진행중</option>
-            <option>마감</option>
-          </select>
+        <%-- =========================
+             필터바 (GET 폼)
+             - status/sort/keyword/page/size 유지
+           ========================= --%>
+        <form class="filterbar" method="get" action="${urlApplyList}">
+          <input type="hidden" name="tab" value="${currentTab}" />
+          <input type="hidden" name="page" value="1" /> <%-- 필터 바꾸면 1페이지로 --%>
 
-          <select class="select">
-            <option>5개씩</option>
-            <option>10개씩</option>
-            <option>20개씩</option>
-          </select>
+          <div class="filter-left">
+            <%-- 진행중/마감 --%>
+            <select class="select" name="status" onchange="this.form.submit()">
+              <option value="ALL"   ${status=='ALL' ? 'selected' : ''}>전체</option>
+              <option value="OPEN"  ${status=='OPEN' ? 'selected' : ''}>진행중</option>
+              <option value="CLOSED"${status=='CLOSED' ? 'selected' : ''}>마감</option>
+            </select>
 
-          <select class="select">
-            <option>업데이트순</option>
-            <option>마감순</option>
-            <option>지원자수순</option>
-            <option>회사순</option>
-          </select>
+            <%-- 페이지 사이즈 (PageReq는 5/10/15만 허용이었지) --%>
+            <select class="select" name="size" onchange="this.form.submit()">
+              <option value="5"  ${pager.size==5 ? 'selected' : ''}>5개씩</option>
+              <option value="10" ${pager.size==10 ? 'selected' : ''}>10개씩</option>
+              <option value="15" ${pager.size==15 ? 'selected' : ''}>15개씩</option>
+            </select>
 
-          <div class="search-wrap">
-            <i class="bi bi-search search-ico"></i>
-            <input type="text" placeholder="키워드 입력">
+            <%-- 정렬 --%>
+            <select class="select" name="sort" onchange="this.form.submit()">
+              <option value="APPLY_DESC"     ${sort=='APPLY_DESC' ? 'selected' : ''}>지원일 최신순</option>
+              <option value="DEADLINE_ASC"   ${sort=='DEADLINE_ASC' ? 'selected' : ''}>마감 임박순</option>
+              <option value="DEADLINE_DESC"  ${sort=='DEADLINE_DESC' ? 'selected' : ''}>마감 늦은순</option>
+            </select>
           </div>
-        </div>
+
+          <div class="filter-right">
+            <div class="search-wrap">
+              <i class="bi bi-search search-ico"></i>
+              <input type="text" name="keyword" value="${keyword}" placeholder="회사명/공고명 검색">
+            </div>
+            <button type="submit" class="select" style="cursor:pointer;">검색</button>
+          </div>
+        </form>
 
         <%-- =========================
              리스트
-             - 지금은 샘플 3줄
-             - 나중에 c:forEach로 바꾸면 자동 추가됨
-             - 화면정의서 포인트:
-               (1) 제목 클릭 → 채용 페이지 이동
-               (2) 지원취소 버튼 → confirm
-               (3) confirm 후 취소 처리 → alert (임시로 JS alert)
            ========================= --%>
-        <div class="list">
+        <c:choose>
+          <c:when test="${empty list}">
+            <div class="empty">
+              <div style="font-size:48px;">🧑‍💻</div>
+              <div class="big">입사지원 내역이 없어요</div>
+              <div>원하는 공고에 지원하면 여기에 기록돼요.</div>
+            </div>
+          </c:when>
 
-          <%-- ===== 샘플 Row 1 ===== --%>
-          <div class="row-item">
-            <div class="row-date">2026-02-08</div>
+          <c:otherwise>
+            <div class="list">
 
-            <div class="row-mid">
-              <a class="title-link" href="${urlJobDetail}?jobId=101">
-                [코스닥 상장사] 2026년 에이티E 부문별 채용
-              </a>
-              <div class="subline">신입 · 경력 · 학력무관 · 서울 송파구 · 계약직</div>
+              <c:forEach var="row" items="${list}">
+                <div class="row-item">
+                  <div class="row-date">${row.applyDateStr}</div>
+
+                  <div class="row-mid">
+                    <a class="title-link" href="${urlJobDetail}?jobId=${row.jobId}">
+                      <c:out value="${row.title}" />
+                    </a>
+
+                    <div class="subline">
+                      <c:out value="${row.companyName}" />
+                      &nbsp;·&nbsp;
+                      <c:out value="${row.expType}" />
+                      <c:if test="${not empty row.expYear}">
+                        &nbsp;(<c:out value="${row.expYear}" />)
+                      </c:if>
+                      &nbsp;·&nbsp;
+                      <c:out value="${row.edu}" />
+                      &nbsp;·&nbsp;
+                      <c:out value="${row.address}" />
+                      &nbsp;·&nbsp;
+                      <c:out value="${row.empType}" />
+                    </div>
+
+                    <div class="subline" style="margin-top:6px;">
+                      전형: <b><c:out value="${row.step}" /></b>
+                    </div>
+                  </div>
+
+                  <div class="row-right">
+                    <div class="status">
+                      <c:out value="${row.statusLabel}" />
+                      <c:if test="${row.closed}">
+                        <span class="badge-closed">마감</span>
+                      </c:if>
+                    </div>
+                    
+					<c:if test="${row.statusLabel != '최종발표'}">
+					  <form action="${urlCancelApply}" method="post" style="margin:0;"
+					        onsubmit="return confirmCancel();">
+					    <input type="hidden" name="applyId" value="${row.appId}" />
+					    <button type="submit" class="btn-cancel">지원취소</button>
+					  </form>
+					</c:if>
+								
+                  </div>
+                </div>
+              </c:forEach>
+
             </div>
 
-            <div class="row-right">
-              <div class="status">지원완료</div>
+            <%-- =========================
+                 페이지네이션
+               ========================= --%>
+            <div class="pager">
+              <%-- 이전 --%>
+              <c:url var="prevUrl" value="/my/apply">
+                <c:param name="tab" value="${currentTab}"/>
+                <c:param name="status" value="${status}"/>
+                <c:param name="sort" value="${sort}"/>
+                <c:param name="keyword" value="${keyword}"/>
+                <c:param name="size" value="${pager.size}"/>
+                <c:param name="page" value="${pager.page - 1}"/>
+              </c:url>
 
-              <%-- (2) 지원취소: confirm -> POST 전송 --%>
-              <form action="${urlCancelApply}" method="post" style="margin:0;"
-                    onsubmit="return confirmCancel();">
-                <input type="hidden" name="applyId" value="5001"/>
-                <button type="submit" class="btn-cancel">지원취소</button>
-              </form>
+              <a href="${prevUrl}" class="${pager.hasPrev ? '' : 'disabled'}">이전</a>
+
+              <%-- 숫자 페이지 --%>
+              <c:forEach var="p" begin="${pager.startPage}" end="${pager.endPage}">
+                <c:url var="pageUrl" value="/my/apply">
+                  <c:param name="tab" value="${currentTab}"/>
+                  <c:param name="status" value="${status}"/>
+                  <c:param name="sort" value="${sort}"/>
+                  <c:param name="keyword" value="${keyword}"/>
+                  <c:param name="size" value="${pager.size}"/>
+                  <c:param name="page" value="${p}"/>
+                </c:url>
+
+                <a href="${pageUrl}" class="${pager.page == p ? 'active' : ''}">
+                  ${p}
+                </a>
+              </c:forEach>
+
+              <%-- 다음 --%>
+              <c:url var="nextUrl" value="/my/apply">
+                <c:param name="tab" value="${currentTab}"/>
+                <c:param name="status" value="${status}"/>
+                <c:param name="sort" value="${sort}"/>
+                <c:param name="keyword" value="${keyword}"/>
+                <c:param name="size" value="${pager.size}"/>
+                <c:param name="page" value="${pager.page + 1}"/>
+              </c:url>
+
+              <a href="${nextUrl}" class="${pager.hasNext ? '' : 'disabled'}">다음</a>
             </div>
-          </div>
-
-          <%-- ===== 샘플 Row 2 ===== --%>
-          <div class="row-item">
-            <div class="row-date">2026-02-08</div>
-
-            <div class="row-mid">
-              <a class="title-link" href="${urlJobDetail}?jobId=102">
-                [코스닥 상장사] 2026년 에이티E 부문별 채용
-              </a>
-              <div class="subline">신입 · 경력 · 학력무관 · 서울 송파구 · 계약직</div>
-            </div>
-
-            <div class="row-right">
-              <div class="status">지원완료</div>
-              <form action="${urlCancelApply}" method="post" style="margin:0;"
-                    onsubmit="return confirmCancel();">
-                <input type="hidden" name="applyId" value="5002"/>
-                <button type="submit" class="btn-cancel">지원취소</button>
-              </form>
-            </div>
-          </div>
-
-          <%-- ===== 샘플 Row 3 ===== --%>
-          <div class="row-item">
-            <div class="row-date">2026-02-08</div>
-
-            <div class="row-mid">
-              <a class="title-link" href="${urlJobDetail}?jobId=103">
-                [코스닥 상장사] 2026년 에이티E 부문별 채용
-              </a>
-              <div class="subline">신입 · 경력 · 학력무관 · 서울 송파구 · 계약직</div>
-            </div>
-
-            <div class="row-right">
-              <div class="status">지원완료</div>
-              <form action="${urlCancelApply}" method="post" style="margin:0;"
-                    onsubmit="return confirmCancel();">
-                <input type="hidden" name="applyId" value="5003"/>
-                <button type="submit" class="btn-cancel">지원취소</button>
-              </form>
-            </div>
-          </div>
-
-        </div>
-
-        <%-- 빈 상태(데이터 없을 때 쓰려고 준비해둔 영역)
-            - 나중에 cntAll==0 이면 이걸 보여주고 list 숨기면 됨 --%>
-        <%-- 
-        <div class="empty">
-          <div style="font-size:48px;">🧑‍💻</div>
-          <div class="big">입사지원 내역이 없어요</div>
-          <div>이재우님에게 맞는 공고를 소개해줄게요!</div>
-        </div>
-        --%>
-
-        <div class="pager">
-          <a href="#" class="active">1</a>
-          <a href="#">2</a>
-          <a href="#">3</a>
-          <a href="#">다음</a>
-        </div>
+          </c:otherwise>
+        </c:choose>
 
       </div>
     </section>
@@ -405,18 +442,13 @@
   </div>
 </main>
 
-<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
-
 <script>
-  // ✅ 화면정의서: "지원취소 confirm" -> 확인이면 서버로 POST, 아니면 취소
   function confirmCancel(){
     return confirm("지원을 취소할까요?");
   }
-
-  // ✅ 서버에서 취소 성공 후 redirect하면서 flash 메시지로 내려주면
-  //    아래처럼 alert 띄우는 방식으로 화면정의서(alert) 맞출 수 있음.
-  //    예) model.addAttribute("msg","지원이 정상적으로 취소 되었습니다.");
-  <c:if test="${not empty msg}">
-    alert("${msg}");
-  </c:if>
 </script>
+
+
+
+<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+

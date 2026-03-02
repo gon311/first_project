@@ -205,27 +205,33 @@
 	}
 	
 	/* 모달 배경 (어둡게) */
-	.modal-overlay {
-	    display: none; /* 기본은 숨김 */
-	    position: fixed;
-	    top: 0; left: 0;
-	    width: 100%; height: 100%;
-	    background: rgba(0,0,0,0.5);
-	    z-index: 1000;
-	    justify-content: center;
-	    align-items: center;
+	.modal-overlay{
+	    position:fixed;
+	    left:0;
+	    width:100%;
+	    background:rgba(0,0,0,0.4);
+	    z-index:9999;
+	    
+	    display:none;
 	}
 	
 	/* 모달 본체 */
-	.modal-content {
-	    background: #fff;
-	    width: 450px;
-	    border-radius: 12px;
-	    overflow: hidden;
-	    position: relative;
-	    animation: slideUp 0.3s ease-out; /* 아래에서 위로 올라오는 효과 */
-	}
+	.modal-content{
+	    position:fixed;
+	    right:30px;
+	    bottom:30px;
 	
+	    width:420px;
+	    max-height:70vh;   /* 화면 절반 */
+	
+	    background:#fff;
+	    padding:20px;
+	    overflow-y:auto;
+	
+	    border-radius:10px;
+	    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+	}
+		
 	@keyframes slideUp {
 	    from { transform: translateY(50px); opacity: 0; }
 	    to { transform: translateY(0); opacity: 1; }
@@ -236,14 +242,6 @@
 	
 	.modal-body { padding: 20px; }
 	.job-title-mini { font-weight: bold; color: #4876ef; margin-bottom: 20px; }
-	
-	.resume-card { 
-	    border: 1px solid #e5e8ec; 
-	    padding: 15px; 
-	    border-radius: 8px; 
-	    background: #f8f9fb;
-	    margin-top: 10px;
-	}
 	
 	.final-apply-btn {
 	    width: 100%;
@@ -268,6 +266,9 @@
 	    margin-bottom: 10px;
 	    cursor: pointer;
 	    transition: all 0.2s;
+	    
+	    background: #f8f9fb;
+	    margin-top: 10px;
 	}
 	
 	/* 마우스를 올렸을 때 */
@@ -283,27 +284,6 @@
 	
 	.resume-card input[type="radio"] {
 	    display: none; /* 라디오 버튼은 숨기고 카드 전체 클릭으로 대체 */
-	}
-	
-	/* 모달 배경 */
-	.apply-modal{
-	    display:none;
-	    position:fixed;
-	    z-index:1000;
-	    left:0;
-	    top:0;
-	    width:100%;
-	    height:100%;
-	    background:rgba(0,0,0,0.4);
-	}
-	
-	/* 모달 박스 */
-	.apply-modal-content{
-	    background:#fff;
-	    width:450px;
-	    margin:120px auto;
-	    border-radius:10px;
-	    padding:25px;
 	}
 	
 	/* 헤더 */
@@ -336,19 +316,6 @@
 	    margin-bottom:25px;
 	}
 	
-	/* 버튼 */
-	.apply-footer{
-	    text-align:right;
-	}
-	
-	.submit-btn{
-	    background:#4876ef;
-	    color:#fff;
-	    border:none;
-	    padding:10px 20px;
-	    border-radius:5px;
-	    cursor:pointer;
-	}
 </style>
 </head>
 <body>
@@ -358,7 +325,7 @@
         <div class="company-info">
             <p style="color: #666; margin-bottom: 5px;">${post.companyName}</p>
             <h1>${post.title}</h1>
-            
+            <input type="hidden" name="userId" value="${userId}">
         </div>
         <button type="button" class="apply-btn" id="applyBtn" onclick="checkResumeAndApply()">입사지원</button>
     </header>
@@ -379,8 +346,8 @@
     </section>
 
     <section class="detail-content-body">
-        <div style="padding-top: 150px;">
-            <h3>모직 직무 분야 : ${post.field}</h3>
+        <div style="padding-top: 50px;">
+            <h2>모직 직무 분야 : ${post.field}</h2>
             <p>${post.task}</p>
         </div>
     </section>
@@ -412,97 +379,39 @@
         <div class="modal-header">
             <h3>${post.companyName} 입사지원</h3>
             <button class="close-btn" onclick="closeApplyModal()">&times;</button>
-            <input type="hidden" name="userId" value="${userIdx}">
         </div>
-        <div class="modal-body">
-            <p class="job-title-mini">${post.title}</p>
-            
-            <div class="resume-section">
-                <div class="section-header" style="margin-bottom: 10px; font-weight: bold;">
-                    <span>지원할 이력서 선택</span>
-                </div>
-                <div class="resume-card-container" style="max-height: 250px; overflow-y: auto;">
-                    <c:forEach var="resume" items="${resumeList}">
-                        <div class="resume-card" onclick="selectResume('${resume.id}', this)">
-                            <p class="save-date">${resume.updateDate} 저장</p>
-                            <p class="resume-name">${resume.title}</p>
-                        </div>
-                    </c:forEach>
-                    <c:if test="${empty resumeList}">
-                        <p style="text-align: center; padding: 20px; color: #888;">보유 중인 이력서가 없습니다.</p>
-                    </c:if>
-                </div>
-            </div>
-        </div>
+       <form action="<c:url value="/job/ApplyAction" />" method="post" enctype="multipart/form-data">
+	       <input type="hidden" name="resumeId" id="selectedResumeId" value="">
+	       <input type="hidden" name="jobId" value="${post.jobId}">
+	        <div class="modal-body">
+	            <p class="job-title-mini">${post.title}</p>
+	            
+	            <div class="resume-section">
+	                <div class="section-header" style="margin-bottom: 10px; font-weight: bold;">
+	                    <span>지원할 이력서 선택</span>
+	                </div>
+	                <div class="resume-card-container" style="max-height: 250px; overflow-y: auto;">
+	                    <c:forEach var="resume" items="${resumeList}">
+	                        <div class="resume-card" onclick="selectResume('${resume.resumeId}', this)">
+	                            <p class="resume-name">${resume.title}</p>
+	                        </div>
+	                    </c:forEach>
+	                    <c:if test="${empty resumeList}">
+	                        <p style="text-align: center; padding: 20px; color: #888;">보유 중인 이력서가 없습니다.</p>
+	                    </c:if>
+	                </div>
+	            </div>
+	        </div>
         <div class="modal-footer">
-            <button class="final-apply-btn" onclick="submitApplication()">입사지원하기</button>
+            <button type="submit" class="final-apply-btn">입사지원하기</button>
         </div>
-    </div>
-</div>
-
-<div class="resume-card-container">
-    <c:forEach var="resume" items="${resumeList}">
-        <div class="resume-card" onclick="selectResume('${resume.id}')">
-            <input type="radio" name="selectedResume" value="${resume.id}">
-            <p class="save-date">${resume.updateDate} 저장</p>
-            <p class="resume-name">${resume.title}</p>
-        </div>
-    </c:forEach>
-</div>
-
-<!-- 입사지원 모달 -->
-<div id="applyModal" class="apply-modal">
-    
-    <div class="apply-modal-content">
-
-        <!-- 상단 -->
-        <div class="apply-header">
-            <h3>입사지원</h3>
-            <span class="close-btn" id="closeModal">&times;</span>
-        </div>
-
-        <!-- 지원 폼 -->
-        <form action="/apply/submit" method="post" enctype="multipart/form-data">
-
-            <!-- 이력서 선택 -->
-            <div class="resume-section">
-                <label>저장된 이력서 선택</label>
-
-                <select name="resumeId" class="resume-select">
-                    <option value="">이력서를 선택하세요</option>
-
-                    <!-- DB에서 불러오는 부분 -->
-                    <c:forEach var="resume" items="${resumeList}">
-                        <option value="${resume.id}">
-                            ${resume.title}
-                        </option>
-                    </c:forEach>
-
-                </select>
-            </div>
-
-            <!-- 파일 첨부 -->
-            <div class="file-section">
-                <label>파일 첨부</label>
-
-                <input type="file" name="files" multiple>
-            </div>
-
-            <!-- 버튼 -->
-            <div class="apply-footer">
-                <button type="submit" class="submit-btn">지원하기</button>
-            </div>
-
         </form>
-
     </div>
-
 </div>
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
-<script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
 <script>
-    // 1. 지도 초기화
+    // 1. 지도 초기화 및 마커 표시
     const map = new maplibregl.Map({
         container: 'map',
         style: 'https://tiles.openfreemap.org/styles/liberty',
@@ -510,111 +419,78 @@
         zoom: 15
     });
 
- // 2. 주소 처리
     let currentAddress = "${post.address}"; 
-
     if (currentAddress && currentAddress.trim() !== "") {
-        // [중요] 상세주소(예: 101동, 3층 등)가 포함되면 검색이 안 될 수 있으므로 
-        // 공백으로 잘라 앞부분 3~4단어만 사용합니다.
         const searchAddress = currentAddress.split(' ').slice(0, 4).join(' ');
-        
         const apiUrl = "https://nominatim.openstreetmap.org/search?format=json&q=" + encodeURIComponent(searchAddress);
 
         fetch(apiUrl)
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
+            .then(res => res.json())
+            .then(data => {
                 if (data && data.length > 0) {
                     const lon = parseFloat(data[0].lon);
                     const lat = parseFloat(data[0].lat);
-
-                    // 1) 지도의 중심을 찾은 좌표로 이동
                     map.setCenter([lon, lat]);
-
-                    // 2) 기존 위치에 마커 찍기
                     new maplibregl.Marker({ color: '#ff4b4b' })
                         .setLngLat([lon, lat])
                         .setPopup(new maplibregl.Popup().setHTML("<b>" + currentAddress + "</b>"))
                         .addTo(map);
-                } else {
-                    console.warn("주소를 찾을 수 없어 기본 위치를 유지합니다: " + searchAddress);
                 }
             })
-            .catch(function(error) { console.error('주소 변환 오류:', error); });
+            .catch(err => console.error('주소 변환 오류:', err));
     }
-    
     map.addControl(new maplibregl.NavigationControl());
 
-	 // 기존에 두 번 선언된 checkResumeAndApply 함수를 모두 삭제하고 아래 하나로 합치세요.
+    // 2. 입사지원 버튼 클릭 시 체크 및 모달 열기
     function checkResumeAndApply() {
-        // 1. JSP에서 서버로부터 전달받은 이력서 리스트 존재 여부 확인
-        // JSTL의 empty 연산자를 활용해 자바스크립트 변수로 변환
-        const hasResumes = ${not empty resumeList};
-
-        if (hasResumes) {
-            // 2. 이력서가 있다면 모달창 표시
-            const modal = document.getElementById('applyModal');
-            modal.style.display = 'flex';
+        // JSTL을 통해 리스트 존재 여부를 안전하게 불리언으로 받음
+        const selectedResumeId = ${not empty resumeList ? "true" : "false"}; 
+        
+        if (selectedResumeId) {
+            document.getElementById('applyModal').style.display = 'block';
         } else {
-            // 3. 이력서가 없다면 안내 후 작성 페이지 이동 (경로는 프로젝트에 맞게 수정)
-            if (confirm("작성된 이력서가 없습니다. 이력서 작성 페이지로 이동하시겠습니까?")) {
-                location.href = '/resume/write'; 
+            if (confirm("등록된 이력서가 없습니다. 이력서를 작성하시겠습니까?")) {
+                location.href = "/resume/write";
             }
         }
     }
 
-    // 이력서 카드 선택 시 시각적 효과 부여
+    // 3. 이력서 카드 선택 로직
     function selectResume(resumeId, element) {
         // 모든 카드의 선택 효과 제거
         document.querySelectorAll('.resume-card').forEach(card => {
             card.classList.remove('selected');
         });
-        // 클릭한 카드에만 선택 효과 추가
+        // 클릭한 카드만 선택 표시
         element.classList.add('selected');
         
-        // 실제 전송할 데이터(Radio 버튼 등)가 있다면 여기서 처리
-        console.log("선택된 이력서 ID:", resumeId);
+        // [핵심] Hidden input에 ID 값 저장
+        const hiddenInput = document.getElementById('selectedResumeId');
+        if (hiddenInput) {
+            hiddenInput.value = resumeId;
+        }
     }
-    
+
+    // 4. 기타 유틸리티 함수
+    function closeApplyModal() {
+        document.getElementById('applyModal').style.display = 'none';
+    }
+
     function scrollToMap(event) {
-        event.preventDefault(); // 기본 링크 동작 방지
+        event.preventDefault();
         const mapElement = document.getElementById('map');
         if (mapElement) {
             mapElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     }
 
-    function closeApplyModal() {
-        document.getElementById('applyModal').style.display = 'none';
-    }
-
-    // 배경 클릭 시 닫기 기능
+    // 모달 외부 클릭 시 닫기
     window.onclick = function(event) {
-        const modal = document.getElementById('applyModal');
+        const modal = document.getElementById("applyModal");
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
-    
-
-    const applyBtn = document.getElementById("applyBtn");
-    const modal = document.getElementById("applyModal");
-    const closeBtn = document.getElementById("closeModal");
-
-    applyBtn.onclick = function(){
-        modal.style.display = "block";
-    }
-
-    closeBtn.onclick = function(){
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event){
-        if(event.target == modal){
-            modal.style.display = "none";
-        }
-    }
-
-    
+    };
 </script>
 
 </body>

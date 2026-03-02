@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.project.resume.mapper.ResumeMapper">
+
+<!-- 	void insertResume(ResumeDTO resumeDTO) -->
+
+	<insert id="insertResume">
+	    INSERT INTO resume (
+	        user_id,            <!-- 소유자 유저 ID (FK) --> 
+	        title,				<!-- 제목 -->  
+		    name_kor,           <!-- 이력서 이름(한글)--> 
+		    name_eng,           <!-- 이력서 이름(영문) --> 
+		    name_han,           <!-- 이력서 이름(한문) -->  
+	       
+	       	birth_date,			<!-- 생년월일 -->  
+	       	gender,             <!-- 성별 --> 
+	       	phone_number,       <!-- 전화번호 -->  
+	       	email,              <!-- 이메일 --> 
+	       	address1,			<!-- 주소1 --> 	
+	       	address2,			<!-- 주소상세2 --> 
+	       	
+	       	military_service,
+			military_branch,	
+			military_rank,		
+			discharge_reason,
+			enlist_date,		
+			discharge_date,		
+			exemption_reason	
+	       	
+	    ) VALUES (
+	        #{user_id},       
+	        #{title},       
+	        #{name_kor}, 
+	        #{name_eng}, 
+	        #{name_han}, 
+	        
+	        #{birth_date},       
+	        #{gender},       
+	        #{phone_number}, 
+	        #{email}, 
+	        #{address1}, 
+	        #{address2},
+	        
+	        #{military_service}, 
+	        #{military_branch}, 
+	        #{military_rank}, 
+	        #{discharge_reason}, 
+	        #{enlist_date}, 
+	        #{discharge_date}, 
+	        #{exemption_reason} 
+	    );   
+	</insert>	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

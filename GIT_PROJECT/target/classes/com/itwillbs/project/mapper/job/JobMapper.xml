@@ -189,13 +189,43 @@
 		WHERE p.job_id = #{jobId}
 	</select>
 	
-	<select id="getMyResume">
-		
+	<select id="getMyResume" resultType="Resume">
+	    SELECT
+	    	resume_id
+	    	, title
+	        , name_kor
+	    FROM
+	        resume
+	    WHERE
+	        user_id = #{userIdx}
+	    ORDER BY
+	        resume_id DESC
 	</select>
 	
+	<insert id="insertApplication" parameterType="application">
+		INSERT INTO job_application (
+          job_id
+        , user_id
+        , resume_id
+        , app_step
+        , is_favorite
+        , apply_date
+    ) VALUES (
+          #{jobId}
+        , #{userId}
+        , #{resumeId}
+        , DEFAULT
+        , DEFAULT
+        , NOW()
+    )
+	</insert>
 	
-	
-	
+	<select id="checkAlreadyApplied" resultType="int" parameterType="application">
+	    SELECT COUNT(*)
+	    FROM job_application 
+	    WHERE job_id = #{jobId} 
+	    AND user_id = #{userId}
+	</select>
 	
 	
 	

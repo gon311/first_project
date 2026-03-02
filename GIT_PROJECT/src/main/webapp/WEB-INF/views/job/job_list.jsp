@@ -471,5 +471,12 @@
     
     document.addEventListener('DOMContentLoaded', renderMainCategory);
 </script>
+
+<script type="text/javascript">
+    var msg = "${msg}";
+    if (msg && msg !== "") {
+        alert(msg);
+    }
+</script>
 </body>
 </html>

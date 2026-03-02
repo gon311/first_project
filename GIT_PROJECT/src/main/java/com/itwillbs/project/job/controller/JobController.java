@@ -6,13 +6,18 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.project.common.exception.BackwardException;
+import com.itwillbs.project.job.dto.JobApplicationDTO;
 import com.itwillbs.project.job.dto.JobDTO;
 import com.itwillbs.project.job.service.JobService;
 import com.itwillbs.project.resume.dto.ResumeDTO;
@@ -30,7 +35,11 @@ public class JobController {
 	private JobService jobService;
 	
 	@GetMapping("/JobPosting")
-	public String posting() {
+	public String posting(HttpSession session) {
+		
+		String sId = (String) session.getAttribute("userType");
+		System.out.println(sId);
+	    if (sId == null || "P".equals(sId)) return "redirect:/user/login";
 		
 		return "/job/job_posting";
 	}
@@ -61,26 +70,68 @@ public class JobController {
 	}
 	
 	@GetMapping("/JobDetail")
-	public String jobDetail(@RequestParam("jobId") Long jobId, Model model) {
+	public String jobDetail(@RequestParam("jobId") Long jobId, Model model,
+			HttpSession session, ResumeDTO resume) {
 		
-//		System.out.println(jobId);
+//		System.out.println(userId);
 		JobDTO post = jobService.getJobListDetail(jobId);
 		
-		List<ResumeDTO> resumeList = jobService.getMyResume();
+		Long userIdx = (Long)session.getAttribute("userIdx");
+//		System.out.println(userIdx);
+		
+		List<ResumeDTO> resumeList = jobService.getMyResume(userIdx);
 //		System.out.println("! = " + post.getCompanyName());
 //		System.out.println(post.getExpYear());
+//		System.out.println(resumeList);
 		model.addAttribute("post", post);
 		model.addAttribute("resumeList", resumeList);
+//		System.out.println(resumeList);
 		
 		return "/job/job_detail";
 	}
 	
 	@GetMapping("/JobManagement")
-	public String management() {
+	public String management(HttpSession session) {
+		
+		String sId = (String) session.getAttribute("userType");
+//		System.out.println(sId);
+	    if (sId == null || "P".equals(sId)) return "redirect:/user/login";
 		
 		return "/job/job_management";
 	}
 	
-	
+	@PostMapping("/ApplyAction")
+	public String applyAction(
+			HttpSession session,
+			JobApplicationDTO applicationDTO,
+			@RequestParam("resumeId") Integer resumeId,
+			@RequestParam("jobId") Long jobId,
+			RedirectAttributes rt) {
+		
+		String sId = (String) session.getAttribute("userType");
+		Long userId = (Long)session.getAttribute("userIdx");
+		applicationDTO.setUserId(userId);
+//		System.out.println(sId);
+		if (sId == null || "C".equals(sId)) return "redirect:/user/login";
+		
+		if(applicationDTO.getResumeId() == null) {
+			throw new BackwardException("잘못된 접근입니다!");
+		}
+		
+		int applyCount = jobService.checkAlreadyApplied(applicationDTO);
+		
+		if(applyCount > 0) {
+	        throw new BackwardException("이미 이 공고에 지원하신 내역이 존재합니다.");
+	    }
+//	    System.out.println("ResumeId : "+applicationDTO.getResumeId());
+//	    System.out.println("JobId : "+applicationDTO.getJobId());
+//	    System.out.println("UserId : "+userId);
+	    
+	    jobService.insertApplication(applicationDTO);
+	    
+	    rt.addFlashAttribute("msg", "지원이 완료되었습니다.");
+	    
+	    return "redirect:/job/JobList";
+	}
 	
 }

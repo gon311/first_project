@@ -12,5 +12,7 @@
 	<typeAliases>
 		<typeAlias type="com.itwillbs.project.user.dto.UserDTO" alias="user"/>
 		<typeAlias type="com.itwillbs.project.job.dto.JobDTO" alias="job"/>
+		<typeAlias type="com.itwillbs.project.resume.dto.ResumeDTO" alias="resume"/>
+		<typeAlias type="com.itwillbs.project.job.dto.JobApplicationDTO" alias="application"/>
 	</typeAliases>
 </configuration>

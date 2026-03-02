@@ -65,6 +65,7 @@ public class UserController {
 		session.setAttribute("userIdx", dbUser.getUserId());
 		session.setAttribute("sId", dbUser.getEmail());
 		session.setAttribute("userName", dbUser.getUserName());
+		session.setAttribute("userType", dbUser.getUserType());
 		session.setMaxInactiveInterval(60 * 60 * 24);
 		
 		if(rememberId != null) {
@@ -115,6 +116,7 @@ public class UserController {
 		session.setAttribute("userIdx", userDTO.getUserId());
 		session.setAttribute("sId", userDTO.getEmail());
 		session.setAttribute("userName", userDTO.getUserName());
+		session.setAttribute("userType", userDTO.getUserType());
 		session.setMaxInactiveInterval(60 * 60 * 24);
 		
 		return "redirect:/";

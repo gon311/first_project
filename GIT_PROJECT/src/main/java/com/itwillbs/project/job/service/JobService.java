@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.project.job.dto.JobApplicationDTO;
 import com.itwillbs.project.job.dto.JobDTO;
 import com.itwillbs.project.job.mapper.JobMapper;
 import com.itwillbs.project.resume.dto.ResumeDTO;
@@ -35,8 +36,16 @@ public class JobService {
 		return jobMapper.getJobListDetail(jobId);
 	}
 
-	public List<ResumeDTO> getMyResume() {
-		return jobMapper.getMyResume();
+	public List<ResumeDTO> getMyResume(Long userIdx) {
+		return jobMapper.getMyResume(userIdx);
+	}
+
+	public void insertApplication(JobApplicationDTO applicationDTO) {
+		jobMapper.insertApplication(applicationDTO);
+	}
+
+	public int checkAlreadyApplied(JobApplicationDTO application) {
+	    return jobMapper.checkAlreadyApplied(application);
 	}
 
 

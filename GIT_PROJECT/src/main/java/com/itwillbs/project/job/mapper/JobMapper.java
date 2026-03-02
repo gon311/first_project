@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.project.job.dto.JobApplicationDTO;
 import com.itwillbs.project.job.dto.JobDTO;
 import com.itwillbs.project.resume.dto.ResumeDTO;
 
@@ -24,6 +25,10 @@ public interface JobMapper {
 
 	JobDTO getJobListDetail(Long jobId);
 
-	List<ResumeDTO> getMyResume();
+	List<ResumeDTO> getMyResume(Long userIdx);
+
+	void insertApplication(JobApplicationDTO applicationDTO);
+
+	int checkAlreadyApplied(JobApplicationDTO application);
 
 }

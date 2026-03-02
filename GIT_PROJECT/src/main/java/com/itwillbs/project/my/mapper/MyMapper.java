@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.project.my.dto.ApplyCond;
+import com.itwillbs.project.my.dto.ApplyRowDTO;
 import com.itwillbs.project.my.dto.FavoriteJobCond;
 import com.itwillbs.project.my.dto.FavoriteJobRowDTO;
 import com.itwillbs.project.my.dto.MyDTO;
@@ -55,6 +57,15 @@ public interface MyMapper {
 	//결제내역
 	List<MyPaymentDTO> selectPaymentList(PaymentCond cond);
 	int selectPaymentCount(PaymentCond cond);
+	
+	//지원내역
+	List<ApplyRowDTO> selectApplyList(ApplyCond cond);
+	int selectApplyCount(ApplyCond cond);
+    int selectApplyTabCount(@Param("userId") Long userId,
+            				@Param("tab") String tab);
+
+    int deleteJobApplication(@Param("userId") Long userId,
+            				 @Param("appId") Long appId);
 	
 	
 

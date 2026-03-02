@@ -75,9 +75,38 @@
 		<result property="payDateText" 	   column="pay_date_text"/>
 	</resultMap>
 
+	<!-- ApplyRowDTO  -->
+	<resultMap id="applyRowMap" type="com.itwillbs.project.my.dto.ApplyRowDTO">
+		<id property="appId" column="app_id" />
+		<result property="jobId" column="job_id" />
+	
+		<result property="companyName" column="company_name" />
+		<result property="title" column="title" />
+	
+		<result property="expType" column="exp_type" />
+		<result property="expYear" column="exp_year" />
+		<result property="edu" column="edu" />
+		<result property="empType" column="emp_type" />
+		<result property="address" column="address" />
+	
+		<result property="applyDateStr" column="apply_date_str" />
+		<result property="closeDate" column="close_date" />
+		<result property="closed" column="closed" />
+	
+		<result property="step" column="app_step" />
+		<result property="statusLabel" column="status_label" />
+	</resultMap>
+	
+	
+	
+	
 <!-- ======================================== -->
+	
 
 <!-- 공통 WHERE 절-->
+
+<!-- 결제 -->
+
 <sql id="paymentWhere">
   WHERE p.user_id = #{userId}
 
@@ -111,6 +140,44 @@
   <!-- 검색어: 상품명 기준 -->
   <if test="q != null and q != ''">
     AND pr.product_name LIKE CONCAT('%', #{q}, '%')
+  </if>
+</sql>
+
+<!-- 지원 -->
+
+<sql id="applyWhere">
+  WHERE ja.user_id = #{userId}
+
+  <!-- tab -->
+  <if test="tab != null and tab != '' and tab != 'all'">
+    <choose>
+      <when test="tab == 'done'">
+        AND ja.app_step NOT IN ('최종합격','최종불합격','최종발표')
+      </when>
+      <when test="tab == 'final'">
+        AND ja.app_step IN ('최종합격','최종불합격','최종발표')
+      </when>
+    </choose>
+  </if>
+
+  <!-- status OPEN/CLOSED -->
+  <if test="status != null and status != '' and status != 'ALL'">
+    <choose>
+      <when test="status == 'OPEN'">
+        AND jp.close_date &gt;= CURDATE()
+      </when>
+      <when test="status == 'CLOSED'">
+        AND jp.close_date &lt; CURDATE()
+      </when>
+    </choose>
+  </if>
+
+  <!-- keyword -->
+  <if test="keyword != null and keyword != ''">
+    AND (
+         jp.title LIKE CONCAT('%', #{keyword}, '%')
+      OR uc.company_name LIKE CONCAT('%', #{keyword}, '%')
+    )
   </if>
 </sql>
 
@@ -393,6 +460,89 @@
   <include refid="paymentWhere"/>
 </select>
 
+<!-- ==============================
+    지원내역
+     parameter:ApplyRowDTO 
+     result: 
+============================== -->	
+<select id="selectApplyList"
+        parameterType="com.itwillbs.project.my.dto.ApplyCond"
+        resultMap="applyRowMap">
+  SELECT
+      ja.app_id
+    , ja.job_id
+    , uc.company_name
+    , jp.title
+    , jp.exp_type
+    , jp.exp_year
+    , jp.edu
+    , jp.emp_type
+    , jp.address
+    , jp.close_date
+    , (jp.close_date &lt; CURDATE()) AS closed
+    , ja.app_step
+    , DATE_FORMAT(ja.apply_date, '%Y-%m-%d') AS apply_date_str
+    , CASE
+        WHEN ja.app_step IN ('최종합격','최종불합격','최종발표') THEN '최종발표'
+        ELSE '지원완료'
+      END AS status_label
+  FROM JOB_APPLICATION ja
+  JOIN JOB_POSTING jp ON jp.job_id = ja.job_id
+  JOIN USER_COMPANY uc ON uc.user_id = jp.comp_id
+
+  <include refid="applyWhere"/>
+
+  <choose>
+    <when test="sort == 'DEADLINE_ASC'">
+      ORDER BY jp.close_date ASC, ja.apply_date DESC
+    </when>
+    <when test="sort == 'DEADLINE_DESC'">
+      ORDER BY jp.close_date DESC, ja.apply_date DESC
+    </when>
+    <otherwise>
+      ORDER BY ja.apply_date DESC, ja.app_id DESC
+    </otherwise>
+  </choose>
+
+  LIMIT #{page.offset, jdbcType=INTEGER}, #{page.safeSize, jdbcType=INTEGER}
+</select>
+
+<!-- 카운트 -->
+<select id="selectApplyCount"
+        parameterType="com.itwillbs.project.my.dto.ApplyCond"
+        resultType="int">
+  SELECT COUNT(*)
+  FROM JOB_APPLICATION ja
+  JOIN JOB_POSTING jp ON jp.job_id = ja.job_id
+  JOIN USER_COMPANY uc ON uc.user_id = jp.comp_id
+
+  <include refid="applyWhere"/>
+</select>
+
+<!-- 탭 카운트 -->
+<select id="selectApplyTabCount" resultType="int">
+  SELECT COUNT(*)
+  FROM JOB_APPLICATION ja
+  WHERE ja.user_id = #{userId}
+
+  <if test="tab != null and tab != '' and tab != 'all'">
+    <choose>
+      <when test="tab == 'done'">
+        AND ja.app_step NOT IN ('최종합격','최종불합격','최종발표')
+      </when>
+      <when test="tab == 'final'">
+        AND ja.app_step IN ('최종합격','최종불합격','최종발표')
+      </when>
+    </choose>
+  </if>
+</select>
+
+<!-- 지원 취소 -->
+<delete id="deleteJobApplication">
+  DELETE FROM JOB_APPLICATION
+  WHERE app_id = #{appId}
+    AND user_id = #{userId}
+</delete>
 
 
 	

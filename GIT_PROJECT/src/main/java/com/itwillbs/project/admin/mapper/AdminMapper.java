@@ -2,6 +2,7 @@ package com.itwillbs.project.admin.mapper;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -155,6 +156,36 @@ public interface AdminMapper {
 
 	void updateBannerStatus(@Param("adId") int adId
 							, @Param("isDisplay") int isDisplay);
+
+//	============================================================================
+//	[ 데이터 관리 ]
+//	1. 구직자 유형별 통계
+	List<Map<String, Object>> getGenderStats();
+
+	List<Map<String, Object>> getAgeStats();
+
+	List<Map<String, Object>> getJobStats();
+	
+// 	2. 기업회원 유형별 통계
+	List<Map<String, Object>> getComPostStats();
+
+	List<Map<String, Object>> getJobFieldStats();
+
+	List<Map<String, Object>> getEmpTypeStats();
+
+//	3. 구직자 결제 통계
+	List<Map<String, Object>> getProductSalesStats();
+
+	List<Map<String, Object>> getPayMethodStats();
+
+	List<Map<String, Object>> getDailyRevenueStats();
+
+//	4. 기업회원 결제 통계
+	List<Map<String, Object>> getTopComRevenue();
+
+	List<Map<String, Object>> getComProductStats();
+
+	List<Map<String, Object>> getComPayMethodStats();
 
 
 

@@ -1,6 +1,8 @@
 package com.itwillbs.project.admin.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -206,7 +208,7 @@ public class AdminService{
 
 
 //	=================================================================================================
-//	[배너관리]
+//	[ 배너 관리 ]
 	
 	public List<BannerDTO> getBannerList() {
 		return adminMapper.getBannerList();
@@ -216,11 +218,46 @@ public class AdminService{
 		adminMapper.updateBannerStatus(adId, isDisplay);
 	}
 
-
-
-
+//	=================================================================================
+//	[ 데이터 관리 ]
+//	1. 구직자 유형별 통계
+	public Map<String, Object> getUserStatistics(){
+		Map<String, Object> result = new HashMap<>();
+		result.put("gender", adminMapper.getGenderStats());
+		result.put("age", adminMapper.getAgeStats());
+		result.put("job", adminMapper.getJobStats());
+		return result;
+	}
 	
+//	2. 기업회원 유형별 통계
+	public Map<String, Object> getComStatistics() {
+	    Map<String, Object> result = new HashMap<>();
+	    result.put("postCounts", adminMapper.getComPostStats());
+	    result.put("jobFields", adminMapper.getJobFieldStats());
+	    result.put("empTypes", adminMapper.getEmpTypeStats());
+	    return result;
+	}
 
+//	3. 구직자 결제 통계
+	public Map<String, Object> getUserPayStatistics() {
+	    Map<String, Object> result = new HashMap<>();
+	    result.put("products", adminMapper.getProductSalesStats());
+	    result.put("methods", adminMapper.getPayMethodStats());
+	    result.put("revenue", adminMapper.getDailyRevenueStats());
+	    return result;
+	}
+	
+//	4. 기업회원 결제 통계
+	public Map<String, Object> getComPayStatistics(){
+	    Map<String, Object> result = new HashMap<>();
+	    
+	    result.put("topCompanies", adminMapper.getTopComRevenue());
+	    result.put("products", adminMapper.getComProductStats());
+	    result.put("methods", adminMapper.getComPayMethodStats());
+	    
+	    return result;
+		
+	}
 	
 
 	

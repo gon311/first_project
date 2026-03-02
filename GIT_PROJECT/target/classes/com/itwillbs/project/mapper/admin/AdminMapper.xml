@@ -764,13 +764,174 @@
 			ad_id = #{adId}
 	</update>
 	
+	<!-- ============================================================================================= -->
+	<!-- 데이터 관리 -->	
+	<!-- 1) 구직자 유형별 통계 관리 -->
+	<select id = "getGenderStats" resultType="map">
+		SELECT
+			CASE
+				WHEN gender = 'M' THEN '남성'
+				WHEN gender = 'F' THEN '여성'
+				ELSE '미선택'
+				END AS label
+			, COUNT(*) AS value
+		FROM
+			user_person
+		GROUP BY 
+			gender
+	</select>	
+	<select id = "getAgeStats" resultType = "map">
+		SELECT 
+			CASE
+				WHEN (YEAR(CURDATE()) - YEAR(BIRTH_DATE)) BETWEEN 10 AND 19 THEN '10대'
+				WHEN (YEAR(CURDATE()) - YEAR(BIRTH_DATE)) BETWEEN 20 AND 29 THEN '20대'
+				WHEN (YEAR(CURDATE()) - YEAR(BIRTH_DATE)) BETWEEN 30 AND 39 THEN '30대'
+				WHEN (YEAR(CURDATE()) - YEAR(BIRTH_DATE)) BETWEEN 40 AND 49 THEN '40대'
+				WHEN (YEAR(CURDATE()) - YEAR(BIRTH_DATE)) BETWEEN 50 AND 59 THEN '50대'
+				ELSE '기타'
+			END AS label,
+			COUNT(*) AS value
+		FROM
+			user_person
+		GROUP BY 
+			label
+		ORDER BY
+			label
+	</select>
+	<select id = "getJobStats" resultType = "map">
+		SELECT
+			desired_role AS label
+			, count(*) AS value
+		FROM
+			personal_job_profile
+		GROUP BY
+			desired_role
+		ORDER BY
+			value DESC
+		LIMIT 5
+	</select>
+	<!-- 2. 기업회원 유형별 통계 -->
+<!-- 	채용진행 횟수, 채용공고등록 빈도, 직무 -->
 	
+	<select id = "getComPostStats" resultType="map">
+		SELECT
+			c.company_name AS label
+			, count(j.job_id) AS value
+		FROM 
+			user_company c
+		JOIN 
+			job_posting j 
+		ON 	
+			c.user_id = j.comp_id
+		GROUP BY
+			c.company_name
+		ORDER BY 
+			value DESC
+		LIMIT 5
+	</select>
+	<select id = "getJobFieldStats" resultType="map">
+		SELECT
+			field AS label
+			, COUNT(*) AS value
+		FROM
+			job_posting
+		GROUP BY
+			field		
+		ORDER BY
+			value DESC
+	</select>	
+	<select id="getEmpTypeStats" resultType="map">
+        SELECT 
+            emp_type AS label
+            , COUNT(*) AS value 
+        FROM
+        	job_posting
+        GROUP BY 
+        	emp_type
+    </select>
+    <!-- 3. 구직자 결제 통계 -->
+    <select id="getProductSalesStats" resultType="map">
+	    SELECT 
+	        pr.product_name AS label 
+	        , COUNT(*) AS value 
+	    FROM 
+			pay p
+		JOIN
+			product pr
+		ON
+			p.product_id = pr.product_id
+	    GROUP BY 
+	    	pr.product_name
+	</select>
 	
+	<select id="getPayMethodStats" resultType="map">
+	    SELECT 
+	        pay_method AS label 
+	        , COUNT(*) AS value 
+	    FROM 
+	    	pay
+	    GROUP BY 
+	    	pay_method
+	</select>
 	
+	<select id="getDailyRevenueStats" resultType="map">
+	    SELECT 
+	        DATE_FORMAT(pay_date, '%m-%d') AS label 
+	        , SUM(pay_price) AS value 
+	    FROM 
+	    	pay
+	    WHERE 
+	    	pay_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+	    GROUP BY 
+	    	label
+	    ORDER BY 
+	    	label ASC
+	</select>
 	
+	<!-- 4. 기업회원 결제 통계 -->
+	<select id="getTopComRevenue" resultType="map">
+	    SELECT 
+	        c.company_name AS label 
+	        , SUM(p.pay_price) AS value 
+	    FROM 
+	    	pay p
+	    JOIN 
+	    	user_company c ON p.user_id = c.user_id
+	    GROUP BY 
+	    	c.company_name
+	    ORDER BY 
+	    	value DESC
+	    LIMIT 5
+	</select>
 	
+	<select id="getComProductStats" resultType="map">
+	    SELECT 
+	        pr.product_name AS label 
+	        , COUNT(*) AS value 
+	    FROM 
+	    	pay p
+	    JOIN 
+	    	user_company c 
+    	ON 
+    		p.user_id = c.user_id
+    	JOIN
+    		product pr
+    	ON
+    		p.product_id = pr.product_id
+	    GROUP BY 
+	    	pr.product_name
+	</select>
 	
-	
-	
-	
-</mapper>
+	<select id="getComPayMethodStats" resultType="map">
+	    SELECT 
+	        p.pay_method AS label 
+	        , COUNT(*) AS value 
+	    FROM pay p
+	    JOIN 
+	    	user_company c 
+    	ON 
+    		p.user_id = c.user_id
+	    GROUP BY 
+	    	p.pay_method
+	</select>
+	</mapper>

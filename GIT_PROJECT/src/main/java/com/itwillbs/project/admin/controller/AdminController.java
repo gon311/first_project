@@ -1,6 +1,7 @@
 package com.itwillbs.project.admin.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -296,11 +297,38 @@ public class AdminController {
 	}
 	
 	//===========================================================================
-	// 데이터 관리
+// [ 데이터 관리 ]
 	@GetMapping("/data")
 	public String dataList() {
 		return "admin/data";
 	}
 	
+	// 1. 구직자 유형별 통계
+	@GetMapping(value = "/api/user-stats"
+			, produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public Map<String, Object> getUserStatusApi() {
+		return adminService.getUserStatistics();
+	}
 	
+	// 2. 기업회원 유형별 통계
+	@GetMapping("/api/com-stats")
+	@ResponseBody
+	public Map<String, Object> getComStats() {
+	    return adminService.getComStatistics();
+	}
+	
+	// 3. 구직자 결제 통계
+	@GetMapping("/api/user-pay-stats")
+	@ResponseBody
+	public Map<String, Object> getUserPayStatsApi() {
+	    return adminService.getUserPayStatistics();
+	}
+	
+	@GetMapping("/api/com-pay-stats")
+	@ResponseBody
+	public Map<String, Object> getComPayStats() {
+		return adminService.getComPayStatistics();
+	}
+
 }

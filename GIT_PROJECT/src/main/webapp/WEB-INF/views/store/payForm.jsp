@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,6 +32,7 @@
                     </div>
                 </div>
 
+				<fmt:formatNumber type="number" maxFractionDigits="3" value="${storeInfo.productPrice}" var="productPrice" />
                 <!-- 상품 정보 -->
                 <div class="card mb-4">
                     <div class="card-header fw-bold">상품 정보</div>
@@ -40,7 +43,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">상품 가격</label>
-                            <input id="productPrice" type="text" class="form-control" name="productPrice" value="${storeInfo.productPrice}원" readonly>
+                            <input id="productPrice" type="text" class="form-control" name="productPrice" value="${productPrice}원" readonly>
                         </div>
                     </div>
                 </div>
@@ -60,7 +63,7 @@
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">카드사 선택 <span style="color:red">*</span></label>
                                 <select id="cardCompany" class="form-select" name="cardCompany">
-                                    <option value="">카드사 선택</option>
+                                    <option value="">선택하세요.</option>
                                     <option value="ss">삼성카드</option>
                                     <option value="sh">신한카드</option>
                                     <option value="kb">KB국민카드</option>
@@ -85,7 +88,8 @@
                             <div class="col-md-6">
                                 <label class="form-label">할부 개월 수 <span style="color:red">*</span></label>
                                 <select id="installment" class="form-select" name="installment">
-                                    <option value="">일시불</option>
+                                	<option value="">선택하세요.</option>
+                                    <option value="1">일시불</option>
                                     <option value="2">2개월</option>
                                     <option value="3">3개월</option>
                                     <option value="4">4개월</option>
@@ -110,23 +114,23 @@
                         <div id="selectBank" class="row mx-3" style="display:none;">
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">은행 선택 <span style="color:red">*</span></label>
-                                <select class="form-select" name="bankName">
-                                    <option value="">은행 선택</option>
-                                    <option value="kb">국민은행</option>
-                                    <option value="wr">우리은행</option>
-                                    <option value="sh">신한은행</option>
-                                    <option value="ibk">기업은행</option>
-                                    <option value="nh">NH농협은행</option>
-                                    <option value="bs">부산은행</option>
-                                    <option value="hn">하나은행</option>
-                                    <option value="kj">광주은행</option>
-                                    <option value="eb">우체국</option>
-                                    <option value="im">iM뱅크</option>
+                                <select id="bankName" class="form-select" name="bankName">
+                                    <option value="">선택하세요.</option>
+                                    <option value="KOOKMIN">국민은행</option>
+                                    <option value="WOORI">우리은행</option>
+                                    <option value="SHINHAN">신한은행</option>
+                                    <option value="IBK">기업은행</option>
+                                    <option value="NONGHYUP">NH농협은행</option>
+                                    <option value="BUSAN">부산은행</option>
+                                    <option value="HANA">하나은행</option>
+                                    <option value="KWANGJU">광주은행</option>
+                                    <option value="POST">우체국</option>
+                                    <option value="DAEGU">iM뱅크</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">입금자명 <span style="color:red">*</span></label>
-                                <input type="text" id="depositName" class="form-control" name="depositor" required>
+                                <input type="text" id="depositName" class="form-control" name="depositName" required>
                             </div>
                         </div>
                     </div>
@@ -139,7 +143,9 @@
                         <h4 class="mb-3">결제 금액</h4>
                         <div class="row mb-2">
                             <div class="col-6">상품 금액</div>
-                            <div class="col-6 text-end">${storeInfo.productPrice}원</div>
+                            <div class="col-6 text-end">
+                            	${productPrice}원
+                            </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-6">할인 금액</div>
@@ -147,7 +153,7 @@
                         </div>
                         <div class="row fw-bold">
                             <div class="col-6">총 결제 금액</div>
-                            <div class="col-6 text-end">${storeInfo.productPrice}원</div>
+                            <div class="col-6 text-end">${productPrice}원</div>
                         </div>
                     </div>
                 </div>
@@ -212,11 +218,14 @@
 
                 <!-- 버튼 -->
                 <div class="d-flex justify-content-center mb-4">
-                    <button id="btnPay" type="submit" class="btn btn-primary" disabled="disabled">구매하기</button>
+                    <button type="button" id="btnPay" class="btn btn-primary" disabled="disabled" onclick="requestPay()">구매하기</button>
                 </div>
             </form>
         </div>
     </main>
+    
+    <%-- 결제를 위한 포트원 api --%>
+    <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
     
     <script type="text/javascript">
     	// 결제 수단 선택에 따라 해당하는 셀렉트 박스 디스플레이
@@ -237,10 +246,11 @@
     		} else {
     			document.getElementById("btnPay").disabled = true;
     		}
-    	}) 
+    	}); 
     	
-    	// 폼 제출 시 필수사항 확인
-    	document.payForm.onsubmit = function() {
+    	
+    	// 결제
+    	async function requestPay() {
     		if(!document.payForm.payMethod[0].checked && !document.payForm.payMethod[1].checked) {
     			document.payForm.payMethod[0].focus();
     			return false;
@@ -253,12 +263,105 @@
     		} else if(document.payForm.payMethod[1].checked && document.payForm.bankName.value == "") {
     			document.payForm.bankName.focus();
     			return false;
-    		} else if(document.payForm.payMethod[1].checked && document.payForm.depositor.value == "") {
-    			document.payForm.depositor.focus();
+    		} else if(document.payForm.payMethod[1].checked && document.payForm.depositName.value == "") {
+    			document.payForm.depositName.focus();
     			return false;
     		}
-    	}
-    </script>
+    		
+    		
+    		// 결제 진행
+    		let selectedPayMethod = "";
+    		
+    	    if(document.getElementById("credit").checked) {
+    	        selectedPayMethod = "CARD";
+    	    } else if(document.getElementById("bank").checked) {
+    	        selectedPayMethod = "VIRTUAL_ACCOUNT";
+    	    }
+    		
+    		const userName = "${orderInfo.userName}";
+    		const userPhone = "${orderInfo.phone}";
+    		const userEmail = "${orderInfo.email}";
+    		const productPrice = "${storeInfo.productPrice}";
+    		const productName = "${storeInfo.productName}";
+    		const payId = "${orderInfo.payId}";
+    		const bankVal = document.getElementById("bankName").value;
+    		const depositVal = document.getElementById("depositName").value;
+    		
+    		try {
+    			const paymentParam = {
+   					storeId: "store-a4df7838-ace2-488d-96eb-32ca15d4dfa3",
+   					channelKey: "channel-key-718642b3-991e-4a54-b226-b2760dfec1d8",
+   					paymentId: payId,
+   					orderName: productName,
+   					totalAmount: Number(productPrice),
+   					currency: "KRW",
+   					payMethod: selectedPayMethod,
+   					customer: {
+   						fullName: userName,
+   						email: userEmail,  
+   						phoneNumber: userPhone
+   					},
+   					redirectUrl: "<c:url value="/store/payResult" />",
+   				  	forceRedirect: true,
+   					method: {} // 초기화
+    			};
+    			
+    			
+    			if(selectedPayMethod == "VIRTUAL_ACCOUNT") {
+    				// 가상계좌를 선택한 경우 모레 자정에 입금마감
+    				const today = new Date();
+				    const endDate = new Date(today);
+				    endDate.setDate(today.getDate() + 2);
+				    endDate.setHours(0, 0, 0, 0);
+					const dueDateStr = getKSTISOString(endDate);
+    				
+					 // 기존 method 객체를 유지하면서 virtualAccount 추가
+				    paymentParam.method.virtualAccount = {
+				        bankCode: bankVal,       
+				        remitteeName: depositVal, 
+				        expiry: { 
+				        	dueDate: dueDateStr 
+			        	}
 
+				    };
+    			}
+    			
+				const response = await PortOne.requestPayment(paymentParam);
+   	    		console.log("결제 결과 : ", response);
+   	    		
+   	    		
+   	    		if (response.code !== undefined) {
+	    		   // 오류 발생
+	    		   return alert(response.message);
+	    		}
+   	    		
+
+				// 서버에 값 보내기
+				location.href="/store/payResult?paymentId=" + response.paymentId;
+// 				const notified = await fetch("<c:url value="/store/payResponse" />", {
+//     				method: "POST",
+//     				headers: {
+//     					"Content-type": "application/json"
+//     				},
+//     				body: JSON.stringify(response)
+//     			});
+				
+    			
+    		} catch (error){
+    			console.error(error);
+    		}
+    		
+    	}
+    	
+    	// KST 기준 ISO 문자열 생성 함수
+    	function getKSTISOString(date) {
+		    const tzOffset = 9 * 60; // 한국 시간 +9h
+		    const local = new Date(date.getTime() + tzOffset * 60000);
+		    // toISOString()로 나온 문자열에서 밀리초 제거하고 Z를 +09:00로 대체
+		    return local.toISOString().replace(/\.\d{3}/, '').replace('Z', '+09:00');
+		}
+    	
+    </script>
+    
 </body>
 </html>

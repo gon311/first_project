@@ -30,10 +30,10 @@ pay_status enum('ready', 'paid', 'cacelled')
 @ToString
 public class PaymentDTO {
 	private String payId;
-//	private long userId;
-//	private String userName;	
-//	private String phone;	 
-	private UserDTO user;
+	private long userId;
+	private String userName;	
+	private String phone;	 
+//	private UserDTO user;
 	private String productId;
 	private String productName;  // 상품명(결제 - 상품 테이블 조인)
 	private String payMethod;

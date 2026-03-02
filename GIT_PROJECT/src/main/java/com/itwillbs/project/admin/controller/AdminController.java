@@ -66,6 +66,9 @@ public class AdminController {
 		MemberDTO userDTO = adminService.getUserInfo(memberDTO.getUserId());
 		
 		model.addAttribute("user", userDTO);
+		
+		// 작성한 게시글 목록 조회
+		
 
 		return "admin/member/userInfo";
 		

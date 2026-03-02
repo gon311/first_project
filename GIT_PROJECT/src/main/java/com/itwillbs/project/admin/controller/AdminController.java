@@ -1,6 +1,7 @@
 package com.itwillbs.project.admin.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.project.admin.dto.BannerDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.PayDTO;
@@ -271,18 +274,64 @@ public class AdminController {
 	}
 	
 	//===========================================================================
-	// 배너 관리
+	// [ 배너 관리 ]
 	@GetMapping("/banners")
-	public String bannerList() {
+	public String bannerList(Model model) {
+		List<BannerDTO> adList = adminService.getBannerList();
+		System.out.println("조회된 배너 개수: " + (adList !=null ? adList.size() : "null"));
+		
+		model.addAttribute("adList", adList);
+	
 		return "admin/banner";
 	}
 	
+	@PostMapping("/updateAdStatus")
+	@ResponseBody
+	public String updateStatus(@RequestParam("adId") int adId,
+							@RequestParam("isDisplay") int isDisplay) {
+		try {
+			adminService.modifyAdStatus(adId, isDisplay);
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+		
+	}
+	
 	//===========================================================================
-	// 데이터 관리
+// [ 데이터 관리 ]
 	@GetMapping("/data")
 	public String dataList() {
 		return "admin/data";
 	}
 	
+	// 1. 구직자 유형별 통계
+	@GetMapping(value = "/api/user-stats"
+			, produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public Map<String, Object> getUserStatusApi() {
+		return adminService.getUserStatistics();
+	}
 	
+	// 2. 기업회원 유형별 통계
+	@GetMapping("/api/com-stats")
+	@ResponseBody
+	public Map<String, Object> getComStats() {
+	    return adminService.getComStatistics();
+	}
+	
+	// 3. 구직자 결제 통계
+	@GetMapping("/api/user-pay-stats")
+	@ResponseBody
+	public Map<String, Object> getUserPayStatsApi() {
+	    return adminService.getUserPayStatistics();
+	}
+	
+	@GetMapping("/api/com-pay-stats")
+	@ResponseBody
+	public Map<String, Object> getComPayStats() {
+		return adminService.getComPayStatistics();
+	}
+
 }

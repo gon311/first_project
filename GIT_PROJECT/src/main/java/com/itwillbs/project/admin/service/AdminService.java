@@ -1,11 +1,13 @@
 package com.itwillbs.project.admin.service;
 
-import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.project.admin.dto.BannerDTO;
 import com.itwillbs.project.admin.dto.FaqDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
@@ -165,7 +167,27 @@ public class AdminService{
 	public List<QnaDTO> getListByStatus(String reStatus) {
 		return adminMapper.getListByStatus(reStatus);
 	}
+	
+	public QnaDTO getQnADetail(int qnaId) {
+		return adminMapper.getQnaById(qnaId);
+	}
 
+	public void registAnswer(QnaDTO qnaDTO) {
+		adminMapper.registAnswer(qnaDTO);
+	}
+
+	public void deleteQna(int qnaId) {
+		adminMapper.deleteQna(qnaId);
+	}
+
+	public void deleteQnaAnswer(int qnaId) {
+		adminMapper.deleteQnaAnswer(qnaId);
+	}
+
+	public void modifyAnswer(QnaDTO qnaDTO) {
+		adminMapper.modifyAnswer(qnaDTO);
+		
+	}
 	// =====================================================================================
 	// faq 목록 조회
 	public List<FaqDTO> getFaqList(FaqDTO faqDTO) {
@@ -185,14 +207,57 @@ public class AdminService{
 	}
 
 
+//	=================================================================================================
+//	[ 배너 관리 ]
 	
-
+	public List<BannerDTO> getBannerList() {
+		return adminMapper.getBannerList();
+	}
 	
+	public void modifyAdStatus(int adId, int isDisplay) {
+		adminMapper.updateBannerStatus(adId, isDisplay);
+	}
 
-
-
+//	=================================================================================
+//	[ 데이터 관리 ]
+//	1. 구직자 유형별 통계
+	public Map<String, Object> getUserStatistics(){
+		Map<String, Object> result = new HashMap<>();
+		result.put("gender", adminMapper.getGenderStats());
+		result.put("age", adminMapper.getAgeStats());
+		result.put("job", adminMapper.getJobStats());
+		return result;
+	}
 	
+//	2. 기업회원 유형별 통계
+	public Map<String, Object> getComStatistics() {
+	    Map<String, Object> result = new HashMap<>();
+	    result.put("postCounts", adminMapper.getComPostStats());
+	    result.put("jobFields", adminMapper.getJobFieldStats());
+	    result.put("empTypes", adminMapper.getEmpTypeStats());
+	    return result;
+	}
 
+//	3. 구직자 결제 통계
+	public Map<String, Object> getUserPayStatistics() {
+	    Map<String, Object> result = new HashMap<>();
+	    result.put("products", adminMapper.getProductSalesStats());
+	    result.put("methods", adminMapper.getPayMethodStats());
+	    result.put("revenue", adminMapper.getDailyRevenueStats());
+	    return result;
+	}
+	
+//	4. 기업회원 결제 통계
+	public Map<String, Object> getComPayStatistics(){
+	    Map<String, Object> result = new HashMap<>();
+	    
+	    result.put("topCompanies", adminMapper.getTopComRevenue());
+	    result.put("products", adminMapper.getComProductStats());
+	    result.put("methods", adminMapper.getComPayMethodStats());
+	    
+	    return result;
+		
+	}
 	
 
 	

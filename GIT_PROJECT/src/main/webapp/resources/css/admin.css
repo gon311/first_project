@@ -61,3 +61,64 @@
         border: 1px solid #dee2e6;
     }
 </style>
+/* 차트 전체를 감싸는 컨테이너 */
+.chart-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3개를 동일한 비율로 나란함 */
+    gap: 20px;                             /* 카드 사이의 간격 */
+    padding: 20px;
+    background-color: #f9f9fb;             /* 배경색 (선택사항) */
+}
+
+/* 개별 차트 카드 스타일 */
+.stat-card {
+    background: #ffffff;
+    border-radius: 15px;                   /* 둥근 모서리 */
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* 은은한 그림자 */
+    border: 1px solid #e1e4e8;
+    min-height: 350px;                     /* 최소 높이 설정 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 차트 크기 조절 */
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.card {
+    flex: 1;
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.card-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
+.card-title { font-weight: bold; font-size: 1.1rem; }
+.card-subtitle { color: #999; font-size: 0.8rem; }
+.chart-box { height: 250px; position: relative; }
+
+.summary-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.summary-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    border: 1px solid #f1f1f1;
+}
+.summary-box.highlight {
+    background: #6366F1;
+    color: #fff;
+}
+.summary-box.highlight .summary-label { color: #e0e7ff; }
+.summary-label { font-size: 0.9rem; color: #666; margin-bottom: 8px; }
+.summary-box h2 { margin: 0; font-size: 1.5rem; font-weight: 800; }

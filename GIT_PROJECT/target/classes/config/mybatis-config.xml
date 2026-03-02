@@ -24,6 +24,6 @@
 		<typeAlias type="com.itwillbs.project.store.dto.StoreDTO" alias="store"/>
 		<typeAlias type="com.itwillbs.project.store.dto.OrderDTO" alias="order"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.QnaDTO" alias="qna"/>
-		
+		<typeAlias type="com.itwillbs.project.admin.dto.BannerDTO" alias="dto"/>
 	</typeAliases>
 </configuration>

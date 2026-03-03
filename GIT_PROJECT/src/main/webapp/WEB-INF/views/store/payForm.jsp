@@ -282,15 +282,16 @@
     		const userEmail = "${orderInfo.email}";
     		const productPrice = "${storeInfo.productPrice}";
     		const productName = "${storeInfo.productName}";
-    		const payId = "${orderInfo.payId}";
+    		const orderId = "${orderInfo.orderId}";
     		const bankVal = document.getElementById("bankName").value;
     		const depositVal = document.getElementById("depositName").value;
+    		const reUrl = "http://localhost:8080/project/store/payResult";
     		
     		try {
     			const paymentParam = {
    					storeId: "store-a4df7838-ace2-488d-96eb-32ca15d4dfa3",
    					channelKey: "channel-key-718642b3-991e-4a54-b226-b2760dfec1d8",
-   					paymentId: payId,
+   					paymentId: orderId,
    					orderName: productName,
    					totalAmount: Number(productPrice),
    					currency: "KRW",
@@ -300,8 +301,8 @@
    						email: userEmail,  
    						phoneNumber: userPhone
    					},
-   					redirectUrl: "<c:url value="/store/payResult" />",
-   				  	forceRedirect: true,
+//    					redirectUrl: reUrl + "?s",
+//    				  	forceRedirect: true,
    					method: {} // 초기화
     			};
     			
@@ -325,6 +326,8 @@
 				    };
     			}
     			
+    			
+    			
 				const response = await PortOne.requestPayment(paymentParam);
    	    		console.log("결제 결과 : ", response);
    	    		
@@ -336,14 +339,15 @@
    	    		
 
 				// 서버에 값 보내기
-				location.href="/store/payResult?paymentId=" + response.paymentId;
-// 				const notified = await fetch("<c:url value="/store/payResponse" />", {
-//     				method: "POST",
-//     				headers: {
-//     					"Content-type": "application/json"
-//     				},
-//     				body: JSON.stringify(response)
-//     			});
+				await fetch("<c:url value="/store/payResponse" />", {
+    				method: "POST",
+    				headers: {
+    					"Content-type": "application/json"
+    				},
+    				body: JSON.stringify({
+    					paymentId: response.paymentId
+    				})
+    			});
 				
     			
     		} catch (error){

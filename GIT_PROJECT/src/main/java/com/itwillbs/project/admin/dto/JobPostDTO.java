@@ -28,4 +28,5 @@ public class JobPostDTO {
 	private Date openDate;
 	private Date closeDate;
 	private int postCheck;
+	private int postStatus;
 }

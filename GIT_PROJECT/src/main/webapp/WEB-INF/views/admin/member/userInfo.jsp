@@ -144,11 +144,23 @@
 										</thead>
 							 			<tbody>
 										<c:forEach var="free" varStatus="status" items="${freeList}">
-											<tr class="clickable-row" onclick="location.href='info?id=${free.id}'">
+											<tr class="clickable-row" onclick="">
 												<td>${status.count}</td>
 												<td>${free.title}</td>
-												<td>${free.createdAt}</td>
-												<td>${free.status}</td>
+												<td>
+													<fmt:parseDate var="createdAt" value="${free.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+	                           						<fmt:formatDate value="${createdAt}" pattern="yyyy년 MM월 dd일"/>
+												</td>
+												<td>
+													<c:choose>
+														<c:when test="${free.status eq 'ACTIVE'}">
+															게시중
+														</c:when>
+														<c:otherwise>
+															삭제
+														</c:otherwise>
+													</c:choose>
+												</td>
 											</tr>
 										</c:forEach>
 										</tbody>
@@ -171,7 +183,7 @@
 										</thead>
 							 			<tbody>
 										<c:forEach var="review" varStatus="status" items="${reviewList}">
-											<tr class="clickable-row" onclick="location.href='info?id=${review.id}'">
+											<tr class="clickable-row" onclick="">
 												<td>${status.count}</td>
 												<td>${review.title}</td>
 												<td>${review.createdAt}</td>
@@ -198,11 +210,22 @@
 										</thead>
 							 			<tbody>
 										<c:forEach var="qna" varStatus="status" items="${qnaList}">
-											<tr class="clickable-row" onclick="location.href='info?id=${qna.id}'">
+											<tr class="clickable-row" onclick="location.href='/contents/QnADetail?qnaId=${qna.qnaId}'">
 												<td>${status.count}</td>
-												<td>${qna.title}</td>
-												<td>${qna.createdAt}</td>
-												<td>${qna.status}</td>
+												<td>${qna.qnaTitle}</td>
+												<td>
+	                           						<fmt:formatDate value="${qna.regDate}" pattern="yyyy년 MM월 dd일"/>
+												</td>
+												<td>
+													<c:choose>
+														<c:when test="${qna.reStatus eq 'pending'}">
+															답변전
+														</c:when>
+														<c:otherwise>
+															답변완료
+														</c:otherwise>
+													</c:choose>
+												</td>
 											</tr>
 										</c:forEach>
 										</tbody>
@@ -219,21 +242,36 @@
 											<tr>
 												<th>No</th>
 												<th>카테고리</th>
-												<th>제목</th>
-												<th>내용</th>
+												<th>글제목</th>
+												<th>댓글내용</th>
 												<th>작성일자</th>
 												<th>상태</th>
 											</tr>
 										</thead>
 							 			<tbody>
 										<c:forEach var="comment" varStatus="status" items="${commentList}">
-											<tr class="clickable-row" onclick="location.href='info?id=${comment.id}'">
+											<tr class="clickable-row" onclick="">
 												<td>${status.count}</td>
-												<td>${comment.category}</td>
+												<td>
+													<c:if test="${comment.boardType eq 'FREE'}">자유게시판</c:if>
+													<c:if test="${comment.boardType eq 'REVIEW'}">면접후기</c:if>
+												</td>
 												<td>${comment.title}</td>
 												<td>${comment.content}</td>
-												<td>${comment.createdAt}</td>
-												<td>${comment.status}</td>
+												<td>
+													<fmt:parseDate var="createdAt" value="${comment.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+	                           						<fmt:formatDate value="${createdAt}" pattern="yyyy년 MM월 dd일"/>
+												</td>
+												<td>
+													<c:choose>
+														<c:when test="${comment.status eq 'ACTIVE'}">
+															게시중
+														</c:when>
+														<c:otherwise>
+															삭제
+														</c:otherwise>
+													</c:choose>
+												</td>
 											</tr>
 										</c:forEach>
 										</tbody>

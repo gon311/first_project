@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.project.admin.dto.BannerDTO;
+import com.itwillbs.project.admin.dto.CommentDTO;
 import com.itwillbs.project.admin.dto.FaqDTO;
+import com.itwillbs.project.admin.dto.FreeDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
@@ -35,6 +37,21 @@ public class AdminService{
 	// 구직자 상세 정보 조회
 	public MemberDTO getUserInfo(long userId) {
 		return adminMapper.selectUserInfo(userId);
+	}
+	
+	// 회원 게시글 조회
+	public List<FreeDTO> getFreeInfo(long userId) {
+		return adminMapper.selectFreeInfo(userId);
+	}
+	
+	// 1대1 문의 조희
+	public List<QnaDTO> getQnaInfo(long userId) {
+		return adminMapper.selectQnaInfo(userId);
+	}
+	
+	// 댓글 조회
+	public List<CommentDTO> getCommentInfo(long userId) {
+		return adminMapper.selectCommentInfo(userId);
 	}
 	
 	// 회원 차단
@@ -66,6 +83,11 @@ public class AdminService{
 	// 기업회원 상세 정보 조회
 	public MemberDTO getComInfo(long userId) {
 		return adminMapper.selectComInfo(userId);
+	}
+	
+	// 기업 공고 정보 조회
+	public List<JobPostDTO> getJobPostInfo(long userId) {
+		return adminMapper.selectJobPostInfo(userId); 
 	}
 	
 	// 탈퇴한 회원 목록
@@ -145,6 +167,11 @@ public class AdminService{
 	// 공고 상태 변경
 	public void changeSubmitStatus(long jobId, Integer postCheck) {
 		adminMapper.updateSubmitStatus(jobId, postCheck);
+	}
+	
+	// 공고 승인 시 사이트에 등록되는 등록일자를 현재로 변경
+	public void changeRegDate(long jobId) {
+		adminMapper.updateRegDate(jobId);
 	}
 	
 	//========================================================================================
@@ -258,6 +285,16 @@ public class AdminService{
 	    return result;
 		
 	}
+
+	
+
+	
+
+	
+
+	
+
+	
 	
 
 	

@@ -8,7 +8,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.project.admin.dto.BannerDTO;
+import com.itwillbs.project.admin.dto.CommentDTO;
 import com.itwillbs.project.admin.dto.FaqDTO;
+import com.itwillbs.project.admin.dto.FreeDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
@@ -29,6 +31,15 @@ public interface AdminMapper {
 
 	// 회원 상세 정보
 	MemberDTO selectUserInfo(long userId);
+	
+	// 회원 게시글 정보
+	List<FreeDTO> selectFreeInfo(long userId);
+	
+	// 회원 1대1문의글 정보
+	List<QnaDTO> selectQnaInfo(long userId);
+	
+	// 회원 댓글 정보
+	List<CommentDTO> selectCommentInfo(long userId);
 	
 	// 회원 차단
 	void updateUserBlock(long userId);
@@ -53,6 +64,9 @@ public interface AdminMapper {
 	
 	// 기업회원 상세 정보 조회
 	MemberDTO selectComInfo(long userId);
+	
+	// 기업 공고 목록 조회
+	List<JobPostDTO> selectJobPostInfo(long userId);
 	
 	// 탈퇴 회원 목록 조회
 	List<MemberDTO> selectComWithdraw(@Param("keyword") String keyword
@@ -112,6 +126,9 @@ public interface AdminMapper {
 	
 	// 공고 상태 변경
 	void updateSubmitStatus(@Param("jobId") long jobId, @Param("postCheck") Integer postCheck);
+	
+	// 승인 시 공고 등록일자를 현재 시점으로 변경
+	void updateRegDate(long jobId);
 	
 	//========================================================================
 	// 구매할 상품 상세 정보 조회(구매하기 진행)
@@ -186,6 +203,16 @@ public interface AdminMapper {
 	List<Map<String, Object>> getComProductStats();
 
 	List<Map<String, Object>> getComPayMethodStats();
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 

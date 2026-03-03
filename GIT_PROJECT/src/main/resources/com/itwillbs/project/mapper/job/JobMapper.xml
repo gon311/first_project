@@ -37,7 +37,7 @@
 	<result property="isScrapped" column="isScrapped" />
 	</resultMap>
 	
-	<insert id="insertJob">
+	<insert id="insertJob" useGeneratedKeys="true" keyProperty="jobId">
 	    INSERT INTO JOB_POSTING (
 	        comp_id 
 	        , title 
@@ -169,7 +169,9 @@
 	        , p.field       
 	        , p.task          
 	        , p.emp_type      
-	        , p.probation     
+	        , p.probation
+	        , p.exp_type
+	        , p.exp_year as raw_exp_year
 	        , CASE 
 	          	WHEN p.exp_year IS NULL THEN '경력 무관'
 	          	WHEN p.exp_type = 'new' THEN '신입'
@@ -261,7 +263,7 @@
 		VALUES
 		<foreach collection="fileList" item="file" separator=",">
 			(
-				#{jobId.jobId}		-- 게시물 번호
+				#{jobId}
 				, #{categoryIdx}
 				,#{file.originalFileName}
 				,#{file.realFileName}
@@ -271,6 +273,62 @@
 			)
 		</foreach>
 	</insert>
+	
+	<update id="updateJob" parameterType="job">
+	    UPDATE job_posting
+	    SET 
+	        title = #{title},
+	        emp_type = #{empType},
+	        
+	        probation = 
+	        <choose>
+	            <when test='probation != null and probation == "Y"'>#{probation}</when>
+	            <otherwise>'N'</otherwise>
+	        </choose>,
+	        
+	        exp_type = #{expType},
+	        edu = #{edu},
+	        salary = #{salary},
+	        address = #{address},
+	        
+	        is_remote = 
+	        <choose>
+	            <when test='isRemote != null and isRemote == "Y"'>#{isRemote}</when>
+	            <otherwise>'N'</otherwise>
+	        </choose>,
+	        
+	        mgr_name = #{mgrName},
+	        mgr_phone = #{mgrPhone},
+	        mgr_email = #{mgrEmail},
+	        
+	        is_public = 
+	        <choose>
+	            <when test='isPublic != null and isPublic == "Y"'>#{isPublic}</when>
+	            <otherwise>'N'</otherwise>
+	        </choose>,
+	        
+	        open_date = #{openDate},
+	        close_date = #{closeDate}
+	    WHERE job_id = #{jobId} 
+	      AND comp_id = #{compId}
+	</update>
+	
+	<select id="selectFile" resultType="fileDTO">
+	    SELECT 
+	        file_id as fileId,
+	        origin_name as originalFileName,
+	        stored_name as realFileName,
+	        file_path as subDir,
+	        file_size as fileSize,
+	        file_ext as contentType
+	    FROM uploaded_file
+	    WHERE file_id = #{fileId}
+	</select>
+	
+	<delete id="deleteFile">
+	    DELETE FROM uploaded_file 
+	    WHERE file_id = #{fileId}
+	</delete>
 	
 </mapper>
 

@@ -38,4 +38,9 @@ public interface JobMapper {
 
 	void insertBoardFiles(@Param("fileList") List<FileDTO> fileList, @Param("jobId") Long jobId);
 
+	int updateJob(JobDTO jobDTO);
+
+	void deleteFile(Integer fileId);
+
+
 }

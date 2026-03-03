@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.project.common.dto.FileDTO;
+import com.itwillbs.project.common.mapper.FileMapper;
 import com.itwillbs.project.common.util.FileUtils;
 import com.itwillbs.project.job.dto.JobApplicationDTO;
 import com.itwillbs.project.job.dto.JobDTO;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class JobService {
 	@Autowired
 	private JobMapper jobMapper;
+	private FileMapper fileMapper;
 	
 	public void jobInsert(JobDTO jobDTO, List<MultipartFile> files, String sId) throws IOException {
 		
@@ -69,6 +71,34 @@ public class JobService {
 	    } else {
 	        jobMapper.deleteBookmark(userIdx, jobId);
 	    }
+	}
+
+	public boolean modifyJob(JobDTO jobDTO, List<MultipartFile> files, List<Integer> deleteFiles, String sId) throws IOException {
+	    // 1. 기존 파일 삭제 처리 (체크박스로 선택된 파일들)
+	    if (deleteFiles != null && !deleteFiles.isEmpty()) {
+	        for (Integer fileId : deleteFiles) {
+	            // DB에서 파일 정보 조회 (실제 경로를 알기 위해)
+	            FileDTO fileDTO = fileMapper.selectFile(fileId);
+	            if (fileDTO != null) {
+	                // [필요시 추가] 실제 물리적 경로의 파일 삭제 로직 (FileUtils 등에 구현)
+//	                 FileUtils.deleteFile(fileDTO, sId); 
+	                
+	                // DB에서 파일 레코드 삭제
+	                jobMapper.deleteFile(fileId);
+	            }
+	        }
+	    }
+
+	    // 2. 새 파일 업로드 처리
+	    // files가 null이 아니고, 실제 파일 데이터가 존재하는 경우에만 처리
+	    if (files != null && !files.isEmpty() && !files.get(0).getOriginalFilename().isEmpty()) {
+	        List<FileDTO> fileList = FileUtils.uploadFile(files, sId);
+	        // DB에 새 파일 정보 저장 (기존에 작성된 insertBoardFiles 활용)
+	        jobMapper.insertBoardFiles(fileList, jobDTO.getJobId());
+	    }
+
+	    // 3. 공고 텍스트 정보 업데이트
+	    return jobMapper.updateJob(jobDTO) > 0;
 	}
 
 

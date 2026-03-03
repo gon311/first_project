@@ -11,6 +11,7 @@ import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,9 +57,51 @@ public class JobController {
 		
 //		System.out.println(jobDTO.getAddress());
 		jobService.jobInsert(jobDTO, files, sId);
-		List<FileDTO> fileList = FileUtils.uploadFile(files, sId);
 //		System.out.println(jobDTO);
 		return "redirect:/job/JobList";
+	}
+	
+	@GetMapping("/edit")
+	public String edit(HttpSession session, Model model,
+			@RequestParam("jobId") Long jobId) {
+		String sId = (String) session.getAttribute("userType");
+		System.out.println(sId);
+	    if (sId == null || "P".equals(sId)) return "redirect:/user/login";
+		
+	    JobDTO jobDTO = jobService.getJobListDetail(jobId);
+	    model.addAttribute("job", jobDTO);
+	    
+		return "/job/job_correction";
+	}
+	
+	@PostMapping("/jobCorrection")
+	public String jobCorrection(JobDTO jobDTO, 
+	                           @RequestParam("jobId") Long jobId, 
+	                           @RequestParam(value="deleteFiles", required=false) List<Integer> deleteFiles,
+	                           List<MultipartFile> files,
+	                           HttpSession session, 
+	                           RedirectAttributes rt) throws IOException {
+	    
+	    Long userIdx = (Long) session.getAttribute("userIdx");
+	    String sId = (String) session.getAttribute("userType");
+	    
+	    if (userIdx == null || "P".equals(sId)) return "redirect:/user/login";
+
+	    // 2. DTO에 필요한 정보 세팅 (누락 방지)
+	    jobDTO.setJobId(jobId);
+	    jobDTO.setCompId(userIdx); // 자신의 공고만 수정할 수 있도록 조건으로 사용
+
+	    // 3. 서비스 호출하여 업데이트 수행
+	    // (여기서는 업데이트 대상 컬럼만 XML에서 처리할 예정입니다)
+	    boolean isUpdateSuccess = jobService.modifyJob(jobDTO, files, deleteFiles, sId);
+
+	    if (isUpdateSuccess) {
+	        rt.addFlashAttribute("msg", "공고 수정이 완료되었습니다.");
+	    } else {
+	        rt.addFlashAttribute("msg", "공고 수정에 실패하였습니다. 권한을 확인하세요.");
+	    }
+
+	    return "redirect:/job/JobList"; 
 	}
 	
 	@GetMapping("/JobList")

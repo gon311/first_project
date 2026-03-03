@@ -34,8 +34,8 @@ import lombok.extern.log4j.Log4j2;
 public class FileUtils {
 	// 업로드에 사용될 기본 경로들을 필드에 저장
 //	private static final String uploadBaseLocation = "/resources/upload";
-//	private static final String uploadBaseLocation = "D:/upload";
-	private static final String uploadBaseLocation = "/upload";
+	private static final String uploadBaseLocation = "D:/upload";
+//	private static final String uploadBaseLocation = "/upload";
 	private static final String jobFileLocation = "/job";
 	
 	// ====================================================================================
@@ -135,11 +135,11 @@ public class FileUtils {
 		
 		// LocalXXX 객체의 format() 메서드 호출하여 DateTimeFormatter 타입 객체를 파라미터로 전달하여 포맷 변환
 		String subDir = today.format(dtf);
-		System.out.println("subDir : " + subDir);
+//		System.out.println("subDir : " + subDir);
 		// -------------------------------------------
 		// 3. 서브디렉토리와 기본 디렉토리들을 조합하여 하나의 디렉토리로 결합하기 위해 Paths.get() 메서드 호출
 		Path uploadPath = Paths.get(uploadBaseLocation, jobFileLocation, sId, subDir).toAbsolutePath().normalize();
-		System.out.println("uploadPath : " + uploadPath);
+//		System.out.println("uploadPath : " + uploadPath);
 		
 		// 4. 생성된 Path 객체에 해당하는 디렉토리가 실제로 존재하지 않을 경우 새로 생성
 		if(!Files.exists(uploadPath)) {

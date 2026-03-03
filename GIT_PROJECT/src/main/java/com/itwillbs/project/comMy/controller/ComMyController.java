@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.project.comMy.dto.ComJobRowDTO;
 import com.itwillbs.project.comMy.dto.ComMyDTO;
+import com.itwillbs.project.comMy.dto.JobCond;
 import com.itwillbs.project.comMy.service.ComMyService;
+import com.itwillbs.project.common.paging.PageRes;
 import com.itwillbs.project.my.dto.MyDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -48,14 +51,46 @@ public class ComMyController {
 	
 	// 공고관리
 	@GetMapping("/job")
-	public String job(HttpSession session, Model model, ComMyDTO comMyDTO) {
+	public String job(HttpSession session, Model model,
+					  @RequestParam(required = false) String q,
+					  @RequestParam(defaultValue = "all") String status,
+					  @RequestParam(defaultValue = "1") int page,	// 페이지
+					  @RequestParam(defaultValue = "5") int size	// 페이지 크기
+					  ) {
 	 
 	    //로그인 체크
 	    String sId = (String) session.getAttribute("sId"); 
 	    if (sId == null) return "redirect:/user/login";
 	    
 	    model.addAttribute("currentMenu", "job");
-
+	    
+	    ComMyDTO user = comMyService.getUser(sId);
+	    
+	    //페이징
+	    JobCond cond = new JobCond();
+	    cond.setUserId(user.getUserId());
+	    cond.setStatus(status);
+	    cond.setQ(q);
+	    
+	    
+	    cond.getPage().setPage(page);
+	    cond.getPage().setSize(size);
+	    
+	    // 조회
+	    List<ComJobRowDTO> list = comMyService.getJopList(cond);
+	    int total = comMyService.getJopCount(cond);
+	    
+	    PageRes pager = PageRes.of(cond.getPage(), total);
+	    
+	    
+	    // 페이징 응답
+	    model.addAttribute("jobs", list);
+	    model.addAttribute("pager", pager);
+	    
+	    // 화면 필터유지
+	    model.addAttribute("status", status);
+	    model.addAttribute("q", q);
+	    
 	    return "/comMy/job";
 	}
 	
@@ -69,6 +104,8 @@ public class ComMyController {
 	    if (sId == null) return "redirect:/user/login";
 	    
 	    model.addAttribute("currentMenu", "payment");
+
+	    
 
 
 	    return "/comMy/payment";

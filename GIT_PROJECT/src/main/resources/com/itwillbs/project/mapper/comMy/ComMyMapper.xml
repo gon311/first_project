@@ -15,6 +15,53 @@
 	  <result property="phone"    column="phone" />
 	  <result property="userType" column="user_type" />
 	</resultMap>
+	
+	<!-- ComJobRowDTO -->
+	<resultMap id="comJobRowMap" type="com.itwillbs.project.comMy.dto.ComJobRowDTO">
+	  <id     property="jobId"        column="job_id"/>
+	
+	  <result property="title"        column="title"/>
+	  <result property="address"      column="address"/>
+	  <result property="empType"      column="emp_type"/>
+	
+	  <!-- 화면용 날짜 -->
+	  <result property="openDateText"  column="open_date_text"/>
+	  <result property="closeDateText" column="close_date_text"/>
+	
+	  <!-- 지원자 수 -->
+	  <result property="applyCount"   column="apply_count"/>
+	
+	  <!-- JSP에서 'OPEN'/'CLOSED' 비교 -->
+	  <result property="postStatus"   column="post_status_text"/>
+	</resultMap>
+   
+   <!-- =========================
+       공통 where 조건
+       - userId(comp_id)
+       - status(all/open/closed)
+       - q(검색: title/field)
+       ========================= -->
+	<sql id="jobWhere">
+	  WHERE jp.comp_id = #{userId}
+	
+	  <if test="status != null and status != '' and status != 'all'">
+	    <choose>
+	      <when test="status == 'open'">
+	        AND jp.post_status = 1
+	      </when>
+	      <when test="status == 'closed'">
+	        AND jp.post_status &lt;&gt; 1
+	      </when>
+	    </choose>
+	  </if>
+	
+	  <if test="q != null and q != ''">
+	    AND (
+	         jp.title LIKE CONCAT('%', #{q}, '%')
+	      OR jp.field LIKE CONCAT('%', #{q}, '%')
+	    )
+	  </if>
+	</sql>
 
 
 <!-- ==============================
@@ -27,6 +74,54 @@
 		FROM user
 		WHERE email = #{sId}
 	</select>
+	
+
+  <!-- =========================
+       목록 조회 (페이징)
+       ========================= -->
+	<select id="selectJobList"
+	        parameterType="com.itwillbs.project.comMy.dto.JobCond"
+	        resultMap="comJobRowMap">
+	  SELECT
+	      jp.job_id
+	    , jp.title
+	    , jp.address
+	    , jp.emp_type
+	    , DATE_FORMAT(jp.open_date, '%Y.%m.%d')  AS open_date_text
+	    , DATE_FORMAT(jp.close_date, '%Y.%m.%d') AS close_date_text
+	
+	    , CASE
+	        WHEN jp.post_status = 1 THEN 'OPEN'
+	        ELSE 'CLOSED'
+	      END AS post_status_text
+	
+	    , (
+	        SELECT COUNT(*)
+	        FROM JOB_APPLICATION ja
+	        WHERE ja.job_id = jp.job_id
+	      ) AS apply_count
+	
+	  FROM JOB_POSTING jp
+	
+	  <include refid="jobWhere"/>
+	
+	  ORDER BY jp.job_id DESC
+	  LIMIT #{page.offset, jdbcType=INTEGER}, #{page.safeSize, jdbcType=INTEGER}
+	</select>
+
+  <!-- =========================
+       총 개수
+       ========================= -->
+	<select id="selectJobCount"
+	        parameterType="com.itwillbs.project.comMy.dto.JobCond"
+	        resultType="int">
+	  SELECT COUNT(*)
+	  FROM JOB_POSTING jp
+	
+	  <include refid="jobWhere"/>
+	</select>
+		
+	
 
 
 

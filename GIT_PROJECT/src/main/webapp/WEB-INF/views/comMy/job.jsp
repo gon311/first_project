@@ -255,12 +255,6 @@
         <form action="${urlJobList}" method="get" class="toolbar">
 
           <div class="toolbar-left">
-            <select class="select" name="period" onchange="this.form.page.value=1; this.form.submit()">
-              <option value="3m" ${period=='3m' ? 'selected' : ''}>최근 3개월</option>
-              <option value="6m" ${period=='6m' ? 'selected' : ''}>최근 6개월</option>
-              <option value="1y" ${period=='1y' ? 'selected' : ''}>최근 1년</option>
-              <option value="5y" ${period=='5y' ? 'selected' : ''}>최근 5년</option>
-            </select>
 
             <select class="select" name="size" onchange="this.form.page.value=1; this.form.submit()">
               <option value="5"  ${pager.size==5  ? 'selected' : ''}>5개씩</option>

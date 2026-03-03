@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.project.comMy.dto.ComJobRowDTO;
 import com.itwillbs.project.comMy.dto.ComMyDTO;
+import com.itwillbs.project.comMy.dto.JobCond;
 import com.itwillbs.project.comMy.mapper.ComMyMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,17 @@ public class ComMyService {
 
 	public ComMyDTO getUser(String sId) {
 		return comMyMapper.selectUser(sId);
+	}
+	
+	
+	// 공고 리스트
+	public List<ComJobRowDTO> getJopList(JobCond cond) {
+		return comMyMapper.selectJobList(cond);
+	}
+	
+	// 페이징
+	public int getJopCount(JobCond cond) {
+		return comMyMapper.selectJobCount(cond);
 	}
 	
 }

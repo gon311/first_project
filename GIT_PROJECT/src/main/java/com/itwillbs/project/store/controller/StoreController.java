@@ -133,12 +133,12 @@ public class StoreController {
 	    return "store/payFail";
 	}
 
-	
-	@GetMapping("/payResult")
-	public String payResult() {
-		return "/store/paySuccess";
-	}
-	
+//	
+//	@GetMapping("/payResult")
+//	public String payResult() {
+//		return "/store/paySuccess";
+//	}
+//	
 
 }
 

@@ -747,7 +747,7 @@
    		JOB_POSTING j 
     		ON b.job_id = j.job_id
     LEFT JOIN 
-    	pay p ON b.comp_id = p.user_id 
+    	com_product cp ON b.comp_id = cp.user_id 
     	AND p.pay_status = 'paid'
     LEFT JOIN 
     	com_product cp 
@@ -855,9 +855,9 @@
 	        pr.product_name AS label 
 	        , COUNT(*) AS value 
 	    FROM 
-			pay p
-		JOIN
 			product pr
+		JOIN
+			pay p
 		ON
 			p.product_id = pr.product_id
 	    GROUP BY 
@@ -866,22 +866,33 @@
 	
 	<select id="getPayMethodStats" resultType="map">
 	    SELECT 
-	        pay_method AS label 
+	        p.pay_method AS label 
 	        , COUNT(*) AS value 
 	    FROM 
-	    	pay
+	    	pay p 
+	    JOIN
+	    	product pr 
+	    ON
+	    	pr.product_id = p.product_id
+	    WHERE pr.product_type = 'user'
 	    GROUP BY 
-	    	pay_method
+	    	p.pay_method
 	</select>
 	
 	<select id="getDailyRevenueStats" resultType="map">
 	    SELECT 
 	        DATE_FORMAT(pay_date, '%m-%d') AS label 
-	        , SUM(pay_price) AS value 
+	        , SUM(P.pay_price) AS value 
 	    FROM 
-	    	pay
+	    	pay P
+	    JOIN 
+	    	product pr
+	    ON	
+	    	p.product_id = pr.product_id
 	    WHERE 
-	    	pay_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+	    	p.pay_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+	    AND
+	    	pr.product_type = 'user'
 	    GROUP BY 
 	    	label
 	    ORDER BY 
@@ -896,7 +907,8 @@
 	    FROM 
 	    	pay p
 	    JOIN 
-	    	user_company c ON p.user_id = c.user_id
+	    	user_company c 
+    	ON p.user_id = c.user_id
 	    GROUP BY 
 	    	c.company_name
 	    ORDER BY 
@@ -918,20 +930,29 @@
     		product pr
     	ON
     		p.product_id = pr.product_id
+    	WHERE
+	    	pr.product_type = 'com'	
 	    GROUP BY 
 	    	pr.product_name
 	</select>
 	
-	<select id="getComPayMethodStats" resultType="map">
+	<select id="getComRevenueStats" resultType="map">
 	    SELECT 
-	        p.pay_method AS label 
-	        , COUNT(*) AS value 
-	    FROM pay p
-	    JOIN 
-	    	user_company c 
-    	ON 
-    		p.user_id = c.user_id
+	        DATE_FORMAT(pay_date, '%m-%d') AS label 
+	        , SUM(p.pay_price) AS value 
+	    FROM 
+	    	pay p
+	    JOIN
+	    	product pr
+	    ON 
+	    	p.product_id = pr.product_id
+	    WHERE 
+	    	p.pay_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+	    AND 
+	    	pr.product_type = 'com'
 	    GROUP BY 
-	    	p.pay_method
+	    	label
+	    ORDER BY 
+	    	label ASC
 	</select>
 	</mapper>

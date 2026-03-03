@@ -327,7 +327,7 @@ public class AdminController {
 	public Map<String, Object> getUserPayStatsApi() {
 	    return adminService.getUserPayStatistics();
 	}
-	
+	// 4. 기업별 결제 통게
 	@GetMapping("/api/com-pay-stats")
 	@ResponseBody
 	public Map<String, Object> getComPayStats() {

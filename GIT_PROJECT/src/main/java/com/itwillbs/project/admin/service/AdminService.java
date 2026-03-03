@@ -253,7 +253,7 @@ public class AdminService{
 	    
 	    result.put("topCompanies", adminMapper.getTopComRevenue());
 	    result.put("products", adminMapper.getComProductStats());
-	    result.put("methods", adminMapper.getComPayMethodStats());
+	    result.put("revenue", adminMapper.getComRevenueStats());
 	    
 	    return result;
 		

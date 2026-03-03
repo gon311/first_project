@@ -42,7 +42,7 @@
 			<!-- 상태별 구분 탭  -->
 				<ul class="nav nav-tabs" id="qnaTab" role="tablist">
 				    <li class="nav-item" role="presentation">
-				        <button class="nav-link ${reStatus eq 'pending' ? 'active fw-bold' : ''}"  
+				        <button class="nav-link ${reStatus eq 'pending' or empty reStatus ? 'active fw-bold' : ''}"  
 				                onclick="location.href='?reStatus=pending'">미답변</button>
 				    </li>
 				    <li class="nav-item" role="presentation">
@@ -50,7 +50,7 @@
 				                onclick="location.href='?reStatus=completed'">답변 완료</button>
 				    </li>
 				    <li class="nav-item" role="presentation">
-				        <button class="nav-link ${reStatus eq 'all' or empty reStatus ? 'active fw-bold' : ''}"  
+				        <button class="nav-link ${reStatus eq 'all' ? 'active fw-bold' : ''}"  
 				                onclick="location.href='?reStatus=all'">전체 문의글</button>
 				    </li>
 				</ul>

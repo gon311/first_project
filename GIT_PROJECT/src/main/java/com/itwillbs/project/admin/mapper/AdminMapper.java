@@ -185,10 +185,10 @@ public interface AdminMapper {
 
 	List<Map<String, Object>> getComProductStats();
 
-	List<Map<String, Object>> getComPayMethodStats();
+	List<Map<String, Object>> getComRevenueStats();
 
 
-
+	
 
 
 

@@ -18,5 +18,8 @@
 		<typeAlias type="com.itwillbs.project.admin.dto.PayDTO" alias="pay"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.SubmitDTO" alias="submit"/>
 		<typeAlias type="com.itwillbs.project.store.dto.StoreDTO" alias="store"/>
+		
+		<!-- 추가 -->
+		<typeAlias type="com.itwillbs.project.resume.dto.ResumeDTO" alias="resume" />
 	</typeAliases>
 </configuration>

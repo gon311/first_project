@@ -77,7 +77,7 @@ public class ResumeController {
 	public String resumeView(ResumeDTO resumeDTO,Mode model) {
 		
 		// db에서 받아온 DTO
-		ResumeDTO dbResumeDTO = ResumeService.getResumeInfo(resumeDTO.getResume_id());
+		ResumeDTO dbResumeDTO = resumeService.getResumeInfo(resumeDTO.getResume_id());
 		
 		//
 		

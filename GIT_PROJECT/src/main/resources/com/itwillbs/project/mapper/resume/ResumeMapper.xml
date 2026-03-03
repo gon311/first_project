@@ -99,7 +99,14 @@
 	    );   
 	</insert>	
 	
+	<select id="selectResume" resultType="resume">
+		select *
+		
+		from resume
+		where resume_id = ${resume_id}
 	
+	
+	</select>
 	
 </mapper>
 

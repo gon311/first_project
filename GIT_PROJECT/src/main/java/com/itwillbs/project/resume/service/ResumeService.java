@@ -17,10 +17,10 @@ public class ResumeService {
 		resumeMapper.insertResume(resumeDTO);
 	}
 
-	// 
-	public static ResumeDTO getResumeInfo(Integer resume_id) {
+	// 이력서 
+	public ResumeDTO getResumeInfo(Integer resume_id) {
 		// 
-		return null;
+		return resumeMapper.selectResume(resume_id);
 	}
 
 }

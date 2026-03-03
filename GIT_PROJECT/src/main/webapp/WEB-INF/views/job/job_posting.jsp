@@ -209,7 +209,7 @@
             <div class="input-box">
                 <div class="file-upload-area">
                     <p>이미지 첨부파일 기능 추가</p>
-                    <input type="file" name="attachFile" multiple>
+                    <input type="file" name="files" multiple>
                 </div>
             </div>
         </div>

@@ -242,6 +242,36 @@
 	    WHERE user_id = #{userIdx} AND job_id = #{jobId}
 	</delete>
 	
+	<insert id="insertBoardFiles">
+		<!-- file_category 테이블의 category_name 컬럼값이 'BOARD' 인 레코드의 idx 값 조회하여 categoryIdx 로 저장(INSERT 수행 전 실행) -->
+		<selectKey keyProperty="categoryIdx" resultType="int" order="BEFORE">
+			SELECT category_idx
+			FROM file_category
+			WHERE category_code = 'JOB_POSTING'
+		</selectKey>
+	
+		INSERT INTO	uploaded_file (
+			job_id,
+			category_idx,
+			origin_name,
+			stored_name,
+			file_path,
+			file_size,
+			file_ext)
+		VALUES
+		<foreach collection="fileList" item="file" separator=",">
+			(
+				#{jobId.jobId}		-- 게시물 번호
+				, #{categoryIdx}
+				,#{file.originalFileName}
+				,#{file.realFileName}
+				,#{file.subDir}
+				,#{file.fileSize}
+				,#{file.contentType}
+			)
+		</foreach>
+	</insert>
+	
 </mapper>
 
 

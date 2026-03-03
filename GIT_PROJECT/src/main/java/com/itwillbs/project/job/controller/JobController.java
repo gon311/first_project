@@ -1,5 +1,6 @@
 package com.itwillbs.project.job.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.project.common.dto.FileDTO;
+import com.itwillbs.project.common.util.FileUtils;
 import com.itwillbs.project.common.exception.BackwardException;
 import com.itwillbs.project.job.dto.JobApplicationDTO;
 import com.itwillbs.project.job.dto.JobDTO;
@@ -46,10 +50,13 @@ public class JobController {
 	}
 	
 	@PostMapping("/JobProcess")
-	public String posting(JobDTO jobDTO, HttpSession session) {
+	public String posting(JobDTO jobDTO, HttpSession session,
+			List<MultipartFile> files) throws IOException {
+		String sId = "/" + session.getAttribute("userIdx");
 		
 //		System.out.println(jobDTO.getAddress());
-		jobService.jobInsert(jobDTO);
+		jobService.jobInsert(jobDTO, files, sId);
+		List<FileDTO> fileList = FileUtils.uploadFile(files, sId);
 //		System.out.println(jobDTO);
 		return "redirect:/job/JobList";
 	}

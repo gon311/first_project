@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.job.dto.JobApplicationDTO;
 import com.itwillbs.project.job.dto.JobDTO;
 import com.itwillbs.project.resume.dto.ResumeDTO;
@@ -34,5 +35,7 @@ public interface JobMapper {
 
 	void insertBookmark(@Param("userIdx") Long userIdx, @Param("jobId") Long jobId);
 	void deleteBookmark(@Param("userIdx") Long userIdx, @Param("jobId") Long jobId);
+
+	void insertBoardFiles(@Param("fileList") List<FileDTO> fileList, @Param("jobId") Long jobId);
 
 }

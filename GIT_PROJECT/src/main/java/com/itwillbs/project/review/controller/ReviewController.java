@@ -73,20 +73,24 @@ public class ReviewController {
 	}
 	
 	// 임시) 
-	@GetMapping("/registText")
-	public String registTest() {
-		return "/review/reviewText";
-	}	
-	
+//	@GetMapping("/registText")
+//	public String registTest() {
+//		return "/review/reviewText";
+//	}	
 	
 	// 2단계 작성 
 	@GetMapping("/{coverLetterIdx}/registText")
 	public String registText(@PathVariable Long coverLetterIdx) {
 		
 		return "/review/reviewText";
-		
 	}
 	
+	// 임시) 
+	@GetMapping("/save")
+	public String save() {
+		return "/review/reviewSave";
+	}	
+		
 	@PostMapping("/save")
 	public String reviewSave(CoverLetterDTO coverLetterDTO, Model model) {
 		reviewService.saveTotal(coverLetterDTO);

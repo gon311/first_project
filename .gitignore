@@ -1,6 +1,7 @@
 # 빌드 결과물 제외
 **/target/
 /target/
+GIT_PROJECT/target/
 
 # 이클립스 및 설정 파일 제외
 .settings/

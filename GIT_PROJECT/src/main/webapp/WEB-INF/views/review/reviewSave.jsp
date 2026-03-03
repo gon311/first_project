@@ -5,8 +5,8 @@
 <html>
 	<head>
 		<%@ include file="/WEB-INF/views/inc/head.jspf"%>
+		<%-- 현재 페이지(rivewSave.jsp) 전용 CSS 영역--%>
 		<link href="<c:url value="/resources/css/reviewSave.css" />" rel="stylesheet" type="text/css">
-		<%-- 현재 페이지(main.jsp) 전용 CSS 영역--%>
 	</head>
 	<body>
 		<%-- header area --%>
@@ -17,7 +17,7 @@
 			<div class="container my-4">
 				<div class="row g-4 align-items-start">
 					<!-- 좌측: 제목 + 본문 -->
-					<div class="col-12 col-lg-9">
+					<div class="col-12 col-lg-9 title-body">
 						<!-- 제목 카드 -->
 						<div class="card">
 							<div class="card-body">
@@ -39,7 +39,7 @@
 					</div>
 	
 					<!-- 우측: 액션 버튼 스택 -->
-					<div class="col-12 col-lg-3">
+					<div class="col-12 col-lg-3 no-print">
 						<div class="card shadow-sm sticky-top" style="top: 16px;">
 							<div class="card-body">
 	
@@ -70,7 +70,7 @@
 										>목록으로</button>
 								</div>
 								
-								<input type="hidden" id="coverLetterIdx" value="${coverLetterIdx}">
+								<input class="no-print" type="hidden" id="coverLetterIdx" value="${coverLetterIdx}">
 								
 							</div>
 						</div>

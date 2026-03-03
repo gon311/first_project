@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.admin.dto.BannerDTO;
+import com.itwillbs.project.admin.dto.CommentDTO;
+import com.itwillbs.project.admin.dto.FreeDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.PayDTO;
 import com.itwillbs.project.admin.dto.ProductDTO;
+import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.admin.service.AdminService;
@@ -71,7 +74,18 @@ public class AdminController {
 		model.addAttribute("user", userDTO);
 		
 		// 작성한 게시글 목록 조회
+		// 1) 자유게시판
+		List<FreeDTO> freeDTO = adminService.getFreeInfo(memberDTO.getUserId());
+		model.addAttribute("freeList", freeDTO);
 		
+		// 2) 1대1 문의
+		List<QnaDTO> qnaDTO = adminService.getQnaInfo(memberDTO.getUserId());
+		model.addAttribute("qnaList", qnaDTO);
+		
+		// 3) 작성한 댓글 조희
+		List<CommentDTO> commentDTO = adminService.getCommentInfo(memberDTO.getUserId());
+		model.addAttribute("commentList", commentDTO);
+		 
 
 		return "admin/member/userInfo";
 		
@@ -141,7 +155,16 @@ public class AdminController {
 		
 		model.addAttribute("com", comDTO);
 		
-		return "admin/member/comInfo";
+		// 회원이 작성한 글 목록 조회
+		// 1) 작성한 공고 조회
+		List<JobPostDTO> jobPostDTO = adminService.getJobPostInfo(memberDTO.getUserId());
+		model.addAttribute("jobPostlist", jobPostDTO); 
+		
+		// 2) 1대1 문의
+		List<QnaDTO> qnaDTO = adminService.getQnaInfo(memberDTO.getUserId());
+		model.addAttribute("qnaList", qnaDTO);
+		
+		return "admin/member/comInfo"; 
 			
 	}
 	
@@ -197,11 +220,17 @@ public class AdminController {
 	}
 	
 	
-	// 공고 상태 변경
+	// 제출된 공고 처리
 	@GetMapping("/submits/status")
 	public String submitStatus(long jobId, Integer postCheck, RedirectAttributes ra) {
+		// 공고 상태 변경
 		SubmitDTO submitDTO = adminService.getSubmitInfo(jobId);
 		adminService.changeSubmitStatus(submitDTO.getJobId(), postCheck);
+		
+		// 공고 승인 시 등록일자를 승인 시점으로 변경
+		if(postCheck == 2) {
+			adminService.changeRegDate(submitDTO.getJobId());
+		}
 		
 		ra.addAttribute("jobId", jobId);
 		ra.addAttribute("userId", submitDTO.getCompId());

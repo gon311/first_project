@@ -1,6 +1,7 @@
 package com.itwillbs.project.store.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.project.store.dto.OrderDTO;
 import com.itwillbs.project.store.dto.PaymentDTO;
@@ -19,12 +20,22 @@ public interface StoreMapper {
 	// 결제내역 저장
 	PaymentDTO insertPayInfo(PortoneDTO payment);
 
+	// 주문정보 삽입
+	void insertOrderInfo(@Param("order") OrderDTO order, @Param("store") StoreDTO store);
+
+	// 주문정보 조회
+	OrderDTO selectOrderInfo(String paymentId);
+
+	// 결제 성공 시 결제 상태 변경
+	void updateOrderStatus(OrderDTO orderInfo);
+
+	// 결제 성공 시 결제 테이블에 저장
+	void insertPaymentInfo(PortoneDTO paymentInfo);
+
 
 //	// 구매정보 조회
 //	OrderDTO selectOrderInfo(String sId);
 //
-//	// 구매정보 삽입
-//	void insertOrderInfo(@Param("sId") String sId, @Param("productId") String productId);
 
 	
 }

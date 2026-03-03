@@ -27,45 +27,77 @@
 	
 	
 	
-	<!-- 구매정보 삽입 -->
-<!-- 	<insert id="insertOrderInfo"> -->
-<!-- 		insert into orderProduct( -->
-<!-- 			order_id -->
-<!-- 			, user_id -->
-<!-- 			, user_name -->
-<!-- 			, phone -->
-<!-- 			, email -->
-<!-- 			, product_id -->
-<!-- 			, product_name -->
-<!-- 			, product_price -->
-<!-- 		) -->
-<!-- 		select -->
-<!-- 			null -->
-<!-- 		    , u.user_id -->
-<!-- 		    , u.user_name -->
-<!-- 		    , u.phone -->
-<!-- 		    , u.email -->
-<!-- 		    , p.product_id -->
-<!-- 		    , p.product_name -->
-<!-- 		    , p.product_price -->
-<!-- 		from -->
-<!-- 			user u join product p -->
-<!-- 		where -->
-<!-- 			u.email = #{sId} -->
-<!-- 		and -->
-<!-- 			p.product_id = #{productId}; -->
-<!-- 	</insert> -->
+	<!-- 주문정보 삽입 -->
+	<insert id="insertOrderInfo">
+		insert into orderProduct(
+			order_id
+			, user_id
+			, user_name
+			, phone
+			, email
+			, product_id
+			, product_name
+			, product_price
+		)
+		values (
+			#{order.orderId}
+			, #{order.userId}
+			, #{order.userName}
+			, #{order.phone}
+			, #{order.email}
+			, #{store.productId}
+			, #{store.productName}
+			, #{store.productPrice}
+		)
+	</insert>
 	
-	<!-- 구매정보 조회 -->
-<!-- 	<select id="selectOrderInfo" resultType="order"> -->
-<!-- 		select	* -->
-<!-- 		from  -->
-<!-- 			orderProduct -->
-<!-- 		where -->
-<!-- 			email = #{sId} -->
+	<!-- 주문정보 조회 -->
+	<select id="selectOrderInfo" resultType="order">
+		select	*
+		from 
+			orderProduct
+		where
+			order_id = #{paymentId}
 			
-<!-- 	</select> -->
+	</select>
 	
+	<!-- 결제 성공 시 결제 상태 변경 -->
+	<update id="updateOrderStatus">
+		update
+			orderProduct
+		set
+			status = #{orderInfo.status}
+		where
+			order_id = #{orderInfo.paymentId}
+			
+	</update>
+	
+	<!-- 결제 성공 시 결제 테이블에 저장 -->
+	<insert id="insertPaymentInfo">
+		insert into pay (
+			pay_id
+			, user_id
+			, product_id
+			, pay_method
+			, card_name
+			, card_num
+			, pay_price
+			, pay_date
+			, pay_status
+		)
+		values (
+			#{payId}
+			, #{userId}
+			, #{productId}
+			, #{payMethod}
+			, #{cardName}
+			, #{cardNum}
+			, #{payPrice}
+			, #{payDate}
+			, #{payStatus}
+		)
+		
+	</insert>
 	
 </mapper>
 

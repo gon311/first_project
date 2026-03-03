@@ -5,7 +5,7 @@
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
 <c:url var="urlApplyList" value="/my/apply"/>
-<c:url var="urlJobDetail" value="/job/detail"/>
+<c:url var="urlJobDetail" value="/job/JobDetail"/>
 <c:url var="urlCancelApply" value="/my/apply/cancel"/>
 
 <style>

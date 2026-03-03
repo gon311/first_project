@@ -251,6 +251,10 @@
 <c:url var="urlResumeCreate" value="/my/resume/create"/>   <%-- 새 이력서 작성 --%>
 <c:url var="urlResumeEdit" value="/my/resume/edit"/>       <%-- 수정 --%>
 <c:url var="urlResumeDelete" value="/my/resume/delete"/>   <%-- 삭제(나중에 POST) --%>
+<c:url var="urlResumeDetail" value="/my/resume/detail"/>   <%-- 디테일 --%>
+
+
+
 
 <main class="container-fluid px-0 mypage-wrap">
   <div class="row g-0">

@@ -9,7 +9,7 @@
      - 컨트롤러 매핑에 맞게 value만 바꾸면 됨
    ========================= --%>
 <c:url var="urlFavorites" value="/my/favorites"/>
-<c:url var="urlJobDetail" value="/job/detail"/>  <%-- 예: /job/detail?jobId= --%>
+<c:url var="urlJobDetail" value="/job/JobDetail"/>  <%-- 예: /job/detail?jobId= --%>
 <c:url var="urlApply" value="/apply"/>           <%-- 예: /apply?jobId= --%>
 <c:url var="urlDeleteFav" value="/my/favorites/delete"/> <%-- POST 추천 --%>
 

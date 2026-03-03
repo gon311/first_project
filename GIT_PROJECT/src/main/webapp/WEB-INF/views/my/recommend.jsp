@@ -8,7 +8,7 @@
      URL (전부 c:url)
    ========================= --%>
 <c:url var="urlRecommend" value="/my/recommend"/>         <%-- 목록(필터/정렬 GET) --%>
-<c:url var="urlJobDetail" value="/job/detail"/>          <%-- ?jobId= --%>
+<c:url var="urlJobDetail" value="/job/JobDetail"/>          <%-- ?jobId= --%>
 <c:url var="urlApply" value="/job/apply"/>               <%-- ?jobId= (입사지원) --%>
 <c:url var="urlHide" value="/my/recommend/hide"/>        <%-- POST/GET 선택: ?jobId= (숨김처리) --%>
 

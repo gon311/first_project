@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itwillbs.project.store.dto.OrderDTO;
@@ -38,7 +39,7 @@ public class StoreController {
 		return "store/comStore";
 	}
 	
-	// 구매하기(구현중) - 특정 상품의 "구매하기" 버튼 클릭
+	// 구매하기 페이지 - 특정 상품의 "구매하기" 버튼 클릭
 	@GetMapping("/pay")
 	public String pay(StoreDTO storeDTO, Model model, HttpSession session, OrderDTO orderDTO) {
 		// 세션에 저장된 id값을 통해 구매자 정보 출력(구현 예정)
@@ -53,6 +54,12 @@ public class StoreController {
 		model.addAttribute("storeInfo", storeInfo);
 		
 		return "store/payForm";
+	}
+	
+	// 결제 진행
+	@PostMapping("/payment")
+	public String payment() {
+		return null;
 	}
 	
 	

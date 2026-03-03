@@ -13,7 +13,7 @@
         <div class="container mt-5 custom-width">
             <h2 class="mb-4 text-center">구매하기</h2>
 
-            <form name="payForm" action="<c:url value='/store/pay' />" method="post" class="needs-validation" novalidate>
+            <form name="payForm" action="<c:url value='/store/payment' />" method="post" class="needs-validation" novalidate>
 
                 <!-- 주문자 정보 -->
                 <div class="card mb-4">
@@ -60,7 +60,7 @@
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">카드사 선택 <span style="color:red">*</span></label>
                                 <select id="cardCompany" class="form-select" name="cardCompany">
-                                    <option value="">카드사 선택</option>
+                                    <option value="">선택하세요</option>
                                     <option value="ss">삼성카드</option>
                                     <option value="sh">신한카드</option>
                                     <option value="kb">KB국민카드</option>
@@ -85,7 +85,8 @@
                             <div class="col-md-6">
                                 <label class="form-label">할부 개월 수 <span style="color:red">*</span></label>
                                 <select id="installment" class="form-select" name="installment">
-                                    <option value="">일시불</option>
+                                    <option value="">선택하세요</option>
+                                    <option value="1">일시불</option>
                                     <option value="2">2개월</option>
                                     <option value="3">3개월</option>
                                     <option value="4">4개월</option>
@@ -111,7 +112,7 @@
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">은행 선택 <span style="color:red">*</span></label>
                                 <select class="form-select" name="bankName">
-                                    <option value="">은행 선택</option>
+                                    <option value="">선택하세요</option>
                                     <option value="kb">국민은행</option>
                                     <option value="wr">우리은행</option>
                                     <option value="sh">신한은행</option>
@@ -218,47 +219,82 @@
         </div>
     </main>
     
-    <script type="text/javascript">
-    	// 결제 수단 선택에 따라 해당하는 셀렉트 박스 디스플레이
-		function checkMethod() {
-			if(document.getElementById("credit").checked) {
-    			document.getElementById("selectCredit").style.display = "block";
-    			document.getElementById("selectBank").style.display = "none";
-    		} else if(document.getElementById("bank").checked) {
-    			document.getElementById("selectCredit").style.display = "none";
-    			document.getElementById("selectBank").style.display = "block";
-    		}
+    <%-- 포트원 sdk 추가 --%>
+    <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+    
+    <%-- 결제 자바스크립트 추가 --%>
+<%--     <script src="<c:url value="/resources/js/payment.js"/>"></script> --%>
+    
+    <%-- 임시) --%>
+    <script>
+    // 결제 수단 선택에 따라 해당하는 셀렉트 박스 디스플레이
+    function checkMethod() {
+    	if(document.getElementById("credit").checked) {
+    		document.getElementById("selectCredit").style.display = "block";
+    		document.getElementById("selectBank").style.display = "none";
+    	} else if(document.getElementById("bank").checked) {
+    		document.getElementById("selectCredit").style.display = "none";
+    		document.getElementById("selectBank").style.display = "block";
+    	}
+    }
+
+    // 유료 서비스 약관에 동의했을 경우에만 구매 버튼 활성화
+    document.getElementById("checkModal").addEventListener("click", function() {
+    	if(document.getElementById("checkModal").checked) {
+    		document.getElementById("btnPay").disabled = false;
+    	} else {
+    		document.getElementById("btnPay").disabled = true;
+    	}
+    });
+    
+    document.payForm.onsubmit = function() {
+    	if(!document.payForm.payMethod[0].checked && !document.payForm.payMethod[1].checked) {
+    		document.payForm.payMethod[0].focus();
+    		return false;
+    	} else if(document.payForm.payMethod[0].checked && document.payForm.cardCompany.value == "") {
+    		document.payForm.cardCompany.focus();
+    		return false;
+    	} else if(document.payForm.payMethod[0].checked && document.payForm.installment.value == "") {
+    		document.payForm.installment.focus();
+    		return false;
+    	} else if(document.payForm.payMethod[1].checked && document.payForm.bankName.value == "") {
+    		document.payForm.bankName.focus();
+    		return false;
+    	} else if(document.payForm.payMethod[1].checked && document.payForm.depositor.value == "") {
+    		document.payForm.depositor.focus();
+    		return false;
     	}
     	
-    	// 유료 서비스 약관에 동의했을 경우에만 구매 버튼 활성화
-    	document.getElementById("checkModal").addEventListener("click", function() {
-    		if(document.getElementById("checkModal").checked) {
-    			document.getElementById("btnPay").disabled = false;
-    		} else {
-    			document.getElementById("btnPay").disabled = true;
-    		}
-    	}) 
+    	//----------------------------------------------------------------------------------------------------
+    	// [ 결제 진행 ]
     	
-    	// 폼 제출 시 필수사항 확인
-    	document.payForm.onsubmit = function() {
-    		if(!document.payForm.payMethod[0].checked && !document.payForm.payMethod[1].checked) {
-    			document.payForm.payMethod[0].focus();
-    			return false;
-    		} else if(document.payForm.payMethod[0].checked && document.payForm.cardCompany.value == "") {
-    			document.payForm.cardCompany.focus();
-    			return false;
-    		} else if(document.payForm.payMethod[0].checked && document.payForm.installment.value == "") {
-    			document.payForm.installment.focus();
-    			return false;
-    		} else if(document.payForm.payMethod[1].checked && document.payForm.bankName.value == "") {
-    			document.payForm.bankName.focus();
-    			return false;
-    		} else if(document.payForm.payMethod[1].checked && document.payForm.depositor.value == "") {
-    			document.payForm.depositor.focus();
-    			return false;
-    		}
-    	}
+//     	async function requestPayment() {
+//        		try {
+//        			const response = await PortOne.requestPayment({
+//     			  // Store ID 설정
+//     			  storeId: "store-a4df7838-ace2-488d-96eb-32ca15d4dfa3",
+//     			  // 채널 키 설정
+//     			  channelKey: "channel-key-718642b3-991e-4a54-b226-b2760dfec1d8",
+//     			  paymentId: "pay-1",
+//     			  orderName: ${storeInfo.productName},
+//     			  totalAmount: ${storeInfo.productPrice},
+//     			  currency: "CURRENCY_KRW",
+//     			  payMethod: "CARD"
+    			  
+//     			});
+       			
+//        		} catch(error) {
+//     			alert("요청 오류 발생 : " + error);
+//     		}
+//     	}
+    	
+//     	requestPayment();
+    }
     </script>
+    
+    
+    
+    
 
 </body>
 </html>

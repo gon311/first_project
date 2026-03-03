@@ -1,6 +1,8 @@
 package com.itwillbs.project.store.dto;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,17 +13,17 @@ import lombok.ToString;
 @ToString
 public class PortoneDTO {
 	private String id;
-	private String paymentId;
+//	private String paymentId;
     private String orderName;
 //    private int amount;       
     private String currency;
     private String status;    
-    private String updatedAt;
-
+    private LocalDateTime paidAt;
+ 
     private Amount amount;       
     private Customer customer;
     private Method method;
-    private PaidPayment paidpayment;
+//    private PaidPayment paidpayment;
 
     @Getter
     @Setter
@@ -51,14 +53,16 @@ public class PortoneDTO {
     @Getter
     @Setter
     @ToString
-    public static class PaidPayment {
-    	private LocalDateTime paidAt;
+    public static class Amount {
+    	private int total;
     }
     
-    @Getter
-    @Setter
-    @ToString
-    public static class Amount {
-    	private Integer total;
+    
+    public void setPaidAt(String paidAt) {
+        if (paidAt != null) {
+            this.paidAt = OffsetDateTime.parse(paidAt)
+                                        .atZoneSameInstant(ZoneId.of("Asia/Seoul")) // 한국 시간으로 보정
+                                        .toLocalDateTime();
+        }
     }
 }

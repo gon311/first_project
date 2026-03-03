@@ -301,7 +301,7 @@
    						email: userEmail,  
    						phoneNumber: userPhone
    					},
-//    					redirectUrl: reUrl + "?s",
+//    					redirectUrl: reUrl,
 //    				  	forceRedirect: true,
    					method: {} // 초기화
     			};
@@ -326,20 +326,18 @@
 				    };
     			}
     			
-    			
-    			
+    			// 결제 결과
 				const response = await PortOne.requestPayment(paymentParam);
    	    		console.log("결제 결과 : ", response);
    	    		
-   	    		
-   	    		if (response.code !== undefined) {
+   	    		if(response.code !== undefined) {
 	    		   // 오류 발생
 	    		   return alert(response.message);
 	    		}
    	    		
 
 				// 서버에 값 보내기
-				await fetch("<c:url value="/store/payResponse" />", {
+				const result = await fetch("<c:url value="/store/payResponse" />", {
     				method: "POST",
     				headers: {
     					"Content-type": "application/json"
@@ -348,6 +346,21 @@
     					paymentId: response.paymentId
     				})
     			});
+				
+				// 서버의 응답 처리
+				if(result.ok) {
+					const payResult = await result.text();
+				    if(payResult === "success") {
+				        // 여기서 직접 성공 페이지로 보냅니다.
+				        window.location.href = "<c:url value="/store/paySuccess" />";
+				    } else if(payResult === "mismatch") {
+				    	alert("결제 금액 검증에 실패하였습니다. 위변조가 의심됩니다.");
+				        location.href = "<c:url value="/store/payFailed" />";
+				    } else {
+				        alert("결제 처리 중 오류가 발생했습니다.");
+				        location.href = "<c:url value="/store/payFailed" />";
+				    }
+				}
 				
     			
     		} catch (error){

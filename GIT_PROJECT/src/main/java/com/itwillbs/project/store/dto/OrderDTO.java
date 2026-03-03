@@ -15,7 +15,7 @@ public class OrderDTO {
 	private String email;
 	private String productId;
 	private String productName; 
-	private Integer productPrice;  
+	private int productPrice;  
 	private String status; 
 	
 }

@@ -28,14 +28,9 @@ public interface StoreMapper {
 
 	// 결제 성공 시 결제 상태 변경
 	void updateOrderStatus(OrderDTO orderInfo);
-
+ 
 	// 결제 성공 시 결제 테이블에 저장
-	void insertPaymentInfo(PortoneDTO paymentInfo);
-
-
-//	// 구매정보 조회
-//	OrderDTO selectOrderInfo(String sId);
-//
+	void insertPaymentInfo(PaymentDTO paymentDTO);
 
 	
 }

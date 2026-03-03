@@ -33,7 +33,6 @@ public class PaymentDTO {
 	private long userId;
 	private String userName;	
 	private String phone;	 
-//	private UserDTO user;
 	private String productId;
 	private String productName;  // 상품명(결제 - 상품 테이블 조인)
 	private String payMethod;
@@ -42,13 +41,13 @@ public class PaymentDTO {
 	private String bankName;
 	private String depositAccount;
 	private String depositName;
-	private String payPrice;
-	private LocalDateTime payDate;
+	private int payPrice;
+	private LocalDateTime payDate; 
 	private String payStatus; 
-	
-	public void setPayPrice(Integer payPrice) {
-		DecimalFormat df = new DecimalFormat("###,###");
-		this.payPrice = df.format(payPrice);
-	}
+	  
+//	public void setPayPrice(Integer payPrice) {
+//		DecimalFormat df = new DecimalFormat("###,###");
+//		this.payPrice = df.format(payPrice);
+//	}
 	
 }

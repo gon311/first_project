@@ -17,7 +17,8 @@ public interface JobMapper {
 
 	List<JobDTO> getJobList(
 			@Param("expType") String expType, 
-			@Param("eduType") String eduType, 
+			@Param("eduType") String eduType,
+			@Param("userIdx") Long userIdx,
 			@Param("selectedItems") List<String> selectedItems
 			);
 
@@ -30,5 +31,8 @@ public interface JobMapper {
 	void insertApplication(JobApplicationDTO applicationDTO);
 
 	int checkAlreadyApplied(JobApplicationDTO application);
+
+	void insertBookmark(@Param("userIdx") Long userIdx, @Param("jobId") Long jobId);
+	void deleteBookmark(@Param("userIdx") Long userIdx, @Param("jobId") Long jobId);
 
 }

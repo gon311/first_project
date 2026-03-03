@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.common.exception.BackwardException;
@@ -54,13 +55,14 @@ public class JobController {
 	}
 	
 	@GetMapping("/JobList")
-	public String list(Model model, 
+	public String list(Model model, HttpSession session,
 	                   @RequestParam(value="expType", required=false) String expType,
 	                   @RequestParam(value="eduType", required=false) String eduType, 
 					   @RequestParam(value="selected_items", required=false) List<String> selectedItems) { 
 	    
+		Long userIdx = (Long) session.getAttribute("userIdx");
 	    // 두 필터 조건을 모두 서비스에 전달
-	    List<JobDTO> jobList = jobService.getJobList(expType, eduType, selectedItems);
+	    List<JobDTO> jobList = jobService.getJobList(expType, eduType, userIdx, selectedItems);
 	    List<Map<String, String>> existRegions = jobService.getExistingRegions();
 	    
 	    model.addAttribute("jobList", jobList);
@@ -114,7 +116,7 @@ public class JobController {
 //		System.out.println(sId);
 		if (sId == null || "C".equals(sId)) return "redirect:/user/login";
 		
-		if(applicationDTO.getResumeId() == null) {
+		if(resumeId == null) {
 			throw new BackwardException("잘못된 접근입니다!");
 		}
 		
@@ -132,6 +134,27 @@ public class JobController {
 	    rt.addFlashAttribute("msg", "지원이 완료되었습니다.");
 	    
 	    return "redirect:/job/JobList";
+	}
+	
+	@ResponseBody
+	@PostMapping("/toggleBookmark")
+	public String toggleBookmark(@RequestParam("jobId") Long jobId, 
+	                             @RequestParam("status") String status, 
+	                             HttpSession session) {
+	    // 1. 세션에서 로그인한 사용자 정보 가져오기
+		Long userIdx = (Long)session.getAttribute("userIdx");
+	    
+	    if (userIdx == null) {
+	        return "login_required"; // 로그인이 안 된 경우
+	    }
+	    
+	    // 2. 서비스 호출 (성공 시 "success" 반환)
+	    try {
+	        jobService.updateBookmark(userIdx, jobId, status);
+	        return "success";
+	    } catch (Exception e) {
+	        return "error";
+	    }
 	}
 	
 }

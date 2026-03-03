@@ -205,14 +205,15 @@
 	}
 	
 	/* 모달 배경 (어둡게) */
-	.modal-overlay{
-	    position:fixed;
-	    left:0;
-	    width:100%;
-	    background:rgba(0,0,0,0.4);
-	    z-index:9999;
-	    
-	    display:none;
+	.modal-overlay {
+	    position: fixed;
+	    top: 0;          /* 추가: 화면 맨 위부터 */
+	    left: 0;
+	    width: 100%;
+	    height: 100%;    /* 추가: 화면 전체 높이만큼 */
+	    background: rgba(0,0,0,0.4);
+	    z-index: 9999;
+	    display: none;
 	}
 	
 	/* 모달 본체 */
@@ -380,7 +381,7 @@
             <h3>${post.companyName} 입사지원</h3>
             <button class="close-btn" onclick="closeApplyModal()">&times;</button>
         </div>
-       <form action="<c:url value="/job/ApplyAction" />" method="post" enctype="multipart/form-data">
+       <form action="<c:url value="/job/ApplyAction" />" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 	       <input type="hidden" name="resumeId" id="selectedResumeId" value="">
 	       <input type="hidden" name="jobId" value="${post.jobId}">
 	        <div class="modal-body">
@@ -470,6 +471,18 @@
             hiddenInput.value = resumeId;
         }
     }
+    
+ 	// [추가] 폼 제출 시 실행되는 검증 로직
+    function validateForm() {
+        const hiddenInput = document.getElementById('selectedResumeId');
+        
+        // 값이 없거나 비어있는지 체크
+        if (!hiddenInput || !hiddenInput.value || hiddenInput.value === "") {
+            alert("지원할 이력서를 선택해주세요!"); 
+            return false; // 이 return false가 서버 전송을 막아줍니다.
+        }
+        return true;
+    }
 
     // 4. 기타 유틸리티 함수
     function closeApplyModal() {
@@ -486,11 +499,11 @@
 
     // 모달 외부 클릭 시 닫기
     window.onclick = function(event) {
-        const modal = document.getElementById("applyModal");
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    };
+    const modal = document.getElementById("applyModal");
+    if (event.target === modal) {
+        closeApplyModal(); 
+    }
+};
 </script>
 
 </body>

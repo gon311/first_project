@@ -24,8 +24,8 @@ public class JobService {
 		jobMapper.insertJob(jobDTO);
 	}
 
-	public List<JobDTO> getJobList(String expType, String eduType, List<String> selectedItems) {
-	    return jobMapper.getJobList(expType, eduType, selectedItems);
+	public List<JobDTO> getJobList(String expType, String eduType, Long userIdx, List<String> selectedItems) {
+	    return jobMapper.getJobList(expType, eduType, userIdx, selectedItems);
 	}
 
 	public List<Map<String, String>> getExistingRegions() {
@@ -46,6 +46,14 @@ public class JobService {
 
 	public int checkAlreadyApplied(JobApplicationDTO application) {
 	    return jobMapper.checkAlreadyApplied(application);
+	}
+
+	public void updateBookmark(Long userIdx, Long jobId, String status) {
+		if ("Y".equals(status)) {
+	        jobMapper.insertBookmark(userIdx, jobId);
+	    } else {
+	        jobMapper.deleteBookmark(userIdx, jobId);
+	    }
 	}
 
 

@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <meta charset="UTF-8">
 <style>
     /* 1. 전체 레이아웃 및 폰트 */
@@ -290,6 +291,24 @@
         font-weight: bold;
         font-size: 14px;
     }
+    
+    /* 별표 아이콘 스타일 */
+	.scrap-icon {
+	    font-size: 24px;
+	    color: #ccc; /* 기본은 빈 별표(회색) */
+	    cursor: pointer;
+	    margin-right: 15px;
+	    transition: transform 0.2s ease;
+	    z-index: 10; /* 카드 클릭보다 우선순위 높임 */
+	}
+	
+	.scrap-icon.active {
+	    color: #ffc107; /* 채워진 별표(노란색) */
+	}
+	
+	.scrap-icon:hover {
+	    transform: scale(1.2); /* 마우스 올리면 살짝 커짐 */
+	}
 </style>
 </head>
 <body>
@@ -350,6 +369,12 @@
     <div class="job-list-container">
 	    <c:forEach var="job" items="${jobList}">
 	        <div class="job-card" onclick="location.href='<c:url value="/job/JobDetail?jobId=${job.jobId}" />'">
+	        	
+	        	<div class="scrap-icon ${job.isScrapped == 'Y' ? 'active' : ''}" 
+		             onclick="toggleScrap(event, '${job.jobId}', this)">
+		            ${job.isScrapped == 'Y' ? '★' : '☆'}
+		        </div>
+	        	
 			    <div class="company-name">${job.companyName}</div>
 			    <div class="job-title">${job.title}</div>
 			    <div class="job-tags">
@@ -469,7 +494,38 @@
         location.href = "JobList";
     }
     
+    function toggleScrap(event, jobId, element) {
+    	console.log("클릭됨! 공고ID:", jobId);
+        event.stopPropagation(); // 카드 클릭 이벤트 전파 방지 [cite: 44]
+
+        const isActive = element.classList.contains('active');
+        const scrapStatus = isActive ? 'N' : 'Y'; // 현재 상태의 반대값을 서버로 보냄
+
+        $.ajax({
+            url: '<c:url value="/job/toggleBookmark" />', // 요청을 보낼 주소
+            type: 'POST',
+            data: {
+                jobId: jobId,
+                status: scrapStatus
+            },
+            success: function(response) {
+                // 서버에서 처리가 성공했을 때만 UI 변경
+                if(response === "success") {
+                    element.classList.toggle('active');
+                    element.textContent = (scrapStatus === 'Y') ? '★' : '☆';
+                    console.log("즐겨찾기 상태 변경 완료:", scrapStatus);
+                } else if(response === "login_required") {
+                    alert("로그인이 필요한 서비스입니다.");
+                }
+            },
+            error: function() {
+                alert("서버 통신 중 오류가 발생했습니다.");
+            }
+        });
+    }
+    
     document.addEventListener('DOMContentLoaded', renderMainCategory);
+    
 </script>
 
 <script type="text/javascript">

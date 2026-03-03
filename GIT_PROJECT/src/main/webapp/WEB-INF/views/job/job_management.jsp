@@ -213,6 +213,20 @@
         color: #fff; 
         border-color: #4485ff; 
     }
+    
+    /* 별표 아이콘 스타일 */
+	.scrap-icon {
+	    font-size: 22px;
+	    cursor: pointer;
+	    color: #ccc; /* 기본 회색 (비활성) */
+	    transition: color 0.2s;
+	    margin-right: 15px;
+	    z-index: 10; /* 카드 클릭 이벤트와 겹치지 않게 조절 */
+	}
+	
+	.scrap-icon.active {
+	    color: #ffc107; /* 노란색 (활성) */
+	}
 </style>
 </head>
 <body>

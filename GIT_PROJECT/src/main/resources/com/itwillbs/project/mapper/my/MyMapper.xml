@@ -316,54 +316,51 @@
      parameter: FavoriteJobCond.java
      result: Long
 ============================== -->		
-<select id="selectFavoriteJobList"
-        parameterType="com.itwillbs.project.my.dto.FavoriteJobCond"
-        resultMap="favoriteJobMap">
+<select id="selectFavoriteJobList" resultMap="favoriteJobMap">
+  SELECT
+      jp.job_id
+    , jp.comp_id
+    , uc.company_name
+    , jp.title
+    , jp.exp_type
+    , jp.exp_year
+    , jp.edu
+    , jp.emp_type
+    , jp.address
+    , jp.close_date
+    , (jp.close_date &lt; CURDATE()) AS closed
+    , DATE_FORMAT(jp.close_date, '~ %m/%d(%a)') AS deadline_label
+  FROM job_bookmark jb
+  INNER JOIN JOB_POSTING jp ON jp.job_id = jb.job_id
+  INNER JOIN USER_COMPANY uc ON uc.user_id = jp.comp_id
+  WHERE jb.user_id = #{userId}
 
-	SELECT
-	    jp.job_id
-	  , jp.comp_id
-	  , uc.company_name
-	  , jp.title
-	  , jp.exp_type
-	  , jp.exp_year
-	  , jp.edu
-	  , jp.emp_type
-	  , jp.address
-	  , jp.close_date
-	  , (jp.close_date &lt; CURDATE()) AS closed
-	  , DATE_FORMAT(jp.close_date, '~ %m/%d(%a)') AS deadline_label
-	FROM JOB_SCRAP js
-	INNER JOIN JOB_POSTING jp ON jp.job_id = js.job_id
-	INNER JOIN USER_COMPANY uc ON uc.user_id = jp.comp_id
-	WHERE js.user_id = #{userId}
+  <if test="keyword != null and keyword != ''">
+    AND (
+         jp.title LIKE CONCAT('%', #{keyword}, '%')
+      OR uc.company_name LIKE CONCAT('%', #{keyword}, '%')
+    )
+  </if>
 
-	<if test="keyword != null and keyword != ''">
-	  AND (
-	       jp.title LIKE CONCAT('%', #{keyword}, '%')
-	    OR uc.company_name LIKE CONCAT('%', #{keyword}, '%')
-	  )
-	</if>
+  <if test="status == 'OPEN'">
+    AND jp.close_date >= CURDATE()
+  </if>
 
-	<if test="status == 'OPEN'">
-	  AND jp.close_date >= CURDATE()
-	</if>
+  <if test="status == 'CLOSED'">
+    AND jp.close_date &lt; CURDATE()
+  </if>
 
-	<if test="status == 'CLOSED'">
-	  AND jp.close_date &lt; CURDATE()
-	</if>
+  <if test="excludeApplied">
+    AND NOT EXISTS (
+      SELECT 1
+      FROM JOB_APPLICATION ja
+      WHERE ja.user_id = jb.user_id
+        AND ja.job_id = jb.job_id
+    )
+  </if>
 
-	<if test="excludeApplied">
-	  AND NOT EXISTS (
-	    SELECT 1
-	    FROM JOB_APPLICATION ja
-	    WHERE ja.user_id = js.user_id
-	      AND ja.job_id = js.job_id
-	  )
-	</if>
-
-	ORDER BY js.created_at DESC
-	LIMIT #{page.offset, jdbcType=INTEGER}, #{page.safeSize, jdbcType=INTEGER}
+  ORDER BY jb.reg_date DESC, jb.bookmark_id DESC
+  LIMIT #{page.offset, jdbcType=INTEGER}, #{page.safeSize, jdbcType=INTEGER}
 </select>
 
 <!-- ==============================
@@ -372,51 +369,47 @@
      result: Long
 ============================== -->	
 
-<select id="selectFavoriteJobCount"
-        parameterType="com.itwillbs.project.my.dto.FavoriteJobCond"
-        resultType="int">
+<select id="selectFavoriteJobCount" resultType="int">
+  SELECT COUNT(*)
+  FROM job_bookmark jb
+  INNER JOIN JOB_POSTING jp ON jp.job_id = jb.job_id
+  INNER JOIN USER_COMPANY uc ON uc.user_id = jp.comp_id
+  WHERE jb.user_id = #{userId}
 
-	SELECT
-	    COUNT(*) AS cnt
-	FROM JOB_SCRAP js
-	INNER JOIN JOB_POSTING jp ON jp.job_id = js.job_id
-	INNER JOIN USER_COMPANY uc ON uc.user_id = jp.comp_id
-	WHERE js.user_id = #{userId}
+  <if test="keyword != null and keyword != ''">
+    AND (
+         jp.title LIKE CONCAT('%', #{keyword}, '%')
+      OR uc.company_name LIKE CONCAT('%', #{keyword}, '%')
+    )
+  </if>
 
-	<if test="keyword != null and keyword != ''">
-	  AND (
-	       jp.title LIKE CONCAT('%', #{keyword}, '%')
-	    OR uc.company_name LIKE CONCAT('%', #{keyword}, '%')
-	  )
-	</if>
+  <if test="status == 'OPEN'">
+    AND jp.close_date >= CURDATE()
+  </if>
 
-	<if test="status == 'OPEN'">
-	  AND jp.close_date >= CURDATE()
-	</if>
+  <if test="status == 'CLOSED'">
+    AND jp.close_date &lt; CURDATE()
+  </if>
 
-	<if test="status == 'CLOSED'">
-	  AND jp.close_date &lt; CURDATE()
-	</if>
-
-	<if test="excludeApplied">
-	  AND NOT EXISTS (
-	    SELECT 1
-	    FROM JOB_APPLICATION ja
-	    WHERE ja.user_id = js.user_id
-	      AND ja.job_id = js.job_id
-	  )
-	</if>
+  <if test="excludeApplied">
+    AND NOT EXISTS (
+      SELECT 1
+      FROM JOB_APPLICATION ja
+      WHERE ja.user_id = jb.user_id
+        AND ja.job_id = jb.job_id
+    )
+  </if>
 </select>
 
 
 	<delete id="deleteFavoriteJob">
-	  DELETE FROM JOB_SCRAP
+	  DELETE FROM job_bookmark
 	  WHERE user_id = #{userId}
 	    AND job_id  = #{jobId}
 	</delete>
 	
 	<delete id="deleteFavoriteJobs">
-	  DELETE FROM JOB_SCRAP
+	  DELETE FROM job_bookmark
 	  WHERE user_id = #{userId}
 	    AND job_id IN
 	    <foreach collection="jobIds" item="id" open="(" separator="," close=")">

@@ -1,6 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+// 1. 세션 체크 
+	if(session.getAttribute("sId") == null) {
+%>
+	<script>
+		alert("로그인이 필요한 서비스입니다.");
+		location.href="<c:url value='/user/login' />";
+	</script>
+<%
+		return;
+	}
+
+// 2. 
+%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -292,6 +306,10 @@
 					{ value: "SERVICE_OPERATOR", label: "서비스 운영" }
 				  ],
 			};
+			
+			// 로그인 한 고객만이 페이지 진입 
+			
+			
 			
 			// 페이지 진입 시 제목에 자동 포커싱
 			document.addEventListener("DOMContentLoaded", () => {

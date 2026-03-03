@@ -18,10 +18,11 @@ public class HomeController {
 		
 		return "/mainCom";
 	}
-	
+
 	
 	@GetMapping("/admin/main")
 	public String adminMain() {
+		
 		return "admin/common/main";
 	}
 	

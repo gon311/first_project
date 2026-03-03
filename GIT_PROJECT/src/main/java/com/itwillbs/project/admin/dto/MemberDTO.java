@@ -44,6 +44,9 @@ public class MemberDTO {
 	private String productId;
 	private String productName;
 	
+	// 탈퇴 일자 계산을 위한 현재 날짜
+	private LocalDateTime today = LocalDateTime.now();
+	
 	public void setUserType(char userType) {
 	    this.userType = (userType == 'C') ? "기업 회원" : "구직자 회원";
 	}
@@ -82,6 +85,5 @@ public class MemberDTO {
 			this.gender = "공개안함";
 		}
 	}
-	
 	
 }

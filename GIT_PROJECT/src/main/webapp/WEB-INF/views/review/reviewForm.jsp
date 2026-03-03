@@ -214,11 +214,14 @@
 							<button type="submit" class="btn btn-primary btn-lg">저장후
 								다음으로</button>
 						</div>
-	
-						<!-- 임시저장/1단계저장 status -->
+						
+						<!-- 임시저장/1단계저장 status - 1:1단계저장, 2:임시저장 -->
 						<input type="hidden" id="saveStatus" name="saveStatus" value="1">
-	
-	
+						<!-- ai 생성 여부  -->
+						<input type="hidden" id="aiGenerated" name="aiGenerated" value="0">
+						
+						<!-- 토스트 메세지 -->
+						<div id="toast" class="toast"></div>
 					</div>
 				</div>
 			</form>
@@ -230,7 +233,7 @@
 	
 		<%-- 개별 페이지 자바스크립트 영역 --%>
 		<script>
-			// ======== 세부 직종 데이터 ========
+			// 세부 직종 데이터 
 			const jobData = {
 				  IT_DEV_DATA: [
 					{ value: "BACKEND_DEV", label: "백엔드 개발자" },
@@ -290,12 +293,11 @@
 				  ],
 			};
 			
-			// 페이지 진입 시 제목에 자동 커서
+			// 페이지 진입 시 제목에 자동 포커싱
 			document.addEventListener("DOMContentLoaded", () => {
 				const input = document.getElementById("title");
 				if (input) input.focus();
 			});
-			 
 			
 			// 세부직무 콤보 박스 
 			document.addEventListener("DOMContentLoaded", function() {
@@ -335,6 +337,7 @@
 				});
 			});
 			
+			// 버튼 미 선택시 알림창
 			document.addEventListener("DOMContentLoaded", function(){
 			    const form = document.getElementById("registForm");
 
@@ -358,17 +361,67 @@
 			    });
 			});
 			
+			// 임시저장 토스트 메세지 
+			function showToast(message, isSuccess = true) {
+				const toast = document.getElementById('toast');
+				toast.textContent = message;
+				toast.style.backgroundColor = isSuccess ? "#ADD8E6" : "#f44336"; 
+				toast.className = "toast show";
+				
+				setTimeout(() => {
+					toast.className = toast.className.replace("show", "");
+				}, 3000); // 3초 후 자동 사라짐
+				
+			}
+			
+			// 임시저장 버튼 프로세스 
 			document.addEventListener('DOMContentLoaded', () => {
 				const form = document.getElementById('registForm');
 				const statusInput = document.getElementById('saveStatus');
 				const btnDraft = document.getElementById('saveDraft');
 				
-		
 				btnDraft.addEventListener('click', () => {
-					statusInput.value = "2";  // 임시저장 상태로 설정 (0 : 최종저장, 1: 1단계저장, 2: 임시저장)
-// 					form.submit();            // DB에 저장은 되지만, 페이지 이동 없이 현재 화면에 머물러야 함.(어떻게하지?)
+					statusInput.value = "2"; // 임시저장 상태 
+					async function requestDraftSave() {
+						try{
+							const param = new URLSearchParams();
+							param.append("title", document.getElementById('title').value);
+							param.append("industryCode", document.querySelector('input[name="industryCode"]:checked')?.value);
+							param.append("jobCode", document.querySelector('input[name="jobCode"]:checked')?.value);
+							param.append("roleCode", document.querySelector('input[name="roleCode"]:checked')?.value);
+							param.append("companyCode", document.querySelector('input[name="companyCode"]:checked')?.value);
+							param.append("appliedField", document.getElementById('appliedField').value);
+							param.append("companyName", document.getElementById('companyName').value);
+							param.append("careerCode", document.querySelector('input[name="careerCode"]:checked')?.value);
+							const response = await fetch("<c:url value="/review/draftSave" />", {
+								method: "POST",
+								headers: {"Content-type": "application/x-www-form-urlencoded"}, 
+								// 비동기 요청에 사용할 데이터
+								body: param.toString()
+							});
+							
+							// response 의 ok 속성값이 true 가 아닐 경우 오류 처리
+							if(!response.ok) {
+								throw new Error("서버 오류 발생!");
+							}
+							
+							const result = await response.json();
+							
+							if(result.success) {
+								showToast(result.message, true); //토스트 메세지 띄우기 
+							} else {
+								showToast("저장을 실패하였습니다.", false);
+							}
+							
+						} catch(error) {
+							alert("요청 오류 발생: " + error);
+						}
+					
+					}
+					// 비동기 처리를 수행할 함수 호출
+					requestDraftSave();
 				});
-			});   // controller에서 DB에 저장할 때, status 추가해서 저장하도록 맵핑하기 
+			});
 						
 		</script>
 	</body>

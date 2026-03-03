@@ -92,7 +92,8 @@
 	        <if test="selectedItems != null and selectedItems.size > 0">
 			    AND (
 			        <foreach item="item" collection="selectedItems" separator=" OR ">
-			            j.address LIKE CONCAT('%', #{item}, '%')  OR j.field LIKE CONCAT('%', #{item}, '%') </foreach>
+			            j.address LIKE CONCAT('%', #{item}, '%')  OR j.field LIKE CONCAT('%', #{item}, '%') 
+			         </foreach>
 			    )
 			</if>
 			
@@ -108,6 +109,15 @@
 			</if>
 	    </where>
 	    ORDER BY j.job_id DESC
+	</select>
+	
+	<select id="getExistingRegions" resultType="map">
+	    SELECT DISTINCT 
+	        SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 1) as city,
+	        SUBSTRING_INDEX(SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 2), ' ', -1) as district
+	    FROM JOB_POSTING
+	    WHERE post_status = 1 
+	      AND address IS NOT NULL
 	</select>
 </mapper>
 

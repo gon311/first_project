@@ -1,8 +1,16 @@
 @charset "UTF-8";
 /* header 영역 */
-.nav-upper {
-	background-color: #A7C7E7;
+#header-upper{
+	background-color: #FFFFFF;
 	height: 90px;
+}
+#header-bottom{
+	background-color: #FFFFFF;
+	color : #191970;
+}
+
+.nav-link{
+	color: #0047AB;
 }
 
 /* main 영역 */
@@ -14,10 +22,11 @@
 
 
 /* footer 영역 */
+
 .footer-link {
-  color: #333;
-  text-decoration: none;
-  margin: 0 4px;
+	color: #333;
+	text-decoration: none;
+	margin: 0 4px;
 }
 
 .footer-link:hover {

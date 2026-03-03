@@ -9,66 +9,289 @@
 <title>채용공고 목록</title>
 <style>
     /* 1. 전체 레이아웃 및 폰트 */
-    body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; color: #333; }
-    .main-wrapper { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
+    body {
+        /* font-family: 'Pretendard', sans-serif; */
+        background-color: #f8f9fa;
+        margin: 0 !important;   /* 부트스트랩 간섭 방지 */
+        padding: 0 !important;
+        color: #333;
+    }
+
+    .main-wrapper {
+        max-width: 1200px;
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+>>>>>>> refs/heads/Team-3
 
     /* 2. 상단 필터 (경력/학력) */
-    .filter-dropdown-row { margin-bottom: 15px; display: flex; gap: 10px; }
-    .filter-select { padding: 10px 15px; border: 1px solid #ddd; border-radius: 5px; background: #fff; font-size: 14px; min-width: 150px; cursor: pointer; }
+    .filter-dropdown-row {
+        margin-bottom: 15px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .filter-select {
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background: #fff;
+        font-size: 14px;
+        min-width: 150px;
+        cursor: pointer;
+    }
 
     /* 3. 검색 섹션 박스 */
-    .search-section { background: #fff; border: 2px solid #333; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-    .search-tab-bar { display: flex; width: 100%; height: 60px; border-bottom: 1px solid #eee; background: #fff; }
-    .tab-item { width: 150px; font-weight: bold; cursor: pointer; font-size: 16px; border-right: 1px solid #eee; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .tab-item.active { color: #007bff; position: relative; }
-    .tab-item.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #007bff; }
+    .search-section {
+        background: #fff;
+        border: 2px solid #333;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
 
-    .search-input-area { flex: 1; display: flex; align-items: center; padding: 0 20px; }
-    .search-input-area input { flex: 1; border: none; outline: none; font-size: 15px; height: 100%; }
-    .btn-main-search { background: #333; color: #fff; border: none; padding: 0 30px; height: 40px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+    .search-tab-bar {
+        display: flex;
+        width: 100%;
+        height: 60px;
+        border-bottom: 1px solid #eee;
+        background: #fff;
+    }
+
+    .tab-item {
+        width: 150px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+        border-right: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .tab-item.active {
+        color: #007bff;
+        position: relative;
+    }
+
+    .tab-item.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: #007bff;
+    }
+
+    .search-input-area {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+    }
+
+    .search-input-area input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 15px;
+        height: 100%;
+    }
+
+    .btn-main-search {
+        background: #333;
+        color: #fff;
+        border: none;
+        padding: 0 30px;
+        height: 40px;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+    }
 
     /* 4. 선택 패널 (지역/직무) */
-    .selection-detail-panel { display: flex; height: 350px; border-top: 1px solid #eee; }
-    .category-column { width: 220px; background: #f1f3f5; border-right: 1px solid #ddd; overflow-y: auto; list-style: none; padding: 0; margin: 0; }
-    .category-column li { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #e9ecef; }
-    .category-column li.active { background: #fff; color: #007bff; font-weight: bold; }
-    .sub-item-column { flex: 1; padding: 25px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; overflow-y: auto; align-content: flex-start; }
-    .sub-item-column label { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
+    .selection-detail-panel {
+        display: flex;
+        height: 350px;
+        border-top: 1px solid #eee;
+    }
+
+    .category-column {
+        width: 220px;
+        background: #f1f3f5;
+        border-right: 1px solid #ddd;
+        overflow-y: auto;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .category-column li {
+        padding: 15px 20px;
+        cursor: pointer;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .category-column li.active {
+        background: #fff;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .sub-item-column {
+        flex: 1;
+        padding: 25px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        overflow-y: auto;
+        align-content: flex-start;
+    }
+
+    .sub-item-column label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        cursor: pointer;
+    }
 
     /* 5. 선택 섹션 하단 푸터 및 초기화 버튼 */
-    .selection-footer { padding: 15px 25px; background: #fff; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-    .selected-status { font-size: 14px; color: #666; }
-    .selected-status strong { color: #007bff; font-size: 16px; margin: 0 2px; }
+    .selection-footer {
+        padding: 15px 25px;
+        background: #fff;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .selected-status {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .selected-status strong {
+        color: #007bff;
+        font-size: 16px;
+        margin: 0 2px;
+    }
 
     .btn-reset {
-        display: flex; align-items: center; gap: 6px; background-color: transparent;
-        color: #888; border: 1px solid #ddd; padding: 8px 18px; border-radius: 25px;
-        font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background-color: transparent;
+        color: #888;
+        border: 1px solid #ddd;
+        padding: 8px 18px;
+        border-radius: 25px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
-    .btn-reset:hover { background-color: #f8f9fa; color: #333; border-color: #bbb; }
-    .btn-reset i { font-style: normal; font-size: 16px; transition: transform 0.4s ease; }
-    .btn-reset:hover i { transform: rotate(-180deg); }
+
+    .btn-reset:hover {
+        background-color: #f8f9fa;
+        color: #333;
+        border-color: #bbb;
+    }
+
+    .btn-reset i {
+        font-style: normal;
+        font-size: 16px;
+        transition: transform 0.4s ease;
+    }
+
+    .btn-reset:hover i {
+        transform: rotate(-180deg);
+    }
 
     /* 6. 요청하신 "채용정보" 타이틀 영역 */
     .list-title-area {
-        margin-top: 50px; margin-bottom: 20px; display: flex; align-items: center; 
-        gap: 12px; border-bottom: 2px solid #333; padding-bottom: 15px;
+        margin-top: 50px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 2px solid #333;
+        padding-bottom: 15px;
     }
-    .list-title-area h2 { margin: 0; font-size: 24px; font-weight: 800; color: #1a1a1a; }
-    .total-count { font-size: 16px; color: #666; }
-    .total-count span { color: #007bff; font-weight: 700; }
+
+    .list-title-area h2 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 800;
+        color: #1a1a1a;
+    }
+
+    .total-count {
+        font-size: 16px;
+        color: #666;
+    }
+
+    .total-count span {
+        color: #007bff;
+        font-weight: 700;
+    }
 
     /* 7. 리스트 카드 디자인 */
-    .job-list-container { margin-top: 10px; }
-    .job-card { 
-        background: #fff; padding: 25px 30px; border-radius: 12px; margin-bottom: 15px; 
-        border: 1px solid #eee; display: flex; align-items: center; cursor: pointer; transition: all 0.2s; 
+    .job-list-container {
+        margin-top: 10px;
     }
-    .job-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-color: #007bff; }
-    .company-name { width: 120px; font-weight: bold; font-size: 15px; }
-    .job-title { width: 350px; font-weight: 600; padding: 0 10px; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .tag { background: #f1f3f5; padding: 4px 8px; border-radius: 4px; font-size: 12px; color: #666; margin-right: 5px; }
-    .job-deadline { margin-left: auto; color: #ff4d4f; font-weight: bold; font-size: 14px; }
+
+    .job-card {
+        background: #fff;
+        padding: 25px 30px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .job-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        border-color: #007bff;
+    }
+
+    .company-name {
+        width: 120px;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .job-title {
+        width: 350px;
+        font-weight: 600;
+        padding: 0 10px;
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .tag {
+        background: #f1f3f5;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #666;
+        margin-right: 5px;
+    }
+
+    .job-deadline {
+        margin-left: auto;
+        color: #ff4d4f;
+        font-weight: bold;
+        font-size: 14px;
+    }
 </style>
 </head>
 <body>
@@ -148,14 +371,15 @@
 </div>
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 <script>
-	const regionData = {
-	    "서울": ["강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"],
-	    "경기": ["수원시", "용인시", "성남시", "부천시", "화성시", "안산시", "안양시", "평택시", "시흥시", "김포시", "파주시", "의정부시"],
-	    "인천": ["계양구", "미추홀구", "남동구", "동구", "부평구", "서구", "연수구", "중구"], 
-	    "부산": ["강서구", "금정구", "남구", "동래구", "부산진구", "북구", "사상구", "사하구", "수영구", "연제구", "해운대구"],
-	    "대구": ["남구", "달서구", "동구", "북구", "서구", "수성구", "중구", "달성군"],
-	    "대전": ["대덕구", "동구", "서구", "유성구", "중구"] 
-	};
+	const regionData = {};
+	
+	<c:forEach var="reg" items="${existRegions}">
+	    if(!regionData['${reg.city}']) {
+	        regionData['${reg.city}'] = [];
+	    }
+	    regionData['${reg.city}'].push('${reg.district}');
+	</c:forEach>
+	
 
 	const jobData = {
 	    "기획·전략": ["경영기획", "전략기획", "사업개발", "서비스기획", "데이터분석"],
@@ -246,7 +470,7 @@
     function resetAll() {
         location.href = "JobList";
     }
-
+    
     document.addEventListener('DOMContentLoaded', renderMainCategory);
 </script>
 </body>

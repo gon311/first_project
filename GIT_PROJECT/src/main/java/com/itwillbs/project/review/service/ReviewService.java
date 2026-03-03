@@ -18,5 +18,15 @@ public class ReviewService{
 		reviewMapper.insertForm(coverLetterDTO);
 	}
 
+	public void saveTotal(CoverLetterDTO coverLetterDTO) {
+		reviewMapper.updateContent(coverLetterDTO);
+		
+	}
+
+	public void deleteData(Long coverLetterIdx) {
+		reviewMapper.deleteData(coverLetterIdx);
+		
+	}
+
 
 }

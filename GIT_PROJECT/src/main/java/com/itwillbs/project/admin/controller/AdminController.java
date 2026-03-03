@@ -68,14 +68,32 @@ public class AdminController {
 		
 	}
 	
-	// 구직자 차단(구현중)
-	@GetMapping("/block")
-	public String userBlock(MemberDTO dto, RedirectAttributes ra) {
-//		adminService.blockUser(dto.getId(), dto.getStatus());
-		ra.addAttribute("id", dto.getUserId());
+	// 구직자 차단
+	@GetMapping("/users//block")
+	public String userBlock(MemberDTO memberDTO, RedirectAttributes ra) {
+		adminService.blockUser(memberDTO.getUserId());
+		ra.addAttribute("userId", memberDTO.getUserId());
 		
-		return "redirect:/admin/info";
+		return "redirect:/admin/users/info";
 	}
+	
+	// 구직자 차단 해제
+	@GetMapping("/users/unblock")
+	public String userUnBlock(MemberDTO memberDTO, RedirectAttributes ra) {
+		adminService.unblockUser(memberDTO.getUserId());
+		ra.addAttribute("userId", memberDTO.getUserId());
+		
+		return "redirect:/admin/users/info";
+	}
+	
+	// 구직자 회원 삭제(탈퇴 후 3년이 지난 경우)
+	@GetMapping("/users/delete")
+	public String userDelete(MemberDTO memberDTO) {
+		adminService.deleteUser(memberDTO.getUserId());
+		
+		return "redirect:/admin/users";
+	}
+	
 	
 	//===========================================================================
 	// [ 기업회원 관리 페이지 ]
@@ -113,6 +131,23 @@ public class AdminController {
 		
 		return "admin/member/comInfo";
 			
+	}
+	
+	// 기업회원 차단
+	@GetMapping("/coms//block")
+	public String comBlock(MemberDTO memberDTO, RedirectAttributes ra) {
+		adminService.blockUser(memberDTO.getUserId());
+		ra.addAttribute("userId", memberDTO.getUserId());
+		
+		return "redirect:/admin/coms/info";
+	}
+	
+	@GetMapping("/coms/unblock")
+	public String comUnBlock(MemberDTO memberDTO, RedirectAttributes ra) {
+		adminService.unblockUser(memberDTO.getUserId());
+		ra.addAttribute("userId", memberDTO.getUserId());
+		
+		return "redirect:/admin/coms/info";
 	}
 	
 	//===========================================================================
@@ -177,17 +212,6 @@ public class AdminController {
 	}
 	
 	//-----------------------------------------
-	// (사용자 페이지와 매핑 필요)
-	// 기업요금제(보류) 
-	@GetMapping("/cstore")
-	public String comStore() {
-		return "admin/store/comStore";
-	}
-	// 구직자요금제(보류)
-	@GetMapping("/ustore")
-	public String userStore() {
-		return "admin/store/userStore";
-	}
 	
 	// 구매하기(보류)
 	@GetMapping("/pay")

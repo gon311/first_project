@@ -33,11 +33,27 @@ public class AdminService{
 		return adminMapper.selectUserInfo(userId);
 	}
 	
+	// 회원 차단
+	public void blockUser(BigInteger userId) {
+		adminMapper.updateUserBlock(userId);
+	}
+	
+	// 회원 차단 해제
+	public void unblockUser(BigInteger userId) {
+		adminMapper.updateUserUnblock(userId);
+	}
+	
+	// 탈퇴한 회원 삭제
+	public void deleteUser(BigInteger userId) {
+		adminMapper.deleteUserInfo(userId);
+	}
+	
 	// 탈퇴한 회원 목록
 	public List<MemberDTO> getUserWithdraw(String keyword, String startDate, String endDate) {
 		return adminMapper.selectUserWithdraw(keyword, startDate, endDate);
 	}
 	
+	//---------------------------------------------------------------------------------------------
 	// 기업회원 목록 조회
 	public List<MemberDTO> getComList(String keyword, String type, String status) {
 		return adminMapper.selectComList(keyword, type, status);
@@ -109,6 +125,14 @@ public class AdminService{
 	public ProductDTO getProductInfo(String productId) {
 		return adminMapper.selectProductInfo(productId);
 	}
+
+	
+
+	
+
+	
+
+	
 
 	
 

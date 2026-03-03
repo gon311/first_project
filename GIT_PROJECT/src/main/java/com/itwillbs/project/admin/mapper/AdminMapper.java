@@ -23,6 +23,15 @@ public interface AdminMapper {
 	// 회원 상세 정보
 	MemberDTO selectUserInfo(BigInteger userId);
 	
+	// 회원 차단
+	void updateUserBlock(BigInteger userId);
+	
+	// 회원 차단 해제
+	void updateUserUnblock(BigInteger userId);
+	
+	// 탈퇴한 회원 삭제
+	void deleteUserInfo(BigInteger userId);
+	
 	// 탈퇴 회원 목록 조회
 	List<MemberDTO> selectUserWithdraw(@Param("keyword") String keyword
 									, @Param("startDate") String startDate
@@ -85,6 +94,12 @@ public interface AdminMapper {
 	//========================================================================
 	// 구매할 상품 상세 정보 조회(구매하기 진행)
 	ProductDTO selectProductInfo(String productId);
+
+	
+
+	
+
+	
 
 	
 

@@ -151,6 +151,7 @@ public class StoreController {
 	    return "store/payFailed";
 	}
 
+<<<<<<< HEAD
 	
 	@GetMapping("/payResult")
 	public String payResult(String code) {
@@ -162,6 +163,14 @@ public class StoreController {
 		return "store/payFailed";
 	}
 	
+=======
+//	
+//	@GetMapping("/payResult")
+//	public String payResult() {
+//		return "/store/paySuccess";
+//	}
+//	
+>>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 
 }
 

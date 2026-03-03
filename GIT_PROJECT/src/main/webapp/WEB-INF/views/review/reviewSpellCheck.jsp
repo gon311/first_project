@@ -41,8 +41,9 @@
 						</div>
 						<div class="col-12 col-lg-6">
 							<label for="outputText" class="form-label">출력창</label>
-							<textarea id="outputText" name="outputText" class="form-control"
-								placeholder="검사 결과가 여기에 표시됩니다."></textarea>
+							<div id="outputText" class="form-control" 
+								 style="height: 520px; overflow-y: auto; background-color: #f8f9fa;">
+							 </div>
 						</div>
 					</div>
 	
@@ -84,7 +85,44 @@
 			});
 			
 			// 2) 검사하기 버튼 
-			
+			document.getElementById("generateBtn").addEventListener('click', () => {
+				document.getElementById("loadingOverlay").classList.remove("d-none");
+				
+				// 입력받은 내용 가져오기 
+				const inputContent = document.getElementById("inputText").value;
+				
+				async function requestGenerate() {
+					try {
+						// chatGPT에 전달하기 
+						const response = await fetch("<c:url value="/gpt/spellCheck" />", {
+							method: "POST", 
+							headers: { 
+								"Content-type": "application/json"
+							}, 
+							body: JSON.stringify({
+								inputText : inputContent
+							})
+						});
+						
+						if(!response.ok) {
+							throw new Error("오류 발생!");
+						}
+						
+						// 생성된 값 화면에 출력 
+						const result = await response.json();
+						const outputArea = document.getElementById("outputText");
+						
+						outputArea.innerHTML = result.corrected;
+						
+					} catch(error) {
+						console.error("Error:", error);
+						alert("맞춤법 검사 중 문제가 발생했습니다.");
+					} finally {
+						document.getElementById("loadingOverlay").classList.add("d-none");
+					}
+				}
+				requestGenerate();
+			});
 			
 			// 3) 복사하기 버튼 
 			document.addEventListener("DOMContentLoaded", () => {
@@ -94,7 +132,7 @@
 				if (copyBtn && output) {
 					copyBtn.addEventListener("click", async () => {
 						try {
-							const text = output.value ?? "";
+							const text = output.innerText;
 							if (!text) {
 								alert("복사할 내용이 없습니다.");
 								return;
@@ -102,7 +140,6 @@
 							await navigator.clipboard.writeText(text);
 							alert("클립보드에 복사되었습니다. Ctrl+V로 붙여넣기 해주세요.");
 						} catch (err) {
-							// 일부 환경/권한 문제 대비: execCommand 폴백
 							try {
 								output.select();
 								document.execCommand("copy");

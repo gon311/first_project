@@ -90,15 +90,16 @@
 	
 		<%-- 개별 페이지 자바스크립트 영역 --%>
 		<script type="text/javascript">
-
+			// 1) 입력창 포커싱 
 			document.addEventListener("DOMContentLoaded", () => {
 			    const input = document.getElementById("inputText");
 			    if (input) input.focus();
 			});
-
 		
-			// 1) chatGPT로 표절 검사 
-			// 2) 클립보드에 복사
+			// 2) 표절검사 버튼
+			
+			
+			// 3) 복사하기 버튼
 			document.addEventListener("DOMContentLoaded", () => {
 				const copyBtn = document.getElementById("copyBtn");
 				const output = document.getElementById("outputText");
@@ -114,7 +115,6 @@
 							await navigator.clipboard.writeText(text);
 							alert("클립보드에 복사되었습니다. Ctrl+V로 붙여넣기 해주세요.");
 						} catch (err) {
-							// 일부 환경/권한 문제 대비: execCommand 폴백
 							try {
 								output.select();
 								document.execCommand("copy");

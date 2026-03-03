@@ -1,5 +1,6 @@
 package com.itwillbs.project.gpt.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.project.gpt.dto.GptGenerateDTO;
 import com.itwillbs.project.gpt.dto.GptResponseDTO;
+import com.itwillbs.project.gpt.dto.SpellCheckDTO;
 import com.itwillbs.project.gpt.mapper.GptGenerateMapper;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
@@ -21,8 +23,9 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class GptGenerateService {
 	
+	@Autowired
 	private GptGenerateMapper generateMapper;
-	private OpenAIClient client;
+	private final OpenAIClient client;
 	
 	public GptGenerateService(@Value("${gpt.api_key}") String apiKey) {
 		this.client = OpenAIOkHttpClient.builder()
@@ -94,6 +97,64 @@ public class GptGenerateService {
 		
 		return objectMapper.writeValueAsString(result);
 
+	}
+
+	public String spellCheck(String inputText) throws JsonProcessingException {
+		log.info("1. 메서드 진입 성공, inputText: " + inputText);
+		
+		if (client == null) {
+	        log.error("범인 검거! client 객체가 null입니다.");
+	    }
+		
+		// 1. 역할과 규칙 정의 
+		String systemMessage = String.join("\n", 
+				"당신은 10년 차 베테랑 국어 교정교열 전문가입니다.\r\n"
+			    + "사용자가 제공하는 텍스트의 맞춤법, 띄어쓰기, 문법을 완벽하게 교정합니다.\r\n"
+			    + "\r\n"
+			    + "[핵심 원칙]\r\n"
+			    + "1. 정확성: 국립국어원 표준 규정을 엄격히 준수합니다.\r\n"
+			    + "2. 시각적 강조: 수정되거나 추가된 부분은 반드시 <span style=\"color:red\">수정내용</span> 태그로 감싸서 표시합니다.\r\n"
+			    + "3. 원문 유지: 의미가 변하지 않는 한 원문의 문체와 의도를 최대한 존중합니다.\r\n"
+			    + "\r\n"
+			    + "[응답 형식]\r\n"
+			    + "반드시 아래 JSON 형식으로만 응답하며, 앞뒤 설명이나 인사말은 절대 포함하지 마세요.\r\n"
+			    + "{\r\n"
+			    + "  \"corrected\": \"교정된 내용이 <span style=\\\"color:red\\\">반영된</span> 최종 텍스트\"\r\n"
+			    + "}"
+		);
+		
+		// 2. 실제 주입 메세지
+		String userMessage = String.format(
+				"아래 제공된 텍스트의 맞춤법, 띄어쓰기 및 문법을 분석하여 교정해 주세요.\n\n" +
+				"[교정 대상 텍스트]\n%s", 
+				inputText
+		);
+		log.info("2. 파라미터 빌드 완료");
+		
+		// 3. ChatGPT 요청
+		StructuredChatCompletionCreateParams<SpellCheckDTO> params = ChatCompletionCreateParams.builder()
+				.model(ChatModel.GPT_4_1_MINI)
+				.addSystemMessage(systemMessage)
+				.addUserMessage(userMessage)
+				.responseFormat(SpellCheckDTO.class)
+				.build();
+		
+		StructuredChatCompletion<SpellCheckDTO> response = client.chat().completions().create(params);
+		log.info("3. ChatGPT 응답 수신 완료");
+		
+		SpellCheckDTO result = 
+				response.choices().get(0)
+				.message()
+				.content()
+				.orElse(new SpellCheckDTO());
+		
+		log.info("result : " + result);
+					
+		// 4. JSON 문자열로 반환
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		return objectMapper.writeValueAsString(result);
+		
 	}
 
 	

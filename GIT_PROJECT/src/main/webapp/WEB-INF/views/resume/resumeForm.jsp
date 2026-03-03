@@ -16,18 +16,18 @@
 	
 		<%-- main area --%>
 		<main class="container my-4">
-			<form action="<c:url value="/resume/resumeRegist2" />" name="registForm"
+			<form action="<c:url value="/resume/regist2" />" name="registForm"
 				id="registForm" method="post" novalidate>
 				<div class="card shadow-sm">
 					<div class="card-body p-4">
 	
-						<!-- 1. 자소서 제목 -->
+						<!-- 1. 이력서 제목 -->
 						<div class="mb-4">
-							<label for="title" class="form-label fw-semibold">자소서 제목 <span
+							<label for="title" class="form-label fw-semibold">이력서 제목 <span
 								class="text-danger">*</span></label> <input type="text"
 								class="form-control" id="title" name="title"
 								placeholder="제목을 입력해 주세요." required>
-							<div class="form-text">예) 2026 상반기 ○○기업 △△직무 자기소개서</div>
+							<div class="form-text">예) 2026 상반기 ○○기업 △△직무 이력서</div>
 						</div>
 	
 						<!-- 2. 업종 -->
@@ -122,7 +122,7 @@
 							<!-- 세부 직종 -->
 							<div class="row g-2 align-items-center">
 								<div class="col-12 col-sm-6 col-md-4">
-									<label for="jobRole" class="form-label mb-1">세부 직종</label> <select
+									<label for="roleCode" class="form-label mb-1">세부 직종</label> <select
 										id="roleCode" name="roleCode" class="form-select" disabled
 										required>
 										<option value="default" disabled selected>세부 직종을 선택하세요</option>
@@ -137,8 +137,8 @@
 						<!-- 4. 기업 형태 -->
 						<div class="mb-4">
 							<div class="d-flex align-items-center mb-2">
-								<label class="form-label fw-semibold mb-0 me-2">기업 형태 <span
-									class="text-danger">*</span></label>
+								<p class="form-label fw-semibold mb-0 me-2">기업 형태 <span
+									class="text-danger">*</span></p>
 							</div>
 							<div class="d-flex flex-wrap chip-group">
 								<input class="btn-check" type="radio" name="companyCode"
@@ -170,13 +170,13 @@
 						<!-- 5. 지원분야 / 6. 기업명 -->
 						<div class="row g-3 mb-4">
 							<div class="col-12 col-md-6">
-								<label class="form-label fw-semibold">지원분야 <span
+								<label for="appliedField" class="form-label fw-semibold">지원분야 <span
 									class="text-danger">*</span></label> <input type="text"
 									class="form-control" id="appliedField" name="appliedField"
 									required placeholder="예) 백엔드 개발자">
 							</div>
 							<div class="col-12 col-md-6">
-								<label class="form-label fw-semibold">기업명 <span
+								<label for="companyName" class="form-label fw-semibold">기업명 <span
 									class="text-danger">*</span></label> <input type="text"
 									class="form-control" id="companyName" name="companyName"
 									required placeholder="예) ○○주식회사">
@@ -186,8 +186,8 @@
 						<!-- 7. 경력 사항 -->
 						<div class="mb-4">
 							<div class="d-flex align-items-center mb-2">
-								<label class="form-label fw-semibold mb-0 me-2">경력 사항 <span
-									class="text-danger">*</span></label>
+								<p class="form-label fw-semibold mb-0 me-2">경력 사항 <span
+									class="text-danger">*</span></p>
 							</div>
 							<div class="d-flex flex-wrap chip-group">
 								<input class="btn-check" type="radio" name="careerCode"
@@ -202,7 +202,12 @@
 									class="btn btn-outline-secondary chip" for="cl_intern">인턴</label>
 							</div>
 						</div>
-	
+						
+						<!-- hidden inputs -->
+					    <input type="hidden" id="hiddenIndustry" name="hiddenIndustry">			<!-- 업종 -->
+					    <input type="hidden" id="hiddenJob" name="hiddenJob">					<!-- 직종 -->
+					    <input type="hidden" id="hiddenRole" name="hiddenRole">					<!-- 직종_서브 -->
+					    <input type="hidden" id="hiddenCompanyType" name="hiddenCompanyType">	<!-- 기업형태 -->
 	
 						<!-- 제출 버튼 -->
 						<div class="d-flex justify-content-end gap-2 mt-4">
@@ -223,6 +228,7 @@
 					</div>
 				</div>
 			</form>
+			
 		</main>
 	
 	
@@ -291,14 +297,70 @@
 				  ],
 			};
 			
+			// hidden setVal.
+			document.addEventListener('DOMContentLoaded', () => {
+		    const formH = document.getElementById('registForm');
+		
+			    formH.addEventListener('submit', (event) => {
+			    	
+			    	// 유효성 + 합침.
+			    	if (!formH.industryCode.value) {
+			            alert("업종을 선택해주세요.");
+			            event.preventDefault();
+			            return;
+			        } else if (!formH.jobCode.value) {
+			            alert("직종을 선택해주세요.");
+			            event.preventDefault();
+			            return;
+			        } else if (!formH.companyCode.value) {
+			            alert("기업 형태를 선택해주세요.");
+			            event.preventDefault();
+			            return;
+			        } else if (!formH.careerCode.value) {
+			            alert("경력 사항을 선택해주세요.");
+			            event.preventDefault();
+			            return;
+			        }
+			    				    	
+			    	// 업종
+			    	const industryInput = document.querySelector('input[name="industryCode"]:checked');
+			    	if (industryInput) {
+			    	    document.getElementById('hiddenIndustry').value = industryInput.nextElementSibling?.textContent.trim() || "";
+			    	}
+
+			    	// 직종
+			    	const jobInput = document.querySelector('input[name="jobCode"]:checked');
+			    	if (jobInput) {
+			    	    document.getElementById('hiddenJob').value = jobInput.nextElementSibling?.textContent.trim() || "";
+			    	}
+
+			    	// 직종세부 (기존 유지)
+			    	const roleSelect = document.getElementById('roleCode');
+			    	document.getElementById('hiddenRole').value = roleSelect?.options[roleSelect.selectedIndex]?.text || "";
+
+			    	// 기업형태
+			    	const companyInput = document.querySelector('input[name="companyCode"]:checked');
+			    	if (companyInput) {
+			    	    document.getElementById('hiddenCompanyType').value = companyInput.nextElementSibling?.textContent.trim() || "";
+			    	}
+		        
+			    });
+			}); // hidden end. - 
+
+			
 			// 페이지 진입 시 제목에 자동 포커싱
-			document.addEventListener("DOMContentLoaded", () => {
-				const input = document.getElementById("title");
-				if (input) input.focus();
-			});
+// 			document.addEventListener("DOMContentLoaded", () => {
+// 				const input = document.getElementById("title");
+// 				if (input) input.focus();
+// 			});
 			
 			// 세부직무 콤보 박스 
 			document.addEventListener("DOMContentLoaded", function() {
+				
+				// 페이지 진입시 제목 포커싱 + 추가
+				const inputT = document.getElementById("title");
+				if (inputT) inputT.focus();
+				
 				const radios = document.querySelectorAll('input[name="jobCode"]');
 				const selectBox = document.getElementById("roleCode");
 				const jobInput = document.getElementById("selectedJobInput");
@@ -335,29 +397,29 @@
 				});
 			});
 			
-			// 버튼 미 선택시 알림창
-			document.addEventListener("DOMContentLoaded", function(){
-			    const form = document.getElementById("registForm");
+			// 버튼 미 선택시 알림창 => 위에서 합침 + 추가됨.
+// 			document.addEventListener("DOMContentLoaded", function(){
+// 			    const form = document.getElementById("registForm");
 
-			    form.addEventListener("submit", function(e){
-			        if(!form.industryCode.value){
-			            alert("업종을 선택해주세요.");
-			            e.preventDefault();
-			        }
-			        else if(!form.jobCode.value){
-			            alert("직종을 선택해주세요.");
-			            e.preventDefault();
-			        }
-			        else if(!form.companyCode.value){
-			            alert("기업 형태를 선택해주세요.");
-			            e.preventDefault();
-			        }
-			        else if(!form.careerCode.value){
-			            alert("경력 사항을 선택해주세요.");
-			            e.preventDefault();
-			        }
-			    });
-			});
+// 			    form.addEventListener("submit", function(e){
+// 			        if(!form.industryCode.value){
+// 			            alert("업종을 선택해주세요.");
+// 			            e.preventDefault();
+// 			        }
+// 			        else if(!form.jobCode.value){
+// 			            alert("직종을 선택해주세요.");
+// 			            e.preventDefault();
+// 			        }
+// 			        else if(!form.companyCode.value){
+// 			            alert("기업 형태를 선택해주세요.");
+// 			            e.preventDefault();
+// 			        }
+// 			        else if(!form.careerCode.value){
+// 			            alert("경력 사항을 선택해주세요.");
+// 			            e.preventDefault();
+// 			        }
+// 			    });
+// 			});
 			
 			// 임시저장 토스트 메세지 
 			function showToast(message, isSuccess = true) {

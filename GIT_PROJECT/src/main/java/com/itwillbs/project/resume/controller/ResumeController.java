@@ -5,6 +5,7 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.core.appender.rewrite.MapRewritePolicy.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +37,7 @@ public class ResumeController {
 	
 	// 이력서 등록페이지 - 2 (기본정보/사회적/병력/등등...)
 	@PostMapping("/regist2")
-	public String resumeRegist2(HttpServletRequest request) {
+	public String resumeRegist2(ResumeDTO resumeDTO, HttpServletRequest request) {
 		// 이전 페이지에서 넘어온 파라미터 첵크
 		Enumeration<String> paramNames = request.getParameterNames();
 	    while (paramNames.hasMoreElements()) {
@@ -44,7 +45,8 @@ public class ResumeController {
 	        String value = request.getParameter(name);
 	        System.out.println(name + " = " + value);
 	    }
-		
+		    
+	    
 		return "resume/resumeRegist2";
 	}
 	
@@ -53,18 +55,11 @@ public class ResumeController {
 	@PostMapping("/resumeSave") 
 	public String resumeSave(ResumeDTO resumeDTO, HttpSession session
 								, HttpServletRequest request) {
-		// 폼 파라미터 첵크.
-//		Enumeration<String> paramNames = request.getParameterNames();
-//	    while (paramNames.hasMoreElements()) {
-//	        String name = paramNames.nextElement();
-//	        String value = request.getParameter(name);
-//	        System.out.println(name + " = " + value);
-//	    }
 		
 		// 세션에서 sId 꺼내오기(유저아디 - bigint)
 	    int userIdx = Integer.parseInt( session.getAttribute("userIdx").toString()) ;
 
-//	    log.info(userIdx);
+	    log.info(userIdx);
 	    // DTO에 세션 값 추가
 	    resumeDTO.setUser_id(userIdx);   
 	
@@ -73,11 +68,19 @@ public class ResumeController {
 		resumeService.registResume(resumeDTO);
 		
 		// 저장 성공 시 -> 내 이력서 상세 페이지로 redirect.
+//		return "";
 		return "redirect:/resume/resumeView";
 	}
 	
+	// 이력서 상세정보.
 	@GetMapping("/resumeView")
-	public String resumeView() {
+	public String resumeView(ResumeDTO resumeDTO,Mode model) {
+		
+		// db에서 받아온 DTO
+		ResumeDTO dbResumeDTO = ResumeService.getResumeInfo(resumeDTO.getResume_id());
+		
+		//
+		
 		return "/resume/resumeView";
 	}
 }

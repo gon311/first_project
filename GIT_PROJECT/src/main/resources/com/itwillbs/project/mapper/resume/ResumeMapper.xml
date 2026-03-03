@@ -19,19 +19,44 @@
 	       	phone_number,       <!-- 전화번호 -->  
 	       	email,              <!-- 이메일 --> 
 	       	address1,			<!-- 주소1 --> 	
-	       	address2,			<!-- 주소상세2 --> 
+	       	address2,			<!-- 주소상세2 -->
+
+			<!-- 1단계 작성값 -->
+			industryCode,       <!-- 업종 -->
+			jobCode,            <!-- 직종 -->
+			roleCode,            <!-- 세부직종 -->
+			companyCode,       <!-- 기업형태 -->
+			appliedField,     <!-- 지원분야(지원직무) -->
+			companyName,      <!-- 기업명(지원한) -->
+			careerCode,       <!-- 경력사항(신입/경력/인턴) -->
+	       	<!-- 히든의 파라미터 -->
+	       	hiddenIndustry,		<!-- 업종명칭 -->
+    		hiddenJob,			<!-- 직종명칭 -->
+    		hiddenRole,			<!-- 세부직종명 -->
+    		hiddenCompanyType,	<!-- 기업형태명칭 -->
 	       	
-	       	military_service,
-			military_branch,	
-			military_rank,		
-			discharge_reason,
-			enlist_date,		
-			discharge_date,		
-			exemption_reason	
+	       	
+	       	<!-- 사회적 우대사항 -->
+	       	veteran_status,		<!-- 보훈대상 여부 --> 
+			veteran_number,		<!-- 보훈번호 -->   
+			disability_status,		<!-- 장애 여부 --> 
+			disability_grade,   <!-- 장애 등급 : 추가 -->  
+			multicultural_status,		<!-- 다문화가정 여부 --> 	
+			north_defector,		<!-- 북한이탈주민 여부 -->
+			low_income_status,	<!-- 기초생활수급자/차상위계층 여부 --> 
+	       	
+	       	<!-- 병역 사항 -->
+	       	military_service,	<!-- 군필 여부 --> 
+			military_branch,	<!-- 군별 -->   
+			military_rank,		<!-- 계급 --> 
+			discharge_reason,   <!-- 전역사유 -->  
+			enlist_date,		<!-- 입대일 --> 	
+			discharge_date,		<!-- 전역일 -->
+			exemption_reason	<!-- 면제사유 -->
 	       	
 	    ) VALUES (
 	        #{user_id},       
-	        #{title},       
+	        #{title},       	   
 	        #{name_kor}, 
 	        #{name_eng}, 
 	        #{name_han}, 
@@ -43,6 +68,27 @@
 	        #{address1}, 
 	        #{address2},
 	        
+	        #{industryCode},
+	        #{jobCode},
+	        #{roleCode},
+	        #{companyCode},
+	        #{appliedField},
+	        #{companyName},
+	        #{careerCode},
+	        
+	        #{hiddenIndustry},
+	        #{hiddenJob},
+	        #{hiddenRole},
+	        #{hiddenCompanyType},
+	        
+	        #{veteran_status}, 
+	        #{veteran_number}, 
+	        #{disability_status}, 
+	        #{disability_grade}, 
+	        #{multicultural_status}, 
+	        #{north_defector}, 
+	        #{low_income_status}, 
+	        
 	        #{military_service}, 
 	        #{military_branch}, 
 	        #{military_rank}, 
@@ -52,6 +98,8 @@
 	        #{exemption_reason} 
 	    );   
 	</insert>	
+	
+	
 	
 </mapper>
 

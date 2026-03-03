@@ -24,16 +24,16 @@
 	<%-- main area --%> 
 <%-- 	user Id : ${sessionScope.userIdx} --%>
 	<h5>
-	업종 : ${param.industry}
-	업종라벨 : ${param.industryLabel}<br>
-	직종 : ${param.jobGroup}
-	직종라벨 : ${param.jobGroupLabel}<br>
-	직종세부 : ${param.jobRole}
-	직종세부라벨 : ${param.jobRoleLabel}<br>
+<%-- 	업종 : ${param.industryCode} --%>
+<%-- 	업종라벨 : ${param.hiddenIndustry}<br> --%>
+<%-- 	직종 : ${param.jobCode} --%>
+<%-- 	직종라벨 : ${param.hiddenJob}<br> --%>
+<%-- 	직종세부 : ${param.roleCode} --%>
+<%-- 	직종세부라벨 : ${param.hiddenRole}<br> --%>
 	
-	기업형태 : ${param.companyType}
-	기업형태라벨 : ${param.companyTypeLabel}
-	기업명 : ${param.companyName}
+<%-- 	기업형태 : ${param.companyCode} --%>
+<%-- 	기업형태라벨 : ${param.hiddenCompanyType} --%>
+<%-- 	기업명(지원한) : ${param.companyName} --%>
 	</h5>
 	
  	<div class="container-fluid">
@@ -45,7 +45,22 @@
       <!-- 중앙 메인폼 -->
       <div class="col-12 col-md-8 main-form">
         <form action="<c:url value='/resume/resumeSave' />" method="post" class="resume-form">
-          
+	        <!-- 1.jsp에서 넘어온 값들을 hidden으로 다시 담아줌 -->
+		    <input type="hidden" name="industryCode" value="${param.industryCode}" />
+		    <input type="hidden" name="jobCode" value="${param.jobCode}" />
+		    <input type="hidden" name="roleCode" value="${param.roleCode}" />
+		    <input type="hidden" name="selectedJobInput" value="${param.selectedJobInput}" />
+		    <input type="hidden" name="companyCode" value="${param.companyCode}" />
+		    <input type="hidden" name="appliedField" value="${param.appliedField}" />
+		    <input type="hidden" name="companyName" value="${param.companyName}" />
+		    <input type="hidden" name="careerCode" value="${param.careerCode}" />
+		
+		    <!-- 히든 파라미터 (명칭 값들) -->
+		    <input type="hidden" name="hiddenIndustry" value="${param.hiddenIndustry}" />
+		    <input type="hidden" name="hiddenJob" value="${param.hiddenJob}" />
+		    <input type="hidden" name="hiddenRole" value="${param.hiddenRole}" />
+		    <input type="hidden" name="hiddenCompanyType" value="${param.hiddenCompanyType}" />
+                  
           <!-- 제목 -->
           <div class="card section-card mb-4">
             <div class="card-header section-title">
@@ -53,7 +68,7 @@
             </div>
             <div class="card-body">
               <div class="form-group mb-3">
-                <label for="resumeTitle" class="resume-label">제목</label>
+                <label for="title" class="resume-label">제목</label>
                 <input type="text" id="title" name="title"
                        value="${param.title}" 
                        class="form-control resume-input" 

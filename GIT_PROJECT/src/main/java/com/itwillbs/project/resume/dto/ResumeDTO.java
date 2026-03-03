@@ -2,6 +2,9 @@ package com.itwillbs.project.resume.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,12 +14,16 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ResumeDTO {
+	
+	// @DateTimeFormat(pattern = "yyyy-MM-dd") 
+	
 	private Integer resume_id; 		// 	-- 이력서 아이디 autoIncrease
 	private	Integer user_id;		// 	-- 소유자 유저 ID (FK)
 	private	String 	name_kor;		//  -- 이력서 이름(한글)
 	private	String  name_eng;		//	-- 이력서 이름(영문)
 	private	String  name_han;		//	-- 이력서 이름(한문)
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private	LocalDate birth_date;	// -- 생년월일
 	private	String gender;          // -- 성별
 	private	String phone_number;    // -- 전화번호
@@ -27,40 +34,43 @@ public class ResumeDTO {
 	private	String veteran_status;		// -- 보훈대상 여부
 	private	String veteran_number;      // -- 보훈번호
 	private	String disability_status;   // -- 장애 여부
-	private	String disability_grade;   // -- 장애 등급 : 추가
+	private	String disability_grade;   	// -- 장애 등급 : 추가
 	
 	private	String multicultural_status;// -- 다문화가정 여부
 	private	String north_defector;		// -- 북한이탈주민 여부
 	private	String low_income_status;	// -- 기초생활수급자/차상위계층 여부
 
-	private	String 		military_service;	// -- 군필 여부
-	private	String 		military_branch;	// -- 군별
-	private	String 		military_rank;		// -- 계급
-	private	String 		discharge_reason;	// -- 전역사유
+	private	String military_service;	// -- 군필 여부
+	private	String military_branch;		// -- 군별
+	private	String military_rank;		// -- 계급
+	private	String discharge_reason;	// -- 전역사유
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private	LocalDate 	enlist_date;		// -- 입대일
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private	LocalDate 	discharge_date;		// -- 전역일
 	private	String 		exemption_reason;	// -- 면제사유
 	
-	/*  1차 작성된 추가 컬럼들
-	 * ADD title VARCHAR(100),            -- 제목
-		ADD industry VARCHAR(50),          -- 업종
-		ADD jobGroup VARCHAR(50),          -- 직종
-		ADD jobRole VARCHAR(50),           -- 세부직종
-		ADD companyType VARCHAR(50),       -- 기업형태
-		ADD appliedField VARCHAR(100),     -- 지원분야(지원직무)
-		ADD companyName VARCHAR(100),      -- 기업명(지원한)
-		ADD careerLevel VARCHAR(30);       -- 경력사항(신입/경력/인턴)
-	 * */
-	private String title;
+//	 1차 작성된 추가 컬럼들
+	private String title;			// 제목            
+	private String industryCode;    // 업종            
+	private String jobCode;         // 직종            
+	private String roleCode;        // 세부직종          
+	private String companyCode;     // 기업형태          
+	private String appliedField;    // 지원분야(지원직무)    
+	private String companyName;     // 기업명(지원한)      
+	private String careerCode;     	// 경력사항(신입/경력/인턴)
 	
-	private String industry;
-	private String jobGroup;
-	private String jobRole;
-	private String companyType;
-	private String appliedField;
-	private String companyName;
-	private String careerLevel;
+	private String hiddenIndustry;		// 업종명칭   
+	private String hiddenJob;           // 직종명칭   
+	private String hiddenRole;          // 세부직종명  
+	private String hiddenCompanyType;   // 기업형태명칭 
 	
+	// 학력정보 1 ~ n개.
+	private List<ResumeEducationDTO> educationList;
+	
+	// 경력정보 1 ~ n개.
+	private List<ResumeExperienceDTO> experienceList;
 }
 
 

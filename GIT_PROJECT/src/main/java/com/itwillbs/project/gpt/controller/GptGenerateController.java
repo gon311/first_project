@@ -40,4 +40,13 @@ public class GptGenerateController {
 		
 		return response;
 	}
+	
+	@ResponseBody
+	@PostMapping(value = "/copyCheck", produces = "application/json; charset=UTF-8")
+	public String copyCheck(@RequestBody Map<String, String> requests) throws JsonProcessingException {
+		String inputText = requests.get("inputText");
+		String response = generateService.copyCheck(inputText);
+		
+		return response;
+	}
 }

@@ -48,16 +48,22 @@
 						<div class="col-12 col-lg-6">
 							<!-- (위) 수정 결과물 출력창 -->
 							<div class="pane mb-3">
-								<label for="outputText" class="form-label">수정 결과물</label>
-								<textarea id="outputText" class="form-control"
-									placeholder="표절 검사 후 수정/개선된 결과가 표시됩니다."></textarea>
+								<div class="col-12 col-lg-6">
+									<label for="correctedResult" class="form-label">수정 결과물</label>
+									<div id="correctedResult" class="form-control" 
+										 style="width: 521px; height: 240px; overflow-y: auto; background-color: #f8f9fa;">
+									 </div>
+								</div>
 							</div>
 	
 							<!-- (아래) 수정 내역 세부 설명창 -->
 							<div class="pane">
-								<label for="diffText" class="form-label">수정 내역 세부 설명</label>
-								<textarea id="diffText" class="form-control"
-									placeholder="어떤 부분이 어떻게 변경되었는지 상세 설명이 표시됩니다."></textarea>
+								<div class="col-12 col-lg-6">
+									<label for="analysisDetail" class="form-label">수정 내역 세부 설명</label>
+									<div id="analysisDetail" class="form-control" 
+										 style="width: 521px; height: 240px; overflow-y: auto; background-color: #f8f9fa;">
+									 </div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -97,17 +103,56 @@
 			});
 		
 			// 2) 표절검사 버튼
+			document.getElementById("runCheck").addEventListener('click', () => {
+				document.getElementById("loadingOverlay").classList.remove("d-none");
+				
+				// 입력받은 내용 가져오기 
+				const inputContent = document.getElementById("inputText").value;
+				
+				async function requestGenerate() {
+					try {
+						// chatGPT에 전달하기 
+						const response = await fetch("<c:url value="/gpt/copyCheck" />", {
+							method: "POST", 
+							headers: { 
+								"Content-type": "application/json"
+							}, 
+							body: JSON.stringify({
+								inputText : inputContent
+							})
+						});
+						
+						if(!response.ok) {
+							throw new Error("오류 발생!");
+						}
+						
+						// 생성된 값 화면에 출력 
+						const result = await response.json();
+						const correctedResultArea = document.getElementById("correctedResult");
+						const analysisDetailArea = document.getElementById("analysisDetail");
+						
+						correctedResultArea.innerHTML = result.corrected;
+						analysisDetailArea.innerHTML = result.description;
+						
+					} catch(error) {
+						console.error("Error:", error);
+						alert("표절 검사 중 문제가 발생했습니다.");
+					} finally {
+						document.getElementById("loadingOverlay").classList.add("d-none");
+					}
+				}
+				requestGenerate();
+			});
 			
-			
-			// 3) 복사하기 버튼
+			// 3) 복사하기 버튼 
 			document.addEventListener("DOMContentLoaded", () => {
 				const copyBtn = document.getElementById("copyBtn");
-				const output = document.getElementById("outputText");
+				const correctedResult = document.getElementById("correctedResult");
 			
-				if (copyBtn && output) {
+				if (copyBtn && correctedResult) {
 					copyBtn.addEventListener("click", async () => {
 						try {
-							const text = output.value ?? "";
+							const text = correctedResult.innerText;
 							if (!text) {
 								alert("복사할 내용이 없습니다.");
 								return;

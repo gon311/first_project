@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itwillbs.project.gpt.dto.CopyCheckDTO;
 import com.itwillbs.project.gpt.dto.GptGenerateDTO;
 import com.itwillbs.project.gpt.dto.GptResponseDTO;
 import com.itwillbs.project.gpt.dto.SpellCheckDTO;
@@ -100,11 +101,6 @@ public class GptGenerateService {
 	}
 
 	public String spellCheck(String inputText) throws JsonProcessingException {
-		log.info("1. 메서드 진입 성공, inputText: " + inputText);
-		
-		if (client == null) {
-	        log.error("범인 검거! client 객체가 null입니다.");
-	    }
 		
 		// 1. 역할과 규칙 정의 
 		String systemMessage = String.join("\n", 
@@ -129,7 +125,6 @@ public class GptGenerateService {
 				"[교정 대상 텍스트]\n%s", 
 				inputText
 		);
-		log.info("2. 파라미터 빌드 완료");
 		
 		// 3. ChatGPT 요청
 		StructuredChatCompletionCreateParams<SpellCheckDTO> params = ChatCompletionCreateParams.builder()
@@ -140,7 +135,6 @@ public class GptGenerateService {
 				.build();
 		
 		StructuredChatCompletion<SpellCheckDTO> response = client.chat().completions().create(params);
-		log.info("3. ChatGPT 응답 수신 완료");
 		
 		SpellCheckDTO result = 
 				response.choices().get(0)
@@ -155,6 +149,68 @@ public class GptGenerateService {
 		
 		return objectMapper.writeValueAsString(result);
 		
+	}
+
+	public String copyCheck(String inputText) throws JsonProcessingException {
+		log.info("1. 메서드 진입 성공, inputText: " + inputText);
+		
+		if (client == null) {
+	        log.error("범인 검거! client 객체가 null입니다.");
+	    }
+		
+		// 1. 역할과 규칙 정의 
+		String systemMessage = String.join("\n",
+				"당신은 표절 및 저작권 침해 방지를 위한 15년 차 전문 에디터이자 콘텐츠 분석가입니다.\r\n"
+				+ "사용자가 제공하는 텍스트에서 기존 자료와 표현 방식이 유사해 보이는 구간(표절 의심 가능 구간)을 탐지하고, "
+				+ "의미를 유지하며 완전히 새로운 방식으로 재구성(Paraphrasing)합니다. 또한 각 수정의 이유를 전문적으로 설명합니다.\r\n"
+				+ "\r\n"
+				+ "[핵심 원칙]\r\n"
+				+ "1. 독창적 재구성: 의미는 유지하면서 단어 선택, 표현 방식, 문장 구조를 대폭 변경합니다.\r\n"
+				+ "2. 문맥 유지: 문맥을 해치지 않되 어휘 교체, 어순 변경, 능동/수동 전환 등을 적절히 사용합니다.\r\n"
+				+ "3. 강조 표기: 수정된 부분에만 <span style='color:#0d6efd; font-weight:bold;'>내용</span> 태그를 적용하여 한눈에 차이를 확인할 수 있게 합니다.\r\n"
+				+ "4. 상세한 설명: description은 <ul>, <li> 태그를 포함하며, 각 수정 이유를 명확히 제시합니다.\r\n"
+				+ "5. 금지 사항: JSON 외의 텍스트, 마크다운 코드블록, 설명 문구는 절대로 포함하지 않습니다.\r\n"
+				+ "\r\n"
+				+ "[응답 형식]\r\n"
+				+ "아래 JSON 형식으로만 응답하세요.\r\n"
+				+ "\r\n"
+				+ "{\r\n"
+				+ "  \"corrected\": \"재구성된 전체 텍스트. 수정된 부분은 <span style='color:#0d6efd; font-weight:bold;'>강조 태그</span>로 표시.\",\r\n"
+				+ "  \"description\": \"<ul><li><b>수정사항 1:</b> 근거 및 방법</li><li><b>수정사항 2:</b> 근거 및 방법</li></ul>\"\r\n"
+				+ "}"
+		);
+		
+		// 2. 실제 주입 메세지
+		String userMessage = String.format(
+				"아래 텍스트에 대해, systemMessage의 기준에 따라 표절 의심 구간을 탐지하고 재구성해 주세요.\n\n" +
+				"[교정 대상 텍스트]\n%s", 
+				inputText
+		);
+		log.info("2. 파라미터 빌드 완료");
+		
+		// 3. ChatGPT 요청
+		StructuredChatCompletionCreateParams<CopyCheckDTO> params = ChatCompletionCreateParams.builder()
+				.model(ChatModel.GPT_4_1_MINI)
+				.addSystemMessage(systemMessage)
+				.addUserMessage(userMessage)
+				.responseFormat(CopyCheckDTO.class)
+				.build();
+		
+		StructuredChatCompletion<CopyCheckDTO> response = client.chat().completions().create(params);
+		log.info("3. ChatGPT 응답 수신 완료");
+		
+		CopyCheckDTO result = 
+				response.choices().get(0)
+				.message()
+				.content()
+				.orElse(new CopyCheckDTO());
+		
+		log.info("result : " + result);
+					
+		// 4. JSON 문자열로 반환
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		return objectMapper.writeValueAsString(result);
 	}
 
 	

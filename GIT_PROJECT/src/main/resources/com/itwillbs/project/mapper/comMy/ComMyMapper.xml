@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.project.comMy.mapper.ComMyMapper">
+
+<!-- ==============================
+     resultMap
+============================== -->
+	<!-- ComMyDTO -->
+	<resultMap id="userMap" type="com.itwillbs.project.comMy.dto.ComMyDTO">
+	  <id     property="userId"   column="user_id" />
+	  <result property="email"    column="email" />
+	  <result property="userName" column="user_name" />
+	  <result property="phone"    column="phone" />
+	  <result property="userType" column="user_type" />
+	</resultMap>
+
+
+<!-- ==============================
+     내정보 조회
+     parameter: sId
+     result: ComMyDTO
+============================== -->
+	<select id="selectUser" parameterType="string" resultMap="userMap">
+		SELECT user_id, email, user_name, phone, user_type
+		FROM user
+		WHERE email = #{sId}
+	</select>
+
+
+
+</mapper>

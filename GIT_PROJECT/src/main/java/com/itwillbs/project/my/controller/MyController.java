@@ -30,8 +30,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 
-
-
 @Controller
 @RequestMapping("/my")
 @Log4j2
@@ -39,6 +37,19 @@ import lombok.extern.log4j.Log4j2;
 public class MyController {
 	@Autowired
 	private MyService myService;
+	
+    @GetMapping
+    public String myEntry(HttpSession session) {
+        String sId = (String) session.getAttribute("sId");
+        if (sId == null) return "redirect:/user/login";
+
+        MyDTO user = myService.getUser(sId);
+
+        if ("C".equals(user.getUserType())) {
+            return "redirect:/comMy/info";
+        }
+        return "redirect:/my/myInfo";
+    }
 	
 	// 마이페이지 내정보
 	@GetMapping("/myInfo")
@@ -492,8 +503,24 @@ public class MyController {
 	
 	// 추천 내역
 	@GetMapping("/recommend")
-	public String recommend(Model model) {
-	    model.addAttribute("currentMenu", "recommend"); // 사이드바 '추천 내역' 활성
+	public String recommend(HttpSession session, Model model,
+            @RequestParam(defaultValue="1") int page,
+            @RequestParam(defaultValue="5") int size) {
+	    
+		// 로그인 체크
+		String sId = (String) session.getAttribute("sId");
+		if (sId == null) return "redirect:/user/login";
+		
+		model.addAttribute("currentMenu", "recommend"); // 사이드바 '추천 내역' 활성
+		
+		
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 	    return "/my/recommend";
 	}
 

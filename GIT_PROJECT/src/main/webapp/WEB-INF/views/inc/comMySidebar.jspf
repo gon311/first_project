@@ -1,0 +1,40 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%-- inc/mySidebar.jspf (PC 전용 / c:url 기반) --%>
+
+<c:url var="urlComMyInfo" value="/comMy/info"/>
+<c:url var="urlComMyJob" value="/comMy/job"/>
+<c:url var="urlPayment" value="/comMy/payment"/>
+<c:url var="urlComMy" value="/comMy/comMy"/>
+<c:url var="urlComMy" value="/comMy/comMy"/>
+
+
+
+<aside class="col-2 mySidebar">
+  <div class="mySidebar-inner">
+
+    <div class="mySidebar-brand">
+      <span class="brandText">MY홈</span>
+    </div>
+
+    <nav class="myNav">
+
+      <a class="myNav-link ${currentMenu=='info' ? 'active' : ''}" href="${urlComMyInfo}">
+        <i class="bi bi-person"></i><span>내정보</span>
+      </a>
+
+      <a class="myNav-link ${currentMenu=='job' ? 'active' : ''}" href="${urlComMyJob}">
+        <i class="bi bi-file-earmark-text"></i><span>공고 관리</span>
+      </a>
+      
+      <a class="myNav-link ${currentMenu=='payment' ? 'active' : ''}" href="${urlPayment}">
+        <i class="bi bi-file-earmark-text"></i><span>결제 내역</span>
+      </a>
+      
+      
+
+    </nav>
+
+  </div>
+</aside>

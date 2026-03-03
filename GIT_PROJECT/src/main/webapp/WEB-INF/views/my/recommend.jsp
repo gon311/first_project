@@ -302,7 +302,7 @@
             <select class="select" name="size">
               <option value="5">5개씩</option>
               <option value="10" selected>10개씩</option>
-              <option value="20">20개씩</option>
+              <option value="15">15개씩</option>
             </select>
 
             <%-- 입사지원 공고만(체크) --%>

@@ -50,7 +50,7 @@
 					<div class="d-flex justify-content-end gap-2 mt-4">
 						<button type="button" id="generate" class="btn btn-primary">
 							검사하기</button>
-						<button type="button" id="copy" class="btn btn-outline-secondary">
+						<button type="button" id="copyBtn" class="btn btn-outline-secondary">
 							복사하기</button>
 					</div>
 	
@@ -69,6 +69,15 @@
 		
 		// 1) chatGPT로 맞춤법 검사 
 		// 2) 클립보드에 복사 
+			document.getElementById("copyBtn").addEventListener("click", () => {
+				con text = document.getElementById("outputText").innerText;
+				
+				navigator.clipboard.writeText(text).then(() => {
+					alter("클립보드에 복사되었습니다. ctrl+v로 붙여넣기 해주세요.");
+				}).catch(err => {
+					console.error("복사 실패", err);
+				}); 
+			});
 		
 		</script>
 	</body>

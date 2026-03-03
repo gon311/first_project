@@ -1,27 +1,44 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html>
 <head>
-	<title>공지사항 상세내용</title>
+	<title>공지사항 상세정보 조회</title>
 	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/admin/common/header.jsp" %>
-	<main class="container-fluid mt-5">
-		<div class="card shadow-sm p-4">
-			 <div class= "title">
-			 	<h3>${noticeDTO.notice_title }</h3>
-			 </div>
-			 등록일 : ${noticeDTO.reg_date } | 조회수 : ${noticeDTO.readcount }
-			 <hr>
-			<div class="contents">
-				${noticeDTO.notice_content }
-			</div>
-		</div>
-	</main>
+	<main class="container-fluid mt-4">
+	<div class="card shadow-sm p-5">
+    <div class="border-bottom pb-3 mb-4">
+        <h2 class="fw-bold">${noticeDTO.noticeTitle}</h2> <div class="text-muted small">
+            <span>작성일: ${noticeDTO.regDate}</span>
+            <span>수정일: ${noticeDTO.updateDate }</span>
+            <span class="ms-3">조회수: ${noticeDTO.readcount}</span>
+            <span class="ms-3">대상: ${noticeDTO.userType}</span>
+        </div>
+    </div>
+    <div>
+    ${noticeDTO.noticeContent } 
+    </div>
+    <div class="text-center mt-5">
+    <a href="<c:url value='/admin/contents/notice' />" class="btn btn-secondary">목록으로</a>
+    <button class="btn btn-primary" onclick="location.href='noticeUpdate?noticeId=${noticeDTO.noticeId}'">수정하기</button>
+    
+    <button type="button" class="btn btn-danger" onclick="confirmDelete(${noticeDTO.noticeId})">삭제하기</button>
+	</div>
 
+	<script type="text/javascript">
+	function confirmDelete(noticeId) {
+		console.log("삭제할 id : " + noticeId)
+	    if (confirm("정말로 이 공지사항을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.")) {
+	        // 확인을 누르면 삭제 요청 페이지로 이동
+	        location.href = "noticeDelete?noticeId=" + noticeId;
+	    }
+	}
+	</script>
+</div>
+	</main>
 </body>
 </html>

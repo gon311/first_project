@@ -87,12 +87,12 @@
 						                        <c:forEach var="qna" items="${qnaList}">
 						                            <tr>
 						                                <td>${qna.qnaId}</td>
-						                                <td><a href="/admin/qna/detail?id=${qna.qnaId}">${qna.qnaTitle}</a></td>
+						                                <td><a href="<c:url value='/admin/contents/QnADetail?qnaId=${qna.qnaId}'/>">${qna.qnaTitle }</a></td>
 						                                <td>${qna.writerId}</td>
 						                                <td>${qna.regDate}</td>
 						                                <td>
-						                                    <c:if test="${qna.status eq 'pending'}"><span class="badge bg-warning">미답변</span></c:if>
-						                                    <c:if test="${qna.status eq 'completed'}"><span class="badge bg-success">답변완료</span></c:if>
+						                                    <c:if test="${qna.reStatus eq 'pending'}"><span class="badge bg-warning">미답변</span></c:if>
+						                                    <c:if test="${qna.reStatus eq 'completed'}"><span class="badge bg-success">답변완료</span></c:if>
 						                                </td>
 						                            </tr>
 						                        </c:forEach>

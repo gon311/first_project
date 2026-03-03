@@ -45,9 +45,9 @@ public class AdminContentController {
 	}
 	
 	@PostMapping("/noticeSave")
-	public String noticeSave(@ModelAttribute NoticeDTO noticeDTO) {
+	public String noticeSave(NoticeDTO noticeDTO) {
 //		System.out.println("데이터 바인딩 결과: " + noticeDTO.toString());
-//	    System.out.println("제목 값: " + noticeDTO.getNotice_title());
+//	    System.out.println("제목 값: " + noticeDTO.getNoticeTitle());
 		adminService.insertNotice(noticeDTO);
 		return "redirect:/admin/contents/notice";
 	}
@@ -58,8 +58,32 @@ public class AdminContentController {
 		model.addAttribute("noticeDTO", noticeDTO); 
 //		System.out.println("데이터 결과값: " + noticeDTO.toString());
 //		System.out.println("제목 리턴값: " + noticeDTO);
-		
 		return "admin/contents/noticeDetail";
+	}
+	
+	@GetMapping("/noticeDelete")
+	public String noticeDelete(@RequestParam("noticeId") int noticeId) {
+	    // 삭제 로직 호출
+	    adminService.deleteNotice(noticeId);
+	    
+	    // 삭제 후 다시 공지사항 목록으로 리다이렉트
+	    return "redirect:/admin/contents/notice";
+	}
+//	게시글 수정	
+	// 1. 수정 페이지 이동 (기존 데이터 조회)
+	@GetMapping("/noticeUpdate")
+	public String noticeUpdate(@RequestParam("noticeId") int noticeId, Model model) {
+	    NoticeDTO noticeDTO = adminService.getNoticeDetail(noticeId);
+	    model.addAttribute("noticeDTO", noticeDTO);
+	    return "admin/contents/noticeUpdate";
+	}
+
+	// 2. 수정 실행
+	@PostMapping("/noticeUpdateSave")
+	public String noticeUpdateSave(@ModelAttribute NoticeDTO noticeDTO) {
+	    adminService.updateNotice(noticeDTO);
+	    // 수정 후 상세 페이지로 다시 이동 (ID 전달)
+	    return "redirect:/admin/contents/noticeDetail?noticeId=" + noticeDTO.getNoticeId();
 	}
 // ==============================================================================
 //	채용공고목록조회
@@ -73,13 +97,20 @@ public class AdminContentController {
 		model.addAttribute("jobPostDTO", jobPostDTO);
 		return "admin/contents/jobPost";
 	}
-	
+//	채용공고 상세조회
 	@GetMapping("/JobPostDetail")
-	public String jobPostDetail(@RequestParam("job_id") int job_id, Model model) {
-		JobPostDTO jobPostDTO = adminService.getJobPostDetail(job_id);
+	public String jobPostDetail(@RequestParam("jobId") int jobId, Model model) {
+		JobPostDTO jobPostDTO = adminService.getJobPostDetail(jobId);
 		model.addAttribute("jobPostDTO", jobPostDTO);
 		
 		return "admin/contents/jobPostDetail";
+	}
+	
+	@GetMapping("/JobPostDelete")
+	public String jobPostDelete(@RequestParam("jobId") int jobId){
+		adminService.deleteJobPost(jobId);
+		
+		return "redirect:/admin/contents/JobPost";
 	}
 	
 //	==============================================================================
@@ -94,35 +125,20 @@ public class AdminContentController {
 
 	// FAQ 전체 목록 및 카테고리별 출력
 	@GetMapping("/FaQ")
-	public String faqList(
-	        @RequestParam(value="userType", defaultValue="user") String userType,
-	        @RequestParam(value="keyword", required=false) String keyword,
-	   
-	        Model model
-	        , FaqDTO faqDTO) {
+	public String faqList(FaqDTO faqDTO,
+            Model model) {
 	    
 	    // 서비스 호출 (카테고리, 키워드 포함)
-	    List<FaqDTO> faqList = adminService.getFaqList(userType, keyword);
+	    List<FaqDTO> faqList = adminService.getFaqList(faqDTO);
 	    System.out.println(faqList);
 	    
 	    model.addAttribute("faqList", faqList);
-	    model.addAttribute("userType", userType); // 탭 활성화 유지용
-	    model.addAttribute("keyword", keyword);   // 검색어 유지용
+	    model.addAttribute("userType", faqDTO.getUserType()); // 탭 활성화 유지용
+	    model.addAttribute("keyword", faqDTO.getKeyword());   // 검색어 유지용
 	    
 	    return "admin/contents/faq"; // faq.jsp로 포워딩
 	}
 
-	// 특정 게시글 상세 내용 확인
-	@GetMapping("/FaqMgmt")
-	public String faqDetail(@RequestParam("faqId") int faqId, Model model) {
-	    
-	    FaqDTO faq = adminService.getFaqDetail(faqId);
-	    model.addAttribute("faq", faq);
-	    System.out.println(faq.getFaqId());
-	    
-	    return "admin/contents/faqMgmt"; // faqMgmt.jsp(상세페이지)로 포워딩
-	}
-	
 	@GetMapping("/FaqWrite")
 	public String faqWrite(Model model) {
 		
@@ -137,28 +153,88 @@ public class AdminContentController {
 		return "redirect:/admin/contents/FaQ?userType=" + faqDTO.getUserType();
 	}
 	
+	// faq 삭제
+	@GetMapping("/faqDelete")
+	public String faqDelete(@RequestParam("faqId") int faqId) {
+	    adminService.deleteFaq(faqId);
+	    return "redirect:/admin/contents/FaQ"; // 삭제 후 다시 목록으로
+	}
+	
+	
+	// 1. 수정 폼으로 이동 (기존 데이터 조회)
+	@GetMapping("/FaqUpdate")
+	public String faqUpdate(@RequestParam("faqId") int faqId, Model model) {
+	    // 아코디언 리스트에서 사용하는 DTO를 하나 가져오는 로직 필요
+	    FaqDTO faqDTO = new FaqDTO();
+	    faqDTO.setFaqId(faqId);
+	    
+	    List<FaqDTO> list = adminService.getFaqList(faqDTO);
+	    
+	    if (list != null && !list.isEmpty()) {
+	    	model.addAttribute("faq", list.get(0));
+	    }
+	    return "admin/contents/faqUpdate";
+	}
 
-	
-	
+	// 2. 수정 실행
+	@PostMapping("/faqUpdateSave")
+	public String faqUpdateSave(@ModelAttribute FaqDTO faqDTO) {
+	    adminService.updateFaq(faqDTO);
+	    return "redirect:/admin/contents/faq";
+	}
 //	===============================================================================
 //	1:1 문의글 관리
 	@GetMapping("/QnA")
 	public String qnaList(@RequestParam(value="reStatus", defaultValue="all") String reStatus, 
 			@RequestParam(value="page", defaultValue="1") int page,
 			Model model, QnaDTO qnaDTO) {
-	    List<QnaDTO> list;
 	    
-	    if("all".equals(reStatus)) {
-	        list = adminService.getQnaList(qnaDTO);
-	    } else {
-	        list = adminService.getListByStatus(reStatus); // "pending" 또는 "completed"
-	    }
-	    
+		qnaDTO.setReStatus(reStatus);
+		
+		List<QnaDTO> list = adminService.getQnaList(qnaDTO);
+		
 	    model.addAttribute("qnaList", list);
 	    model.addAttribute("reStatus", reStatus); // 현재 탭 활성화를 위해 전달
 	return "admin/contents/qna";
 	}
+//	1:1 문의글 상세 조회
+	@GetMapping("/QnADetail")
+	public String qnaDetail(@RequestParam("qnaId") int qnaId
+							, Model model) {
+		QnaDTO qnaDTO = adminService.getQnADetail(qnaId);
+		model.addAttribute("qnaDTO", qnaDTO);
+		return "admin/contents/qnaDetail";
+	}
 	
-		
+	// 1:1문의글 답변 등록
+	@PostMapping("/qnaAnswerSave")
+	public String qnaAnswerSave(QnaDTO qnaDTO) {
+	    adminService.registAnswer(qnaDTO);
+	    
+	    return "redirect:/admin/contents/QnADetail?qnaId=" + qnaDTO.getQnaId();
+	}
+//	1:1 문의글 답변 수정
+	@PostMapping("/qnaAnswerUpdate")
+	public String qnaAnswerUpdate(QnaDTO qnaDTO) {
+		adminService.modifyAnswer(qnaDTO);
+		return "redirect:/admin/contents/QnADetail?qnaId="+ qnaDTO.getQnaId();
+	}
 	
+//	1:1 문의글 답변 삭제
+	@GetMapping("/qnaAnswerDelete")
+	public String qnaAnswerDelete(@RequestParam("qnaId") int qnaId) {
+		adminService.deleteQnaAnswer(qnaId);
+		return "redirect:/admin/contents/QnADetail?qnaId=" + qnaId;
+	}
+	
+	
+//	1:1 문의글 삭제 
+	@GetMapping("/QnaDelete")
+	public String QnaDelete(@RequestParam("qnaId") int qnaId) {
+		adminService.deleteQna(qnaId);
+		return "redirect:/admin/contents/QnA";
+	}
+//	===================================================================================
+
 }
+

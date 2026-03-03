@@ -5,16 +5,7 @@
   
 <mapper namespace="com.itwillbs.project.store.mapper.StoreMapper">
 
-	<!-- 구매할 상품 정보 조회 -->
-	<select id="selectStoreInfo" resultType="store">
-		select	*
-		from
-			product
-		where
-			product_id = #{productId}
-	</select>
-	
-	<!-- 회원 정보 출력 -->
+	<!-- 구매자 정보 출력 -->
 	<select id="selectOrderUser" resultType="order">
 		select	
 			*
@@ -23,5 +14,72 @@
 		where
 			email = #{sId}
 	</select>
+
+	<!-- 구매할 상품 정보 조회 -->
+	<select id="selectStoreInfo" resultType="store">
+		select	
+			*
+		from
+			product
+		where
+			product_id = #{productId}
+	</select>
+	
+	
+	
+	<!-- 구매정보 삽입 -->
+<!-- 	<insert id="insertOrderInfo"> -->
+<!-- 		insert into orderProduct( -->
+<!-- 			order_id -->
+<!-- 			, user_id -->
+<!-- 			, user_name -->
+<!-- 			, phone -->
+<!-- 			, email -->
+<!-- 			, product_id -->
+<!-- 			, product_name -->
+<!-- 			, product_price -->
+<!-- 		) -->
+<!-- 		select -->
+<!-- 			null -->
+<!-- 		    , u.user_id -->
+<!-- 		    , u.user_name -->
+<!-- 		    , u.phone -->
+<!-- 		    , u.email -->
+<!-- 		    , p.product_id -->
+<!-- 		    , p.product_name -->
+<!-- 		    , p.product_price -->
+<!-- 		from -->
+<!-- 			user u join product p -->
+<!-- 		where -->
+<!-- 			u.email = #{sId} -->
+<!-- 		and -->
+<!-- 			p.product_id = #{productId}; -->
+<!-- 	</insert> -->
+	
+	<!-- 구매정보 조회 -->
+<!-- 	<select id="selectOrderInfo" resultType="order"> -->
+<!-- 		select	* -->
+<!-- 		from  -->
+<!-- 			orderProduct -->
+<!-- 		where -->
+<!-- 			email = #{sId} -->
+			
+<!-- 	</select> -->
+	
 	
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

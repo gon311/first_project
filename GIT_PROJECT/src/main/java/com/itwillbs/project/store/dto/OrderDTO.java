@@ -1,7 +1,10 @@
 package com.itwillbs.project.store.dto;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,16 +30,17 @@ pay_status enum('ready', 'paid', 'cacelled')
 @Setter
 @ToString
 public class OrderDTO {
+	private Integer orderId;
 	private String payId;
 	private long userId;
 	private String userName;	
-	private String phone;	 
-	private String userType;	 // 사용자 구분(결제 - 회원 테이블 조인)
+	private String phone;	
+	private String email;
 	private String productId;
 	private String productName;  // 상품명(결제 - 상품 테이블 조인)
+	private String productPrice;  // 상품명(결제 - 상품 테이블 조인)
 	private String payMethod;
 	private String cardName;
-	private String cardNum;
 	private String bankName;
 	private String depositAccount;
 	private String depositName;
@@ -45,17 +49,20 @@ public class OrderDTO {
 	private String payStatus; 
 	
 	
-	public void setUserType(String userType) {
-		if(userType.equalsIgnoreCase("c")) {
-			this.userType = "기업 회원";
-		} else {
-			this.userType = "구직자 회원";
-		}
-	}
-	
 	public void setPayPrice(Integer payPrice) {
 		DecimalFormat df = new DecimalFormat("###,###");
 		this.payPrice = df.format(payPrice);
 	}
+	
+//	public void setPayId() {
+//		LocalDate today = LocalDate.now();
+//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd");
+//		
+//		// 0~99999 랜덤 숫자, 5자리 고정
+//	    int randNum = (int)(Math.random() * 100000);
+//	    String randStr = String.format("%05d", randNum);
+//	     
+//		this.payId = today.format(dtf) + randStr;
+//	}
 	
 }

@@ -14,18 +14,18 @@ import lombok.ToString;
 @ToString
 public class JobPostDTO {
 	// 출력 위한 임시 DTO
-	private int job_id;
-	private int comp_id;
+	private int jobId;
+	private int compId;
 	private String title;
 	private String field;
 	private String task;
-	private String emp_type;
+	private String empType;
 	private char probation;
-	private String exp_type;
-	private String exp_year;
+	private String expType;
+	private String expYear;
 	private String edu;
 	private String salary;
-	private Date open_date;
-	private Date close_date;
-	private int post_check;
+	private Date openDate;
+	private Date closeDate;
+	private int postCheck;
 }

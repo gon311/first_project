@@ -1,11 +1,13 @@
 package com.itwillbs.project.admin.service;
 
-import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.project.admin.dto.BannerDTO;
 import com.itwillbs.project.admin.dto.FaqDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
@@ -88,6 +90,15 @@ public class AdminService{
 		adminMapper.insertNotice(noticeDTO);
 	}
 	
+	// 공지사항 삭제
+	public void deleteNotice(int noticeId) {
+		adminMapper.deleteNotice(noticeId);
+	}
+	
+	// 공지사항 수정
+	public void updateNotice(NoticeDTO noticeDTO) {
+		adminMapper.updateNotice(noticeDTO);
+	}
 	//========================================================================================
 	// 채용공고 리스트 조회
 	public List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO) {
@@ -95,10 +106,14 @@ public class AdminService{
 		return adminMapper.getJobPostList(jobPostDTO);
 	}
 	// 채용공고 상세 조회
-	public JobPostDTO getJobPostDetail(int job_id) {
-		return adminMapper.getJobPostById(job_id);
+	public JobPostDTO getJobPostDetail(int jobId) {
+		return adminMapper.getJobPostById(jobId);
 	}
 	
+	// 채용공고 삭제
+	public void deleteJobPost(int jobId) {
+		adminMapper.deleteJobPost(jobId);
+	}
 
 	//======================================================================================
 	// 결제 내역 전체 목록 조회
@@ -152,25 +167,97 @@ public class AdminService{
 	public List<QnaDTO> getListByStatus(String reStatus) {
 		return adminMapper.getListByStatus(reStatus);
 	}
-
-	// =====================================================================================
-	// faq
-	public List<FaqDTO> getFaqList(String userType, String keyword) {
-		return adminMapper.getFaqList(userType, keyword);
+	
+	public QnaDTO getQnADetail(int qnaId) {
+		return adminMapper.getQnaById(qnaId);
 	}
 
-	public FaqDTO getFaqDetail(int faqId) {
-		// TODO Auto-generated method stub
-		return adminMapper.getFaqDetail(faqId);
+	public void registAnswer(QnaDTO qnaDTO) {
+		adminMapper.registAnswer(qnaDTO);
 	}
-	public void insertFaq(FaqDTO faqDTO) {
+
+	public void deleteQna(int qnaId) {
+		adminMapper.deleteQna(qnaId);
+	}
+
+	public void deleteQnaAnswer(int qnaId) {
+		adminMapper.deleteQnaAnswer(qnaId);
+	}
+
+	public void modifyAnswer(QnaDTO qnaDTO) {
+		adminMapper.modifyAnswer(qnaDTO);
 		
+	}
+	// =====================================================================================
+	// faq 목록 조회
+	public List<FaqDTO> getFaqList(FaqDTO faqDTO) {
+		return adminMapper.getFaqList(faqDTO);
+	}
+	// faq 글 작성
+	public void insertFaq(FaqDTO faqDTO) {
 		adminMapper.insertFaq(faqDTO);
 	}
+	// faq 글 수정
+	public void deleteFaq(int faqId) {
+		adminMapper.deleteFaq(faqId);
+	}
+
+	public void updateFaq(FaqDTO faqDTO) {
+		adminMapper.updateFaq(faqDTO);
+	}
 
 
+//	=================================================================================================
+//	[ 배너 관리 ]
 	
+	public List<BannerDTO> getBannerList() {
+		return adminMapper.getBannerList();
+	}
+	
+	public void modifyAdStatus(int adId, int isDisplay) {
+		adminMapper.updateBannerStatus(adId, isDisplay);
+	}
 
+//	=================================================================================
+//	[ 데이터 관리 ]
+//	1. 구직자 유형별 통계
+	public Map<String, Object> getUserStatistics(){
+		Map<String, Object> result = new HashMap<>();
+		result.put("gender", adminMapper.getGenderStats());
+		result.put("age", adminMapper.getAgeStats());
+		result.put("job", adminMapper.getJobStats());
+		return result;
+	}
+	
+//	2. 기업회원 유형별 통계
+	public Map<String, Object> getComStatistics() {
+	    Map<String, Object> result = new HashMap<>();
+	    result.put("postCounts", adminMapper.getComPostStats());
+	    result.put("jobFields", adminMapper.getJobFieldStats());
+	    result.put("empTypes", adminMapper.getEmpTypeStats());
+	    return result;
+	}
+
+//	3. 구직자 결제 통계
+	public Map<String, Object> getUserPayStatistics() {
+	    Map<String, Object> result = new HashMap<>();
+	    result.put("products", adminMapper.getProductSalesStats());
+	    result.put("methods", adminMapper.getPayMethodStats());
+	    result.put("revenue", adminMapper.getDailyRevenueStats());
+	    return result;
+	}
+	
+//	4. 기업회원 결제 통계
+	public Map<String, Object> getComPayStatistics(){
+	    Map<String, Object> result = new HashMap<>();
+	    
+	    result.put("topCompanies", adminMapper.getTopComRevenue());
+	    result.put("products", adminMapper.getComProductStats());
+	    result.put("methods", adminMapper.getComPayMethodStats());
+	    
+	    return result;
+		
+	}
 	
 
 	

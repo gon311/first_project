@@ -156,6 +156,16 @@
 		    <version>${log4j2-version}</version>
 		    <scope>compile</scope>
 		</dependency>
+		
+		<!-- 10. JSON 데이터를 처리(파싱, 포맷팅)하는 Jackson 라이브러리 -->
+		<!-- Source: https://mvnrepository.com/artifact/tools.jackson.core/jackson-core -->
+		<dependency>
+		    <groupId>tools.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>3.1.0</version>
+		    <scope>compile</scope>
+		</dependency>
+		
 				
 		<!-- ================================================================================= -->
 		<!-- AspectJ -->
@@ -244,7 +254,11 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-	
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.15.2</version> 
+	    </dependency>
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>

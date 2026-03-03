@@ -2,10 +2,12 @@ package com.itwillbs.project.admin.mapper;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.project.admin.dto.BannerDTO;
 import com.itwillbs.project.admin.dto.FaqDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
@@ -63,20 +65,24 @@ public interface AdminMapper {
 	List<NoticeDTO> getNoticeList(NoticeDTO noticeDTO);
 
 	// 공지사항 상세 조회
-	NoticeDTO getNoticeById(int notice_id);
+	NoticeDTO getNoticeById(int noticeId);
 	
 	// 공지사항 저장
 	void insertNotice(NoticeDTO noticeDTO);
 	
 	// 조회수 증가
-	void updateReadCount(int notice_id);
+	void updateReadCount(int noticeId);
+	
+	void deleteNotice(int noticeId);
 	
 	//========================================================================
 //	채용공고 리스트 조회
 	List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO);
 	
 //	채용공고 상세 조회
-	JobPostDTO getJobPostById(int job_id);
+	JobPostDTO getJobPostById(int jobId);
+	
+	void deleteJobPost(int jobId);
 	
 	//========================================================================
 	// 결제 목록 조회
@@ -120,6 +126,15 @@ public interface AdminMapper {
 
 	List<QnaDTO> getListByStatus(String reStatus);
 	
+	QnaDTO getQnaById(int qnaId);
+
+	void registAnswer(QnaDTO qnaDTO);
+	
+	void deleteQna(int qnaId);
+	
+	void deleteQnaAnswer(int qnaId);
+
+	void modifyAnswer(QnaDTO qnaDTO);
 	// -========================================================================
 	// faq 관리
 
@@ -128,7 +143,57 @@ public interface AdminMapper {
 
 	void insertFaq(FaqDTO faqDTO);
 
-	FaqDTO getFaqDetail(int faqId);
+	void updateNotice(NoticeDTO noticeDTO);
+
+	void deleteFaq(int faqId);
+
+	void updateFaq(FaqDTO faqDTO);
+
+	List<FaqDTO> getFaqList(FaqDTO faqDTO);
+
+
+	List<BannerDTO> getBannerList();
+
+	void updateBannerStatus(@Param("adId") int adId
+							, @Param("isDisplay") int isDisplay);
+
+//	============================================================================
+//	[ 데이터 관리 ]
+//	1. 구직자 유형별 통계
+	List<Map<String, Object>> getGenderStats();
+
+	List<Map<String, Object>> getAgeStats();
+
+	List<Map<String, Object>> getJobStats();
+	
+// 	2. 기업회원 유형별 통계
+	List<Map<String, Object>> getComPostStats();
+
+	List<Map<String, Object>> getJobFieldStats();
+
+	List<Map<String, Object>> getEmpTypeStats();
+
+//	3. 구직자 결제 통계
+	List<Map<String, Object>> getProductSalesStats();
+
+	List<Map<String, Object>> getPayMethodStats();
+
+	List<Map<String, Object>> getDailyRevenueStats();
+
+//	4. 기업회원 결제 통계
+	List<Map<String, Object>> getTopComRevenue();
+
+	List<Map<String, Object>> getComProductStats();
+
+	List<Map<String, Object>> getComPayMethodStats();
+
+
+
+
+
+
+
+
 
 	
 

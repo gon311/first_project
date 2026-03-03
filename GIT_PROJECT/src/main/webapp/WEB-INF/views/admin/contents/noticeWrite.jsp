@@ -17,7 +17,7 @@
 	    	        <div class="card shadow-sm p-4 h-100">
 	                	<input type ="hidden" id="postStatus" name="status" value="N">
 	                    <div class="mb-3">
-	                        <input type="text" name="notice_title" class="form-control form-control-lg border-0 border-bottom rounded-0 px-0" 
+	                        <input type="text" name="noticeTitle" class="form-control form-control-lg border-0 border-bottom rounded-0 px-0" 
 	                               placeholder="제목을 입력하세요." style="font-size: 1.5rem;">
 	                    </div>
 	
@@ -26,7 +26,7 @@
 	               </div>
 	
 	                    <div class="mb-3">
-	                        <textarea name="notice_content" class="form-control border-0 px-0" rows="15" 
+	                        <textarea name="noticeContent" class="form-control border-0 px-0" rows="15" 
 	                                  placeholder="본문을 입력하세요." style="resize: none;"></textarea>
 	                    </div>
 	            </div>
@@ -44,7 +44,7 @@
 	
 	                <div class="card p-3 shadow-sm mt-2">
 	                    <label class="form-label small text-muted fw-bold">게시 유형</label>
-	                    <select name="user_type" class="form-select">
+	                    <select name="userType" class="form-select">
 	                        <option value="all">전체</option>
 	                        <option value="com">기업회원</option>
 	                        <option value="user">구직자</option>
@@ -77,7 +77,7 @@
 			// 1. 상태값 담기(Y/N)
 			document.getElementById('postStatus').value = statusValue;
 			// 2. 제목 빈칸 확인	
-			if(form.notice_title.value == ""){
+			if(form.noticeTitle.value == ""){
 				alert("제목을 입력하세요.");
 				return;
 			}

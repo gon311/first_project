@@ -9,4 +9,6 @@ import lombok.ToString;
 @ToString
 public class RequestCorrectionDTO {
 	private String b_no;
+	private String type;
+	private String value;
 }

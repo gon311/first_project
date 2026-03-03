@@ -52,14 +52,14 @@
         .btn-submit:hover { background-color: #0036c7; }
 
         footer { text-align: center; padding: 40px; color: #888; font-size: 13px; }
+        
     </style>
 </head>
 <body>
-
     <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
     <main>
-        <div class="container">
+		<div class="container">
             <h2>회원가입</h2>
 
             <div class="signup-tabs">
@@ -79,7 +79,7 @@
                     </div>
                     <div id="email-verify-area" class="verify-area">
                         <div class="input-with-btn">
-                            <input type="text" id="email-code" placeholder="인증번호 4자리">
+                            <input type="text" id="email-code" placeholder="인증번호 6자리">
                             <button type="button" class="btn-action" onclick="checkVerification('email')">확인</button>
                         </div>
                         <div id="email-msg" class="verify-msg"></div>
@@ -119,7 +119,7 @@
 				    
                     <div id="phone-verify-area" class="verify-area">
                         <div class="input-with-btn">
-                            <input type="text" id="phone-code" placeholder="인증번호 4자리">
+                            <input type="text" id="phone-code" placeholder="인증번호 6자리">
                             <button type="button" class="btn-action" onclick="checkVerification('phone')">확인</button>
                         </div>
                         <div id="phone-msg" class="verify-msg"></div>
@@ -275,26 +275,71 @@
             const val = document.getElementById(type).value;
             if(!val) { alert("정보를 입력해주세요."); return; }
             
-            document.getElementById(type + "-verify-area").style.display = 'block';
-            alert("[전송완료] 인증번호는 1234 입니다.");
+            const requestContent = {
+                    type: type,   // 'email' 또는 'phone'
+                    value: val    // 실제 이메일 주소나 전화번호
+            };
+            
+			async function mailRequestCorrectContent() {
+				try {
+					const response = await fetch("<c:url value="/api/sendCode" />", { // 요청 주소
+						method: "POST",						// 요청 메서드
+						headers: {							// 요청 헤더 정보들
+							"Content-type": "application/json"	// 전송 데이터 형식 : JSON 데이터
+						},
+						body: JSON.stringify(requestContent)
+					});
+					
+					if(!response.ok) {
+						throw new Error("오류 발생!");
+					}
+					const result = await response.json();
+					
+					alert("인증번호가 발송되었습니다.");
+					console.log("type : " + result);
+		            document.getElementById(type + "-verify-area").style.display = 'block';
+					
+		            if(type == "phone") {
+					document.getElementById("phone-code").value = result.authCode;
+		            }
+		            
+				} catch(error) {
+					alert("요청 오류 발생 : " + error);
+				}
+			}
+			
+			mailRequestCorrectContent();
         }
 
         // 인증번호 확인
-        function checkVerification(type) {
-            const code = document.getElementById(type + "-code").value;
-            const msgEl = document.getElementById(type + "-msg");
-            
-            if(code === "1234") {
-                verificationStatus[type] = true;
-                msgEl.innerText = "인증되었습니다.";
-                msgEl.className = "verify-msg msg-success";
-                document.getElementById(type).readOnly = true;
-                document.getElementById("btn-" + type + "-send").classList.add("verified");
-            } else {
-                msgEl.innerText = "인증번호가 일치하지 않습니다.";
-                msgEl.className = "verify-msg msg-error";
-            }
-        }
+		function checkVerification(type) {
+		    const code = document.getElementById(type + "-code").value;
+		    const msgEl = document.getElementById(type + "-msg");
+		
+		    // 세션 값을 직접 비교하지 않고 서버에 요청을 보냅니다.
+		    fetch("<c:url value='/api/verifyCode' />", {
+		        method: "POST",
+		        headers: { "Content-type": "application/json" },
+		        body: JSON.stringify({ code: code })
+		    })
+		    .then(response => response.json())
+		    .then(result => {
+		        if(result.success) { // 서버 세션 값과 일치할 때
+		            verificationStatus[type] = true;
+		            msgEl.innerText = "인증되었습니다.";
+		            msgEl.className = "verify-msg msg-success";
+		            document.getElementById(type).readOnly = true;
+		            document.getElementById("btn-" + type + "-send").classList.add("verified");
+		        } else {
+		            verificationStatus[type] = false;
+		            msgEl.innerText = "인증번호가 일치하지 않습니다.";
+		            msgEl.className = "verify-msg msg-error";
+		        }
+		    })
+		    .catch(error => {
+		        alert("인증 확인 중 오류가 발생했습니다.");
+		    });
+		}
 
         // 주소 API
         function execDaumPostcode() {
@@ -388,23 +433,20 @@
 	    
 	    // 사업자번호 입력시 이벤트
 	    document.getElementById("bizRegNo").addEventListener("blur", function() {
-	        console.log("포커스가 나갔습니다! 입력을 마쳤나요?");
 	        let content = document.getElementById("bizRegNo").value.replace(/-/g, ""); // 하이픈 제거
 			let requestContent = {
 	        	b_no: content,
 			}
 	        
-			async function requestCorrectContent() {
+			async function bizRequestCorrectContent() {
 				try {
-					const response = await fetch("<c:url value="/biz/correctionContent" />", { // 요청 주소
+					const response = await fetch("<c:url value="/api/correctionContent" />", { // 요청 주소
 						method: "POST",						// 요청 메서드
 						headers: {							// 요청 헤더 정보들
 							"Content-type": "application/json"	// 전송 데이터 형식 : JSON 데이터
 						},
 						body: JSON.stringify(requestContent)
 					});
-					
-					console.log("response : ", response);
 					
 					if(!response.ok) {
 						throw new Error("오류 발생!");
@@ -418,8 +460,9 @@
 				}
 			}
 			
-			requestCorrectContent();
+			bizRequestCorrectContent();
 	    });
+	    
     </script>
 </body>
 </html>

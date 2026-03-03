@@ -377,30 +377,51 @@
 	
 	</update>
 	<!-- ================================================================================== -->
+	<!--  [ 채용공고 관리 게시판 ]  -->
+	
 	<!--  채용공고 목록 조회 -->
 	<select id="getJobPostList" resultType="jobPost">
-		SELECT job_id <!-- 공고 id -->
-			, comp_id
-			, title
-			, field
-			, open_date
-			, close_date
-			, post_check
-		FROM job_posting
+		SELECT 
+			j.job_id <!-- 공고 id -->
+			, uc.company_name
+			, j.title
+			, j.field
+			, j.open_date
+			, j.close_date
+			, j.post_status
+		FROM job_posting j
+		JOIN
+			user_company uc
+		ON
+			j.comp_id = uc.user_id
+		<!-- 검색 기능 -->
+		<where>
+			<if test="title !=null and title !=''">
+				AND title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			<if test="postStatus != null">
+				AND post_status = #{postStatus}
+			</if>
+			<if test="companyName != null and companyName !=''">
+				AND company_name LIKE CONCAT('%', #{companyName}, '%')
+			</if>
+		</where>
 	</select>
-	
+	<!--  채용공고 상세 조회 -->
 	<select id="getJobPostById" resultType ="jobPost">
 		SELECT *
 		FROM job_posting
 		WHERE job_id = #{jobId}
-	
 	</select>
-		
+	
+	<!-- 채용공고 삭제 -->
 	<delete id="deleteJobPost">
 		DELETE FROM job_posting
 		WHERE job_id = #{jobId}
-	
 	</delete>
+	
+
+	
 	<!-- ================================================================================== -->
 	<!-- 제출된 공고 목록 조회 -->
 	<select id="selectSubmitList" resultType="submit">
@@ -740,14 +761,14 @@
         b.is_display
     FROM 
     	banner b
-    LEFT JOIN 
+    JOIN 
     	USER_COMPANY c 
     		ON b.comp_id = c.user_id
-    LEFT JOIN 
+    JOIN 
    		JOB_POSTING j 
     		ON b.job_id = j.job_id
     LEFT JOIN 
-    	com_product cp ON b.comp_id = cp.user_id 
+    	pay p ON b.comp_id = p.user_id 
     	AND p.pay_status = 'paid'
     LEFT JOIN 
     	com_product cp 

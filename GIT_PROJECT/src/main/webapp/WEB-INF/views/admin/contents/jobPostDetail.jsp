@@ -18,7 +18,7 @@ pageEncoding="UTF-8"%>
 			 <hr>
 			<div class="contents">
 				${jobPostDTO.field}
-				${jobPostDTO.postCheck }
+				${jobPostDTO.postStatus }
 			</div>
 			
 			 <div class="text-center mt-5">

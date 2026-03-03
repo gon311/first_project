@@ -17,4 +17,10 @@ public class SearchDTO {
 	private String payStatus;
 	private String startDate;
 	private String endDate;
+	
+	
+	// 조건별 검색 (채용공고관리 게시판)
+	private String title;
+	private Integer postStatus; // tinyint(1 모집중 2 마감)
+
 }

@@ -16,15 +16,23 @@
 			<div class="col-md-8">
 		      <div class="card p-3">
 		        <h5>주간 수익 현황</h5>
+		        <div class="chart-box" style="padding-top: 25px;">
+               		<canvas id="daily-traffic-chart"></canvas>
+            	</div>
 		      </div>
 		    </div>
 		    <div class="col-md-4 ">
 		      <div class="card p-3 text-center">
 		        <h5>일간 트래픽 현황</h5>
+		        <div class="chart-box" style="padding-top: 25px;">
+                	<canvas id="weekly-revenue-chart"></canvas>
+            	</div>
 		      </div>
 		    </div>
 		  </div>
 		</div>
 		
+				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+				<script src="${pageContext.request.contextPath}/resources/js/admin-stats.js"></script> 
 </body>
 </html>

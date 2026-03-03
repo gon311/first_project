@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,39 +21,29 @@
 			    <div class="card-body">
 			    	 <form action="<c:url value="/admin/search" />" name="searchForm" method="post" class="row g-3 align-items-center">
 				        <div class="row my-3">
-					        <!-- 기간별 검색 - 시작일자 -->
-					        <div class="col-md-4">
-					          <label for="period" class="form-label">기간별</label>
-					          <input type="date" class="form-control" name="startDate" placeholder="시작 일자">
-					          
-					        </div>
-					        
 					        <!-- 키워드 검색 -->
 					        <div class="col-md-4">
-					          <label for="keyword" class="form-label">키워드</label>
-					          <input type="text" class="form-control" name="keyword" placeholder="키워드를 입력하세요">
+					          <label for="title" class="form-label">공고제목</label>
+					          <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요">
 					        </div>
-					
+							<div class="col-md-4">
+					    		<label for="name" class="form-label">기업이름</label>
+					    		<input type="text" class="form-control" name="companyName" placeholder="아이디를 입력하세요">
+					    	</div>  
 					        <!-- 구분 -->
 					        <div class="col-md-4">
-					          <label for="type" class="form-label">구분</label>
-					          <select class="form-select" name="user_type">
-					            <option value="" selected>전체</option>
-					            <option value="approval">승인</option>
-					            <option value="wait">검토전</option>
-					            <option value="defer">보류</option>
+					          <label for="status" class="form-label">공고상태</label>
+					          <select class="form-select" name="postStatus">
+					            <option value="" selected>선택</option>
+					            <option value="1">모집중</option>
+					            <option value="2">마감</option>
+					            <!--  0: 삭제는 데이터베이스 내에서 삭제 -->
 					          </select>
 					        </div>
 					
 					        
 				        </div>
-				        <div class="row my-0.5">
-				        	<!-- 기간별 검색 - 종료일자 -->
-				        	<div class="col-md-4">
-					          <input type="date" class="form-control" name="endDate" placeholder="종료 일자">
-					          
-					        </div>
-				        </div>
+
 				
 				        <!-- 검색 버튼 -->
 				        <div class="col-12 d-flex justify-content-end mt-3">
@@ -91,11 +82,14 @@
 						<tr onclick="location.href='<c:url value='/admin/contents/JobPostDetail?jobId=${jobPost.jobId}'/>'">
 							<td>${status.count }</td>
 							<td>${jobPost.jobId }</td>
-							<td>${jobPost.compId}</td>
+							<td>${jobPost.companyName}</td>
 							<td>${jobPost.title }</td>
 							<td>${jobPost.field }</td>
-							<td>${jobPost.openDate} ~ ${jobPost.closeDate }</td>
-							<td>${jobPost.postCheck }</td>
+							<td>
+								<fmt:formatDate value="${jobPost.openDate}" pattern="yyyy-MM-dd" />
+								~ <fmt:formatDate value="${jobPost.closeDate}" pattern="yyyy-MM-dd" />
+							</td>
+							<td>${jobPost.postStatus }</td>
 						</tr>
 					</c:forEach>
 				</tbody>

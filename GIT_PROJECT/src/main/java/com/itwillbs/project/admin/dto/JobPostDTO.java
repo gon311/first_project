@@ -27,5 +27,8 @@ public class JobPostDTO {
 	private String salary;
 	private Date openDate;
 	private Date closeDate;
-	private int postCheck;
+	private int postStatus;
+	
+	private String keyword;
+	private String companyName;
 }

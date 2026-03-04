@@ -6,7 +6,7 @@
 
 	<select id="selectPromptData" resultType="com.itwillbs.project.gpt.dto.GptGenerateDTO">
 <!-- 		coverLetterId를 가지고 cover_letter에서 meta_data와, 
-			사용자가 선택한 질문code에 해당하는 질문name을 select -->\
+			사용자가 선택한 질문code에 해당하는 질문name을 select -->
 	    SELECT 
 	        c.title
 	        , i.industry_name AS industryName

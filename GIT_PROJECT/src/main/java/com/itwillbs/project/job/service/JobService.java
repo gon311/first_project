@@ -26,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class JobService {
 	@Autowired
 	private JobMapper jobMapper;
+	@Autowired
 	private FileMapper fileMapper;
 	
 	public void jobInsert(JobDTO jobDTO, List<MultipartFile> files, String sId) throws IOException {
@@ -78,7 +79,8 @@ public class JobService {
 	    if (deleteFiles != null && !deleteFiles.isEmpty()) {
 	        for (Integer fileId : deleteFiles) {
 	            // DB에서 파일 정보 조회 (실제 경로를 알기 위해)
-	            FileDTO fileDTO = fileMapper.selectFile(fileId);
+	        	System.out.println(fileId);
+	            FileDTO fileDTO = jobMapper.selectFile(fileId);
 	            if (fileDTO != null) {
 	                // [필요시 추가] 실제 물리적 경로의 파일 삭제 로직 (FileUtils 등에 구현)
 //	                 FileUtils.deleteFile(fileDTO, sId); 
@@ -99,6 +101,10 @@ public class JobService {
 
 	    // 3. 공고 텍스트 정보 업데이트
 	    return jobMapper.updateJob(jobDTO) > 0;
+	}
+
+	public List<FileDTO> getFileList(Long jobId) {
+		return jobMapper.selectFileList(jobId);
 	}
 
 

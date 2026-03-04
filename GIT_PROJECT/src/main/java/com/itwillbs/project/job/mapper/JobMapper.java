@@ -42,5 +42,9 @@ public interface JobMapper {
 
 	void deleteFile(Integer fileId);
 
+	List<FileDTO> selectFileList(Long jobId);
+
+	FileDTO selectFile(Integer fileId);
+
 
 }

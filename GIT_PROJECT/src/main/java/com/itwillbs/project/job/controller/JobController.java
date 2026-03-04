@@ -69,7 +69,9 @@ public class JobController {
 	    if (sId == null || "P".equals(sId)) return "redirect:/user/login";
 		
 	    JobDTO jobDTO = jobService.getJobListDetail(jobId);
+	    List<FileDTO> fileList = jobService.getFileList(jobId);
 	    model.addAttribute("job", jobDTO);
+	    model.addAttribute("fileList", fileList);
 	    
 		return "/job/job_correction";
 	}

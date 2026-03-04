@@ -1,0 +1,272 @@
+@charset "UTF-8";
+
+/* ===============================
+   기본 초기화 (Bootstrap 충돌 방지)
+================================ */
+body {
+    background-color: #f8f9fa;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.5;
+}
+
+/* 모든 입력 요소 box-sizing 통일 */
+input,
+textarea,
+select {
+    box-sizing: border-box;
+}
+
+/* 헤더 아래 hr 여백 제거 */
+header + hr {
+    margin: 0 !important;
+    border: 0;
+    height: 1px;
+    background-color: #dee2e6;
+}
+
+/* ===============================
+   메인 컨테이너
+================================ */
+.job-container {
+    max-width: 900px;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+    margin: 50px auto;
+}
+
+/* ===============================
+   폼 레이아웃
+================================ */
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.label-box {
+    width: 150px;
+    font-weight: bold;
+    padding-top: 5px;
+}
+
+.input-box {
+    flex: 1;
+}
+
+/* ===============================
+   입력 필드 스타일
+================================ */
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+/* 포커스 효과 (checkbox 등 제외) */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+textarea:focus,
+select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+    outline: none;
+}
+
+/* ===============================
+   파일 관리 영역
+================================ */
+.file-management-box {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    width: 100%;
+}
+
+.file-section-title {
+    display: block;
+    font-weight: 600;
+    font-size: 13px;
+    color: #495057;
+    margin-bottom: 10px;
+}
+
+/* 기존 파일 리스트 */
+.existing-file-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+.existing-file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8f9fa;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    font-size: 14px;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #444;
+}
+
+/* 삭제 체크박스 */
+.delete-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #dc3545;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    user-select: none;
+}
+
+/* 파일 input */
+input[type="file"].form-control-file {
+    font-size: 13px;
+    color: #666;
+    width: 100%;
+}
+
+.file-divider {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 15px 0;
+}
+
+/* ===============================
+   버튼 영역
+================================ */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 40px 0;
+    padding-bottom: 20px;
+}
+
+.button-group button {
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    transition: 0.2s;
+}
+
+/* 버튼 스타일 */
+.btn-submit {
+    background-color: #333 !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+.btn-reset {
+    background-color: #e9ecef;
+    color: #333;
+}
+
+.btn-cancel {
+    background-color: #fff;
+    color: #666;
+}
+
+/* 버튼 hover */
+.btn-submit:hover {
+    background-color: #000 !important;
+}
+
+.btn-reset:hover {
+    background-color: #dee2e6;
+}
+
+.btn-cancel:hover {
+    background-color: #f8f9fa;
+}
+
+/* ===============================
+   모집 분야 선택기 (Job Selector)
+================================ */
+.job-selector-wrapper {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 250px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+/* 메인 카테고리 */
+.main-cat-list {
+    width: 30%;
+    background: #f1f3f5;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.main-cat-list li {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 0.95em;
+}
+
+.main-cat-list li:hover,
+.main-cat-list li.active {
+    background: #333;
+    color: #fff;
+}
+
+/* 서브 카테고리 */
+.sub-cat-list {
+    width: 70%;
+    background: #fff;
+    overflow-y: auto;
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 8px;
+}
+
+.sub-job-item {
+    padding: 6px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85em;
+    background: #fff;
+    transition: 0.2s;
+}
+
+.sub-job-item:hover,
+.sub-job-item.selected {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}

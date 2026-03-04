@@ -325,6 +325,20 @@
 	    WHERE file_id = #{fileId}
 	</select>
 	
+	<select id="selectFileList" resultType="fileDTO">
+	    SELECT 
+	        file_id AS fileId,
+	        job_id AS idx,              
+	        category_idx AS categoryIdx,
+	        origin_name AS originalFileName,
+	        stored_name AS realFileName,
+	        file_path AS subDir,
+	        file_size AS fileSize,
+	        file_ext AS contentType
+	    FROM uploaded_file
+	    WHERE job_id = #{jobId}
+	</select>
+	
 	<delete id="deleteFile">
 	    DELETE FROM uploaded_file 
 	    WHERE file_id = #{fileId}

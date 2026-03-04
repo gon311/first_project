@@ -24,7 +24,7 @@
 							<label for="title" class="form-label fw-semibold">자소서 제목<span
 								class="text-danger">*</span></label> <input type="text"
 								class="form-control" id="title" name="title"
-								value="${title}" required>
+								value="${param.title}" placeholder="제목을 입력해 주세요." required>
 						</div>
 						
 						<!-- 질문 선택 -->
@@ -71,9 +71,9 @@
 							</div>
 							<div class="col-12 col-lg-6">
 								<label for="outputText" class="form-label">출력</label>
-								<textarea id="outputText" name="outputText" class="form-control" rows="18">
-									<c:if test="${not empty response}">${response}</c:if>
-								</textarea>
+								<div id="outputText" class="form-control" 
+								style="width: 615px; height: 520px; white-space: pre-wrap; overflow-y: auto;">
+								</div>
 							</div>
 						</div>
 	
@@ -116,23 +116,19 @@
 		<%@ include file="/WEB-INF/views/inc/footer.jspf"%>
 	
 		<%-- 개별 페이지 자바스크립트 영역 --%>
-		<script>
-// 	 			1) 글자수 계산
+		<script type="text/javascript">
+			
+// 	 			1) 글자수 계산 함수 
+				function updateCount() {
+				    const textarea = document.getElementById('content');
+				    const countSpan = document.getElementById('charCount');
+				    countSpan.textContent = textarea.value.length;
+				}
+				
 				document.addEventListener('DOMContentLoaded', () => {
-					const textarea = document.getElementById('content'); // 대상 textarea
-					const countSpan = document.getElementById('charCount'); // 숫자 표시 span
-					
-					function updateCount() {
-						// 기본 : 문자열 길이(공백 포함)
-						const len = textarea.value.length;
-						countSpan.textContent = len;
-						
-					}
-					// 입력할 때마다 갱신
-					textarea.addEventListener('input', updateCount);
-					
-					// 초기 1회 갱신
-					updateCount();
+				    const textarea = document.getElementById('content');
+				    textarea.addEventListener('input', updateCount);
+				    updateCount();
 				});
 				
 // 				2) 생성하기 버튼
@@ -141,7 +137,7 @@
 					
 					// 입력받은 내용 가져오기 
 					const coverLetterIdx = document.getElementById("coverLetterIdx").value;
-					const questionCode = document.querySelector('input[name="questionCode"]:checked')?.value;
+					const questionCode = document.getElementById("questionCode").value;
 					const inputContent = document.getElementById("content").value;
 					
 					async function requestGenerate() {
@@ -150,7 +146,7 @@
 							const response = await fetch("<c:url value="/gpt/generateContent" />", {
 								method: "POST", 
 								headers: { 
-									"Content-type": "application/json"
+									"Content-Type": "application/json"
 								}, 
 								body: JSON.stringify({
 									coverLetterIdx : coverLetterIdx, 
@@ -165,11 +161,11 @@
 							
 							// 생성된 값 화면에 출력 
 							const result = await response.json();
+							console.log("TITLE:", result.title);
+							console.log("CONTENT:", result.content);
 							
 							const outputArea = document.getElementById("outputText");
-					        const combinedText = `[${result.title}]\n\n${result.content}`;
-					        
-					        outputArea.value = combinedText;
+							outputArea.textContent = result.title + "\n\n" + result.content;
 							
 						} catch(error) {
 							console.error("Error:", error);
@@ -192,7 +188,7 @@
 					
 					applyBtn.addEventListener('click', () => {
 						// 출력창 내용으로 입력창 덮어쓰기 
-						inputArea.value = outputArea.value;
+						inputArea.value = outputArea.textContent;
 						
 						// 글자수 카운터 갱신 함수 호출
 						if(typeof updateCount === 'function') updateCount();

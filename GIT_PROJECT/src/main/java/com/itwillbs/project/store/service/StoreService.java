@@ -56,8 +56,19 @@ public class StoreService{
 		storeMapper.insertPaymentInfo(paymentDTO);
 	}
 	
+	// 이용권 테이블에 구매자가 결제한 이용권 저장(구직자)
+	public void setUserProduct(PaymentDTO paymentDTO) {
+		storeMapper.insertUserProduct(paymentDTO);
+	}
+	
+	// 이용권 테이블에 구매자가 결제한 이용권 저장(기업)
+	public void setComProduct(PaymentDTO paymentDTO) {
+		storeMapper.insertComProduct(paymentDTO);
+	}
+	
+	
 	// 결제 조회 api
-	private String SECRET_KEY = "";
+	private String SECRET_KEY = "a6ahq9hSCGloLXjNbEEcoxQafWxrTuuUjr0SOFOFNLBUk0hiz8iZIIAQjG1iAnO7W5SkyZFueUu9iyLy";
 //	@Value("${portone.api_key}")
 //	private String SECRET_KEY;
 
@@ -92,6 +103,12 @@ public class StoreService{
         }
         
     }
+
+	
+
+	
+
+	
     
 
 }

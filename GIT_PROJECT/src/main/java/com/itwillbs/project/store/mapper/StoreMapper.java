@@ -32,5 +32,11 @@ public interface StoreMapper {
 	// 결제 성공 시 결제 테이블에 저장
 	void insertPaymentInfo(PaymentDTO paymentDTO);
 
+	// 이용권 테이블에 구매자가 결제한 이용권 저장(구직자)
+	void insertUserProduct(PaymentDTO paymentDTO);
+
+	// 이용권 테이블에 구매자가 결제한 이용권 저장(기업)
+	void insertComProduct(PaymentDTO paymentDTO);
+
 	
 }

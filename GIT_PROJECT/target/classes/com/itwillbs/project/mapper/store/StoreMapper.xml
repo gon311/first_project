@@ -31,6 +31,7 @@
 			order_id
 			, user_id
 			, user_name
+			, user_type
 			, phone
 			, email
 			, product_id
@@ -41,6 +42,7 @@
 			#{order.orderId}
 			, #{order.userId}
 			, #{order.userName}
+			, #{order.userType}
 			, #{order.phone}
 			, #{order.email}
 			, #{store.productId}
@@ -94,6 +96,48 @@
 			, #{payStatus}
 		)
 		
+	</insert>
+	
+	<!-- 구직자) 구매자가 결제한 이용권 정보를 이용권 테이블에 저장 -->
+	<insert id="insertUserProduct">
+		insert into user_product(
+			pay_id
+			, product_id
+			, user_id
+			, remaining_count
+		)
+		values(
+			#{payId}
+			, #{productId}
+			, #{userId}
+			, (
+				select	product_count
+				from	product
+				where	product_id = #{productId}
+			)
+		)
+	</insert>
+	
+	<!-- 기업) 구매자가 결제한 이용권 정보를 이용권 테이블에 저장 -->
+	<insert id="insertComProduct">
+		insert into com_product(
+			pay_id
+			, product_id
+			, user_id
+			, start_date
+			, end_date
+		)
+		values(
+			#{payId}
+			, #{productId}
+			, #{userId}
+			, #{payDate}
+			, adddate(#{payDate}, (
+				select	product_duration
+				from	product
+				where	product_id = #{productId}
+			))
+		)
 	</insert>
 	
 </mapper>

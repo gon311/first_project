@@ -77,7 +77,7 @@ public class StoreController {
 		
 		return "store/payForm";
 	}
-	
+	  
 	//===========================================================================================================
 	// 결제 정보 처리
 	@ResponseBody 
@@ -87,6 +87,7 @@ public class StoreController {
 							, PaymentDTO paymentDTO
 							, HttpSession session
 							, OrderDTO orderDTO) {
+		
 		OrderDTO order = (OrderDTO) session.getAttribute("orderDTO");
 		StoreDTO store = (StoreDTO) session.getAttribute("storeDTO");
 		
@@ -129,7 +130,14 @@ public class StoreController {
 		    
 		    // 결제 테이블에 주문 정보 저장
 		    storeService.setPaymentInfo(paymentDTO);
-	    
+		    
+		    // 이용권 테이블에 구매자의 이용권 정보 저장
+		    if(orderInfo.getUserType() == 'P') {
+		    	storeService.setUserProduct(paymentDTO);
+		    } else if(orderInfo.getUserType() == 'C') {
+		    	storeService.setComProduct(paymentDTO);
+		    }
+	     
 	    	return "success";     // 결제 성공 페이지 반환
 	    }
 

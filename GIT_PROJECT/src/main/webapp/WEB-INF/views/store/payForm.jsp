@@ -285,7 +285,7 @@
     		const orderId = "${orderInfo.orderId}";
     		const bankVal = document.getElementById("bankName").value;
     		const depositVal = document.getElementById("depositName").value;
-    		const reUrl = "http://localhost:8080/project/store/payResult";
+//     		const reUrl = "http://localhost:8080/project/store/payResult";
     		
     		try {
     			const paymentParam = {
@@ -317,12 +317,12 @@
     				
 					 // 기존 method 객체를 유지하면서 virtualAccount 추가
 				    paymentParam.method.virtualAccount = {
-				        bankCode: bankVal,       
+				        bank: bankVal,       
 				        remitteeName: depositVal, 
 				        expiry: { 
 				        	dueDate: dueDateStr 
 			        	}
-
+ 
 				    };
     			}
     			
@@ -330,12 +330,6 @@
 				const response = await PortOne.requestPayment(paymentParam);
    	    		console.log("결제 결과 : ", response);
    	    		
-   	    		if(response.code !== undefined) {
-	    		   // 오류 발생
-	    		   return alert(response.message);
-	    		}
-   	    		
-
 				// 서버에 값 보내기
 				const result = await fetch("<c:url value="/store/payResponse" />", {
     				method: "POST",
@@ -351,7 +345,6 @@
 				if(result.ok) {
 					const payResult = await result.text();
 				    if(payResult === "success") {
-				        // 여기서 직접 성공 페이지로 보냅니다.
 				        window.location.href = "<c:url value="/store/paySuccess" />";
 				    } else if(payResult === "mismatch") {
 				    	alert("결제 금액 검증에 실패하였습니다. 위변조가 의심됩니다.");

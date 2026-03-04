@@ -107,9 +107,6 @@ public class StoreController {
 	    // PortOne 서버에서 받은 결제 금액(paymentInfo.getAmount)와 DB 주문 금액(orderInfo.getProductPrice)이 일치하는지 확인
 	    if(paymentInfo.getAmount().getTotal() != orderInfo.getProductPrice()) {
 	        // 금액 불일치 시 결제 실패 처리
-//	    	System.out.println("서버 금액: " + paymentInfo.getAmount().getTotal());
-//	    	System.out.println("db 금액: " + orderInfo.getProductPrice());
-//	    	System.out.println("결제 실패!"); 
 	        return "mismatch"; 
 	    } 
 	     
@@ -121,10 +118,8 @@ public class StoreController {
 	    
 		    // 결제 내역에 저장
 		    paymentDTO.setPayId(responsePaymentDTO.getPaymentId());
-		    
-		 // DTO에 필요한 DB 컬럼 채우기
-		    paymentDTO.setUserId(orderInfo.getUserId());          // 서버에서 알고 있는 회원 PK
-		    paymentDTO.setProductId(orderInfo.getProductId());    // 서버에서 알고 있는 상품 PK
+		    paymentDTO.setUserId(orderInfo.getUserId());          
+		    paymentDTO.setProductId(orderInfo.getProductId());    
 		    paymentDTO.setPayMethod("CARD");
 		    paymentDTO.setCardName(paymentInfo.getMethod().getCard().getName());
 		    paymentDTO.setCardNum(paymentInfo.getMethod().getCard().getNumber());
@@ -138,21 +133,7 @@ public class StoreController {
 	    	return "success";     // 결제 성공 페이지 반환
 	    }
 
-	    // 4️ 가상계좌 발급 상태 처리
-//	    if("READY".equals(payment.getStatus())) {
-//	        // 가상계좌가 발급되었지만 아직 입금 전 상태
-//	        order.setStatus("READY");      // 주문 상태를 READY로 업데이트
-//	        orderService.update(order);    // DB 반영
-//
-//	        // 가상계좌 정보 모델에 담아서 JSP에서 출력
-//	        model.addAttribute("bankName", payment.getVirtualAccount().getBank());
-//	        model.addAttribute("accountNumber", payment.getVirtualAccount().getAccountNumber());
-//	        model.addAttribute("dueDate", payment.getVirtualAccount().getExpiry().getDueDate());
-//
-//	        return "store/virtualAccountInfo"; // 입금 안내 페이지
-//	    }
-
-	    // 5️ 위 경우 외 실패 처리
+	    // 위의 경우 외 실패 처리
 	    return "fail";
 	}
 
@@ -161,13 +142,13 @@ public class StoreController {
 	@GetMapping("/paySuccess")
 	public String paySuccess(){
 		
-		
 		return "store/paySuccess";
 	}
 	
 	// 결제에 실패한 경우
 	@GetMapping("/payFailed")
 	public String payFailed() {
+		
 		return "/store/payFailed";
 	}
 	

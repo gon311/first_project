@@ -1,18 +1,23 @@
 package com.itwillbs.project.user.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.common.exception.BackwardException;
@@ -90,10 +95,29 @@ public class UserController {
 	}
 	
 	// 로그아웃
-	@GetMapping("/logout")
+	@GetMapping("logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/";
+	}
+	
+	// 구글 로그인
+	@GetMapping("/googleLogin")
+	public String googleLogin(String email, HttpSession session) {
+	    UserDTO dbUser = userService.getUser(email);
+	    
+	    // 등록 안 된 유저라면 회원가입으로 유도합니다.
+	    if(dbUser == null) {
+	        return "redirect:/user/regist";
+	    }
+	    
+	    session.setAttribute("userIdx", dbUser.getUserId());
+	    session.setAttribute("sId", dbUser.getEmail());
+	    session.setAttribute("userName", dbUser.getUserName());
+	    session.setAttribute("userType", dbUser.getUserType()); // 'P' 또는 'C' 구분
+	    session.setMaxInactiveInterval(60 * 60 * 24);
+	    
+	    return "redirect:/";
 	}
 
 	// 회원가입 페이지로 이동
@@ -120,6 +144,18 @@ public class UserController {
 		session.setMaxInactiveInterval(60 * 60 * 24);
 		
 		return "redirect:/";
+	}
+	
+	// 아이디 체크
+	@ResponseBody
+	@GetMapping("checkId")
+	public Map<String, Object> checkId(@RequestParam String id) {
+		boolean exists = userService.existsById(id);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("exists", exists);
+		
+		return result;
 	}
 	
 	// 아이디/비밀번호 찾기 페이지로 이동

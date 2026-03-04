@@ -26,8 +26,9 @@
                 <div class="form-group" >
                     <label>이메일(아이디) *</label>
                     <div class="input-with-btn">
-                        <input type="email" id="email" name="email" required placeholder="example@email.com">
+                        <input type="email" class="form-control" id="email" name="email" onchange="checkId()" required placeholder="example@email.com">
                         <button type="button" class="btn-action" id="btn-email-send" onclick="sendVerification('email')">인증번호 전송</button>
+	                    <div id="id-feedback" class="invalid-feedback"></div> 
                     </div>
                     <div id="email-verify-area" class="verify-area">
                         <div class="input-with-btn">
@@ -225,7 +226,21 @@
         // 인증번호 발송 (JSP EL 충돌 방지 위해 문자열 결합 사용)
         function sendVerification(type) {
             const val = document.getElementById(type).value;
-            if(!val) { alert("정보를 입력해주세요."); return; }
+            const idValue = document.getElementById("id-feedback").innerText;
+            const phoneRegex = /^(010|011)[-\s]?[\d]{3,4}[-\s]?[\d]{4}$/;
+            const mobileCarrierValue = document.getElementById("mobileCarrier").value;
+            
+            if(!val) { 
+            	alert("정보를 입력해주세요.");
+            	return;
+            } else if(type == "email" && (idValue != "아이디 사용 가능")) {
+            	alert("아이디를 확인해주세요");
+            	return;
+            } else if(type == "phone" && (!phoneRegex.test(val) || !mobileCarrierValue)) {
+            	alert("통신사 또는 휴대폰 번호를 확인해주세요");
+            	return;
+            }
+            
             
             const requestContent = {
                     type: type,   // 'email' 또는 'phone'
@@ -248,7 +263,6 @@
 					const result = await response.json();
 					
 					alert("인증번호가 발송되었습니다.");
-					console.log("type : " + result);
 		            document.getElementById(type + "-verify-area").style.display = 'block';
 					
 		            if(type == "phone") {
@@ -384,7 +398,7 @@
 	    };
 	    
 	    // 사업자번호 입력시 이벤트
-	    document.getElementById("bizRegNo").addEventListener("blur", function() {
+	    document.getElementById("bizRegNo").addEventListener("change", function() {
 	        let content = document.getElementById("bizRegNo").value.replace(/-/g, ""); // 하이픈 제거
 			let requestContent = {
 	        	b_no: content,
@@ -415,6 +429,52 @@
 			bizRequestCorrectContent();
 	    });
 	    
+		// 아이디 검사
+		async function checkId() {
+			const idElement = document.getElementById("email"); // 아이디 입력 폼 요소
+			const id = idElement.value; // 아이디 입력값
+			const idFeedback = document.getElementById("id-feedback");
+			
+			if(!validateIdFormat(idElement, idFeedback)) {
+				return;
+			}
+			
+			const checkIdUrl = "<c:url value="/user/checkId" />";
+			const response = await fetch(checkIdUrl + "?id=" + id);
+			const result = await response.json();
+			
+			if(result.exists) { // 아이디가 존재할 경우(= 아이디 중복)
+				idElement.classList.add("is-invalid"); // "is-invalid" 클래스 추가
+				idElement.classList.remove("is-valid"); // "is-valid" 클래스 삭제
+				idFeedback.textContent = "이미 사용중인 아이디"
+			} else { // 아이디가 존재하지 않을 경우(= 아이디 사용 가능)
+				idElement.classList.add("is-valid");
+				idElement.classList.remove("is-invalid");
+				idFeedback.textContent = "아이디 사용 가능"
+			}
+		}
+	
+		// 아이디 입력값 검증
+		function validateIdFormat(idElement, idFeedback) {
+			// 아이디 입력값 검증 정규표현식 규칙 : 4~16자 영문자, 숫자, _ 조합
+			// 아이디 입력값 검증 정규표현식 규칙 : 4~16자 영문자, 숫자, _ 조합(단, 첫글자는 영문자만 허용, 대소문자 무관)
+			// const idRegex = /^[A-Za-z0-9_]{4,16}$/;
+			const idRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+	
+			if(!idRegex.test(idElement.value)) { // 입력받은 아이디가 정규표현식 규칙과 일치하지 않을 경우
+				idElement.classList.add("is-invalid"); // "is-invalid" 클래스 추가
+				idElement.classList.remove("is-valid"); // "is-valid" 클래스 삭제
+				
+				// 아이디 검증 결과 표시 요소의 텍스트 지정
+				idFeedback.textContent = "이메일 형식에 맞지않습니다."
+				
+				// 아이디 검사 함수로 false 값 리턴
+				return false;
+			} 
+			
+			// 아이디 검사 함수로 true 값 리턴
+			return true;
+		}
     </script>
 </body>
 </html>

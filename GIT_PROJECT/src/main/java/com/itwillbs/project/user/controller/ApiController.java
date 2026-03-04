@@ -48,6 +48,7 @@ public class ApiController {
 			
 		}
 		
+		System.out.println(authCode);
 		return "{\"authCode\" : \"" + authCode + "\"}";
 	}
 	
@@ -57,7 +58,7 @@ public class ApiController {
 	public String verifyCode(@RequestBody Map<String, String> request, HttpSession session) {
 	    String inputCode = request.get("code");
 	    String savedCode = (String) session.getAttribute("authCode");
-
+	    
 	    if (savedCode != null && savedCode.equals(inputCode)) {
 	        return "{\"success\": true}";
 	    } else {

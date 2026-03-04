@@ -23,10 +23,13 @@ input[type="text"], input[type="email"], input[type="password"], input[type="tel
 }
 input:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 3px rgba(0,70,255,0.1); }
 
-.input-with-btn { display: flex; gap: 8px; }
+.input-with-btn { display: flex; gap: 8px; position: relative; }
 .btn-action { white-space: nowrap; padding: 0 20px; background: white; border: 1px solid var(--primary-color); color: var(--primary-color); border-radius: 6px; cursor: pointer; font-weight: bold; }
 .btn-action:hover { background: #f0f4ff; }
 .btn-action.verified { background: #e7f0ff; border-color: #cbd8ff; color: #888; cursor: default; }
+
+/* 아이디 에러 표시 */
+#id-feedback { position: absolute; top: 100%; }
 
 /* 인증 영역 */
 .verify-area { background-color: #f8f9fa; padding: 15px; margin-top: 10px; border-radius: 6px; display: none; }

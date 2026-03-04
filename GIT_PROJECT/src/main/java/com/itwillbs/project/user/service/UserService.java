@@ -59,6 +59,15 @@ public class UserService {
 	    return updated > 0;
 	}
 
+	public boolean existsById(String id) {
+		
+		if(userMapper.selectUser(id) == null) { 
+			return false;
+		} else { 
+			return true;
+		}
+	}
+
 
 
 

@@ -11,6 +11,12 @@
 	<context:component-scan base-package="com.itwillbs.project">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
+	
+	<!-- 애플리케이션 내에서 사용할 데이터(= 속성값)들을 별도로 모듈화 한 프로퍼티 파일 불러오기 -->
+	<!-- src/main/resources 경로는 classpath:/ 으로 대체 가능 -->
+	<!-- 컨트롤러 클래스는 root-context.xml 에서 로딩 제외 대상으로 지정했으므로 컨트롤러에서 값을 사용하려면 servel-context.xml 에도 등록 필요 -->
+	<context:property-placeholder location="classpath:/config/application.properties" /> 
+	<context:property-placeholder location="classpath:/config/app.properties" /> 
 		
 	<!-- ============================ [ MyBatis 설정 ]============================ -->	
 		<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">

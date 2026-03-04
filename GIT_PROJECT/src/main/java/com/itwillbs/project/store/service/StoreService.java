@@ -90,9 +90,8 @@ public class StoreService{
             System.out.println("에러 메시지: " + e.getResponseBodyAsString()); 
             throw e;
         }
+        
     }
     
-    
-
 
 }

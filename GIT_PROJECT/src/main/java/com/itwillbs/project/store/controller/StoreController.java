@@ -2,6 +2,8 @@ package com.itwillbs.project.store.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -46,6 +48,20 @@ public class StoreController {
 	public String comStore() {
 		
 		return "store/comStore";
+	}
+	
+	// 이미 이용권을 보유하고 있는 회원은 이용권이 만료되어야 추가 구매 가능
+	// 보유한 이용권 정보 전달
+	@ResponseBody
+	@GetMapping("/checkRemain")
+	public Map<String, Object> checkRemain(@RequestParam String id) {
+		// 구매자가 이용권을 보유하고 있고, 만료되지 않았는지 확인
+		boolean exists = storeService.getRemainById(id);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("exists", exists);
+		
+		return result;
 	}
 	
 	// 구매하기 페이지 - 특정 상품의 "구매하기" 버튼 클릭

@@ -36,6 +36,17 @@ public class StoreService{
 		return storeMapper.selectStoreInfo(productId);
 	}
 	
+	// 회원이 이용권을 가지고 있고, 만료되지 않았는지 여부
+	public boolean getRemainById(String id) {
+		// 이용권이 만료되지 않은 경우(구매불가)
+		if(storeMapper.selectRemainById(id) != null) {
+			return false;
+		} else { // 구매가능
+			return true;
+		}
+		
+	}
+	
 	// 주문 정보 삽입
 	public void setOrderInfo(OrderDTO order, StoreDTO store) {
 		storeMapper.insertOrderInfo(order, store);
@@ -103,6 +114,8 @@ public class StoreService{
         }
         
     }
+
+	
 
 	
 

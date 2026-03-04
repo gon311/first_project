@@ -126,5 +126,19 @@
     
     <%-- footer area --%>
 	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+	
+	<script>
+		async function checkRemain(${}) {
+			const userId = ${sessionScope.sId}
+			const checkRemainURL = "<c:url value="/store/checkRemain" />";
+			// 비동기 요청 시 아이디 입력값 파라미터로 전송
+			const response = await fetch(checkRemainURL + "?id=" + userId);
+			// 비동기 요청에 대한 응답 데이터를 JSON 형식으로 파싱
+			const result = await response.json();
+			const response = await fetch()
+				
+			}
+		}
+	</script>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.itwillbs.project.store.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.project.store.dto.MemberProductDTO;
 import com.itwillbs.project.store.dto.OrderDTO;
 import com.itwillbs.project.store.dto.PaymentDTO;
 import com.itwillbs.project.store.dto.PortoneDTO;
@@ -16,7 +17,10 @@ public interface StoreMapper {
 
 	// 구매하기 페이지 내 상품 정보 출력
 	StoreDTO selectStoreInfo(String productId);
-
+	
+	// 회원이 이용권을 보유하고 있고, 만료되지 않았는지 여부
+	MemberProductDTO selectRemainById(String id);
+ 
 	// 결제내역 저장
 	PaymentDTO insertPayInfo(PortoneDTO payment);
 
@@ -37,6 +41,8 @@ public interface StoreMapper {
 
 	// 이용권 테이블에 구매자가 결제한 이용권 저장(기업)
 	void insertComProduct(PaymentDTO paymentDTO);
+
+	
 
 	
 }

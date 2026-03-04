@@ -5,7 +5,7 @@
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link href="<c:url value="/resources/css/jobCorrection.css" />" rel="stylesheet" type="text/css">
-<div class="job-container">
+<div class="container">
     <form action="<c:url value="/job/jobCorrection" />" method="post" enctype="multipart/form-data">
         
         <div class="form-group">

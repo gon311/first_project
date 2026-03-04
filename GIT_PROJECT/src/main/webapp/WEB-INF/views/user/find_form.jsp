@@ -4,59 +4,7 @@
 <html lang="ko">
 <head>
 	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
-    <style>
-        /* [기본 스타일] */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Malgun Gothic', 'Noto Sans KR', sans-serif; }
-        body { background-color: #f5f6f7; color: #333; font-size: 14px; }
-        input, select, button { outline: none; vertical-align: middle; }
-        
-        /* [레이아웃] */
-        .container { width: 1500px; margin: 50px auto; background: #fff; padding: 40px; border: 1px solid #ddd; }
-        
-        /* [탭 메뉴] */
-        .tab-nav { display: flex; margin-bottom: 30px; border-bottom: 2px solid #0055ff; }
-        .tab-btn { flex: 1; padding: 15px 0; text-align: center; background: #f8f9fa; border: 1px solid #ddd; border-bottom: none; cursor: pointer; font-size: 16px; color: #666; font-weight: bold; }
-        .tab-btn.active { background: #0055ff; color: #fff; border-color: #0055ff; }
-
-        /* [타이틀] */
-        .section-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #333; }
-        .section-desc { font-size: 13px; color: #888; margin-bottom: 30px; }
-
-        /* [분할 레이아웃] */
-        .split-box { display: flex; gap: 20px; }
-        .member-col { flex: 1; border: 1px solid #e1e1e1; display: flex; flex-direction: column; }
-        .col-header { background: #f9f9f9; padding: 15px; font-weight: bold; border-bottom: 1px solid #e1e1e1; font-size: 15px; color: #444; }
-        .col-body { padding: 25px 20px; flex: 1; position: relative; }
-
-        /* [핵심: 비활성화 스타일] */
-        .field-area { transition: all 0.2s; }
-        .field-area.disabled { opacity: 0.4; pointer-events: none; user-select: none; filter: grayscale(100%); }
-        .field-area.disabled input, .field-area.disabled select { background-color: #eee; }
-
-        /* [폼 요소] */
-        .radio-row { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
-        .radio-label { margin-right: 15px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }
-        
-        .form-row { margin-bottom: 12px; display: flex; align-items: center; }
-        .form-label { width: 100px; font-weight: bold; color: #555; font-size: 13px; flex-shrink: 0; }
-        .form-input-group { flex: 1; display: flex; align-items: center; gap: 6px; position: relative; }
-        
-        input[type="text"] { height: 32px; padding: 0 10px; border: 1px solid #ccc; width: 100%; font-size: 13px; }
-        select { height: 32px; padding: 0 5px; border: 1px solid #ccc; font-size: 13px; }
-        
-        /* 버튼 */
-        .btn-auth { height: 32px; background: #555; color: #fff; border: none; padding: 0 10px; cursor: pointer; font-size: 12px; min-width: 80px; white-space: nowrap; }
-        .btn-submit { display: block; width: 220px; margin: 40px auto 0; background: #2c3e50; color: #fff; padding: 15px; font-size: 18px; font-weight: bold; border: none; cursor: pointer; }
-
-        /* [툴팁] */
-        .tooltip-trigger { display: inline-block; width: 16px; height: 16px; background: #0055ff; color: #fff; text-align: center; font-size: 11px; margin-left: 5px; cursor: pointer; line-height: 16px; border-radius: 2px; }
-        .tooltip-box { position: absolute; top: 40px; left: 80px; width: 250px; background: #fff; border: 1px solid #333; padding: 15px; z-index: 100; display: none; box-shadow: 2px 2px 5px rgba(0,0,0,0.2); }
-        .tooltip-close { position: absolute; top: 5px; right: 8px; font-size: 16px; cursor: pointer; font-weight: bold; }
-
-        /* 유틸 */
-        .d-none { display: none !important; }
-        .timer-text { color: #e74c3c; font-weight: bold; font-size: 12px; margin-left: 5px; min-width: 40px; }
-    </style>
+	<link href="<c:url value="/resources/css/userFindForm.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
 	

@@ -8,37 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        body {
-            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f4f6f8;
-        }
-
-        /* --- 기존 로그인 박스 CSS 유지 --- */
-        .login-wrapper { max-width: 480px; width: 100%; }
-        .custom-tabs { border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: white;}
-        .tab-btn { background-color: #f8f9fa; color: #999; border: none; border-bottom: 1px solid #dee2e6; padding: 14px 0; cursor: pointer; font-weight: 500; }
-        .tab-btn.active { background-color: #fff; color: #333; font-weight: bold; border-bottom: 1px solid transparent; }
-        .tab-content-area { display: none; }
-        .tab-content-area.active { display: block; }
-        .form-control-lg { height: 48px; font-size: 14px; border-radius: 4px; }
-        .form-control:focus { box-shadow: none; border-color: #0066ff; }
-        .icon-left { pointer-events: none; z-index: 5; color: #ccc; }
-        .password-toggle-icon { cursor: pointer; color: #777; z-index: 10; display: none; }
-        .btn-big-login { height: 106px; background-color: #0066ff; font-size: 18px; font-weight: bold; }
-        .btn-big-login:hover { background-color: #0052cc; }
-        .social-btn { width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; border-radius: 50%; text-decoration: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .social-btn svg { width: 24px; height: 24px; }
-        .bg-naver { background-color: #03C75A; } .bg-naver svg { fill: white; }
-        .bg-kakao { background-color: #FEE500; }
-        .bg-facebook { background-color: #1877F2; color: white; font-size: 24px; }
-        .bg-google { background-color: white; border: 1px solid #ddd; }
-        .bg-apple { background-color: black; color: white; font-size: 24px; }
-        .toggle-text { border: 1px solid #dee2e6; border-radius: 10px; padding: 1px 6px; font-size: 11px; color: #0066ff; font-weight: bold; }
-        
-        #error {color: red;}
-    </style>
+	<link href="<c:url value="/resources/css/userLogin.css" />" rel="stylesheet" type="text/css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">

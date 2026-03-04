@@ -5,55 +5,7 @@
 <head>
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <style>
-        :root { --primary-color: #0046ff; --bg-color: #f4f7f6; }
-        html, body { margin: 0; padding: 0; background-color: var(--bg-color); font-family: 'Apple SD Gothic Neo', sans-serif; }
-        
-        main { display: flex; justify-content: center; padding: 60px 20px; }
-        .container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 550px; }
-        
-        h2 { text-align: center; font-size: 28px; margin-bottom: 30px; }
-
-        /* [탭 스타일] */
-        .signup-tabs { display: flex; margin-bottom: 30px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
-        .tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; background: #f9f9f9; color: #888; font-weight: bold; transition: 0.3s; }
-        .tab.active { background: var(--primary-color); color: white; }
-
-        /* [폼 스타일] */
-        .section-title { font-size: 18px; font-weight: bold; margin: 35px 0 15px; padding-bottom: 8px; border-bottom: 2px solid #333; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 14px; color: #444; }
-        
-        input[type="text"], input[type="email"], input[type="password"], input[type="tel"], input[type="date"], select {
-            width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 15px;
-        }
-        input:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 3px rgba(0,70,255,0.1); }
-
-        .input-with-btn { display: flex; gap: 8px; }
-        .btn-action { white-space: nowrap; padding: 0 20px; background: white; border: 1px solid var(--primary-color); color: var(--primary-color); border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .btn-action:hover { background: #f0f4ff; }
-        .btn-action.verified { background: #e7f0ff; border-color: #cbd8ff; color: #888; cursor: default; }
-
-        /* 인증 영역 */
-        .verify-area { background-color: #f8f9fa; padding: 15px; margin-top: 10px; border-radius: 6px; display: none; }
-        .verify-msg { font-size: 12px; margin-top: 8px; }
-        .msg-success { color: #2ecc71; }
-        .msg-error { color: #e74c3c; }
-
-        .gender-wrap { display: flex; gap: 15px; padding-top: 5px; }
-        .hidden { display: none; }
-        .mt-8 { margin-top: 8px; }
-
-        /* 이용약관 */
-        .terms-box { background: #f9f9f9; padding: 20px; border-radius: 6px; border: 1px solid #eee; }
-        .terms-item { margin-bottom: 12px; font-size: 14px; display: flex; align-items: center; gap: 10px; }
-        
-        .btn-submit { width: 100%; padding: 20px; background-color: var(--primary-color); color: white; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 40px; }
-        .btn-submit:hover { background-color: #0036c7; }
-
-        footer { text-align: center; padding: 40px; color: #888; font-size: 13px; }
-        
-    </style>
+    <link href="<c:url value="/resources/css/userRegist.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
     <%@ include file="/WEB-INF/views/inc/header.jspf" %>

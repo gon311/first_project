@@ -5,63 +5,7 @@
 <head>
     <c:set var="pageTitle" value="아이디 찾기 결과" />
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
-    <style>
-        .find-id-container {
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 40px;
-            border: 1px solid #e9ecef;
-            border-radius: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        .id-list-group {
-            border: 1px solid #dee2e6;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 25px;
-        }
-        .id-item {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-        }
-        .id-item:last-child { border-bottom: none; }
-        .id-item input[type="radio"] {
-            width: 20px;
-            height: 20px;
-            accent-color: #198754; /* 네이버 스타일 초록색 */
-        }
-        .id-info { display: flex; align-items: center; }
-        .user-icon { 
-            background: #f1f3f5;
-            border-radius: 50%;
-            padding: 8px;
-            margin-right: 15px;
-            color: #adb5bd;
-        }
-        .btn-pw-find {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            color: #212529;
-            padding: 12px;
-        }
-        .btn-login {
-            background-color: #03c75a; /* 네이버 스타일 */
-            border: none;
-            color: white;
-            padding: 12px;
-        }
-        .btn-login:hover { background-color: #02b14f; color: white; }
-        .help-link {
-            text-decoration: none;
-            color: #868e96;
-            font-size: 0.9rem;
-            border-bottom: 1px solid #dee2e6;
-        }
-    </style>
+    <link href="<c:url value="/resources/css/userFindId.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
     <%@ include file="/WEB-INF/views/inc/header.jspf" %>

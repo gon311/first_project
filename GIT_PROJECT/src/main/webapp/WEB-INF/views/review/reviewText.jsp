@@ -116,7 +116,7 @@
 		<%@ include file="/WEB-INF/views/inc/footer.jspf"%>
 	
 		<%-- 개별 페이지 자바스크립트 영역 --%>
-		<script type="text/javascript">
+		<script>
 // 	 			1) 글자수 계산
 				document.addEventListener('DOMContentLoaded', () => {
 					const textarea = document.getElementById('content'); // 대상 textarea
@@ -141,13 +141,13 @@
 					
 					// 입력받은 내용 가져오기 
 					const coverLetterIdx = document.getElementById("coverLetterIdx").value;
-					const questionCode = document.querySelector('input[name="question"]:checked')?.value;
+					const questionCode = document.querySelector('input[name="questionCode"]:checked')?.value;
 					const inputContent = document.getElementById("content").value;
 					
 					async function requestGenerate() {
 						try {
 							// chatGPT에 전달하기 
-							const = response = await fetch("<c:url value="/gpt/generateContent" />", {
+							const response = await fetch("<c:url value="/gpt/generateContent" />", {
 								method: "POST", 
 								headers: { 
 									"Content-type": "application/json"

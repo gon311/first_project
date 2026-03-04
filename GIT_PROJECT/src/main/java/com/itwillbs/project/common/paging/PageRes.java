@@ -8,7 +8,7 @@ import lombok.Data;
 public class PageRes {
     private int page;
     private int size;
-    private int total;
+    private int total; // 총 페이지수
     private int totalPages;
 
     private int startPage;

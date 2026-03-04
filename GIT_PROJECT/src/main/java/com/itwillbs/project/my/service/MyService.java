@@ -15,6 +15,8 @@ import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.MyReviewDTO;
 import com.itwillbs.project.my.dto.MyPaymentDTO;
 import com.itwillbs.project.my.dto.PaymentCond;
+import com.itwillbs.project.my.dto.RecommendedCond;
+import com.itwillbs.project.my.dto.RecommendedRowDTO;
 import com.itwillbs.project.my.mapper.MyMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -130,6 +132,25 @@ public class MyService {
 	// 취소
 	public int cancelApply(Long userId, Long appId) {
 	    return myMapper.deleteJobApplication(userId, appId);
+	}
+	
+	// 추천 공고
+	public List<RecommendedRowDTO> getRecommendedList(RecommendedCond cond) {
+	    return myMapper.selectRecommendedList(cond);
+	}
+
+	public int getRecommendedCount(RecommendedCond cond) {
+	    return myMapper.selectRecommendedCount(cond);
+	}
+
+	public void hideRecommendedJob(long userId, long jobId) {
+	    myMapper.updateRecommendedInactive(userId, jobId);
+	}
+
+	public void toggleJobBookmark(long userId, long jobId) {
+	    Long bookmarkId = myMapper.selectBookmarkId(userId, jobId);
+	    if (bookmarkId == null) myMapper.insertBookmark(userId, jobId);
+	    else myMapper.deleteBookmark(userId, jobId);
 	}
 
 

@@ -358,7 +358,7 @@
 
                 <!-- (옵션) 입사지원 -->
                 <button type="button" class="btn-ghost"
-                        onclick="location.href='${urlApply}?jobId=${fav.jobId}'">
+                        onclick="location.href='${urlJobDetail}?jobId=${fav.jobId}'">
                   입사지원
                 </button>
 

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
@@ -7,17 +8,19 @@
 <%-- =========================
      URL (전부 c:url)
    ========================= --%>
-<c:url var="urlRecommend" value="/my/recommend"/>         <%-- 목록(필터/정렬 GET) --%>
-<c:url var="urlJobDetail" value="/job/JobDetail"/>          <%-- ?jobId= --%>
-<c:url var="urlApply" value="/job/apply"/>               <%-- ?jobId= (입사지원) --%>
-<c:url var="urlHide" value="/my/recommend/hide"/>        <%-- POST/GET 선택: ?jobId= (숨김처리) --%>
+<c:url var="urlRecommend" value="/my/recommend"/>              <%-- 목록(필터/정렬 GET) --%>
+<c:url var="urlJobDetail" value="/job/JobDetail"/>             <%-- ?jobId= --%>
+<c:url var="urlApply" value="/job/apply"/>                     <%-- ?jobId= (입사지원) --%>
+<c:url var="urlHide" value="/my/recommend/hide"/>              <%-- POST: jobId --%>
+<c:url var="urlBookmarkToggle" value="/my/bookmark/toggle"/>   <%-- POST: jobId --%>
+<c:url var="urlToggleBookmark" value="/job/toggleBookmark" />  <%-- 스크랩 --%>	
 
 <style>
   body{ background:#f6f7fb; }
   .mypage-wrap{ min-height:100vh; }
 
   /* =========================
-     ✅ 공통 톤(사이드바/카드) - 이전 페이지와 동일
+     ✅ 공통 톤(사이드바/카드)
      ========================= */
   .mySidebar{ background:#fff; border-right:1px solid #e9edf3; min-height:100vh; }
   .mySidebar-inner{ position:sticky; top:0; padding:18px 14px; }
@@ -52,8 +55,7 @@
   .page-desc{ color:#6b7280; font-size:.92rem; margin-top:8px; }
 
   /* =========================
-     ✅ 상단 툴바(필터/정렬) - 사람인 느낌
-     (화면정의서: 5/10/20개 + 입사지원 공고만 + 정렬)
+     ✅ 상단 툴바(필터/정렬)
      ========================= */
   .toolbar{
     margin-top: 18px;
@@ -91,17 +93,8 @@
   }
   .checkline input{ width:16px; height:16px; }
 
-  .btn-go{
-    border:1px solid #dbe2ee;
-    background:#fff;
-    border-radius:10px;
-    padding:10px 14px;
-    font-weight:900;
-  }
-  .btn-go:hover{ background:#f7f9fc; }
-
   /* =========================
-     ✅ 리스트(행) - 사람인 스타일: 얇은 구분선 + 오른쪽 버튼/메뉴
+     ✅ 리스트(행)
      ========================= */
   .job-list{ margin-top: 10px; }
 
@@ -134,7 +127,6 @@
     flex: 1;
   }
 
-  /* (클릭시 채용페이지 이동) */
   .job-title{
     display:inline-block;
     font-weight: 900;
@@ -157,7 +149,6 @@
     flex-wrap: wrap;
   }
 
-  /* 추천 라벨 */
   .tag{
     display:inline-block;
     margin-top: 10px;
@@ -177,7 +168,6 @@
     flex-shrink:0;
   }
 
-  /* 입사지원 버튼(사람인 느낌: 빨간 테두리) */
   .btn-apply{
     background:#fff;
     border: 1px solid #ef4444;
@@ -191,14 +181,14 @@
   .btn-apply:hover{ background:#fff5f5; }
 
   .deadline{
-    min-width: 96px;
+    min-width: 110px;
     text-align:right;
     font-weight:900;
     color:#6b7280;
   }
   .deadline .today{ color:#ef4444; }
 
-  /* 더보기(⋮) 버튼 */
+  /* 더보기(⋮) */
   .more-btn{
     width: 38px;
     height: 38px;
@@ -212,7 +202,6 @@
   }
   .more-btn:hover{ background:#f7f9fc; }
 
-  /* 드롭다운(부트스트랩 없이도 동작하는 심플 버전) */
   .more-wrap{ position:relative; }
   .more-menu{
     display:none;
@@ -227,15 +216,23 @@
     overflow:hidden;
     z-index: 10;
   }
-  .more-menu a{
+
+  /* 메뉴 버튼(폼 submit) - ✅ 이거 없으면 버튼이 겹쳐 클릭이 위로 빨리는 경우가 있음 */
+  .more-menu form { margin:0; }
+  .more-menu .menu-btn{
     display:block;
+    width:100%;
+    text-align:left;
+    border:0;
+    background:#fff;
     padding: 12px 12px;
-    text-decoration:none;
     color:#111827;
     font-weight:900;
     font-size:.92rem;
+    cursor:pointer;
   }
-  .more-menu a:hover{ background:#f7f9fc; }
+  .more-menu .menu-btn:hover{ background:#f7f9fc; }
+  .more-divider{ height:1px; background:#eef2f7; }
 
   /* 빈 화면 */
   .empty{
@@ -251,7 +248,7 @@
     margin-top: 10px;
   }
 
-  /* 페이지네이션(뼈대) */
+  /* 페이지네이션 */
   .pager{
     margin-top: 18px;
     display:flex;
@@ -288,189 +285,170 @@
       <div class="myContent-inner">
 
         <h2 class="page-title">추천 공고</h2>
-        <div class="page-desc">내 이력/활동 기반으로 추천된 공고를 확인할 수 있어요.</div>
+        <div class="page-desc">내 활동 기반으로 추천된 공고를 확인할 수 있어요.</div>
 
         <%-- =========================
-             상단 필터/정렬
-             - 화면정의서: n개씩 / 입사지원 공고만 / 선호도순 등
-             - 전부 GET으로 urlRecommend에 붙여서 조회
+             상단 필터/정렬 (적용 버튼 X / 변경 즉시 반영)
            ========================= --%>
-        <form action="${urlRecommend}" method="get" class="toolbar">
-
+        <form action="${urlRecommend}" method="get" class="toolbar" id="filterForm">
           <div class="toolbar-left">
-            <%-- 5/10/20개 --%>
-            <select class="select" name="size">
-              <option value="5">5개씩</option>
-              <option value="10" selected>10개씩</option>
-              <option value="15">15개씩</option>
+            <select class="select" name="size" id="sizeSelect">
+              <option value="5"  <c:if test="${pager.size == 5}">selected</c:if>>5개씩</option>
+              <option value="10" <c:if test="${pager.size == 10}">selected</c:if>>10개씩</option>
+              <option value="15" <c:if test="${pager.size == 15}">selected</c:if>>15개씩</option>
             </select>
 
-            <%-- 입사지원 공고만(체크) --%>
             <label class="checkline">
-              <input type="checkbox" name="onlyApplyable" value="Y">
+              <input type="checkbox" name="onlyApplyable" id="onlyApplyableChk"
+                     <c:if test="${onlyApplyable}">checked</c:if>>
               입사지원 공고만
             </label>
           </div>
 
           <div class="toolbar-right">
-            <%-- 정렬(선호도/최근등록/마감임박 등) --%>
-            <select class="select" name="sort">
-              <option value="PREF" selected>선호도순</option>
-              <option value="RECENT">최근등록순</option>
-              <option value="DEADLINE">마감임박순</option>
+            <select class="select" name="sort" id="sortSelect">
+              <option value="PREF" <c:if test="${sort == 'PREF'}">selected</c:if>>선호도순</option>
+              <option value="RECENT_DESC" <c:if test="${sort == 'RECENT_DESC'}">selected</c:if>>최근등록순</option>
+              <option value="DEADLINE_ASC" <c:if test="${sort == 'DEADLINE_ASC'}">selected</c:if>>마감임박순</option>
             </select>
 
-            <button type="submit" class="btn-go">적용</button>
+            <%-- 변경 시 page는 1로 리셋 --%>
+            <input type="hidden" name="page" value="1"/>
           </div>
-
         </form>
 
         <%-- =========================
-             ✅ 리스트 영역
-             - 나중에 c:forEach로 jobList 돌리면 자동으로 행 추가됨
-             - (화면정의서) 1) 제목 클릭 -> 채용페이지 이동
-                            2) 입사지원 버튼
-                            3) ⋮ 클릭 -> "추천에서 제외" 등 메뉴
+             리스트
            ========================= --%>
+        <c:choose>
+          <c:when test="${empty list}">
+            <div class="empty">
+              <div style="font-size:48px;">📌</div>
+              <div class="big">추천 공고가 아직 없어요</div>
+              <div>북마크를 추가하면 더 정확한 추천을 받을 수 있어요.</div>
+            </div>
+          </c:when>
 
-        <%-- ✅ 데이터 없을 때(필요하면 사용)
-        <div class="empty">
-          <div style="font-size:48px;">📌</div>
-          <div class="big">추천 공고가 아직 없어요</div>
-          <div>이력서를 등록하면 더 정확한 추천을 받을 수 있어요.</div>
-        </div>
-        --%>
+          <c:otherwise>
+            <div class="job-list">
+              <c:forEach var="row" items="${list}">
+                <div class="job-item">
+                  <div class="job-left">
+                    <%-- 회사명 DTO가 없으니  field 표시 (원하면 JOIN으로 company_name 추가) --%>
+                    <div class="company"><c:out value="${row.field}"/></div>
 
-        <div class="job-list">
+                    <div class="job-main">
+                      <a class="job-title" href="${urlJobDetail}?jobId=${row.jobId}">
+                        <c:out value="${row.title}"/>
+                      </a>
 
-          <%-- ===== 샘플 1 ===== --%>
-          <div class="job-item">
-            <div class="job-left">
-              <div class="company">파크시스템스</div>
+                      <div class="job-meta">
+                        <span><c:out value="${row.field}"/></span>
+                        <span><c:out value="${row.address}"/></span>
+                        <span>점수 <fmt:formatNumber value="${row.score}" maxFractionDigits="2"/></span>
+                      </div>
 
-              <div class="job-main">
-                <a class="job-title" href="${urlJobDetail}?jobId=2001">
-                  2026 각 부문 신입/경력 수시채용
+                      <c:choose>
+                        <c:when test="${row.score >= 70}">
+                          <div class="tag">당신에게 강력 추천</div>
+                        </c:when>
+                        <c:when test="${row.score >= 40}">
+                          <div class="tag">관심 분야와 유사</div>
+                        </c:when>
+                        <c:otherwise>
+                          <div class="tag">새로운 기회</div>
+                        </c:otherwise>
+                      </c:choose>
+                    </div>
+                  </div>
+
+                  <div class="job-right">
+                    <a class="btn-apply" href="${urlApply}?jobId=${row.jobId}">입사지원</a>
+
+                    <div class="deadline">
+                      ~ <fmt:formatDate value="${row.closeDate}" pattern="MM/dd(E)"/>
+                    </div>
+
+                    <div class="more-wrap">
+                      <button type="button" class="more-btn" onclick="toggleMoreMenu(this)">⋮</button>
+
+                      <div class="more-menu">
+                        <%-- ✅ 추천에서 제외 (POST) --%>
+                        <form action="${urlHide}" method="post">
+                          <input type="hidden" name="jobId" value="${row.jobId}"/>
+                          <%-- 필터/페이지 유지 --%>
+                          <input type="hidden" name="page" value="${pager.page}"/>
+                          <input type="hidden" name="size" value="${pager.size}"/>
+                          <input type="hidden" name="sort" value="${sort}"/>
+                          <input type="hidden" name="onlyApplyable" value="${onlyApplyable}"/>
+                          <button type="submit" class="menu-btn">추천에서 제외</button>
+                        </form>
+
+                        <div class="more-divider"></div>
+
+                        <%-- ✅ 스크랩 토글 (POST) --%>
+                        <form action="${urlBookmarkToggle}" method="post">
+                          <input type="hidden" name="jobId" value="${row.jobId}"/>
+                          <%-- 필터/페이지 유지 --%>
+                          <input type="hidden" name="page" value="${pager.page}"/>
+                          <input type="hidden" name="size" value="${pager.size}"/>
+                          <input type="hidden" name="sort" value="${sort}"/>
+                          <input type="hidden" name="onlyApplyable" value="${onlyApplyable}"/>
+                          <button type="submit" class="menu-btn">스크랩</button>
+                        </form>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </c:forEach>
+            </div>
+
+            <%-- =========================
+                 페이징 (PageRes 기준)
+           ========================= --%>
+            <div class="pager">
+              <c:if test="${pager.hasPrev}">
+                <a href="${urlRecommend}?page=${pager.page - 1}&size=${pager.size}&sort=${sort}&onlyApplyable=${onlyApplyable}">이전</a>
+              </c:if>
+
+              <c:forEach var="p" begin="${pager.startPage}" end="${pager.endPage}">
+                <a href="${urlRecommend}?page=${p}&size=${pager.size}&sort=${sort}&onlyApplyable=${onlyApplyable}"
+                   class="<c:if test='${p == pager.page}'>active</c:if>">
+                  ${p}
                 </a>
-                <div class="job-meta">
-                  <span>신입 · 경력</span>
-                  <span>대학(4년)↑</span>
-                  <span>서울전체</span>
-                  <span>정규직</span>
-                </div>
+              </c:forEach>
 
-                <%-- 추천사유/라벨(사람인 느낌) --%>
-                <div class="tag">구직자들이 선호하는 공고</div>
-              </div>
+              <c:if test="${pager.hasNext}">
+                <a href="${urlRecommend}?page=${pager.page + 1}&size=${pager.size}&sort=${sort}&onlyApplyable=${onlyApplyable}">다음</a>
+              </c:if>
             </div>
-
-            <div class="job-right">
-              <a class="btn-apply" href="${urlApply}?jobId=2001">입사지원</a>
-
-              <div class="deadline">
-                ~ 07/08(수)
-              </div>
-
-              <%-- (3) 더보기 메뉴(⋮) --%>
-              <div class="more-wrap">
-                <button type="button" class="more-btn" onclick="toggleMoreMenu(this)">⋮</button>
-                <div class="more-menu">
-                  <%-- 추천에서 제외 --%>
-                  <a href="${urlHide}?jobId=2001">추천에서 제외</a>
-                  <%-- 필요하면 즐겨찾기/스크랩 등 추가 --%>
-                  <a href="#">스크랩</a>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <%-- ===== 샘플 2 ===== --%>
-          <div class="job-item">
-            <div class="job-left">
-              <div class="company">동국기술단</div>
-              <div class="job-main">
-                <a class="job-title" href="${urlJobDetail}?jobId=2002">
-                  (용인지사) 동국기술단 방재사업부 직원 채용
-                </a>
-                <div class="job-meta">
-                  <span>경력무관</span>
-                  <span>대학(4년)↑</span>
-                  <span>경기 용인시</span>
-                  <span>정규직</span>
-                </div>
-                <div class="tag">연봉을 올려줄 기업 공고</div>
-              </div>
-            </div>
-
-            <div class="job-right">
-              <a class="btn-apply" href="${urlApply}?jobId=2002">입사지원</a>
-              <div class="deadline">~ 04/12(일)</div>
-
-              <div class="more-wrap">
-                <button type="button" class="more-btn" onclick="toggleMoreMenu(this)">⋮</button>
-                <div class="more-menu">
-                  <a href="${urlHide}?jobId=2002">추천에서 제외</a>
-                  <a href="#">스크랩</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <%-- ===== 샘플 3 (오늘마감 표시 예시) ===== --%>
-          <div class="job-item">
-            <div class="job-left">
-              <div class="company">유정엔지니어링</div>
-              <div class="job-main">
-                <a class="job-title" href="${urlJobDetail}?jobId=2003">
-                  수질TMS 측정기기 유지관리 담당자
-                </a>
-                <div class="job-meta">
-                  <span>신입 · 경력</span>
-                  <span>대학(2,3년)↑</span>
-                  <span>경기 용인시</span>
-                  <span>정규직</span>
-                </div>
-                <div class="tag">리프레시 휴가가 보장된</div>
-              </div>
-            </div>
-
-            <div class="job-right">
-              <a class="btn-apply" href="${urlApply}?jobId=2003">입사지원</a>
-              <div class="deadline"><span class="today">오늘마감</span></div>
-
-              <div class="more-wrap">
-                <button type="button" class="more-btn" onclick="toggleMoreMenu(this)">⋮</button>
-                <div class="more-menu">
-                  <a href="${urlHide}?jobId=2003">추천에서 제외</a>
-                  <a href="#">스크랩</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="pager">
-          <a href="#" class="active">1</a>
-          <a href="#">2</a>
-          <a href="#">3</a>
-          <a href="#">다음</a>
-        </div>
+          </c:otherwise>
+        </c:choose>
 
       </div>
     </section>
-
   </div>
 </main>
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
 <script>
-  // =========================
-  // ✅ ⋮ 더보기 메뉴 토글 (단순 버전)
-  // - 다른 곳 클릭하면 닫히도록 처리
-  // =========================
+  // ✅ 툴바: 변경 즉시 submit (적용 버튼 없음)
+  (function(){
+    const form = document.getElementById('filterForm');
+    const size = document.getElementById('sizeSelect');
+    const sort = document.getElementById('sortSelect');
+    const only = document.getElementById('onlyApplyableChk');
+
+    function submitNow(){ if(form) form.submit(); }
+
+    if(size) size.addEventListener('change', submitNow);
+    if(sort) sort.addEventListener('change', submitNow);
+    if(only) only.addEventListener('change', submitNow);
+  })();
+
+  // ✅ ⋮ 더보기 메뉴 토글
   function toggleMoreMenu(btn){
     const wrap = btn.closest('.more-wrap');
     const menu = wrap.querySelector('.more-menu');

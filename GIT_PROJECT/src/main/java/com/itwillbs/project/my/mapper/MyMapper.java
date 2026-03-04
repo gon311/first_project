@@ -14,6 +14,8 @@ import com.itwillbs.project.my.dto.MyPaymentDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.MyReviewDTO;
 import com.itwillbs.project.my.dto.PaymentCond;
+import com.itwillbs.project.my.dto.RecommendedCond;
+import com.itwillbs.project.my.dto.RecommendedRowDTO;
 
 @Mapper
 public interface MyMapper {
@@ -66,13 +68,17 @@ public interface MyMapper {
 
     int deleteJobApplication(@Param("userId") Long userId,
             				 @Param("appId") Long appId);
-	
-	
+    
+    
+    // 추천공고
+    List<RecommendedRowDTO> selectRecommendedList(RecommendedCond cond);
+    int selectRecommendedCount(RecommendedCond cond);
 
-	
+    int updateRecommendedInactive(@Param("userId") long userId, @Param("jobId") long jobId);
 
-	
-	
-	
+    Long selectBookmarkId(@Param("userId") long userId, @Param("jobId") long jobId);
+    int insertBookmark(@Param("userId") long userId, @Param("jobId") long jobId);
+    int deleteBookmark(@Param("userId") long userId, @Param("jobId") long jobId);
+
 
 }

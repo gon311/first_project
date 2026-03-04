@@ -97,6 +97,17 @@
 		<result property="statusLabel" column="status_label" />
 	</resultMap>
 	
+		<!-- RecommendedRowDTO  -->
+	<resultMap id="recommendedRowMap" type="com.itwillbs.project.my.dto.RecommendedRowDTO">
+		 <id property="jobId" column="job_id"/>
+		 <result property="score" column="score"/>
+		 <result property="title" column="title"/>
+		 <result property="field" column="field"/>
+		 <result property="address" column="address"/>
+		 <result property="openDate" column="open_date"/>
+		 <result property="closeDate" column="close_date"/>
+	</resultMap>
+	
 	
 	
 	
@@ -178,6 +189,19 @@
          jp.title LIKE CONCAT('%', #{keyword}, '%')
       OR uc.company_name LIKE CONCAT('%', #{keyword}, '%')
     )
+  </if>
+</sql>
+
+
+<!-- 추천 -->
+<sql id="recommendedWhere">
+  WHERE r.person_user_id = #{userId}
+    AND r.is_active = 1
+    AND jp.post_status = 1
+    AND jp.close_date &gt;= CURDATE()
+
+  <if test="onlyApplyable">
+    AND ja2.job_id IS NULL
   </if>
 </sql>
 
@@ -536,6 +560,92 @@
   WHERE app_id = #{appId}
     AND user_id = #{userId}
 </delete>
+
+<!-- ==============================
+    추천 공고
+     parameter:RecomendedCond.java
+     result: 
+============================== -->	
+<select id="selectRecommendedList"
+        parameterType="com.itwillbs.project.my.dto.RecommendedCond"
+        resultMap="recommendedRowMap">
+  SELECT
+      r.job_id
+    , r.score
+    , jp.title
+    , jp.field
+    , jp.address
+    , jp.open_date
+    , jp.close_date
+  FROM RECOMMENDED_JOB r
+  JOIN JOB_POSTING jp ON jp.job_id = r.job_id
+
+  <if test="onlyApplyable">
+    LEFT JOIN JOB_APPLICATION ja2
+      ON ja2.job_id = jp.job_id
+     AND ja2.user_id = #{userId}
+  </if>
+
+  <include refid="recommendedWhere"/>
+
+  <choose>
+    <when test="sort == 'DEADLINE_ASC'">
+      ORDER BY jp.close_date ASC, r.score DESC
+    </when>
+    <when test="sort == 'RECENT_DESC'">
+      ORDER BY jp.open_date DESC, r.score DESC
+    </when>
+    <otherwise>
+      ORDER BY r.score DESC, r.recommended_at DESC
+    </otherwise>
+  </choose>
+
+  LIMIT #{page.offset, jdbcType=INTEGER}, #{page.safeSize, jdbcType=INTEGER}
+</select>
+
+<select id="selectRecommendedCount"
+        parameterType="com.itwillbs.project.my.dto.RecommendedCond"
+        resultType="int">
+  SELECT COUNT(*)
+  FROM RECOMMENDED_JOB r
+  JOIN JOB_POSTING jp ON jp.job_id = r.job_id
+
+  <if test="onlyApplyable">
+    LEFT JOIN JOB_APPLICATION ja2
+      ON ja2.job_id = jp.job_id
+     AND ja2.user_id = #{userId}
+  </if>
+
+  <include refid="recommendedWhere"/>
+</select>
+
+<!-- 추천 제외 -->
+<update id="updateRecommendedInactive">
+  UPDATE RECOMMENDED_JOB
+  SET is_active = 0
+  WHERE person_user_id = #{userId}
+    AND job_id = #{jobId}
+</update>
+
+<!-- 북마크 토글 -->
+<select id="selectBookmarkId" resultType="long">
+  SELECT bookmark_id
+  FROM job_bookmark
+  WHERE user_id = #{userId}
+    AND job_id = #{jobId}
+</select>
+
+<insert id="insertBookmark">
+  INSERT INTO job_bookmark(user_id, job_id, reg_date)
+  VALUES(#{userId}, #{jobId}, NOW())
+</insert>
+
+<delete id="deleteBookmark">
+  DELETE FROM job_bookmark
+  WHERE user_id = #{userId}
+    AND job_id = #{jobId}
+</delete>
+
 
 
 	

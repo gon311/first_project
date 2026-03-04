@@ -22,6 +22,8 @@ import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.PasswordChangeDTO;
 import com.itwillbs.project.my.dto.PaymentCond;
+import com.itwillbs.project.my.dto.RecommendedCond;
+import com.itwillbs.project.my.dto.RecommendedRowDTO;
 import com.itwillbs.project.my.dto.MyReviewDTO;
 import com.itwillbs.project.my.dto.MyPaymentDTO;
 import com.itwillbs.project.my.service.MyService;
@@ -504,25 +506,83 @@ public class MyController {
 	// 추천 내역
 	@GetMapping("/recommend")
 	public String recommend(HttpSession session, Model model,
-            @RequestParam(defaultValue="1") int page,
-            @RequestParam(defaultValue="5") int size) {
-	    
-		// 로그인 체크
-		String sId = (String) session.getAttribute("sId");
-		if (sId == null) return "redirect:/user/login";
-		
-		model.addAttribute("currentMenu", "recommend"); // 사이드바 '추천 내역' 활성
-		
-		
-	    
-	    
-	    
-	    
-	    
-	    
-	    
+	        @RequestParam(defaultValue="1") int page,
+	        @RequestParam(defaultValue="5") int size,
+	        @RequestParam(defaultValue="PREF") String sort,
+	        @RequestParam(defaultValue="false") boolean onlyApplyable) {
+
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    model.addAttribute("currentMenu", "recommend");
+
+	    MyDTO user = myService.getUser(sId);
+
+	    RecommendedCond cond = new RecommendedCond();
+	    cond.setUserId(user.getUserId());
+	    cond.setSort(sort);
+	    cond.setOnlyApplyable(onlyApplyable);
+
+	    cond.getPage().setPage(page);
+	    cond.getPage().setSize(size);
+
+	    List<RecommendedRowDTO> list = myService.getRecommendedList(cond);
+	    int total = myService.getRecommendedCount(cond);
+
+	    PageRes pager = PageRes.of(cond.getPage(), total);
+
+	    model.addAttribute("list", list);
+	    model.addAttribute("pager", pager);
+	    model.addAttribute("sort", sort);
+	    model.addAttribute("onlyApplyable", onlyApplyable);
+
 	    return "/my/recommend";
 	}
+
+	// 추천에서 제외 (RECOMMENDED_JOB.is_active = 0)
+	@PostMapping("/recommend/hide")
+	public String hideRecommend(HttpSession session,
+	        @RequestParam long jobId,
+	        @RequestParam(defaultValue="1") int page,
+	        @RequestParam(defaultValue="5") int size,
+	        @RequestParam(defaultValue="PREF") String sort,
+	        @RequestParam(defaultValue="false") boolean onlyApplyable) {
+
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    MyDTO user = myService.getUser(sId);
+	    myService.hideRecommendedJob(user.getUserId(), jobId);
+
+	    return "redirect:/my/recommend?page=" + page
+	         + "&size=" + size
+	         + "&sort=" + sort
+	         + "&onlyApplyable=" + onlyApplyable;
+	}
+
+	// 스크랩 토글 (job_bookmark insert/delete)
+	@PostMapping("/bookmark/toggle")
+	public String toggleBookmark(HttpSession session,
+	        @RequestParam long jobId,
+	        @RequestParam(defaultValue="1") int page,
+	        @RequestParam(defaultValue="5") int size,
+	        @RequestParam(defaultValue="PREF") String sort,
+	        @RequestParam(defaultValue="false") boolean onlyApplyable) {
+
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    MyDTO user = myService.getUser(sId);
+	    myService.toggleJobBookmark(user.getUserId(), jobId);
+
+	    return "redirect:/my/recommend?page=" + page
+	         + "&size=" + size
+	         + "&sort=" + sort
+	         + "&onlyApplyable=" + onlyApplyable;
+	}
+	
+	
+	
 
 
 	

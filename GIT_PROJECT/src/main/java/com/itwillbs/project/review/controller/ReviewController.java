@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.review.dto.CoverLetterDTO;
 import com.itwillbs.project.review.service.ReviewService;
@@ -62,11 +63,12 @@ public class ReviewController {
 	
 	// 1단계 저장 후 coverLetterIdx를 주소에 넣어서 redirect
 	@PostMapping("/registText")
-	public String registText(CoverLetterDTO coverLetterDTO, HttpSession session) {
+	public String registText(CoverLetterDTO coverLetterDTO, HttpSession session, RedirectAttributes ra) {
 		Long userId = (Long)session.getAttribute("userIdx");
 		coverLetterDTO.setUserId(userId);
 		reviewService.registForm(coverLetterDTO);  
 		Long coverLetterIdx = coverLetterDTO.getCoverLetterIdx();
+		ra.addAttribute("title", coverLetterDTO.getTitle());
 		
 	    return "redirect:/review/" + coverLetterIdx + "/registText";
 	}
@@ -79,7 +81,10 @@ public class ReviewController {
 	
 	// 2단계 작성 
 	@GetMapping("/{coverLetterIdx}/registText")
-	public String registText(@PathVariable Long coverLetterIdx) {
+	public String registText(@PathVariable Long coverLetterIdx,
+							 @RequestParam String title,
+							 Model model) {
+		model.addAttribute("title", title);
 		
 		return "/review/reviewText";
 	}

@@ -24,7 +24,7 @@
 							<label for="title" class="form-label fw-semibold">자소서 제목<span
 								class="text-danger">*</span></label> <input type="text"
 								class="form-control" id="title" name="title"
-								value="${param.title}" placeholder="제목을 입력해 주세요." required>
+								value="${title}" required>
 						</div>
 						
 						<!-- 질문 선택 -->

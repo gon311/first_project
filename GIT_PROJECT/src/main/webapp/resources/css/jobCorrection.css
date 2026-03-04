@@ -53,7 +53,6 @@ header + hr {
 ========================= */
 
 input[type="text"],
-input[type="email"],
 input[type="date"],
 textarea,
 select {
@@ -69,10 +68,18 @@ select {
 ========================= */
 
 .file-management-box {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    background: #fff;
+    background: #e9ecef; 
+    padding: 20px; 
+    border: 2px dashed #ccc; 
+    text-align: center; 
+    border-radius: 5px; 
+    margin: 10px 0; 
+    
+    /* 추가된 스타일 */
+    display: flex;
+    flex-direction: column; /* 요소들을 세로로 나열 */
+    align-items: center;    /* 가로축 중앙 정렬 */
+    justify-content: center; /* 세로축 중앙 정렬 */
 }
 
 .file-section-title {
@@ -120,8 +127,10 @@ select {
 /* 새 파일 input */
 
 input[type="file"].form-control-file {
-    font-size: 13px;
-    width: 100%;
+/*     font-size: 13px; */
+/*     width: 100%; */
+    display: block;
+    margin: 0 auto;
 }
 
 /* 구분선 */

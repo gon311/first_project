@@ -92,8 +92,8 @@ public class AdminContentController {
 			JobPostDTO jobPostDTO
 			, Model model) {
 		
-		List<JobPostDTO> list = adminService.getJobPostList(jobPostDTO);
-		model.addAttribute("jobPostList", list);
+		List<JobPostDTO> jobPostList = adminService.getJobPostList(jobPostDTO);
+		model.addAttribute("jobPostList", jobPostList);
 		model.addAttribute("jobPostDTO", jobPostDTO);
 		return "admin/contents/jobPost";
 	}
@@ -125,15 +125,17 @@ public class AdminContentController {
 
 	// FAQ 전체 목록 및 카테고리별 출력
 	@GetMapping("/FaQ")
-	public String faqList(FaqDTO faqDTO,
+	public String faqList(@RequestParam(value="userType", defaultValue="all") String userType,
+			FaqDTO faqDTO,
             Model model) {
 	    
+		faqDTO.setUserType(userType);
 	    // 서비스 호출 (카테고리, 키워드 포함)
 	    List<FaqDTO> faqList = adminService.getFaqList(faqDTO);
-	    System.out.println(faqList);
+//	    System.out.println(faqList);
 	    
 	    model.addAttribute("faqList", faqList);
-	    model.addAttribute("userType", faqDTO.getUserType()); // 탭 활성화 유지용
+	    model.addAttribute("userType", userType); // 탭 활성화 유지용
 	    model.addAttribute("keyword", faqDTO.getKeyword());   // 검색어 유지용
 	    
 	    return "admin/contents/faq"; // faq.jsp로 포워딩
@@ -179,8 +181,10 @@ public class AdminContentController {
 	// 2. 수정 실행
 	@PostMapping("/faqUpdateSave")
 	public String faqUpdateSave(@ModelAttribute FaqDTO faqDTO) {
+		System.out.println(faqDTO.toString());
+		System.out.println(faqDTO.getFaqId());
 	    adminService.updateFaq(faqDTO);
-	    return "redirect:/admin/contents/faq";
+	    return "redirect:/admin/contents/FaQ?userType=" + faqDTO.getUserType();
 	}
 //	===============================================================================
 //	1:1 문의글 관리

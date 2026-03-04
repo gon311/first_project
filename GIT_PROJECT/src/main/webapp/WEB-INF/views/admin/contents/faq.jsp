@@ -58,7 +58,7 @@
                     <table class="table table-hover text-center align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th style="width: 15%;">글 번호</th>
+                                <th style="width: 15%;">no</th>
                                 <th style="width: 70%;">글 제목</th>
                                 <th style="width: 15%;">관리</th>
                             </tr>
@@ -70,7 +70,7 @@
 						            data-bs-toggle="collapse" 
 						            data-bs-target="#collapse${faq.faqId}" 
 						            style="cursor: pointer;">
-						            <td>${faq.faqId}</td>
+						            <td>${status.count}</td>
 						            <td class="text-start ps-4 fw-bold">
 						                <i class="bi bi-chevron-down me-2 small text-muted"></i>
 						                ${faq.faqTitle}

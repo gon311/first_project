@@ -15,7 +15,7 @@ import lombok.ToString;
 public class JobPostDTO {
 	// 출력 위한 임시 DTO
 	private int jobId;
-	private int compId;
+	private String compId;
 	private String title;
 	private String field;
 	private String task;
@@ -27,8 +27,7 @@ public class JobPostDTO {
 	private String salary;
 	private Date openDate;
 	private Date closeDate;
-	private int postStatus;
+	private Integer postStatus;
 	
 	private String keyword;
-	private String companyName;
 }

@@ -220,15 +220,19 @@ public class AdminService{
 	public List<FaqDTO> getFaqList(FaqDTO faqDTO) {
 		return adminMapper.getFaqList(faqDTO);
 	}
+	
+	public List<FaqDTO> getListByUserType(String userType){
+		return adminMapper.getListByUserType(userType);
+	}
 	// faq 글 작성
 	public void insertFaq(FaqDTO faqDTO) {
 		adminMapper.insertFaq(faqDTO);
 	}
-	// faq 글 수정
+	// faq 글 삭제
 	public void deleteFaq(int faqId) {
 		adminMapper.deleteFaq(faqId);
 	}
-
+	// faq 글 수정
 	public void updateFaq(FaqDTO faqDTO) {
 		adminMapper.updateFaq(faqDTO);
 	}

@@ -14,7 +14,7 @@
         <h4 class="fw-bold mb-4">faq 수정</h4>
         <div class="card shadow-sm border p-4">
            <form action="<c:url value='/admin/contents/faqUpdateSave' />" method="post">
-		    <input type="hidden" name="fqaId" value="${faq.faqId}">
+		    <input type="hidden" name="faqId" value="${faq.faqId}">
 		    
 		    <div class="mb-3">
 		        <label>제목</label>

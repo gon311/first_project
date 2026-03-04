@@ -15,11 +15,11 @@
 			<h4 class = "fw-bold"> 채용공고 게시판 관리</h4>
 		<div class="container w-50 my-4 mx-3">
 		
-		<!-- 검색 항목 ㅋ -->
+		<!-- 검색 항목  -->
         <h5 class="card-title mb-3">검색</h5>
 			<div class="card">
 			    <div class="card-body">
-			    	 <form action="<c:url value="/admin/search" />" name="searchForm" method="post" class="row g-3 align-items-center">
+			    	 <form action="<c:url value="/admin/contents/JobPost" />" name="searchForm" method="get" class="row g-3 align-items-center">
 				        <div class="row my-3">
 					        <!-- 키워드 검색 -->
 					        <div class="col-md-4">
@@ -27,8 +27,8 @@
 					          <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요">
 					        </div>
 							<div class="col-md-4">
-					    		<label for="name" class="form-label">기업이름</label>
-					    		<input type="text" class="form-control" name="companyName" placeholder="아이디를 입력하세요">
+					    		<label for="name" class="form-label">기업Id</label>
+					    		<input type="text" class="form-control" name="compId" placeholder="아이디를 입력하세요">
 					    	</div>  
 					        <!-- 구분 -->
 					        <div class="col-md-4">
@@ -64,7 +64,7 @@
 			</select>
 		</div>
 	
-		<div class="tab-content mt-3" id="memberTabContent">
+		<div class="tab-content mt-3" id="jobPostTabContent">
 			<table class="table table-hover table-bordered align-middle text-center">
 				<thead class="table-light">
 					<tr>
@@ -82,14 +82,14 @@
 						<tr onclick="location.href='<c:url value='/admin/contents/JobPostDetail?jobId=${jobPost.jobId}'/>'">
 							<td>${status.count }</td>
 							<td>${jobPost.jobId }</td>
-							<td>${jobPost.companyName}</td>
+							<td>${jobPost.compId}</td>
 							<td>${jobPost.title }</td>
 							<td>${jobPost.field }</td>
 							<td>
 								<fmt:formatDate value="${jobPost.openDate}" pattern="yyyy-MM-dd" />
 								~ <fmt:formatDate value="${jobPost.closeDate}" pattern="yyyy-MM-dd" />
 							</td>
-							<td>${jobPost.postStatus }</td>
+							<td><span>${jobPost.postStatus == '1' ? '모집중' : '마감' }</span></td>
 						</tr>
 					</c:forEach>
 				</tbody>

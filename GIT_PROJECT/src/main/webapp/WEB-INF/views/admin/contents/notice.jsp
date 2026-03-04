@@ -51,9 +51,9 @@
 	                <%-- 검색 결과(데이터) 있을 때 --%>
 	                <%-- 구분 필요함!! --%>
 	                	<c:when test="${not empty noticeList}">
-	                    <c:forEach items="${noticeList}" var="notice">
+	                    <c:forEach items="${noticeList}" var="notice" varStatus = "status">
 	                        <tr>
-	                            <td>${notice.noticeId}</td>
+	                            <td>${status.count}</td>
 	                            <td class="text-start">
 	                                <a href="<c:url value='/admin/contents/noticeDetail?noticeId=${notice.noticeId}' />" class="  text-decoration-none text-dark">
 	                                    ${notice.noticeTitle}

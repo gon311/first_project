@@ -89,6 +89,9 @@ public interface AdminMapper {
 	
 	void deleteNotice(int noticeId);
 	
+	void updateNotice(NoticeDTO noticeDTO);
+
+	
 	//========================================================================
 //	채용공고 리스트 조회
 	List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO);
@@ -155,12 +158,10 @@ public interface AdminMapper {
 	// -========================================================================
 	// faq 관리
 
-	List<FaqDTO> getFaqList(@Param("userType") String userType
-							, @Param("keyword") String keyword);
+	List<FaqDTO> getFaqList(@Param("keyword") String keyword);
+	List<FaqDTO> getListByUserType(String userType);
 
 	void insertFaq(FaqDTO faqDTO);
-
-	void updateNotice(NoticeDTO noticeDTO);
 
 	void deleteFaq(int faqId);
 
@@ -168,7 +169,8 @@ public interface AdminMapper {
 
 	List<FaqDTO> getFaqList(FaqDTO faqDTO);
 
-
+// ===========================================================================
+//	banner 관리
 	List<BannerDTO> getBannerList();
 
 	void updateBannerStatus(@Param("adId") int adId

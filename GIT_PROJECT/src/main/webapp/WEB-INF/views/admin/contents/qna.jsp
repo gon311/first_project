@@ -84,9 +84,9 @@
 						                        <tr><td colspan="5" class="py-5 text-muted">문의글이 없습니다.</td></tr>
 						                    </c:when>
 						                    <c:otherwise>
-						                        <c:forEach var="qna" items="${qnaList}">
+						                        <c:forEach var="qna" items="${qnaList}" varStatus = "status">
 						                            <tr>
-						                                <td>${qna.qnaId}</td>
+						                                <td>${status.count}</td>
 						                                <td><a href="<c:url value='/admin/contents/QnADetail?qnaId=${qna.qnaId}'/>">${qna.qnaTitle }</a></td>
 						                                <td>${qna.writerId}</td>
 						                                <td>${qna.regDate}</td>

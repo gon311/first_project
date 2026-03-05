@@ -569,6 +569,27 @@ public class MyController {
 	         + "&onlyApplyable=" + onlyApplyable;
 	}
 	
+	// ✅ 스크랩 + 추천에서 제거(사라지는 느낌)
+	@PostMapping("/recommend/bookmark")
+	public String bookmarkAndHide(HttpSession session,
+	        @RequestParam long jobId,
+	        @RequestParam(defaultValue="1") int page,
+	        @RequestParam(defaultValue="5") int size,
+	        @RequestParam(defaultValue="PREF") String sort,
+	        @RequestParam(defaultValue="false") boolean onlyApplyable) {
+
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    MyDTO user = myService.getUser(sId);
+	    myService.bookmarkAndHideRecommend(user.getUserId(), jobId);
+
+	    return "redirect:/my/recommend?page=" + page
+	         + "&size=" + size
+	         + "&sort=" + sort
+	         + "&onlyApplyable=" + onlyApplyable;
+	}
+	
 	
 	
 

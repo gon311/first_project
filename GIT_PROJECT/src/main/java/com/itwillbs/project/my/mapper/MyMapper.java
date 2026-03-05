@@ -79,6 +79,13 @@ public interface MyMapper {
     Long selectBookmarkId(@Param("userId") long userId, @Param("jobId") long jobId);
     int insertBookmark(@Param("userId") long userId, @Param("jobId") long jobId);
     int deleteBookmark(@Param("userId") long userId, @Param("jobId") long jobId);
+    // 북마크(스크랩)
+    int existsBookmark(@Param("userId") long userId, @Param("jobId") long jobId);
+    
+    
+
+    
+    
 
 
 }

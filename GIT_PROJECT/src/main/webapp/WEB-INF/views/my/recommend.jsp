@@ -18,7 +18,7 @@
 <c:url var="urlApply" value="/job/apply"/>                     <%-- ?jobId= (입사지원) --%>
 <c:url var="urlHide" value="/my/recommend/hide"/>              <%-- POST: jobId --%>
 <c:url var="urlBookmarkToggle" value="/my/bookmark/toggle"/>   <%-- POST: jobId --%>
-<c:url var="urlToggleBookmark" value="/job/toggleBookmark" />  <%-- 스크랩 --%>	
+<c:url var="urlRecoBookmark" value="/my/recommend/bookmark"/>  <%-- 추천에서 스크랩(확정) --%>
 
 <main class="container-fluid px-0 mypage-wrap">
   <div class="row g-0">
@@ -133,7 +133,7 @@
                         <div class="more-divider"></div>
 
                         <%-- ✅ 스크랩 토글 (POST) --%>
-                        <form action="${urlBookmarkToggle}" method="post">
+							<form action="${urlRecoBookmark}" method="post">
                           <input type="hidden" name="jobId" value="${row.jobId}"/>
                           <%-- 필터/페이지 유지 --%>
                           <input type="hidden" name="page" value="${pager.page}"/>

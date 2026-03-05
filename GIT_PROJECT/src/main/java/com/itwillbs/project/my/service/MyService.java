@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.project.my.dto.ApplyCond;
 import com.itwillbs.project.my.dto.ApplyRowDTO;
@@ -135,15 +136,28 @@ public class MyService {
 	public List<RecommendedRowDTO> getRecommendedList(RecommendedCond cond) {
 	    return myMapper.selectRecommendedList(cond);
 	}
-
+	
+	// 추천 카운트
 	public int getRecommendedCount(RecommendedCond cond) {
 	    return myMapper.selectRecommendedCount(cond);
 	}
-
+	
+	// 추천 숨김
 	public void hideRecommendedJob(long userId, long jobId) {
 	    myMapper.updateRecommendedInactive(userId, jobId);
 	}
-
+	
+    // ✅ 스크랩 + 추천에서 제거 (한번에)
+    @Transactional
+    public void bookmarkAndHideRecommend(long userId, long jobId) {
+        int exists = myMapper.existsBookmark(userId, jobId);
+        if (exists == 0) {
+            myMapper.insertBookmark(userId, jobId);
+        }
+        myMapper.updateRecommendedInactive(userId, jobId);
+    }
+	
+	// 추천 토글
 	public void toggleJobBookmark(long userId, long jobId) {
 	    Long bookmarkId = myMapper.selectBookmarkId(userId, jobId);
 	    if (bookmarkId == null) myMapper.insertBookmark(userId, jobId);

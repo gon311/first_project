@@ -197,6 +197,8 @@
     AND r.is_active = 1
     AND jp.post_status = 1
     AND jp.close_date &gt;= CURDATE()
+    
+    AND bm.job_id IS NULL
 
   <if test="onlyApplyable">
     AND ja2.job_id IS NULL
@@ -553,6 +555,10 @@
     , jp.close_date
   FROM RECOMMENDED_JOB r
   JOIN JOB_POSTING jp ON jp.job_id = r.job_id
+  
+  LEFT JOIN job_bookmark bm
+    ON bm.user_id = #{userId}
+   AND bm.job_id  = jp.job_id
 
   <if test="onlyApplyable">
     LEFT JOIN JOB_APPLICATION ja2
@@ -583,6 +589,11 @@
   SELECT COUNT(*)
   FROM RECOMMENDED_JOB r
   JOIN JOB_POSTING jp ON jp.job_id = r.job_id
+  
+  
+  LEFT JOIN job_bookmark bm
+    ON bm.user_id = #{userId}
+   AND bm.job_id  = jp.job_id
 
   <if test="onlyApplyable">
     LEFT JOIN JOB_APPLICATION ja2
@@ -607,6 +618,16 @@
   FROM job_bookmark
   WHERE user_id = #{userId}
     AND job_id = #{jobId}
+</select>
+
+<!-- 북마크 존재 여부 -->
+<select id="existsBookmark" resultType="int">
+  SELECT EXISTS(
+    SELECT 1
+    FROM job_bookmark
+    WHERE user_id = #{userId}
+      AND job_id = #{jobId}
+  )
 </select>
 
 <insert id="insertBookmark">

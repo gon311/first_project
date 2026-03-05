@@ -203,47 +203,35 @@ public class MyController {
 	
 	
 
-	// 이력서 관리
+	// 이력서 관리(목록)
 	@GetMapping("/myResume")
 	public String myResume(Model model, HttpSession session) {
-	    model.addAttribute("currentMenu", "resume"); // 사이드바 '이력서 관리' 활성
-	    
-	    //로그인 체크
+	    model.addAttribute("currentMenu", "resume");
+
 	    String sId = (String) session.getAttribute("sId");
 	    if (sId == null) return "redirect:/user/login";
-	    
-	    // sId -> userId 얻기 (myInfo랑 동일)
+
 	    MyDTO user = myService.getUser(sId);
-	    if (user == null) return "redirect:/user/login";
 	    Long userId = user.getUserId();
 
-	    // 3) (핵심) 내 이력서 목록 조회
 	    List<MyResumeDTO> myResumes = myService.getMyResumeList(userId);
-	    MyResumeDTO topResume = myService.getTopResume(userId);
 
-	    // 4) 모델에 담아서 JSP로 전달
 	    model.addAttribute("myResumes", myResumes);
-	    model.addAttribute("topResume", topResume);
+	    model.addAttribute("isEmpty", myResumes.isEmpty());
 
 	    return "/my/myResume";
 	}
 	
-	//삭제
+	// 삭제
 	@PostMapping("/resume/delete")
-	public String deleteResume(@RequestParam Long resumeMyId, HttpSession session) {
+	public String deleteResume(@RequestParam Integer resumeId, HttpSession session) {
 
 	    String sId = (String) session.getAttribute("sId");
 	    if (sId == null) return "redirect:/user/login";
 
-	    // 내꺼만 삭제되게 검증용 userId 확보
-	    MyDTO user = myService.getUser(sId);
-	    Long userId = user.getUserId();
+	    Long userId = myService.getUser(sId).getUserId();
 
-	    // 삭제(soft delete)
-	    myService.deleteResume(resumeMyId, userId);
-	    
-//	    int updated = myService.deleteResume(resumeMyId, userId);
-//	    log.info("resume delete result: {}", updated);
+	    myService.deleteResume(resumeId, userId); // soft delete
 
 	    return "redirect:/my/myResume";
 	}
@@ -286,7 +274,7 @@ public class MyController {
 
 	    myService.deleteReview(userId, coverLetterIdx);
 	    
-	    int deleted = myService.deleteResume(coverLetterIdx, userId);
+	    int deleted = myService.deleteReview(coverLetterIdx, userId);
 	    log.info("resume delete result: {}", deleted);
 
 	    return "redirect:/my/myReview";

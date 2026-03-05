@@ -1,28 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<!DOCTYPE html>
+<html>
+<head>
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+<link rel="stylesheet" href="<c:url value='/resources/css/my/password.css'/>" type="text/css">
+</head>
 
-<style>
-  body { background:#f6f7fb; }
-  .pw-wrap { min-height: calc(100vh - 120px); display:flex; align-items:center; }
-  .pw-card {
-    background:#fff;
-    border:1px solid #eef2f7;
-    border-radius:16px;
-    box-shadow:0 10px 30px rgba(15,23,42,.05);
-    padding:22px;
-  }
-  .page-title{ font-size:1.45rem; font-weight:900; letter-spacing:-.5px; margin:0; }
-  .page-desc{ color:#6b7280; font-size:.92rem; margin-top:6px; }
-  .hint-list { margin:10px 0 0; padding-left: 1.1rem; color:#2563eb; }
-  .hint-list li{ margin:4px 0; }
-  .btn-primary { border-radius:12px; font-weight:800; padding:.7rem 1rem; }
-  .btn-outline-secondary { border-radius:12px; font-weight:800; padding:.7rem 1rem; }
-  .form-control { border-radius:12px; padding:.75rem .9rem; }
-  .form-label { font-weight:800; color:#374151; }
-</style>
+<body>
+<%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
 <c:url var="urlSubmit" value="/my/password"/>
 <c:url var="urlCancel" value="/my/myInfo"/>
@@ -110,6 +97,8 @@
   </div>
 </main>
 
+<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+
 <script>
   // 새 비밀번호 확인 일치 검사(프론트 1차)
   (function () {
@@ -133,4 +122,6 @@
   })();
 </script>
 
-<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+</body>
+</html>
+

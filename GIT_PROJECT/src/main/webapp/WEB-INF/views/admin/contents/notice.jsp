@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,20 +17,20 @@
 	                <h4 class="fw-bold">공지사항 관리</h4>
 	            </div>
 	            <div class="col-md-8 text-end">
-	                <form class="d-inline-flex gap-2">
-	                    <select class="form-select form-select-sm" style="width: 150px;">
-	                        <option value="all">전체</option>
-	                        <option value="noticeTitle">공지사항 명</option>
-	                        <option value="regDate">게시 일자</option>
-	                        <option value="status">게시 상태</option>
-	                        <option value="userType">회원 유형</option>
+	                <form class="d-inline-flex gap-2" action = "<c:url value = '/admin/contents/notice'/>" >
+	                    <select class="form-select form-select-sm" style="width: 150px;" name = "searchType">
+	                        <option value="all" ${noticeDTO.searchType=='all' ? 'selected' : '' }>전체</option>
+	                        <option value="noticeTitle" ${noticeDTO.searchType=='noticeTitle' ?  'selected' : ''}>공지사항 명</option>
+	                        <option value="status" ${noticeDTO.searchType == 'status' ? 'selected' : '' }>게시 상태</option>
+	                        <option value="userType" ${noticeDTO.searchType == 'userType' ? 'selected' : '' }>회원 유형</option>
 	                    </select>
 	                    <div class="input-group input-group-sm" style="width: 300px;">
 	                        <span class="input-group-text">
 	                        	검색명 <span class="text-danger ms-1">*</span>
 	                        </span>
-	                        <input type="text" class="form-control" placeholder="검색어를 입력해 주세요.">
-	                        <button class="btn btn-primary" type="button">검색</button>
+	                        <input type="text" name = "searchKeyword" value ="${noticeDTO.searchKeyword }" 
+	                        	class="form-control" placeholder="검색어를 입력해 주세요.">
+	                        <button class="btn btn-primary" type="submit">검색</button>
 	                    </div>
 	                </form>
 	            </div>
@@ -54,14 +55,20 @@
 	                    <c:forEach items="${noticeList}" var="notice" varStatus = "status">
 	                        <tr>
 	                            <td>${status.count}</td>
-	                            <td class="text-start">
+	                            <td class="text-start text-center">
 	                                <a href="<c:url value='/admin/contents/noticeDetail?noticeId=${notice.noticeId}' />" class="  text-decoration-none text-dark">
 	                                    ${notice.noticeTitle}
 	                                </a>
 	                            </td>
-	                            <td>${notice.regDate}</td>
+	                            <td>
+	                            <fmt:formatDate value="${notice.regDate}" pattern="yyyy-MM-dd"/>
+	                            </td>
 	                            <td><span>  ${notice.status == 'Y' ? '게시 중' : '임시저장'}</span></td>
-	                            <td>${notice.userType}</td>
+	                            <td>
+	                            	<c:if test="${notice.userType == 'all' }">전체</c:if>
+	                            	<c:if test="${notice.userType == 'user' }">구직자</c:if>
+	                            	<c:if test="${notice.userType == 'com' }">기업회원</c:if>
+	                            </td>
 	                        </tr>
 	                        
 

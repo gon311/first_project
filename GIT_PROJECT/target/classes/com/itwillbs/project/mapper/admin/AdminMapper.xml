@@ -366,6 +366,29 @@
 		 	, update_date
 		 	, status
 		 FROM notice
+		 <where>
+		 	<if test = 'searchKeyword != null and searchKeyword != "" '>
+		 		<choose>
+		 			<when test = 'searchType == "all"'>
+		 				AND 
+		 				(notice_title LIKE CONCAT ('%', #{searchKeyword}, '%')
+		 				OR status LIKE CONCAT ('%', #{searchKeyword}, '%')
+		 				OR user_type LIKE CONCAT ('%', #{searchKeyword}, '%')
+		 				)
+		 			</when>
+		 			<when test ='searchType == "noticeTitle"'>
+		 				AND notice_title LIKE CONCAT('%', #{searchKeyword}, '%')
+		 			</when>
+		 			
+		 			<when test = 'searchType == "status"'>
+		 				AND status = #{searchKeyword}
+		 			</when>
+		 			<when test = 'searchType == "userType"'>
+		 				AND user_type = #{searchKeyword}
+		 			</when>
+		 		</choose>
+			</if>
+		 </where>
 	</select>
 	<!-- 공지사항 작성 -->
 	<insert id ="insertNotice" parameterType="notice">
@@ -391,7 +414,9 @@
 			notice_id
 			, notice_title
 			, notice_content
+			, user_type
 			, reg_date
+			, update_date
 			, readcount
 		FROM notice
 		WHERE notice_id = #{noticeId}
@@ -439,7 +464,7 @@
 			, post_status
 		FROM job_posting
 		<!-- 검색 기능 -->
-		<where>
+		WHERE
 			post_check =2
 			<if test="title !=null and title !=''">
 				AND title LIKE CONCAT('%', #{title}, '%')
@@ -450,22 +475,7 @@
 			<if test="postStatus != null and postStatus !=0 and postStatus != ''">
 				AND post_status = #{postStatus}
 			</if>
-			order by
-				<choose>
-					<when test="sort == 'old'">
-						open_date desc
-					</when>
-					<when test="sort == 'new'">
-						open_date asc
-					</when>
-					<when test="sort == 'abc'">
-						title asc
-					</when>
-				</choose>
-		</where>
-		
-		
-		
+
 	</select>
 	<!--  채용공고 상세 조회 -->
 	<select id="getJobPostById" resultType ="jobPost">

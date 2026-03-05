@@ -51,10 +51,12 @@
 							<dd class="col-7 py-2">${pay.productName}</dd>
 
 							<dt class="col-5 text-secondary py-2">결제수단</dt>
-							<dd class="col-7 py-2">${pay.payMethod}</dd>
+							<dd class="col-7 py-2">${pay.payMethod}/${pay.cardName} <small class="text-secondary">(${pay.cardNum})</small> </dd>
 
 							<dt class="col-5 text-secondary py-2">결제금액</dt>
-							<dd class="col-7 py-2">${pay.payPrice}원</dd>
+							<dd class="col-7 py-2">
+								<fmt:formatNumber type="number" maxFractionDigits="3" value="${pay.payPrice}" /> 원
+							</dd>
 
 							<dt class="col-5 text-secondary py-2">결제상태</dt>
 							<dd class="col-7 py-2">

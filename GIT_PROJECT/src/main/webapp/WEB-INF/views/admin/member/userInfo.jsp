@@ -210,7 +210,7 @@
 										</thead>
 							 			<tbody>
 										<c:forEach var="qna" varStatus="status" items="${qnaList}">
-											<tr class="clickable-row" onclick="location.href='/contents/QnADetail?qnaId=${qna.qnaId}'">
+											<tr class="clickable-row" onclick="location.href='/admin/contents/QnADetail?qnaId=${qna.qnaId}'">
 												<td>${status.count}</td>
 												<td>${qna.qnaTitle}</td>
 												<td>

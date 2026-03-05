@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.service.AdminService;
+import com.itwillbs.project.store.dto.MemberProductDTO;
 import com.itwillbs.project.store.dto.OrderDTO;
 import com.itwillbs.project.store.dto.PaymentDTO;
 import com.itwillbs.project.store.dto.PortoneDTO;
@@ -70,11 +71,12 @@ public class StoreController {
 	// 보유한 이용권 정보 전달
 	@ResponseBody
 	@GetMapping("/checkRemain")
-	public Map<String, Object> checkRemain(@RequestParam Integer id, HttpSession session) {
+	public Map<String, Object> checkRemain(@RequestParam long id, HttpSession session) {
 		// 구매자의 회원 유형 확인
 		MemberDTO memberInfo = storeService.getUserType(id);
 		
 		boolean exists = false;
+		String posibillity = null;
 		
 		if(memberInfo.getUserType().equals("구직자 회원")) { // 구직자 회원
 			// 구매자가 이용권을 보유하고 있고, 만료되지 않았는지 확인
@@ -82,12 +84,25 @@ public class StoreController {
 			
 		} else { // 기업회원
 			// 구매자가 이용권을 보유하고 있고, 만료되지 않았는지 확인
-			exists = storeService.getComRemain(id);
+			MemberProductDTO comProduct = storeService.getComRemain(id);
+			
+			if(comProduct != null) { // 일반/프리미엄 중 하나라도 가지고 있는 경우
+				
+				if(comProduct.getProductId().equals("P-C1")) { // 일반 이용권을 가지고 있는 경우
+					posibillity ="basic";
+					
+				} else { // 프리미엄 이용권을 가지고 있는 경우
+					posibillity ="premium";
+				}
+				
+			} else { // 이용권이 없는 경우(둘다 구매 가능)
+				posibillity = "none";
+			}
 		}
-		System.out.println("exsits >>>>>>>>>> " + exists);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("exists", exists);
+		result.put("posibillity", posibillity);
 		
 		return result;
 	}
@@ -154,6 +169,9 @@ public class StoreController {
 	        // 금액 불일치 시 결제 실패 처리
 	        return "mismatch"; 
 	    } 
+	    
+	    // (기업회원의 경우) 일반 이용권 보유 유무 조회
+	    MemberProductDTO memberProductDTO = storeService.getMemberProduct(orderInfo.getUserId());
 	     
 	    // 3️ 카드 결제 처리
 	    if("PAID".equals(paymentInfo.getStatus())) {
@@ -165,9 +183,9 @@ public class StoreController {
 		    paymentDTO.setPayId(responsePaymentDTO.getPaymentId());
 		    paymentDTO.setUserId(orderInfo.getUserId());          
 		    paymentDTO.setProductId(orderInfo.getProductId());    
-		    paymentDTO.setPayMethod("CARD");
+		    paymentDTO.setPayMethod("신용카드");
 		    paymentDTO.setCardName(paymentInfo.getMethod().getCard().getName());
-		    paymentDTO.setCardNum(paymentInfo.getMethod().getCard().getNumber());
+		    paymentDTO.setCardNum(paymentInfo.getMethod().getCard().getNumber() + "**********");
 		    paymentDTO.setPayPrice(paymentInfo.getAmount().getTotal());
 		    paymentDTO.setPayDate(paymentInfo.getPaidAt());
 		    paymentDTO.setPayStatus(paymentInfo.getStatus());
@@ -180,6 +198,11 @@ public class StoreController {
 		    	storeService.setUserProduct(paymentDTO);
 		    } else if(orderInfo.getUserType() == 'C') {
 		    	storeService.setComProduct(paymentDTO);
+		    }
+		    
+		    // 만약, 일반 이용권을 보유중인 기업회원이 프리미엄 이용권을 구매한 경우 일반 이용권은 소멸됨
+		    if(paymentDTO.getProductId().equals("P-C2") && memberProductDTO.getUserId() == paymentDTO.getUserId()) {
+		    	storeService.changeUseStatus(memberProductDTO.getPayId());
 		    }
 	     
 	    	return "success";     // 결제 성공 페이지 반환

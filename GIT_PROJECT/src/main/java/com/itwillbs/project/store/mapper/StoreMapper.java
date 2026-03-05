@@ -23,13 +23,13 @@ public interface StoreMapper {
 	StoreDTO selectStoreInfo(String productId);
 	
 	// 구매자의 회원 유형 조회
-	MemberDTO selectUserType(Integer id);
+	MemberDTO selectUserType(long id);
 	
 	// 구직자회원이 이용권을 보유하고 있고, 만료되지 않았는지 여부
-	MemberProductDTO selectUserRemain(Integer id);
+	MemberProductDTO selectUserRemain(long id);
 	
 	// 기업회원이 이용권을 보유하고 있고, 만료되지 않았는지 여부
-	MemberProductDTO selectComRemain(Integer id);
+	MemberProductDTO selectComRemain(long id);
  
 	// 결제내역 저장
 	PaymentDTO insertPayInfo(PortoneDTO payment);
@@ -51,6 +51,14 @@ public interface StoreMapper {
 
 	// 이용권 테이블에 구매자가 결제한 이용권 저장(기업)
 	void insertComProduct(PaymentDTO paymentDTO);
+	
+	// 기업회원) 일반 이용권 보유 유무 조회
+	MemberProductDTO selectBasicProduct(long userId);
+
+	// 일반 이용권 보유중인 기업회원이 프리미엄 이용권을 구매한 경우
+	// 이용권 테이블의 use_status 를 'expired' 로 변경
+	void updateUseStatus(String payId);
+
 
 	
 

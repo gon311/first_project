@@ -13,9 +13,7 @@ import lombok.ToString;
 @ToString
 public class PortoneDTO {
 	private String id;
-//	private String paymentId;
     private String orderName;
-//    private int amount;       
     private String currency;
     private String status;    
     private LocalDateTime paidAt;
@@ -23,7 +21,6 @@ public class PortoneDTO {
     private Amount amount;       
     private Customer customer;
     private Method method;
-//    private PaidPayment paidpayment;
 
     @Getter
     @Setter
@@ -46,7 +43,6 @@ public class PortoneDTO {
         public static class Card {
             private String name;
             private String number;
-//            private String approvedAt;
         }
     }
     

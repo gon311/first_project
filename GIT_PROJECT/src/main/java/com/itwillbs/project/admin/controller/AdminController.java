@@ -24,6 +24,7 @@ import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.admin.service.AdminService;
+import com.itwillbs.project.store.dto.PaymentDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -65,7 +66,7 @@ public class AdminController {
 		return "admin/member/userList";
 			
 	}
-	
+	 
 	// 구직자 상세정보
 	@GetMapping("/users/info")
 	public String userInfo(Model model, MemberDTO memberDTO) {
@@ -244,8 +245,8 @@ public class AdminController {
 	// [ 결제 관리 ]
 	// 결제 내역 목록 조회
 	@GetMapping("/payments")
-	public String payList(PayDTO payDTO, Model model, SearchDTO searchDTO, String sort) {
-		List<PayDTO> payList = adminService.getPayList(searchDTO.getStartDate()
+	public String payList(Model model, SearchDTO searchDTO, String sort) {
+		List<PaymentDTO> payList = adminService.getPayList(searchDTO.getStartDate()
 													, searchDTO.getEndDate()
 													, searchDTO.getKeyword()
 													, searchDTO.getUserType()
@@ -258,8 +259,8 @@ public class AdminController {
 	 
 	// 결제 내역 상세정보 조회
 	@GetMapping("/payments/info")
-	public String payInfo(Model model, PayDTO payDTO) {
-		PayDTO payInfo = adminService.getPayInfo(payDTO.getPayId());
+	public String payInfo(Model model, PaymentDTO payDTO) {
+		PaymentDTO payInfo = adminService.getPayInfo(payDTO.getPayId());
 		
 		model.addAttribute("pay", payInfo);
 		
@@ -277,30 +278,6 @@ public class AdminController {
 		return "redirect:/admin/payments/info";
 	}
 	
-	//-----------------------------------------
-	// (사용자 페이지와 매핑 필요)
-	// 기업요금제(보류) 
-	@GetMapping("/cstore")
-	public String comStore() {
-		return "admin/store/comStore";
-	}
-	// 구직자요금제(보류)
-	@GetMapping("/ustore")
-	public String userStore() {
-		return "admin/store/userStore";
-	}
-	
-	// 구매하기(보류)
-	@GetMapping("/pay")
-	public String pay(String sId, ProductDTO productDTO, Model model) {
-		// 세션에 저장된 id값을 통해 구매자 정보 출력
-		
-		// 상품 정보
-		ProductDTO productInfo = adminService.getProductInfo(productDTO.getProductId());
-		model.addAttribute("product", productInfo);
-		
-		return "admin/pay/payForm";
-	}
 	
 	//===========================================================================
 	// [ 배너 관리 ]

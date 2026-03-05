@@ -180,6 +180,26 @@
 		)
 	</insert>
 	
+	<!-- 기업회원이 일반 이용권을 보유중인지 여부 조회 -->
+	<select id="selectBasicProduct" resultType="memberProduct">
+		select	*
+		from	com_product
+		where
+			product_id = 'P-C1'
+		and 
+			use_status = 'active'
+	</select>
+	
+	<!-- 일반 이용권 보유중인 기업 회원이 프리미엄 이용권을 구매한 경우, 기존의 일반 이용권은 소멸됨 -->
+	<update id="updateUseStatus">
+		update
+			com_product
+		set
+			use_status = 'expired'
+		where
+			pay_id = #{payId}
+	</update>
+	
 </mapper>
 
 

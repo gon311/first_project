@@ -31,9 +31,10 @@ public class AdminContentController {
 		
 		List<NoticeDTO> list = adminService.getNoticeList(noticeDTO);
 		model.addAttribute("noticeList", list);
-		model.addAttribute("noticeDTO", noticeDTO); //검색 조건 유지용?
-//		List<NoticeDTO> list = noticeService.getNoticeList(page, searchType, keyword)
-		// 서비스 단 페이징과 검색 조건 처리 필요 
+		model.addAttribute("noticeDTO", noticeDTO); 
+		
+		
+		
 		//DB에서 공지사항 리스트 로직 가져오는 로직 추가 필요.
 		return "admin/contents/notice";
 	}
@@ -56,7 +57,7 @@ public class AdminContentController {
 	public String noticeDetail(@RequestParam("noticeId") int noticeId, Model model) {
 		NoticeDTO noticeDTO =adminService.getNoticeDetail(noticeId);
 		model.addAttribute("noticeDTO", noticeDTO); 
-//		System.out.println("데이터 결과값: " + noticeDTO.toString());
+		System.out.println("데이터 결과값: " + noticeDTO.toString());
 //		System.out.println("제목 리턴값: " + noticeDTO);
 		return "admin/contents/noticeDetail";
 	}

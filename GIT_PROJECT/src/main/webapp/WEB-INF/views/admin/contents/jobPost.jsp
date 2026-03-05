@@ -27,16 +27,16 @@
 					          <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요">
 					        </div>
 							<div class="col-md-4">
-					    		<label for="name" class="form-label">기업Id</label>
+					    		<label for="compId" class="form-label">기업Id</label>
 					    		<input type="text" class="form-control" name="compId" placeholder="아이디를 입력하세요">
 					    	</div>  
 					        <!-- 구분 -->
 					        <div class="col-md-4">
 					          <label for="status" class="form-label">공고상태</label>
 					          <select class="form-select" name="postStatus">
-					            <option value="" selected>선택</option>
-					            <option value="1">모집중</option>
-					            <option value="2">마감</option>
+					            <option value=""  ${empty jobPostDTO.postStatus ? 'selected' : "" }>전체</option>
+					            <option value="1" ${jobPostDTO.postStatus == 1 ? 'selected' : '' }>모집중</option>
+					            <option value="2" ${jobPostDTO.postStatus == 2? 'selected' : '' }>마감</option>
 					            <!--  0: 삭제는 데이터베이스 내에서 삭제 -->
 					          </select>
 					        </div>
@@ -54,15 +54,7 @@
 				</div>
 			</div> 
 		</div> 
-			<!-- 정렬 Select Box -->
-		<div class="d-flex justify-content-end mt-3">
-			<select class="form-select w-auto" id="sort" onchange="selectSort()">
-				<option value="all">전체</option>
-				<option value="new">최근 일자순</option>
-				<option value="old">오래된 순</option>
-				<option value="abc">가나다 순</option>
-			</select>
-		</div>
+	
 	
 		<div class="tab-content mt-3" id="jobPostTabContent">
 			<table class="table table-hover table-bordered align-middle text-center">
@@ -78,20 +70,32 @@
 					</tr>
 				</thead>
 	 			<tbody>
-					<c:forEach var="jobPost" varStatus="status" items="${jobPostList}">
-						<tr onclick="location.href='<c:url value='/admin/contents/JobPostDetail?jobId=${jobPost.jobId}'/>'">
-							<td>${status.count }</td>
-							<td>${jobPost.jobId }</td>
-							<td>${jobPost.compId}</td>
-							<td>${jobPost.title }</td>
-							<td>${jobPost.field }</td>
-							<td>
-								<fmt:formatDate value="${jobPost.openDate}" pattern="yyyy-MM-dd" />
-								~ <fmt:formatDate value="${jobPost.closeDate}" pattern="yyyy-MM-dd" />
-							</td>
-							<td><span>${jobPost.postStatus == '1' ? '모집중' : '마감' }</span></td>
-						</tr>
-					</c:forEach>
+	 				<c:choose>
+	 					<c:when test = "${not empty jobPostList }">
+							<c:forEach var="jobPost" varStatus="status" items="${jobPostList}">
+							<tr onclick="location.href='<c:url value='/admin/contents/JobPostDetail?jobId=${jobPost.jobId}'/>'">
+								<td>${status.count }</td>
+								<td>${jobPost.jobId }</td>
+								<td>${jobPost.compId}</td>
+								<td>${jobPost.title }</td>
+								<td>${jobPost.field }</td>
+								<td>
+									<fmt:formatDate value="${jobPost.openDate}" pattern="yyyy-MM-dd" />
+									~ <fmt:formatDate value="${jobPost.closeDate}" pattern="yyyy-MM-dd" />
+								</td>
+								<td><span>${jobPost.postStatus == '1' ? '모집중' : '마감' }</span></td>
+							</tr>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<tr>
+								<td colspan="7" style ="text-align: center; padding: 50px 0;">
+								검색 결과가 없습니다.
+								</td>
+							</tr>
+						</c:otherwise>
+					</c:choose>
+						
 				</tbody>
 			</table>
 			

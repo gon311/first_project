@@ -176,16 +176,19 @@
 		        <span style="margin: 0 10px;">~</span>
 		        <input type="date" name="closeDate" value="${job.closeDate}" required style="width: 200px; display:inline-block;">
 		    </div>
+		</div>
+		
+		<div class="form-group">
 		    <div class="label-box">공고 모집 상태 <span style="color:red">*</span></div>
 		    <div class="input-box">
-		        <select name="postStatus" class="status-select" style="width: 100%; height: 40px; border: 1px solid #ccc; border-radius: 4px; padding-left: 10px;">
+		        <select name="postStatus" class="status-select" style="width: 200px; height: 45px; border: 1px solid #ccc; border-radius: 4px; padding-left: 10px;">
 		            <option value="1" ${job.postStatus == 1 ? 'selected' : ''}>진행중 (모집중)</option>
 		            <option value="2" ${job.postStatus == 2 ? 'selected' : ''}>마감</option>
 		            <option value="3" ${job.postStatus == 3 ? 'selected' : ''}>보류 (일시정지)</option>
 		        </select>
 		        <p style="font-size: 0.8em; color: #666; margin-top: 5px;">* '마감' 선택 시 공고 리스트에서 비활성화됩니다.</p>
 		    </div>
-		</div>
+	    </div>
 
         <div class="button-group">
 		    <button type="submit" class="btn-submit">공고 수정하기</button>

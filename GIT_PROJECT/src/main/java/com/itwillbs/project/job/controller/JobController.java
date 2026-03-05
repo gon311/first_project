@@ -65,7 +65,7 @@ public class JobController {
 	public String edit(HttpSession session, Model model,
 			@RequestParam("jobId") Long jobId) {
 		String sId = (String) session.getAttribute("userType");
-		System.out.println(sId);
+//		System.out.println(sId);
 	    if (sId == null || "P".equals(sId)) return "redirect:/user/login";
 		
 	    JobDTO jobDTO = jobService.getJobListDetail(jobId);
@@ -85,9 +85,10 @@ public class JobController {
 	                           RedirectAttributes rt) throws IOException {
 	    
 	    Long userIdx = (Long) session.getAttribute("userIdx");
-	    String sId = (String) session.getAttribute("userType");
+	    String userType = (String) session.getAttribute("userType");
+	    String sId = "/" + session.getAttribute("userIdx");
 	    
-	    if (userIdx == null || "P".equals(sId)) return "redirect:/user/login";
+	    if (userIdx == null || "P".equals(userType)) return "redirect:/user/login";
 
 	    // 2. DTO에 필요한 정보 세팅 (누락 방지)
 	    jobDTO.setJobId(jobId);
@@ -116,7 +117,7 @@ public class JobController {
 	    // 두 필터 조건을 모두 서비스에 전달
 	    List<JobDTO> jobList = jobService.getJobList(expType, eduType, userIdx, selectedItems);
 	    List<Map<String, String>> existRegions = jobService.getExistingRegions();
-	    
+//	    System.out.println(jobList);
 	    model.addAttribute("jobList", jobList);
 	    model.addAttribute("existRegions", existRegions);
 	    
@@ -129,16 +130,18 @@ public class JobController {
 		
 //		System.out.println(userId);
 		JobDTO post = jobService.getJobListDetail(jobId);
-		
 		Long userIdx = (Long)session.getAttribute("userIdx");
 //		System.out.println(userIdx);
 		
 		List<ResumeDTO> resumeList = jobService.getMyResume(userIdx);
+		List<FileDTO> fileList = jobService.getFileList(jobId);
 //		System.out.println("! = " + post.getCompanyName());
 //		System.out.println(post.getExpYear());
 //		System.out.println(resumeList);
+		
 		model.addAttribute("post", post);
 		model.addAttribute("resumeList", resumeList);
+		model.addAttribute("fileList", fileList);
 //		System.out.println(resumeList);
 		
 		return "/job/job_detail";

@@ -10,19 +10,48 @@
 <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<link href="<c:url value="/resources/css/jobDetail.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/resources/css/jobCss/jobDetail.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
 
 <div class="job-detail-container">
     <header class="job-header">
         <div class="company-info">
-            <p style="color: #666; margin-bottom: 5px;">${post.companyName}</p>
-            <h1>${post.title}</h1>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+		        <p style="color: #666; margin: 0;">${post.companyName}</p>
+		        
+		        <c:choose>
+		            <c:when test="${post.postStatus == 1}">
+		                <span style="background: #28a745; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">모집중</span>
+		            </c:when>
+		            <c:when test="${post.postStatus == 2}">
+		                <span style="background: #dc3545; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">마감</span>
+		            </c:when>
+		            <c:otherwise>
+		                <span style="background: #ffc107; color: black; padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">보류</span>
+		            </c:otherwise>
+		        </c:choose>
+		    </div>
+		    <h1>${post.title}</h1>
             <input type="hidden" name="userId" value="${userId}">
         </div>
-        <button type="button" class="apply-btn" id="applyBtn" onclick="checkResumeAndApply()">입사지원</button>
-    </header>
+        <c:choose>
+        <%-- 상태가 '모집중(1)'일 때만 버튼 활성화 --%>
+        <c:when test="${post.postStatus == 1}">
+            <button type="button" class="apply-btn" id="applyBtn" onclick="checkResumeAndApply()">입사지원</button>
+        </c:when>
+        
+        <%-- '마감(2)'일 때 --%>
+        <c:when test="${post.postStatus == 2}">
+            <button type="button" class="apply-btn" style="background: #ccc; cursor: not-allowed;" disabled>지원 마감</button>
+        </c:when>
+        
+        <%-- '보류' 또는 기타 상태일 때 --%>
+        <c:otherwise>
+            <button type="button" class="apply-btn" style="background: #ccc; cursor: not-allowed;" disabled>지원 불가</button>
+        </c:otherwise>
+    </c:choose>
+</header>
 
     <section class="info-summary-grid">
         <div class="left-info">
@@ -40,11 +69,46 @@
     </section>
 
     <section class="detail-content-body">
-        <div style="padding-top: 50px;">
-            <h2>모직 직무 분야 : ${post.field}</h2>
-            <p>${post.task}</p>
-        </div>
-    </section>
+	    <div style="padding-top: 50px;">
+	        <h2>모직 직무 분야 : ${post.field}</h2>
+	        <p>${post.task}</p>
+	        
+	        <div class="file-attachments" style="margin-top:25px; padding:15px; background:#f9f9f9; border-radius:8px;">
+			    <h4 style="margin-bottom:15px;"><i class="fa-solid fa-image"></i> 직무 관련 이미지/첨부</h4>
+			    <c:choose>
+			        <c:when test="${not empty fileList}">
+			            <div class="file-preview-container" style="display: flex; flex-wrap: wrap; gap: 15px;">
+			                <c:forEach var="file" items="${fileList}">
+			                    <div class="file-item" style="max-width: 100%;">
+			                        <%-- 파일이 이미지인 경우 (간단하게 확장자나 DB의 contentType으로 구분) --%>
+			                        <c:choose>
+			                            <c:when test="${file.contentType.contains('image')}">
+			                                <div style="margin-bottom: 10px;">
+			                                    <img src="<c:url value='/upload/job/${post.compId}/${file.subDir}/${file.realFileName}' />" 
+			                                         alt="${file.originalFileName}" 
+			                                         style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+			                                </div>
+			                            </c:when>
+			                            <c:otherwise>
+			                                <%-- 이미지가 아닌 일반 파일은 기존처럼 링크로 표시 --%>
+			                                <a href="<c:url value='/upload/job/${post.compId}/${file.subDir}/${file.realFileName}' />" 
+			                                   download="${file.originalFileName}" 
+			                                   style="color:#007bff; text-decoration:none; display: block; padding: 10px; border: 1px dashed #ccc;">
+			                                    <i class="fa-regular fa-file-lines"></i> ${file.originalFileName} (다운로드)
+			                                </a>
+			                            </c:otherwise>
+			                        </c:choose>
+			                    </div>
+			                </c:forEach>
+			            </div>
+			        </c:when>
+			        <c:otherwise>
+			            <p style="color:#999; font-size:0.9em;">등록된 이미지가 없습니다.</p>
+			        </c:otherwise>
+			    </c:choose>
+			</div>
+	    </div>
+	</section>
 
     <section class="company-footer-section">
         <div class="footer-flex">
@@ -79,7 +143,7 @@
 	       <input type="hidden" name="jobId" value="${post.jobId}">
 	        <div class="modal-body">
 	            <p class="job-title-mini">${post.title}</p>
-	            
+	            	
 	            <div class="resume-section">
 	                <div class="section-header" style="margin-bottom: 10px; font-weight: bold;">
 	                    <span>지원할 이력서 선택</span>

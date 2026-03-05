@@ -6,7 +6,7 @@
 <html>
 <head>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<link href="<c:url value="/resources/css/jobList.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/resources/css/jobCss/jobList.css" />" rel="stylesheet" type="text/css">
 <meta charset="UTF-8">
 </head>
 <body>
@@ -67,10 +67,18 @@
     <div class="job-list-container">
 	    <c:forEach var="job" items="${jobList}">
 	        <div class="job-card" onclick="location.href='<c:url value="/job/JobDetail?jobId=${job.jobId}" />'">
-	        	
-	        	<div class="scrap-icon ${job.isScrapped == 'Y' ? 'active' : ''}" 
-		             onclick="toggleScrap(event, '${job.jobId}', this)">
-		            ${job.isScrapped == 'Y' ? '★' : '☆'}
+		        <div class="status-tag">
+			        <c:choose>
+			            <c:when test="${job.postStatus == 1}">
+			                <span style="background: #28a745; color: white;">모집중</span>
+			            </c:when>
+			            <c:when test="${job.postStatus == 2}">
+			                <span style="background: #dc3545; color: white;">마감</span>
+			            </c:when>
+			            <c:otherwise>
+			                <span style="background: #ffc107; color: black;">보류</span>
+			            </c:otherwise>
+			        </c:choose>
 		        </div>
 	        	
 			    <div class="company-name">${job.companyName}</div>
@@ -86,6 +94,10 @@
 			    </div>
 			    
 			    <div class="job-deadline">~ ${job.closeDate}</div>
+	        	<div class="scrap-icon ${job.isScrapped == 'Y' ? 'active' : ''}" 
+		             onclick="toggleScrap(event, '${job.jobId}', this)">
+		            ${job.isScrapped == 'Y' ? '★' : '☆'}
+		        </div>
 			</div>
 	    </c:forEach>
 	</div>

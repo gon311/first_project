@@ -111,6 +111,8 @@
 	        , j.edu
 	        , j.address
 	        , j.close_date
+	        , j.post_status
+	        , j.post_check
 	        , IF(b.bookmark_id IS NULL, 'N', 'Y') AS isScrapped
 	    FROM JOB_POSTING j 
 	    JOIN USER_COMPANY u ON j.comp_id = u.user_id
@@ -308,7 +310,8 @@
 	        </choose>,
 	        
 	        open_date = #{openDate},
-	        close_date = #{closeDate}
+	        close_date = #{closeDate},
+	        post_status = #{postStatus}
 	    WHERE job_id = #{jobId} 
 	      AND comp_id = #{compId}
 	</update>

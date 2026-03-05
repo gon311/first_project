@@ -252,9 +252,13 @@ body {
 }
 
 .company-name {
-    width: 120px;
+    width: 120px;      /* 기존 너비 유지 [cite: 17] */
     font-weight: bold;
     font-size: 15px;
+    white-space: nowrap; /* 글자가 넘쳐도 줄바꿈 방지 */
+    overflow: hidden;
+    text-overflow: ellipsis; /* 너무 길면 ... 처리 */
+    flex-shrink: 0;    /* 제목 영역을 압박하지 않도록 고정 */
 }
 
 .job-title {
@@ -285,12 +289,35 @@ body {
 
 /* 별표 아이콘 스타일 */
 .scrap-icon {
+    margin-left: 15px; /* 마감일(~ 2026-xx-xx) 글자와의 간격 확보  */
     font-size: 24px;
-    color: #ccc; /* 기본은 빈 별표(회색) */
- cursor: pointer;
- margin-right: 15px;
- transition: transform 0.2s ease;
- z-index: 10; /* 카드 클릭보다 우선순위 높임 */
+    color: #ccc;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    z-index: 10;
+    line-height: 1;
+    display: flex;     /* 세로 중앙 정렬을 위해 추가  */
+    align-items: center;
+    flex-shrink: 0;    /* 아이콘 크기 고정 */
+}
+
+.status-tag {
+    width: 60px;        /* 글자 수와 상관없이 영역을 60px로 고정  */
+    display: flex;      /* 중앙 정렬을 위해 플렉스 박스 적용  */
+    justify-content: flex-start; /* 태그 자체는 왼쪽에 붙임  */
+    margin-right: 15px; /* 회사명과의 간격 유지  */
+    flex-shrink: 0;     /* 영역이 좁아져도 60px 유지  */
+}
+
+/* JSP의 인라인 스타일을 대체할 클래스 */
+.status-tag span {
+    padding: 2px 0;     /* 좌우 패딩 대신 가로폭 고정 사용  */
+    border-radius: 4px;
+    font-size: 0.8em;
+    display: inline-block;
+    text-align: center;
+    min-width: 45px;
+    width: 50px;
 }
 
 .scrap-icon.active {

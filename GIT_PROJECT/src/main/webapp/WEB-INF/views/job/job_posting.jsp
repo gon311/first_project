@@ -3,7 +3,7 @@
 
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
-<link href="<c:url value="/resources/css/jobPosting.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/resources/css/jobCss/jobPosting.css" />" rel="stylesheet" type="text/css">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <div class="container">

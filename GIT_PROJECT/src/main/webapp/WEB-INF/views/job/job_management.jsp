@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="<c:url value="/resources/css/jobManagement.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/resources/css/jobCss/jobManagement.css" />" rel="stylesheet" type="text/css">
 <style>
     /* 1. 배경 및 레이아웃 수정 */
     

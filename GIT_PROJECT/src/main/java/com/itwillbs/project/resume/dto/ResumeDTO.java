@@ -16,61 +16,60 @@ import lombok.ToString;
 public class ResumeDTO {
 	
 	// @DateTimeFormat(pattern = "yyyy-MM-dd") 
-	
-	private Integer resume_id; 		// 	-- 이력서 아이디 autoIncrease
-	private	Integer user_id;		// 	-- 소유자 유저 ID (FK)
-	private	String 	name_kor;		//  -- 이력서 이름(한글)
-	private	String  name_eng;		//	-- 이력서 이름(영문)
-	private	String  name_han;		//	-- 이력서 이름(한문)
+	private Integer resumeId;
+    private Integer userId;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private	LocalDate birth_date;	// -- 생년월일
-	private	String gender;          // -- 성별
-	private	String phone_number;    // -- 전화번호
-	private	String email;           // -- 이메일
-	private	String address1;           // -- 주소1
-	private	String address2;           // -- 상세주소2
+    private String nameKor;
+    private String nameEng;
+    private String nameHan;
 
-	private	String veteran_status;		// -- 보훈대상 여부
-	private	String veteran_number;      // -- 보훈번호
-	private	String disability_status;   // -- 장애 여부
-	private	String disability_grade;   	// -- 장애 등급 : 추가
-	
-	private	String multicultural_status;// -- 다문화가정 여부
-	private	String north_defector;		// -- 북한이탈주민 여부
-	private	String low_income_status;	// -- 기초생활수급자/차상위계층 여부
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthDate;
 
-	private	String military_service;	// -- 군필 여부
-	private	String military_branch;		// -- 군별
-	private	String military_rank;		// -- 계급
-	private	String discharge_reason;	// -- 전역사유
-	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private	LocalDate 	enlist_date;		// -- 입대일
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private	LocalDate 	discharge_date;		// -- 전역일
-	private	String 		exemption_reason;	// -- 면제사유
-	
-//	 1차 작성된 추가 컬럼들
-	private String title;			// 제목            
-	private String industryCode;    // 업종            
-	private String jobCode;         // 직종            
-	private String roleCode;        // 세부직종          
-	private String companyCode;     // 기업형태          
-	private String appliedField;    // 지원분야(지원직무)    
-	private String companyName;     // 기업명(지원한)      
-	private String careerCode;     	// 경력사항(신입/경력/인턴)
-	
-	private String hiddenIndustry;		// 업종명칭   
-	private String hiddenJob;           // 직종명칭   
-	private String hiddenRole;          // 세부직종명  
-	private String hiddenCompanyType;   // 기업형태명칭 
-	
-	// 학력정보 1 ~ n개.
-	private List<ResumeEducationDTO> educationList;
-	
-	// 경력정보 1 ~ n개.
-	private List<ResumeExperienceDTO> experienceList;
+    private String gender;
+    private String phoneNumber;
+    private String email;
+    private String address1;
+    private String address2;
+
+    private String veteranStatus;
+    private String veteranNumber;
+    private String disabilityStatus;
+    private String disabilityGrade;
+    private String multiculturalStatus;
+    private String northDefector;
+    private String lowIncomeStatus;
+
+    private String militaryService;
+    private String militaryBranch;
+    private String militaryRank;
+    private String dischargeReason;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate enlistDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dischargeDate;
+
+    private String exemptionReason;
+
+    // 1단계 입력 부분
+    private String title;
+    private String industryCode;
+    private String jobCode;
+    private String roleCode;
+    private String companyCode;
+    private String appliedField;
+    private String companyName;
+    private String careerCode;
+
+    private String hiddenIndustry;
+    private String hiddenJob;
+    private String hiddenRole;
+    private String hiddenCompanyType;
+
+    private List<ResumeEducationDTO> educationList;
+    private List<ResumeExperienceDTO> experienceList;
 }
 
 

@@ -14,19 +14,25 @@ import lombok.ToString;
 @ToString
 public class ResumeEducationDTO {
 
-	private Integer edu_id;   			// 학력 아이디
-	private Integer resume_id;          // 이력서 참조 (FK)
+	private Integer eduId;
+	private Integer resumeId;
 	
-	private String education_level;     // 학력 구분
-	private String school_name;         // 학교명
-	private String department;          // 계열
-	private String major;               // 전공
-	private BigDecimal hakjum;          // 학점
-	private String hakjum_scale;        // 학점 기준
+	private String educationLevel;
+	private String schoolName;
+	private String department;
+	private String major;
+	// + 추가 부전공, 복수전공, 이중전공 
+	private String minorMajor;		// 부전공
+	private String doubleMajor;		// 복수전공
+	private String dualMajor;		// 이중전공
+		
+	private BigDecimal hakjum;
+	private String hakjumScale;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate edu_start_day;    // 입학일
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate edu_end_day;      // 졸업일
+	private LocalDate eduStartDay;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate eduEndDay;
+
 }

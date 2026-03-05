@@ -6,7 +6,7 @@
 
 <!-- 	void insertResume(ResumeDTO resumeDTO) -->
 
-	<insert id="insertResume">
+	<insert id="insertResume" useGeneratedKeys="true" keyProperty="resumeId">
 	    INSERT INTO resume (
 	        user_id,            <!-- 소유자 유저 ID (FK) --> 
 	        title,				<!-- 제목 -->  
@@ -55,20 +55,20 @@
 			exemption_reason	<!-- 면제사유 -->
 	       	
 	    ) VALUES (
-	        #{user_id},       
+	        #{userId},       
 	        #{title},       	   
-	        #{name_kor}, 
-	        #{name_eng}, 
-	        #{name_han}, 
-	        
-	        #{birth_date},       
-	        #{gender},       
-	        #{phone_number}, 
-	        #{email}, 
-	        #{address1}, 
+	        #{nameKor},
+	        #{nameEng},
+	        #{nameHan},
+	
+	        #{birthDate},
+	        #{gender},
+	        #{phoneNumber},
+	        #{email},
+	        #{address1},
 	        #{address2},
 	        
-	        #{industryCode},
+	       	#{industryCode},
 	        #{jobCode},
 	        #{roleCode},
 	        #{companyCode},
@@ -81,33 +81,117 @@
 	        #{hiddenRole},
 	        #{hiddenCompanyType},
 	        
-	        #{veteran_status}, 
-	        #{veteran_number}, 
-	        #{disability_status}, 
-	        #{disability_grade}, 
-	        #{multicultural_status}, 
-	        #{north_defector}, 
-	        #{low_income_status}, 
+	        #{veteranStatus},
+	        #{veteranNumber},
+	        #{disabilityStatus},
+	        #{disabilityGrade},
+	        #{multiculturalStatus},
+	        #{northDefector},
+	        #{lowIncomeStatus},
 	        
-	        #{military_service}, 
-	        #{military_branch}, 
-	        #{military_rank}, 
-	        #{discharge_reason}, 
-	        #{enlist_date}, 
-	        #{discharge_date}, 
-	        #{exemption_reason} 
+	        #{militaryService},
+	        #{militaryBranch},
+	        #{militaryRank},
+	        #{dischargeReason},
+	        #{enlistDate},
+	        #{dischargeDate},
+	        #{exemptionReason}
 	    );   
 	</insert>	
 	
 	<select id="selectResume" resultType="resume">
-		select *
+		select 
+		  resume_id AS resumeId,
+        user_id AS userId,
+        title,
+        name_kor AS nameKor,
+        name_eng AS nameEng,
+        name_han AS nameHan,
+        birth_date AS birthDate,
+        gender,
+        phone_number AS phoneNumber,
+        email,
+        address1,
+        address2,
+
+		<!-- 1단계 작성값 -->
+		industryCode,
+        jobCode,
+        roleCode,
+        companyCode,
+        appliedField,
+        companyName,
+        careerCode,
+
+       	<!-- 히든의 파라미터 -->
+       	hiddenIndustry,
+        hiddenJob,
+        hiddenRole,
+        hiddenCompanyType,
+        	       		       	
+       	<!-- 사회적 우대사항 -->
+      	veteran_status AS veteranStatus,
+        veteran_number AS veteranNumber,
+        disability_status AS disabilityStatus,
+        disability_grade AS disabilityGrade,
+        multicultural_status AS multiculturalStatus,
+        north_defector AS northDefector,
+        low_income_status AS lowIncomeStatus,
+       	
+       	<!-- 병역 사항 -->
+       	military_service AS militaryService,
+        military_branch AS militaryBranch,
+        military_rank AS militaryRank,
+        discharge_reason AS dischargeReason,
+        enlist_date AS enlistDate,
+        discharge_date AS dischargeDate,
+        exemption_reason AS exemptionReason
 		
-		from resume
-		where resume_id = ${resume_id}
-	
-	
+		FROM resume
+   		WHERE resume_id = #{resumeId}		
 	</select>
 	
+<!-- 	updateResume -->
+	<update id="updateResume">
+		update 
+			resume
+		set 
+			title = #{title},
+			name_kor = #{nameKor},
+			name_eng = #{nameEng},
+			name_han = #{nameHan},
+
+			birth_date = #{birthDate},
+			gender = #{gender},
+			phone_number = #{phoneNumber},
+			email = #{email},
+			address1 = #{address1},
+			address2 = #{address2},
+			
+			veteran_status = #{veteranStatus},
+			veteran_number = #{veteranNumber},
+			disability_status = #{disabilityStatus},
+			disability_grade = #{disabilityGrade},
+			multicultural_status = #{multiculturalStatus},
+			north_defector = #{northDefector},
+			low_income_status = #{lowIncomeStatus},
+			
+			military_service = #{militaryService},
+			military_branch = #{militaryBranch},
+			military_rank = #{militaryRank},
+			discharge_reason = #{dischargeReason},
+			enlist_date = #{enlistDate},
+			discharge_date = #{dischargeDate},
+			exemption_reason = #{exemptionReason}
+			
+			
+						
+		where 
+			resume_id = #{userId} 
+	
+	</update>
+		 	
+		 	
 </mapper>
 
 

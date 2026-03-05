@@ -15,6 +15,8 @@
     <%-- 현재 페이지(main.jsp) 전용 CSS 영역--%>
 		<link href="<c:url value="/resources/css/resume.css" />" 
 			rel="stylesheet" type="text/css">
+	<!-- resumeView.js -->	
+	<script src="<c:url value="/resources/js/resumeModify.js" />"></script>		
 </head>
 
 <body class="resume-body">
@@ -64,13 +66,13 @@
           <!-- 제목 -->
           <div class="card section-card mb-4">
             <div class="card-header section-title">
-              제목 <span class="text-danger">(필수)</span>
+              제목 <span class="text-danger"></span>
             </div>
             <div class="card-body">
               <div class="form-group mb-3">
                 <label for="title" class="resume-label">제목</label>
                 <input type="text" id="title" name="title"
-                       value="${param.title}" 
+                       value="${resume.title}" 
                        class="form-control resume-input" 
                        placeholder="제목을 입력해주세요.">
               </div>
@@ -81,7 +83,7 @@
     <!-- ================= 기본 인적사항 ================= -->
     <div class="card section-card mb-5">
         <div class="card-header section-title">
-            기본인적사항 <span class="text-danger">(필수)</span>
+            기본인적사항 <span class="text-danger"></span>
         </div>
 
         <div class="card-body">
@@ -98,47 +100,47 @@
 
                         <div class="col-md-6">
                             <label class="form-label">이름</label>
-                            <input type="text" name="name_kor" class="form-control">
+                            <input type="text" value="${resume.nameKor}" name="nameKor" class="form-control">
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">생년월일</label>
-                            <input type="date" name="birth_date" class="form-control">
+                            <input type="date" value="${resume.birthDate}" name="birthDate" class="form-control">
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">이름(영문)</label>
-                            <input type="text" name="name_eng" class="form-control">
+                            <input type="text" value="${resume.nameEng}" name="nameEng" class="form-control">
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">성별</label>
                             <select name="gender" class="form-select">
                                 <option selected>-선택-</option>
-                                <option>남</option>
-                                <option>여</option>
+                                <option value="남" ${resume.gender == '남' ? 'selected' : ''}>남</option>
+                                <option value="여" ${resume.gender == '여' ? 'selected' : ''}>여</option>
                             </select>
                         </div>
 
 						<div class="col-md-6">
                             <label class="form-label">이름(한문)</label>
-                            <input type="text" name="name_han" class="form-control">
+                            <input type="text" value="${resume.nameHan}" name="nameHan" class="form-control">
                         </div>	
                         <div class="col-md-6">
                             <label class="form-label">전화번호</label>
-                            <input type="text" name="phone_number" class="form-control">
+                            <input type="text" value="${resume.phoneNumber}" name="phoneNumber" class="form-control">
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">이메일</label>
-                            <input type="email" name="email" class="form-control">
+                            <input type="email" value="${resume.email}" name="email" class="form-control">
                         </div>
 
                         <div class="col-md-12">
 						  <label class="form-label">주소</label>
 						  <div class="d-flex gap-2 mt-1">
-						    <input type="text" name="address1" class="form-control address-half" placeholder="주소 입력">
-						    <input type="text" name="address2" class="form-control address-half" placeholder="상세주소 입력">
+						    <input type="text" value="${resume.address1}" name="address1" class="form-control address-half" placeholder="주소 입력">
+						    <input type="text" value="${resume.address2}" name="address2" class="form-control address-half" placeholder="상세주소 입력">
 						  </div>
 						</div>
 
@@ -149,43 +151,43 @@
     </div>
 
       <!-- 사회형평적 인재 우대사항 -->
-     <h3 class="section-title text-center">사회형평적 인재 우대사항(필수)</h3>
+     <h3 class="section-title text-center">사회형평적 인재 우대사항</h3>
 		
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">보훈대상</label>
-		    <select name="veteran_status" class="form-control resume-input">
-		      <option>비대상</option>
-		      <option>대상(5%)</option>
-		      <option>대상(10%)</option>
+		    <select name="veteranStatus" class="form-control resume-input">
+		      <option value="비대상" <c:if test="${resume.veteranStatus eq '비대상'}">selected</c:if>>비대상</option>
+		      <option value="대상(5%)" <c:if test="${resume.veteranStatus eq '대상(5%)'}">selected</c:if>>대상(5%)</option>
+		      <option value="대상(10%)" <c:if test="${resume.veteranStatus eq '대상(10%)'}">selected</c:if>>대상(10%)</option>
 		    </select>
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">보훈번호</label>
-		    <input type="text" name="veteran_number" class="form-control resume-input" placeholder="보훈번호 입력">
+		    <input type="text" value="${resume.veteranNumber}" name="veteranNumber" class="form-control resume-input" placeholder="보훈번호 입력">
 		  </div>
 		</div>
 		
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">장애여부</label>
-		    <select name="disability_status" class="form-control resume-input">
-		      <option>비대상</option>
-		      <option>대상</option>
+		    <select name="disabilityStatus" class="form-control resume-input">
+		      <option value="비대상" ${resume.disabilityStatus == '비대상' ? 'selected' : ''}>비대상</option>
+		      <option value="대상" ${resume.disabilityStatus == '대상' ? 'selected' : ''}>대상</option>
 		    </select>
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">장애등급</label>
-		    <input type="text" name="disability_grade" class="form-control resume-input" placeholder="장애등급 입력">
+		    <input type="text" value="${resume.disabilityGrade}" name="disabilityGrade" class="form-control resume-input" placeholder="장애등급 입력">
 		  </div>
 		</div>
 		
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">다문화가정</label>
-		    <select name="multicultural_status" class="form-control resume-input">
-		      <option>비대상</option>
-		      <option>대상</option>
+		    <select name="multiculturalStatus" class="form-control resume-input">
+		      <option value="비대상" ${resume.multiculturalStatus == '비대상' ? 'selected' : ''}>비대상</option>
+		      <option value="대상" ${resume.multiculturalStatus == '대상' ? 'selected' : ''}>대상</option>
 		    </select>
 		  </div>
 		</div>
@@ -193,9 +195,9 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">북한이탈주민</label>
-		    <select name="north_defector" class="form-control resume-input">
-		      <option>비대상</option>
-		      <option>대상</option>
+		    <select name="northDefector" class="form-control resume-input">
+		      <option value="비대상" ${resume.northDefector == '비대상' ? 'selected' : ''}>비대상</option>
+		      <option value="대상" ${resume.northDefector == '대상' ? 'selected' : ''}>대상</option>
 		    </select>
 		  </div>
 		</div>
@@ -203,39 +205,39 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">기초생활수급자 및 차상위계층</label>
-		    <select name="low_income_status" class="form-control resume-input">
-		      <option>비대상</option>
-		      <option>대상</option>
+		    <select name="lowIncomeStatus" class="form-control resume-input">
+		      <option value="비대상" ${resume.lowIncomeStatus == '비대상' ? 'selected' : ''}>비대상</option>
+		      <option value="대상" ${resume.lowIncomeStatus == '대상' ? 'selected' : ''}>대상</option>
 		    </select>
 		  </div>
 		</div>
 
 
       <!-- 병역사항 -->
-      <h3 class="section-title text-center">병역사항(필수)</h3>
+      <h3 class="section-title text-center">병역사항</h3>
 
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">군필여부</label>
-		    <select name="military_service" class="form-control resume-input">
-		      <option>비대상</option>
-		      <option>미필</option>
-		      <option>군필</option>
-		      <option>면제</option>
+		    <select name="militaryService" class="form-control resume-input">
+		      <option value="비대상" ${resume.militaryService == '비대상' ? 'selected' : ''}>비대상</option>
+		      <option value="미필" ${resume.militaryService == '미필' ? 'selected' : ''}>미필</option>
+		      <option value="군필" ${resume.militaryService == '군필' ? 'selected' : ''}>군필</option>
+		      <option value="면제" ${resume.militaryService == '면제' ? 'selected' : ''}>면제</option>
 		    </select>
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">군별</label>
-		    <select name="military_branch" class="form-control resume-input">
-		      <option>-군별 선택-</option>
-		      <option>육군</option>
-		      <option>해군</option>
-		      <option>공군</option>
-		      <option>전의경</option>
-		      <option>카투사</option>
-		      <option>공익</option>
-		      <option>병특</option>
-		      <option>기타</option>
+		    <select name="militaryBranch" class="form-control resume-input">
+		      <option value="-군별 선택-" ${resume.militaryBranch == '-군별 선택-' ? 'selected' : ''}>-군별 선택-</option>
+		      <option value="육군" ${resume.militaryBranch == '육군' ? 'selected' : ''}>육군</option>
+		      <option value="해군" ${resume.militaryBranch == '해군' ? 'selected' : ''}>해군</option>
+		      <option value="공군" ${resume.militaryBranch == '공군' ? 'selected' : ''}>공군</option>
+		      <option value="전의경" ${resume.militaryBranch == '전의경' ? 'selected' : ''}>전의경</option>
+		      <option value="카투사" ${resume.militaryBranch == '카투사' ? 'selected' : ''}>카투사</option>
+		      <option value="공익" ${resume.militaryBranch == '공익' ? 'selected' : ''}>공익</option>
+		      <option value="병특" ${resume.militaryBranch == '병특' ? 'selected' : ''}>병특</option>
+		      <option value="기타" ${resume.militaryBranch == '기타' ? 'selected' : ''}>기타</option>
 		    </select>
 		  </div>
 		</div>
@@ -243,32 +245,33 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">계급</label>
-		    <select name="military_rank" class="form-control resume-input">
-		      <option>이병</option>
-		      <option>일병</option>
-		      <option>상병</option>
-		      <option>병장</option>
-		      <option>하사</option>
-		      <option>중사</option>
-		      <option>상사</option>
-		      <option>원사</option>
-		      <option>준위</option>
-		      <option>소위</option>
-		      <option>중위</option>
-		      <option>대위</option>
-		      <option>소령</option>
-		      <option>중령</option>
-		      <option>대령</option>
+		    <select name="militaryRank" class="form-control resume-input">
+		      <option value="-계급 선택-" ${resume.militaryRank == '-계급 선택-' ? 'selected' : ''}>-계급 선택-</option>
+		      <option value="이병" ${resume.militaryRank == '이병' ? 'selected' : ''}>이병</option>
+		      <option value="일병" ${resume.militaryRank == '일병' ? 'selected' : ''}>일병</option>
+		      <option value="상병" ${resume.militaryRank == '상병' ? 'selected' : ''}>상병</option>
+		      <option value="병장" ${resume.militaryRank == '병장' ? 'selected' : ''}>병장</option>
+		      <option value="하사" ${resume.militaryRank == '하사' ? 'selected' : ''}>하사</option>
+		      <option value="중사" ${resume.militaryRank == '중사' ? 'selected' : ''}>중사</option>
+		      <option value="상사" ${resume.militaryRank == '상사' ? 'selected' : ''}>상사</option>
+		      <option value="원사" ${resume.militaryRank == '원사' ? 'selected' : ''}>원사</option>
+		      <option value="준위" ${resume.militaryRank == '준위' ? 'selected' : ''}>준위</option>
+		      <option value="소위" ${resume.militaryRank == '소위' ? 'selected' : ''}>소위</option>
+		      <option value="중위" ${resume.militaryRank == '중위' ? 'selected' : ''}>중위</option>
+		      <option value="대위" ${resume.militaryRank == '대위' ? 'selected' : ''}>대위</option>
+		      <option value="소령" ${resume.militaryRank == '소령' ? 'selected' : ''}>소령</option>
+		      <option value="중령" ${resume.militaryRank == '중령' ? 'selected' : ''}>중령</option>
+		      <option value="대령" ${resume.militaryRank == '대령' ? 'selected' : ''}>대령</option>
 		    </select>
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">전역사유</label>
-		    <select name="discharge_reason" class="form-control resume-input">
-		      <option>-전역 선택-</option>
-		      <option>만기 전역</option>
-		      <option>조기 전역</option>
-		      <option>의병 전역</option>
-		      <option>의가사 전역</option>
+		    <select name="dischargeReason" class="form-control resume-input">
+		      <option value="-전역 선택-" ${resume.dischargeReason == '-전역 선택-' ? 'selected' : ''}>-전역 선택-</option>
+		      <option value="만기 전역" ${resume.dischargeReason == '만기 전역' ? 'selected' : ''}>만기 전역</option>
+		      <option value="조기 전역" ${resume.dischargeReason == '조기 전역' ? 'selected' : ''}>조기 전역</option>
+		      <option value="의병 전역" ${resume.dischargeReason == '의병 전역' ? 'selected' : ''}>의병 전역</option>
+		      <option value="의가사 전역" ${resume.dischargeReason == '의가사 전역' ? 'selected' : ''}>의가사 전역</option>
 		    </select>
 		  </div>
 		</div>
@@ -276,28 +279,28 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">입대일</label>
-		    <input type="date" name="enlist_date" id="enlist_date" class="form-control resume-input">
+		    <input type="date" value="${resume.enlistDate}" name="enlistDate" id="dischargeDate" class="form-control resume-input">
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">전역일</label>
-		    <input type="date" name="discharge_date" id="discharge_date" class="form-control resume-input">
+		    <input type="date" value="${resume.dischargeDate}" name="dischargeDate" id="dischargeDate" class="form-control resume-input">
 		  </div>
 		</div>
 		
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">면제사유</label>
-		    <input type="text" name="exemption_reason" id="exemption_reason" class="form-control resume-input" placeholder="면제사유 입력">
+		    <input type="text" value="${resume.exemptionReason}" name="exemptionReason" id="exemptionReason" class="form-control resume-input" placeholder="면제사유 입력">
 		  </div>
 		</div>
 
       <!-- 학력사항 -->
-      <h3 class="section-title text-center">학력사항(필수)</h3>
+      <h3 class="section-title text-center">학력사항</h3>
 
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">학력</label>
-		    <select name="education_level" class="form-control resume-input">
+		    <select name="educationLevel" class="form-control resume-input">
 		      <option>-학력 선택-</option>
 		      <option>고등학교</option>
 		      <option>대학교(2-3년제)</option>
@@ -308,7 +311,7 @@
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">학교명</label>
-		    <input type="text" name="school_name" class="form-control resume-input" placeholder="학교명 입력">
+		    <input type="text" name="schoolName" class="form-control resume-input" placeholder="학교명 입력">
 		  </div>
 		</div>
 		
@@ -339,7 +342,7 @@
 		    <label class="resume-label">학점</label>
 		    <div class="d-flex">
 		      <input type="text" name="hakjum" class="form-control resume-input me-2" placeholder="학점 입력">
-		      <select name="hakjum_scale" class="form-control resume-input">
+		      <select name="hakjumScale" class="form-control resume-input">
 		        <option>기준 학점</option>
 		        <option>4.0</option>
 		        <option>4.3</option>
@@ -367,11 +370,11 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">입학</label>
-		    <input type="date" id="eduStartday" name="edu_start_day" class="form-control resume-input">
+		    <input type="date" id="eduStartDay" name="eduStartDay" class="form-control resume-input">
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">졸업</label>
-		    <input type="date" id="eduEndday" name="edu_end_day" class="form-control resume-input">
+		    <input type="date" id="eduEndDay" name="eduEndDay" class="form-control resume-input">
 		  </div>
 		</div>
 		
@@ -396,9 +399,7 @@
 		<%@ include file="/WEB-INF/views/inc/footer.jspf"%>
   
 </body>
-  
-
-  
+    
 
 
 </html>

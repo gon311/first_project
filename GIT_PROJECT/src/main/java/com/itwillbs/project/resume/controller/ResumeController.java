@@ -1,16 +1,23 @@
 package com.itwillbs.project.resume.controller;
 
+import java.io.IOException;
 import java.util.Enumeration;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.core.appender.rewrite.MapRewritePolicy.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.resume.dto.ResumeDTO;
 import com.itwillbs.project.resume.service.ResumeService;
@@ -30,7 +37,12 @@ public class ResumeController {
 	// resume/regist
 	// 이력서 등록페이지 - 1.으로 이동 
 	@GetMapping("/regist")
-	public String resumeRegist() {
+	public String resumeRegist(HttpSession session) {
+		// int userIdx = Integer.parseInt( session.getAttribute("userIdx").toString());
+	    if ( session.getAttribute("userIdx") == null ) {
+	        // 세션 정보가 없으면 로그인 페이지로 이동
+	        return "redirect:/user/login";
+	    }
 		
 		return "resume/resumeForm";
 	}
@@ -58,29 +70,77 @@ public class ResumeController {
 		
 		// 세션에서 sId 꺼내오기(유저아디 - bigint)
 	    int userIdx = Integer.parseInt( session.getAttribute("userIdx").toString()) ;
-
-	    log.info(userIdx);
+	    log.info("userIdx : " + userIdx);
+	    
 	    // DTO에 세션 값 추가
-	    resumeDTO.setUser_id(userIdx);   
-	
-//	    log.info("resumeDTO : ",resumeDTO);
-		// 저장 로직.
-		resumeService.registResume(resumeDTO);
+	    resumeDTO.setUserId(userIdx);   
+
+	    // 저장 로직.
+		int resumeId = resumeService.registResume(resumeDTO);
 		
 		// 저장 성공 시 -> 내 이력서 상세 페이지로 redirect.
-//		return "";
-		return "redirect:/resume/resumeView";
+//		return "/resume/resumeRegist2";
+		return "redirect:/resume/resumeView?resume_id=" + resumeId;
 	}
 	
 	// 이력서 상세정보.
 	@GetMapping("/resumeView")
-	public String resumeView(ResumeDTO resumeDTO,Mode model) {
+	public String resumeView(@RequestParam("resume_id") Integer resume_id
+								,HttpSession session
+								,Model model) {
 		
-		// db에서 받아온 DTO
-		ResumeDTO dbResumeDTO = resumeService.getResumeInfo(resumeDTO.getResume_id());
+		 if (resume_id == null) {
+		        return "redirect:/resume/list";
+		 }
+
+		 ResumeDTO resume = resumeService.getResumeInfo(resume_id);
+
+		 if (resume == null) {
+	        return "redirect:/resume/list";
+		 }
+
+		 model.addAttribute("resume", resume);
+
+		 return "resume/resumeView";
+		    
+	} // 이력서 상세정보 끝.
+	
+	// 수정페이지
+	@PostMapping("/resumeModify")
+	public String resumeModify(ResumeDTO resumeDTO, RedirectAttributes ra,
+						HttpServletRequest request, HttpServletResponse response) {
+		int resultCount = resumeService.modifyResume(resumeDTO);
+		log.info("resultCount : "+ resultCount);
 		
-		//
+		ra.addAttribute("resumeIdx", resumeDTO.getResumeId() );
 		
-		return "/resume/resumeView";
+		// dispatch - redirect 아니면 기본값
+	    return "redirect:/resume/resumeList";
 	}
+	
+	// 이력서 리스트 
+	@GetMapping("/resumeList")
+	public String resumeList(Model model) {
+	    
+	    return "resume/resumeList"; // 
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

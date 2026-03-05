@@ -13,14 +13,21 @@ public class ResumeService {
 	private ResumeMapper resumeMapper;
 	
 	// 이력서 저장 요청.
-	public void registResume(ResumeDTO resumeDTO) {
+	public int registResume(ResumeDTO resumeDTO) {
 		resumeMapper.insertResume(resumeDTO);
+		
+		return resumeDTO.getResumeId();	// pk 반환.
 	}
 
-	// 이력서 
-	public ResumeDTO getResumeInfo(Integer resume_id) {
+	// 이력서 저장 후 상세정보.
+	public ResumeDTO getResumeInfo(Integer resumeId) {
 		// 
-		return resumeMapper.selectResume(resume_id);
+		return resumeMapper.selectResume(resumeId);
+	}
+
+	public int modifyResume(ResumeDTO resumeDTO) {
+		// 
+		return resumeMapper.updateResume(resumeDTO);
 	}
 
 }

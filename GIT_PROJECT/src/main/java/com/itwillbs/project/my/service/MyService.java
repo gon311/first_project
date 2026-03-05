@@ -59,17 +59,14 @@ public class MyService {
 	    return updated > 0;
 	}
 	
-	// 이력서 내력
+	// 목록
 	public List<MyResumeDTO> getMyResumeList(Long userId) {
-		return myMapper.selectMyResumeList(userId);
+	    return myMapper.selectMyResumeList(userId);
 	}
-	// 대표 설정
-	public MyResumeDTO getTopResume(Long userId) {
-		 return myMapper.selectTopResume(userId);
-	}
-	// 이력서 삭제
-	public int deleteResume(Long resumeMyId, Long userId) {
-		return myMapper.softDeleteResume(resumeMyId, userId);
+
+	// 삭제(soft delete)
+	public int deleteResume(Integer resumeId, Long userId) {
+	    return myMapper.softDeleteResume(resumeId, userId);
 	}
 	
 	// 자소서

@@ -29,14 +29,14 @@ public interface MyMapper {
 	// 비밀번호 변경
 	String selectPassword(@Param("sId") String sId);
 	int updatePassword(@Param("sId") String sId, @Param("password") String password);
+	
+	
+	//이력서
 
 	List<MyResumeDTO> selectMyResumeList(@Param("userId") Long userId);
 
-	MyResumeDTO selectTopResume(@Param("userId") Long userId);
-
-	// 이력서 삭제
-	int softDeleteResume(@Param("resumeMyId") Long resumeMyId,
-			@Param("userId") Long userId);
+	int softDeleteResume(@Param("resumeId") Integer resumeId,
+	                     @Param("userId") Long userId);
 	
 	// 자소서 리뷰
 	List<MyReviewDTO> selectMyReviewList(@Param("userId") Long userId);

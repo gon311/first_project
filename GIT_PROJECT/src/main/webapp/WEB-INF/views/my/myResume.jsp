@@ -31,182 +31,117 @@
     <%-- ✅ 우측 컨텐츠 --%>
     <section class="col-10 myContent">
       <div class="myContent-inner">
-      
+
         <%-- 타이틀 --%>
         <h2 class="page-title">내 이력서</h2>
         <div class="page-desc">이력서를 관리하고, 필요할 때 빠르게 수정할 수 있어요.</div>
-        
-        <%-- 상단: 총 건수 + 상태 필터 --%>
-		<c:set var="filter" value="${empty param.filter ? 'ALL' : param.filter}"/>
 
-		<div class="topbar">
-		  <div class="countText">
-		    총 <strong><c:out value="${empty myResumes ? 0 : fn:length(myResumes)}"/></strong>건
-		  </div>
-		
-		  <select class="form-select filterSelect"
-		          aria-label="filter"
-		          onchange="location.href='${urlMyResume}?filter=' + this.value;">
-		    <option value="ALL"      ${filter eq 'ALL' ? 'selected' : ''}>전체</option>
-		    <option value="DRAFT"    ${filter eq 'DRAFT' ? 'selected' : ''}>미완성</option>
-		    <option value="COMPLETE" ${filter eq 'COMPLETE' ? 'selected' : ''}>완성</option>
-		  </select>
-		</div>
+        <%-- 상태 필터 (ALL/DRAFT/COMPLETE) --%>
+        <c:set var="filter" value="${empty param.filter ? 'ALL' : param.filter}"/>
 
-		<%-- 대표/최근 카드: topResume (완성 우선 + 최신 1개) --%>
-		<c:choose>
-		  <c:when test="${not empty topResume}">
-		    <div class="resumeCard">
-		      <div class="resumeHeader">
-		        <div>
-		          <div>
-		            <c:choose>
-		              <c:when test="${topResume.status eq 'COMPLETE'}">
-		                <span class="badgeComplete">완성</span>
-		              </c:when>
-		              <c:otherwise>
-		                <span class="badgeDraft">미완성</span>
-		              </c:otherwise>
-		            </c:choose>
-		
-		            <span class="resumeTitle"><c:out value="${topResume.title}"/></span>
-		          </div>
-		
-		          <div class="metaRow">
-		            <div class="metaItem">
-		              <i class="bi bi-clock"></i>
-		              <span>최종수정: <c:out value="${topResume.updatedAtStr}"/></span>
-		            </div>
-		
-		            <c:if test="${not empty topResume.memo}">
-		              <div class="metaItem">
-		                <i class="bi bi-card-text"></i>
-		                <span>메모: <c:out value="${topResume.memo}"/></span>
-		              </div>
-		            </c:if>
-		          </div>
-		        </div>
-		
-		        <div class="d-flex align-items-center gap-2">
-		          <a class="btn btn-outline-primary"
-		             href="${urlResumeEdit}?resumeMyId=${topResume.resumeMyId}" 
-		             onclick="return confirm('이력서를 수정하시겠습니까?');">
-		            이력서 수정하기
-		          </a>
-		
-				    <form action="${urlResumeDelete}" method="post" style="display:inline;"
-				          onsubmit="return confirm('정말 삭제할까요?');">
-				      <input type="hidden" name="resumeMyId" value="${topResume.resumeMyId}" />
-				      <button type="submit" class="btn btn-outline-danger">삭제</button>
-				    </form>
-		        </div>
-		      </div>
-		
-		      <div class="memoBar">
-		        <i class="bi bi-card-text"></i>
-		        <c:choose>
-		          <c:when test="${not empty topResume.memo}">
-		            <span><c:out value="${topResume.memo}"/></span>
-		          </c:when>
-		          <c:otherwise>
-		            <span>이력서에 관련된 중요한 내용을 메모해보세요. 예) 11월 25일까지 제출</span>
-		          </c:otherwise>
-		        </c:choose>
-		      </div>
-		    </div>
-		  </c:when>
-		
-		  <c:otherwise>
-		    <div class="resumeCard">
-		      <div class="resumeHeader">
-		        <div>
-		          <span class="badgeDraft">미완성</span>
-		          <span class="resumeTitle">이력서를 아직 만들지 않았어요</span>
-		        </div>
-		        <a class="btn btn-outline-primary" href="${urlResumeCreate}">
-		          이력서 만들기
-		        </a>
-		      </div>
-		      <div class="memoBar">
-		        <i class="bi bi-card-text"></i>
-		        <span>새 이력서를 만들고 저장하면 여기에 최근 이력서가 표시돼요.</span>
-		      </div>
-		    </div>
-		  </c:otherwise>
-		</c:choose>
+        <div class="topbar">
+          <div class="countText">
+            총 <strong><c:out value="${empty myResumes ? 0 : fn:length(myResumes)}"/></strong>건
+          </div>
 
-		<%-- 리스트: myResumes + 필터 적용 + 대표 중복 제거 --%>
-		<div class="resumeList">
-		  <c:choose>
-		    <c:when test="${empty myResumes}">
-		      <div class="resumeCard" style="margin-top:16px;">
-		        아직 등록된 이력서가 없습니다.
-		      </div>
-		    </c:when>
-		
-		    <c:otherwise>
-		      <c:forEach var="r" items="${myResumes}">
-		        <c:set var="isComplete" value="${r.status eq 'COMPLETE'}"/>
-		        <c:set var="isTop" value="${not empty topResume && r.resumeMyId eq topResume.resumeMyId}"/>
-		
-		        <%-- 출력 조건: (1) 대표 중복 제외 (2) 필터 통과 --%>
-		        <c:if test="${not isTop
-		                      && (filter eq 'ALL'
-		                          || (filter eq 'COMPLETE' && isComplete)
-		                          || (filter eq 'DRAFT' && not isComplete))}">
-		
-		          <div class="resumeCard">
-		            <div class="resumeHeader">
-		              <div>
-		                <div>
-		                  <c:choose>
-		                    <c:when test="${isComplete}">
-		                      <span class="badgeComplete">완성</span>
-		                    </c:when>
-		                    <c:otherwise>
-		                      <span class="badgeDraft">미완성</span>
-		                    </c:otherwise>
-		                  </c:choose>
-		
-		                  <span class="resumeTitle"><c:out value="${r.title}"/></span>
-		                </div>
-		
-		                <div class="metaRow">
-		                  <div class="metaItem">최종수정: <c:out value="${r.updatedAtStr}"/></div>
-		                  <c:if test="${not empty r.memo}">
-		                    <div class="metaItem">메모: <c:out value="${r.memo}"/></div>
-		                  </c:if>
-		                </div>
-		              </div>
-		
-		              <div class="d-flex align-items-center gap-2">
-		                <a class="btn btn-outline-primary"
-		                   href="${urlResumeEdit}?resumeMyId=${r.resumeMyId}"  <%-- 수정링크 (나중에 수정해야함) --%>
-		                   onclick="return confirm('이력서를 수정하시겠습니까?');">
-		                  수정
-		                </a>
-		
-						<form action="${urlResumeDelete}" method="post" style="display:inline;"
-						      onsubmit="return confirm('정말 삭제할까요?');">
-						  <input type="hidden" name="resumeMyId" value="${r.resumeMyId}" />
-						  <button type="submit" class="btn btn-outline-danger">삭제</button>
-						</form>
-		              </div>
-		            </div>
-		
-		            <c:if test="${not empty r.memo}">
-		              <div class="memoBar">
-		                <i class="bi bi-card-text"></i>
-		                <span><c:out value="${r.memo}"/></span>
-		              </div>
-		            </c:if>
-		          </div>
-		
-		        </c:if>
-		      </c:forEach>
-		    </c:otherwise>
-		  </c:choose>
-		</div>
+          <div class="d-flex align-items-center gap-2">
+            <%-- 새 이력서 (POST 추천이면 form으로 바꾸면 됨) --%>
+            <a class="btn btn-outline-primary" href="${urlResumeCreate}">
+              이력서 만들기
+            </a>
+
+            <select class="form-select filterSelect"
+                    aria-label="filter"
+                    onchange="location.href='${urlMyResume}?filter=' + this.value;">
+              <option value="ALL"      ${filter eq 'ALL' ? 'selected' : ''}>전체</option>
+              <option value="DRAFT"    ${filter eq 'DRAFT' ? 'selected' : ''}>미완성</option>
+              <option value="COMPLETE" ${filter eq 'COMPLETE' ? 'selected' : ''}>완성</option>
+            </select>
+          </div>
+        </div>
+
+        <%-- 리스트: myResumes + 필터 적용 --%>
+        <div class="resumeList">
+          <c:choose>
+            <c:when test="${empty myResumes}">
+              <div class="resumeCard" style="margin-top:16px;">
+                아직 등록된 이력서가 없습니다.
+              </div>
+            </c:when>
+
+            <c:otherwise>
+              <c:forEach var="r" items="${myResumes}">
+                <c:set var="isComplete" value="${r.status eq 'COMPLETE'}"/>
+
+                <%-- 필터 통과 조건 --%>
+                <c:if test="${filter eq 'ALL'
+                              || (filter eq 'COMPLETE' && isComplete)
+                              || (filter eq 'DRAFT' && not isComplete)}">
+
+                  <div class="resumeCard">
+                    <div class="resumeHeader">
+                      <div>
+                        <div>
+                          <%-- 상태 배지 --%>
+                          <c:choose>
+                            <c:when test="${isComplete}">
+                              <span class="badgeComplete">완성</span>
+                            </c:when>
+                            <c:otherwise>
+                              <span class="badgeDraft">미완성</span>
+                            </c:otherwise>
+                          </c:choose>
+
+                          <%-- 제목 --%>
+                          <span class="resumeTitle"><c:out value="${r.title}"/></span>
+                        </div>
+
+                        <%-- 메타 정보 --%>
+                        <div class="metaRow">
+                          <div class="metaItem">
+                            <i class="bi bi-clock"></i>
+                            <span>최종수정: <c:out value="${r.updatedAtStr}"/></span>
+                          </div>
+
+<%--                           <c:if test="${not empty r.memo}"> --%>
+<!--                             <div class="metaItem"> -->
+<!--                               <i class="bi bi-card-text"></i> -->
+<%--                               <span>메모: <c:out value="${r.memo}"/></span> --%>
+<!--                             </div> -->
+<%--                           </c:if> --%>
+                        </div>
+                      </div>
+
+                      <%-- 액션 --%>
+                      <div class="d-flex align-items-center gap-2">
+                        <a class="btn btn-outline-primary"
+                           href="${urlResumeEdit}?resumeId=${r.resumeId}"
+                           onclick="return confirm('이력서를 수정하시겠습니까?');">
+                          수정
+                        </a>
+
+                        <form action="${urlResumeDelete}" method="post" style="display:inline;"
+                              onsubmit="return confirm('정말 삭제할까요?');">
+                          <input type="hidden" name="resumeId" value="${r.resumeId}" />
+                          <button type="submit" class="btn btn-outline-danger">삭제</button>
+                        </form>
+                      </div>
+                    </div>
+
+                    <%-- 메모 바(선택) --%>
+<%--                     <c:if test="${not empty r.memo}"> --%>
+<!--                       <div class="memoBar"> -->
+<!--                         <i class="bi bi-card-text"></i> -->
+<%--                         <span><c:out value="${r.memo}"/></span> --%>
+<!--                       </div> -->
+<%--                     </c:if> --%>
+                  </div>
+
+                </c:if>
+              </c:forEach>
+            </c:otherwise>
+          </c:choose>
+        </div>
 
       </div>
     </section>

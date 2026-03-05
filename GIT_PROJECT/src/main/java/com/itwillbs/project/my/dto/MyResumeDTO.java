@@ -11,24 +11,21 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 public class MyResumeDTO {
 
-    // ===== 식별/관계키 =====
-    private Long resumeMyId;      // resume_my_id (PK)
-    private Long userId;          // user_id (FK) - 보통 서버 내부 검증용
-    private Integer resumeId;     // resume_id (FK)
+    // PK/FK
+    private Integer resumeId;     // resume.resume_id (PK)
+    private Long userId;          // resume.user_id (FK)
 
-    // ===== 목록/편집에 필요한 값 =====
-    private String title;         // title
-    private String status;        // status (추천: enum)
-    private String memo;          // memo
+    // 목록용 메타
+    private String title;         // resume.title
+    private String status;        // resume.status (DRAFT/COMPLETE)
 
-    // ===== 시간/삭제 =====
-    private LocalDateTime createdAt; // created_at
-    private LocalDateTime updatedAt; // updated_at
-    private Integer isDeleted;     // is_deleted (0/1)  (추천: Boolean으로 매핑)
-    
-    private String updatedAtStr; // JSP 표시용(포맷된 문자열)
-    
+    // 시간/삭제
+    private LocalDateTime createdAt;   // resume.created_at
+    private LocalDateTime updatedAt;   // resume.updated_at
+    private Integer isDeleted;         // resume.is_deleted (0/1)
+
+    // 화면 표시용(문자열 포맷)
+    private String updatedAtStr;  // DATE_FORMAT(updated_at, ...) AS updated_at_str
 }

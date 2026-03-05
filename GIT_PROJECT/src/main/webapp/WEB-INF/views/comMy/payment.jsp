@@ -1,202 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<!DOCTYPE html>
+<html>
+<head>
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
+<link rel="stylesheet" href="<c:url value='/resources/css/comMyCss/payment.css'/>" type="text/css">
+</head>
+
+<body>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
-<%-- =========================
-     URL (전부 c:url)
-   ========================= --%>
+<!-- URL -->
 <c:url var="urlPaymentList" value="/comMy/payment"/>
 <c:url var="urlPaymentDetail" value="/comMy/payment/detail"/> <%-- ?orderId= --%>
 <c:url var="urlPayAgain" value="/pay/again"/>               <%-- ?orderId= (미결제/실패 재결제용) --%>
-
-<style>
-  body{ background:#f6f7fb; }
-  .mypage-wrap{ min-height:100vh; }
-
-  /* ✅ (공통 톤) 사이드바 스타일 - 이전 페이지와 동일하게 유지 */
-  .mySidebar{ background:#fff; border-right:1px solid #e9edf3; min-height:100vh; }
-  .mySidebar-inner{ position:sticky; top:0; padding:18px 14px; }
-  .mySidebar-brand{ padding:6px 8px 16px; display:flex; align-items:center; gap:10px; }
-  .brandText{ font-weight:900; letter-spacing:-.4px; color:#2563eb; font-size:1.2rem; }
-  .myNav{ display:flex; flex-direction:column; gap:4px; }
-  .myNav-link{
-    display:flex; align-items:center; gap:10px;
-    padding:10px 10px; border-radius:10px;
-    text-decoration:none; color:#334155; font-weight:600; position:relative;
-  }
-  .myNav-link i{ font-size:1.05rem; color:#94a3b8; width:20px; text-align:center; }
-  .myNav-link:hover{ background:#f3f6fb; }
-  .myNav-link.active{ background:#eaf2ff; color:#1d4ed8; font-weight:800; }
-  .myNav-link.active i{ color:#1d4ed8; }
-  .myNav-link.active::before{
-    content:""; position:absolute; left:-6px; top:10px; bottom:10px;
-    width:3px; border-radius:999px; background:#1d4ed8;
-  }
-
-  /* ✅ 오른쪽 컨텐츠 카드 (공통 톤 유지) */
-  .myContent{ padding:22px; }
-  .myContent-inner{
-    background:#fff;
-    border:1px solid #eef2f7;
-    border-radius:16px;
-    box-shadow:0 10px 30px rgba(15,23,42,.04);
-    padding:22px;
-    min-height: calc(100vh - 80px);
-  }
-
-  .page-title{ font-size:1.6rem; font-weight:900; letter-spacing:-.6px; margin:0; }
-  .page-desc{ color:#6b7280; font-size:.92rem; margin-top:8px; }
-
-  /* ✅ 사람인 느낌의 상단 필터 + 검색 (하지만 카드톤은 유지) */
-  .toolbar{
-    margin-top: 18px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    padding: 14px;
-    border:1px solid #eef2f7;
-    border-radius: 12px;
-    background:#fff;
-  }
-
-  .toolbar-left, .toolbar-right{ display:flex; align-items:center; gap:10px; }
-
-  .select{
-    border:1px solid #dbe2ee;
-    border-radius:10px;
-    padding:10px 12px;
-    font-weight:900;
-    color:#334155;
-    background:#fff;
-    min-width: 140px;
-  }
-
-  .btn-search{
-    border:1px solid #dbe2ee;
-    background:#fff;
-    border-radius:10px;
-    padding:10px 14px;
-    font-weight:900;
-  }
-  .btn-search:hover{ background:#f7f9fc; }
-
-  .search-wrap{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    border:1px solid #dbe2ee;
-    border-radius:10px;
-    padding: 10px 12px;
-    min-width: 340px;
-  }
-  .search-wrap input{ border:0; outline:none; width: 300px; }
-  .search-ico{ color:#94a3b8; font-size:1.1rem; }
-
-  /* ✅ 테이블(결제내역) */
-  .table-wrap{
-    margin-top: 14px;
-    border: 1px solid #eef2f7;
-    border-radius: 12px;
-    overflow:hidden;
-    background:#fff;
-  }
-  table{
-    width:100%;
-    border-collapse:collapse;
-    font-size: .95rem;
-  }
-  thead th{
-    background:#f7f9fc;
-    color:#6b7280;
-    font-weight:900;
-    text-align:left;
-    padding: 14px 14px;
-    border-bottom: 1px solid #eef2f7;
-  }
-  tbody td{
-    padding: 16px 14px;
-    border-bottom: 1px solid #eef2f7;
-    vertical-align: middle;
-    color:#111827;
-    font-weight:700;
-  }
-  tbody tr:hover{ background:#fbfdff; }
-
-  /* (1) 상품명 클릭 -> 상세로 */
-  .prod-link{
-    color:#111827;
-    text-decoration:none;
-    font-weight:900;
-  }
-  .prod-link:hover{ text-decoration:underline; }
-
-  /* 상태 배지 */
-  .badge{
-    display:inline-block;
-    padding: 6px 10px;
-    border-radius:999px;
-    font-weight:900;
-    font-size:.85rem;
-  }
-  .badge-paid{ background:#ecfdf5; color:#047857; border:1px solid #a7f3d0; }
-  .badge-free{ background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; }
-  .badge-unpaid{ background:#fff7ed; color:#9a3412; border:1px solid #fed7aa; }
-
-  /* (2) 미결제일 때 재결제 버튼 */
-  .btn-pay{
-    background:#fff;
-    border:1px solid #cbd5e1;
-    color:#334155;
-    font-weight:900;
-    border-radius:10px;
-    padding: 8px 12px;
-    text-decoration:none;
-    display:inline-block;
-  }
-  .btn-pay:hover{ background:#f7f9fc; }
-
-  /* 빈 상태(사람인 느낌) */
-  .empty{
-    margin-top: 20px;
-    padding: 80px 0;
-    text-align:center;
-    color:#6b7280;
-  }
-  .empty .big{
-    font-weight:900;
-    font-size:1.1rem;
-    color:#111827;
-    margin-top: 10px;
-  }
-
-  /* 페이지네이션(뼈대) */
-  .pager{
-    margin-top: 18px;
-    display:flex;
-    justify-content:center;
-    gap: 8px;
-  }
-  .pager a{
-    display:inline-block;
-    min-width: 34px;
-    text-align:center;
-    padding: 8px 10px;
-    border:1px solid #e5e7eb;
-    border-radius: 10px;
-    text-decoration:none;
-    color:#374151;
-    font-weight:900;
-    background:#fff;
-  }
-  .pager a.active{
-    background:#2563eb;
-    border-color:#2563eb;
-    color:#fff;
-  }
-</style>
 
 <main class="container-fluid px-0 mypage-wrap">
   <div class="row g-0">
@@ -367,3 +185,6 @@
 </main>
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+</body>
+</html>
+

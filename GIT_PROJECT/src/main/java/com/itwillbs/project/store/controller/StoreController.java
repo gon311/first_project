@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.project.admin.dto.MemberDTO;
+import com.itwillbs.project.admin.service.AdminService;
 import com.itwillbs.project.store.dto.OrderDTO;
 import com.itwillbs.project.store.dto.PaymentDTO;
 import com.itwillbs.project.store.dto.PortoneDTO;
@@ -38,14 +40,28 @@ public class StoreController {
 	//------------------------------------------------------------
 	// 구직자 요금제
 	@GetMapping("/ustore")
-	public String userStore() {
+	public String userStore(Model model, HttpSession session) {
+		String userEmail = (String)session.getAttribute("sId");
+		
+		// 회원 아이디 조회
+		MemberDTO userInfo = storeService.getUserInfo(userEmail);
+		model.addAttribute("userInfo", userInfo);
+		
+		session.setAttribute("userInfo", userInfo);
 		
 		return "store/userStore";
 	}
 	
 	// 기업 요금제
 	@GetMapping("/cstore")
-	public String comStore() {
+	public String comStore(Model model, HttpSession session) {
+		String userEmail = (String)session.getAttribute("sId");
+
+		// 회원 아이디 조회
+		MemberDTO comInfo = storeService.getUserInfo(userEmail);
+		model.addAttribute("comInfo", comInfo);
+
+		session.setAttribute("comInfo", comInfo);
 		
 		return "store/comStore";
 	}
@@ -54,9 +70,21 @@ public class StoreController {
 	// 보유한 이용권 정보 전달
 	@ResponseBody
 	@GetMapping("/checkRemain")
-	public Map<String, Object> checkRemain(@RequestParam String id) {
-		// 구매자가 이용권을 보유하고 있고, 만료되지 않았는지 확인
-		boolean exists = storeService.getRemainById(id);
+	public Map<String, Object> checkRemain(@RequestParam Integer id, HttpSession session) {
+		// 구매자의 회원 유형 확인
+		MemberDTO memberInfo = storeService.getUserType(id);
+		
+		boolean exists = false;
+		
+		if(memberInfo.getUserType().equals("구직자 회원")) { // 구직자 회원
+			// 구매자가 이용권을 보유하고 있고, 만료되지 않았는지 확인
+			exists = storeService.getUserRemain(id);
+			
+		} else { // 기업회원
+			// 구매자가 이용권을 보유하고 있고, 만료되지 않았는지 확인
+			exists = storeService.getComRemain(id);
+		}
+		System.out.println("exsits >>>>>>>>>> " + exists);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("exists", exists);

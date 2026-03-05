@@ -47,7 +47,7 @@
                                 <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">5,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U10'">구매하기</button>
+                                    <button type="button" id="btn10" value="P-U10" class="btn btn-primary btn-lg" onclick="checkRemain('P-U10')">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                                 <hr class="mt-1 mb-2">
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">8,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U30'">구매하기</button>
+                                    <button type="button" id="btn30" value="P-U30" class="btn btn-primary btn-lg" onclick="checkRemain('P-U30')">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                                 <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">15,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U60'">구매하기</button>
+                                    <button type="button" id="btn60" value="P-U60" class="btn btn-primary btn-lg" onclick="checkRemain('P-U60')">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -127,17 +127,25 @@
     <%-- footer area --%>
 	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 	
-	<script>
-		async function checkRemain(${}) {
-			const userId = ${sessionScope.sId}
+	<script type="text/javascript">
+		const userId = ${userInfo.userId};
+		
+		async function checkRemain(productId) {
+			console.log("productId : ", productId);
 			const checkRemainURL = "<c:url value="/store/checkRemain" />";
 			// 비동기 요청 시 아이디 입력값 파라미터로 전송
 			const response = await fetch(checkRemainURL + "?id=" + userId);
 			// 비동기 요청에 대한 응답 데이터를 JSON 형식으로 파싱
 			const result = await response.json();
-			const response = await fetch()
-				
+
+			if(result.exists) { // 구매가능
+				location.href = "pay?productId=" + productId;
+			} else {
+				alert("이미 이용권을 보유중입니다.");
+				return;
 			}
+			
+				
 		}
 	</script>
 </body>

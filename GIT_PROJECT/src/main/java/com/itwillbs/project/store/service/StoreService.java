@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.store.dto.OrderDTO;
 import com.itwillbs.project.store.dto.PaymentDTO;
 import com.itwillbs.project.store.dto.PortoneDTO;
@@ -25,6 +26,11 @@ public class StoreService{
 
 	@Autowired
 	private StoreMapper storeMapper;
+	
+	// 세션에 저장된 회원 아이디(이메일)을 통해 회원 정보 조회
+	public MemberDTO getUserInfo(String userEmail) {
+		return storeMapper.selectUserInfo(userEmail);
+	}
 
 	// 구매하기 페이지 내 회원 정보 출력
 	public OrderDTO getOrderUser(String sId) {
@@ -36,16 +42,32 @@ public class StoreService{
 		return storeMapper.selectStoreInfo(productId);
 	}
 	
-	// 회원이 이용권을 가지고 있고, 만료되지 않았는지 여부
-	public boolean getRemainById(String id) {
+	// 구매자의 회원 유형 조회
+	public MemberDTO getUserType(Integer id) {
+		return storeMapper.selectUserType(id);
+	}
+	
+	// 구직자회원이 이용권을 가지고 있고, 만료되지 않았는지 여부
+	public boolean getUserRemain(Integer id) {
 		// 이용권이 만료되지 않은 경우(구매불가)
-		if(storeMapper.selectRemainById(id) != null) {
+		if(storeMapper.selectUserRemain(id) != null) {
 			return false;
 		} else { // 구매가능
 			return true;
 		}
 		
-	}
+	} 
+	
+	// 기업회원이 이용권을 가지고 있고, 만료되지 않았는지 여부
+	public boolean getComRemain(Integer id) {
+		// 이용권이 만료되지 않은 경우(구매불가)
+		if(storeMapper.selectComRemain(id) != null) {
+			return false;
+		} else { // 구매가능
+			return true;
+		}
+		
+	} 
 	
 	// 주문 정보 삽입
 	public void setOrderInfo(OrderDTO order, StoreDTO store) {
@@ -114,6 +136,14 @@ public class StoreService{
         }
         
     }
+
+	
+
+	
+
+	
+
+	
 
 	
 

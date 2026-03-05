@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.itwillbs.project.comMy.dto.ComJobRowDTO;
 import com.itwillbs.project.comMy.dto.ComMyDTO;
 import com.itwillbs.project.comMy.dto.JobCond;
+import com.itwillbs.project.comMy.dto.PaymentCond;
+import com.itwillbs.project.comMy.dto.PaymentDTO;
 import com.itwillbs.project.comMy.service.ComMyService;
 import com.itwillbs.project.common.paging.PageRes;
 import com.itwillbs.project.my.dto.MyDTO;
@@ -97,16 +99,49 @@ public class ComMyController {
 	
 	// 결제내역
 	@GetMapping("/payment")
-	public String payment(HttpSession session, Model model, ComMyDTO comMyDTO) {
+	public String payment(HttpSession session, 
+						  Model model,
+						  @RequestParam(defaultValue = "3m") String period,	// 목록(3개월전)
+						  @RequestParam(defaultValue = "all") String status, //상태
+						  @RequestParam(defaultValue = "") String q, //상태
+						  @RequestParam(defaultValue = "1") int page,	// 페이지
+						  @RequestParam(defaultValue = "5") int size	// 페이지 크기
+						  ) {
 	 
 	    //로그인 체크
 	    String sId = (String) session.getAttribute("sId"); 
 	    if (sId == null) return "redirect:/user/login";
 	    
-	    model.addAttribute("currentMenu", "payment");
-
+	    model.addAttribute("currentMenu", "payment"); // 사이드바 '결제 내역' 활성
 	    
-
+	    ComMyDTO user = comMyService.getUser(sId);
+	    model.addAttribute("loginUser", user);
+	    
+	    PaymentCond cond = new PaymentCond();
+	    cond.setUserId(user.getUserId());
+	    cond.setPeriod(period);
+	    cond.setStatus(status);
+	    cond.setQ(q);
+	    
+	    // ✅ 공통 PageReq로 세팅
+	    cond.getPage().setPage(page);
+	    cond.getPage().setSize(size);
+	    
+	    // 조회
+	    List<PaymentDTO> payments = comMyService.getPaymentList(cond);
+	    int total = comMyService.getPaymentCount(cond);
+	    
+	    // ✅ 페이징 응답
+	    PageRes pager = PageRes.of(cond.getPage(), total);
+	    
+	    model.addAttribute("payments", payments);
+	    model.addAttribute("pager", pager);
+	    
+	    // 화면에서 필터 값 유지
+	    model.addAttribute("period", period);
+	    model.addAttribute("status", status);
+	    model.addAttribute("q", q);
+	    
 
 	    return "/comMy/payment";
 	}

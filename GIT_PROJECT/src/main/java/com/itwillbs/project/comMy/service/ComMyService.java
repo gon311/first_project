@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.project.comMy.dto.ComJobRowDTO;
 import com.itwillbs.project.comMy.dto.ComMyDTO;
 import com.itwillbs.project.comMy.dto.JobCond;
+import com.itwillbs.project.comMy.dto.PaymentCond;
+import com.itwillbs.project.comMy.dto.PaymentDTO;
 import com.itwillbs.project.comMy.mapper.ComMyMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,17 @@ public class ComMyService {
 	// 페이징
 	public int getJopCount(JobCond cond) {
 		return comMyMapper.selectJobCount(cond);
+	}
+	
+	
+
+	// 리스트
+	public List<PaymentDTO> getPaymentList(PaymentCond cond) {
+		return comMyMapper.selectPaymentList(cond);
+	}
+
+	public int getPaymentCount(PaymentCond cond) {
+		return comMyMapper.selectPaymentCount(cond);
 	}
 	
 }

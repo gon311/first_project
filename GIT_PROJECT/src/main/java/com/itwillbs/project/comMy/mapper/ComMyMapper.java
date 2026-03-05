@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 import com.itwillbs.project.comMy.dto.ComJobRowDTO;
 import com.itwillbs.project.comMy.dto.ComMyDTO;
 import com.itwillbs.project.comMy.dto.JobCond;
+import com.itwillbs.project.comMy.dto.PaymentCond;
+import com.itwillbs.project.comMy.dto.PaymentDTO;
 
 @Mapper
 public interface ComMyMapper {
@@ -17,6 +19,11 @@ public interface ComMyMapper {
 	List<ComJobRowDTO> selectJobList(JobCond cond);
 
 	int selectJobCount(JobCond cond);
+
+	
+	// 결제내역
+	List<PaymentDTO> selectPaymentList(PaymentCond cond);
+	int selectPaymentCount(PaymentCond cond);
 	
 	
 	

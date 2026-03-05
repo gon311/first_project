@@ -1,5 +1,6 @@
 @charset "UTF-8";
 /* [기본 스타일] */
+:root { --primary-color: #0046ff; --bg-color: #f4f7f6; }
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Malgun Gothic', 'Noto Sans KR', sans-serif; }
 body { background-color: #f5f6f7; color: #333; font-size: 14px; }
 input, select, button { outline: none; vertical-align: middle; }
@@ -41,6 +42,15 @@ select { height: 32px; padding: 0 5px; border: 1px solid #ccc; font-size: 13px; 
 /* 버튼 */
 .btn-auth { height: 32px; background: #555; color: #fff; border: none; padding: 0 10px; cursor: pointer; font-size: 12px; min-width: 80px; white-space: nowrap; }
 .btn-submit { display: block; width: 220px; margin: 40px auto 0; background: #2c3e50; color: #fff; padding: 15px; font-size: 18px; font-weight: bold; border: none; cursor: pointer; }
+.btn-action { white-space: nowrap; padding: 0 20px; background: white; border: 1px solid var(--primary-color); color: var(--primary-color); border-radius: 6px; cursor: pointer; font-weight: bold; }
+.btn-action:hover { background: #f0f4ff; }
+.btn-action.verified { background: #e7f0ff; border-color: #cbd8ff; color: #888; cursor: default; }
+
+/* 인증 영역 */
+.verify-area { background-color: #f8f9fa; padding: 15px; margin-top: 10px; border-radius: 6px; position: relative}
+.verify-msg { font-size: 12px; margin-top: 8px; position: absolute; top: 100%; }
+.msg-success { color: #2ecc71; }
+.msg-error { color: #e74c3c; }
 
 /* [툴팁] */
 .tooltip-trigger { display: inline-block; width: 16px; height: 16px; background: #0055ff; color: #fff; text-align: center; font-size: 11px; margin-left: 5px; cursor: pointer; line-height: 16px; border-radius: 2px; }

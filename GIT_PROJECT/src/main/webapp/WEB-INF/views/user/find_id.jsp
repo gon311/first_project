@@ -5,7 +5,7 @@
 <head>
     <c:set var="pageTitle" value="아이디 찾기 결과" />
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
-    <link href="<c:url value="/resources/css/userFindId.css" />" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/resources/css/user/userFindId.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
     <%@ include file="/WEB-INF/views/inc/header.jspf" %>

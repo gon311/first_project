@@ -4,7 +4,7 @@
 <html lang="ko">
 <head>
 	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
-	<link href="<c:url value="/resources/css/userFindForm.css" />" rel="stylesheet" type="text/css">
+	<link href="<c:url value="/resources/css/user/userFindForm.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
 	
@@ -49,16 +49,17 @@
 	                                    <select style="width: 25%;" id="id-phone-1"><option>010</option></select> - 
 	                                    <input type="text" style="width: 25%;" id="id-phone-2" maxlength="4"> - 
 	                                    <input type="text" style="width: 25%;" id="id-phone-3" maxlength="4">
-	                                    <button type="button" class="btn-auth" onclick="sendAuthCode('id', 'phone')">인증번호 전송</button>
+	                                    <button type="button" class="btn-auth" id="btn-id-send" onclick="sendVerification('id')">인증번호 전송</button>
+	                                    <div id="id-feedback" class="invalid-feedback"></div> 
 	                                </div>
 	                            </div>
 	
-	                            <div id="row-id-authcode" class="form-row d-none">
-	                                <label class="form-label">인증번호</label>
+	                            <div id="row-id-authcode" class="form-row verify-area d-none">
 	                                <div class="form-input-group">
-	                                    <input type="text" placeholder="인증번호 6자리" maxlength="6">
-	                                    <span class="timer-text" id="timer-id"></span>
+			                            <input type="text" id="id-code" placeholder="인증번호 6자리">
+			                            <button type="button" class="btn-action" onclick="checkVerification('id')">확인</button>
 	                                </div>
+	                                <div id="id-msg" class="verify-msg"></div>
 	                            </div>
 	                        </div>
 	                    </div>
@@ -121,7 +122,7 @@
 	                            </div>
 	                            <div class="form-row">
 	                                <label class="form-label">이름</label>
-	                                <div class="form-input-group"><input type="text" id="pw-name" name="userName" placeholder="성명 입력"></div>
+	                                <div class="form-input-group"><input type="text" id="pw-name" name="userName" placeholder="성명 입력" ></div>
 	                            </div>
 	
 	
@@ -131,16 +132,17 @@
 	                                    <select style="width: 25%;" id="pw-phone-1"><option>010</option></select> - 
 	                                    <input type="text" style="width: 25%;" id="pw-phone-2" maxlength="4"> - 
 	                                    <input type="text" style="width: 25%;" id="pw-phone-3" maxlength="4">
-	                                    <button type="button" class="btn-auth" onclick="sendAuthCode('pw', 'phone')">인증번호 전송</button>
+	                                    <button type="button" class="btn-auth" id="btn-pw-send" onclick="sendVerification('pw')">인증번호 전송</button>
+		                                <div id="pw-feedback" class="invalid-feedback"></div> 
 	                                </div>
 	                            </div>
 	                            
-	                            <div id="row-pw-authcode" class="form-row d-none">
-	                                <label class="form-label">인증번호</label>
+	                            <div id="row-pw-authcode" class="form-row verify-area d-none">
 	                                <div class="form-input-group">
-	                                    <input type="text" placeholder="인증번호 6자리">
-	                                    <span class="timer-text" id="timer-pw"></span>
+			                            <input type="text" id="pw-code" placeholder="인증번호 6자리">
+			                            <button type="button" class="btn-action" onclick="checkVerification('pw')">확인</button>
 	                                </div>
+			                        <div id="pw-msg" class="verify-msg"></div>
 	                            </div>
 	                       </div>
 	                    </div>
@@ -158,13 +160,13 @@
 	                            <div class="form-row"><label class="form-label">아이디</label><div class="form-input-group"><input type="text" name="email"></div></div>
 	                            <div class="form-row">
 	                                <label class="form-label">
-	                                    가입자명 <span class="tooltip-trigger" onclick="toggleTooltip('tt-id2')">?</span>
+	                                    가입자명 <span class="tooltip-trigger" onclick="toggleTooltip('tt-pw')">?</span>
 	                                </label>
 	                                <div class="form-input-group">
-	                                    <input type="text" name="ceoName" id="id-biz-name2">
+	                                    <input type="text" name="ceoName" id="pw-biz-name">
 	                                </div>
 	                                <div id="tt-id2" class="tooltip-box">
-	                                    <span class="tooltip-close" onclick="toggleTooltip('tt-id2')">×</span>
+	                                    <span class="tooltip-close" onclick="toggleTooltip('tt-pw')">×</span>
 	                                    <p>회원가입 시 등록한 기업담당자<br>이름을 입력해 주세요.</p>
 	                                </div>
 	                            </div>
@@ -186,8 +188,9 @@
 	    </div>
 	</form>
 	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
-
-    <script>    
+	
+    <script>
+    	const verificationStatus = { id: false, pw: false };
 		const bizInputs = document.querySelectorAll('input[name="bizRegNo"]');
 	    bizInputs.forEach(input => {
 	        input.addEventListener('input', function(e) {
@@ -204,7 +207,7 @@
 	            e.target.value = val;
 	        });
 	    });
-		    
+	    
         // 1. 탭 전환
 		function switchTab(mode) {
 		    // 1. 탭 버튼 상태 변경
@@ -311,6 +314,7 @@
             }
 
             // 타입별 검증
+             const p1 = document.getElementById(mode + '-phone-1');
              const p2 = document.getElementById(mode + '-phone-2');
              const p3 = document.getElementById(mode + '-phone-3');
              if (!p2.value.trim() || !p3.value.trim()) {
@@ -320,28 +324,97 @@
              }
              alert('인증번호(SMS)가 발송되었습니다.');
 
-            // 인증번호 입력창 활성화 & 타이머 시작
+            // 인증번호 입력창 활성화
             const authRow = document.getElementById('row-' + mode + '-authcode');
-            const timerSpan = document.getElementById('timer-' + mode);
             
             authRow.classList.remove('d-none');
             
-            let time = 180; // 3분
-            if (timerSpan.timer) clearInterval(timerSpan.timer);
-            
-            const tick = () => {
-                const min = Math.floor(time / 60);
-                const sec = time % 60;
-                timerSpan.innerText = `${min}:${sec < 10 ? '0'+sec : sec}`;
-                if (time <= 0) {
-                    clearInterval(timerSpan.timer);
-                    timerSpan.innerText = "시간초과";
-                }
-                time--;
-            };
-            tick();
-            timerSpan.timer = setInterval(tick, 1000);
         }
+        
+        // 인증번호 발송 (JSP EL 충돌 방지 위해 문자열 결합 사용)
+        function sendVerification(type) {
+            const p1 = document.getElementById(type + '-phone-1').value;
+            const p2 = document.getElementById(type + '-phone-2').value;
+            const p3 = document.getElementById(type + '-phone-3').value;
+            const val = p1 + "-" + p2 + "-" + p3;
+            const idValue = document.getElementById(type + "-feedback").innerText;
+            const phoneRegex = /^(010|011)[-\s]?[\d]{3,4}[-\s]?[\d]{4}$/;
+            const authRow = document.getElementById('row-' + type + '-authcode');
+            
+            let nameInput = document.getElementById(type + '-name');
+            
+            // 공통: 이름 입력 확인
+            if (!nameInput.value.trim()) {
+                alert('이름을 입력해 주세요.');
+                nameInput.focus();
+                return;
+            } else if(!p2 || !p3) {
+            	alert("휴대폰 정보를 입력해주세요.");
+            	return;
+            }
+            
+            const requestContent = {
+                    type: type,   
+                    value: val    
+            };
+            
+			async function mailRequestCorrectContent() {
+				try {
+					const response = await fetch("<c:url value="/api/sendCode" />", { // 요청 주소
+						method: "POST",						// 요청 메서드
+						headers: {							// 요청 헤더 정보들
+							"Content-type": "application/json"	// 전송 데이터 형식 : JSON 데이터
+						},
+						body: JSON.stringify(requestContent)
+					});
+					
+					if(!response.ok) {
+						throw new Error("오류 발생!");
+					}
+					const result = await response.json();
+					
+					alert("인증번호가 발송되었습니다.");
+		            authRow.classList.remove('d-none');
+		            
+					document.getElementById(type + "-code").value = result.authCode;
+		            
+				} catch(error) {
+					alert("요청 오류 발생 : " + error);
+				}
+			}
+			
+			mailRequestCorrectContent();
+        }
+
+        // 인증번호 확인
+		function checkVerification(type) {
+		    const code = document.getElementById(type + "-code").value;
+		    const msgEl = document.getElementById(type + "-msg");
+		
+		    // 세션 값을 직접 비교하지 않고 서버에 요청을 보냅니다.
+		    fetch("<c:url value='/api/verifyCode' />", {
+		        method: "POST",
+		        headers: { "Content-type": "application/json" },
+		        body: JSON.stringify({ code: code })
+		    })
+		    .then(response => response.json())
+		    .then(result => {
+		        if(result.success) { // 서버 세션 값과 일치할 때
+		            verificationStatus[type] = true;
+		            msgEl.innerText = "인증되었습니다.";
+		            msgEl.className = "verify-msg msg-success";
+		            document.getElementById(type + "-code").readOnly = true;
+		            document.getElementById("btn-" + type + "-send").classList.add("verified");
+		        } else {
+		            verificationStatus[type] = false;
+		            msgEl.innerText = "인증번호가 일치하지 않습니다.";
+		            msgEl.className = "verify-msg msg-error";
+		        }
+		    })
+		    .catch(error => {
+		        alert("인증 확인 중 오류가 발생했습니다.");
+		    });
+		}
 
         // 4. 툴팁
         function toggleTooltip(id) {
@@ -353,6 +426,9 @@
         document.getElementById('findForm').addEventListener('submit', function(e) {
             // 현재 활성화된 탭이 무엇인지 확인 ('id' 또는 'pw')
             const currentMode = document.getElementById('tab-btn-id').classList.contains('active') ? 'id' : 'pw';
+        	const currentBizNo = document.getElementById(currentMode === 'id' ? 'bizRegNo' : 'bizRegNo2').value;
+            const currentCeoName = document.getElementById(currentMode === 'id' ? 'id-biz-name' : 'pw-biz-name').value;
+            
             
             // 1. 해당 모드의 휴대폰 입력값 가져오기
             const p1 = document.getElementById(currentMode + '-phone-1').value; // 010 [cite: 46, 68]
@@ -365,8 +441,55 @@
             // 3. 히든 필드(id="final-phone")에 값 주입 
             document.getElementById('final-phone').value = fullPhone;
             
-            // (선택 사항) 제대로 합쳐졌는지 확인용 로그
-            console.log("제출되는 전체 번호: " + fullPhone);
+
+            if(currentMode === 'id') {
+                const selectedIdValue = document.querySelector('input[name="authGroupId"]:checked')?.value; 
+                if(selectedIdValue === 'P') {
+                	if(!verificationStatus.id) {
+	                    alert("휴대폰 인증을 완료해주세요.");
+	                    e.preventDefault();
+                		return;
+                	}
+                } else {
+                	if (!currentCeoName.trim() || !currentBizNo.trim()) {
+                        alert("가입자명과 사업자번호를 모두 입력해 주세요.");
+                        e.preventDefault();
+                        return;
+                    }
+
+                    // 2. 형식 검증 (10자리 숫자인지만 체크 - 000-00-00000)
+                    const bizRegex = /^\d{3}-\d{2}-\d{5}$/;
+                    if (!bizRegex.test(currentBizNo)) {
+                        alert("올바른 사업자번호 형식이 아닙니다.");
+                        e.preventDefault();
+                        return;
+                    }
+                }
+            } else {
+                const selectedPwValue = document.querySelector('input[name="authGroupPw"]:checked')?.value;
+                if(selectedPwValue === 'P') { 
+                	if(!verificationStatus.pw) {
+	                    alert("휴대폰 인증을 완료해주세요.");
+	                    e.preventDefault();
+                		return;
+                	}
+                } else {
+                	if (!currentCeoName.trim() || !currentBizNo.trim()) {
+                        alert("가입자명과 사업자번호를 모두 입력해 주세요.");
+                        e.preventDefault();
+                        return;
+                    }
+
+                    // 2. 형식 검증 (10자리 숫자인지만 체크 - 000-00-00000)
+                    const bizRegex = /^\d{3}-\d{2}-\d{5}$/;
+                    if (!bizRegex.test(currentBizNo)) {
+                        alert("올바른 사업자번호 형식이 아닙니다.");
+                        e.preventDefault();
+                        return;
+                    }
+                }
+            }
+
         });
         
         // 로드시 셀렉트가 다름
@@ -386,7 +509,6 @@
 	            switchTab('pw'); // 기본값 P
 	        }
 	    };
-	    
 	    
     </script>
 </body>

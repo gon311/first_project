@@ -3,7 +3,7 @@
 
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
-<link href="<c:url value="/resources/css/userFindPw.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/resources/css/user/userFindPw.css" />" rel="stylesheet" type="text/css">
 
 <c:url var="urlSubmit" value="/user/password"/>
 <c:url var="urlCancel" value="/"/>

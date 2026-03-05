@@ -5,7 +5,7 @@
 <head>
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <link href="<c:url value="/resources/css/userRegist.css" />" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/resources/css/user/userRegist.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
     <%@ include file="/WEB-INF/views/inc/header.jspf" %>
@@ -41,11 +41,13 @@
 
                 <div class="form-group">
                     <label>비밀번호 *</label>
-                    <input type="password" name="password" class="form-control"
+                    <input type="password" name="password" id="password" class="form-control"
+                       onchange="checkPw()"
 	                   placeholder="8~30자, 영문+숫자+특수문자를 포함해야 합니다." required
 	                   minlength="8" maxlength="30"
 	                   pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,30}$"
 	                   title="8~30자, 영문+숫자+특수문자를 포함해야 합니다." />
+	                   <div id="pw-feedback" class="invalid-feedback">8~30자, 영문+숫자+특수문자를 포함해야 합니다.</div> 
                 </div>
 
                 <div class="form-group">
@@ -122,17 +124,15 @@
                         <label>사업자등록번호 *</label>
                         <div class="form-group">
 					    	<input type="text" name="bizRegNo" id="bizRegNo" 
+					    		   class="form-control"
 						           placeholder="000-00-00000" 
 						           maxlength="12"
 						           pattern="\d{3}-\d{2}-\d{5}"
 						           title="사업자등록번호 10자리를 입력해주세요.">
+							<div id="biz-feedback" class="invalid-feedback"></div> 
 						</div>
                     </div>
-                    <div class="mb-3">
-					    <label for="correctContent" class="form-label">조회 결과</label>
-					    <div id="correctContent" class="border border-primary p-3">
-					    </div>
-					</div>
+                    
                     <div class="form-group">
                         <label>회사명 *</label>
                         <input type="text" name="companyName">
@@ -266,7 +266,7 @@
 		            document.getElementById(type + "-verify-area").style.display = 'block';
 					
 		            if(type == "phone") {
-					document.getElementById("phone-code").value = result.authCode;
+						document.getElementById("phone-code").value = result.authCode;
 		            }
 		            
 				} catch(error) {
@@ -321,20 +321,20 @@
 
         // 폼 제출 전 최종 검증
         function validateForm(e) {
-        	if(!document.getElementById('mobileCarrier').value) {
-                alert("통신사를 선택해주세요.");
-                return false;
-            }
-        	
             if(!verificationStatus.email || !verificationStatus.phone) {
                 alert("이메일과 휴대폰 인증을 완료해주세요.");
                 return false;
             }
-
+            
             if(currentUserType === 'C') {
                 const pc = document.getElementById('postcode').value;
                 const addr = document.getElementById('address').value;
                 const det = document.getElementById('detailAddress').value;
+                
+	            if(document.getElementById("biz-feedback").textContent != "정상 영업 중인 사업자입니다.") {
+	                alert("사업자번호를 확인해주세요");
+	                return false;
+	            }
                 
                 if(!pc || !addr) {
                     alert("회사 주소를 입력해주세요.");
@@ -400,6 +400,9 @@
 	    // 사업자번호 입력시 이벤트
 	    document.getElementById("bizRegNo").addEventListener("change", function() {
 	        let content = document.getElementById("bizRegNo").value.replace(/-/g, ""); // 하이픈 제거
+	        const bizFeedback = document.getElementById("biz-feedback");
+	        const bizElement = document.getElementById("bizRegNo");
+	        
 			let requestContent = {
 	        	b_no: content,
 			}
@@ -419,7 +422,16 @@
 					}
 					
 					const result = await response.json();
-	 				document.getElementById("correctContent").innerHTML = result.b_stt;
+	 				
+	 				if(result.b_stt != "정상 영업 중인 사업자입니다.") { 
+	 					bizElement.classList.add("is-invalid"); // "is-invalid" 클래스 추가
+	 					bizElement.classList.remove("is-valid"); // "is-valid" 클래스 삭제
+	 					bizFeedback.textContent = result.b_stt;
+	 				} else { 
+	 					bizElement.classList.add("is-valid");
+	 					bizElement.classList.remove("is-invalid");
+	 					bizFeedback.textContent = result.b_stt;
+	 				}
 	 				
 				} catch(error) {
 					alert("요청 오류 발생 : " + error);
@@ -451,6 +463,22 @@
 				idElement.classList.add("is-valid");
 				idElement.classList.remove("is-invalid");
 				idFeedback.textContent = "아이디 사용 가능"
+			}
+		}
+		
+		// 비밀번호 입력값 검증
+		function checkPw() {
+			const pwElement = document.getElementById("password"); 
+			const pw = pwElement.value; 
+			const pwFeedback = document.getElementById("pw-feedback");
+			const pwRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,30}$/;
+			
+			if(!pwRegex.test(pwElement.value)) { 
+				pwElement.classList.add("is-invalid"); 
+				pwElement.classList.remove("is-valid"); 
+			} else {
+				pwElement.classList.add("is-valid");
+				pwElement.classList.remove("is-invalid");
 			}
 		}
 	

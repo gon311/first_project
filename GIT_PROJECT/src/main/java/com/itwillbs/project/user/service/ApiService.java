@@ -68,7 +68,6 @@ public class ApiService {
             }
             // 5. 결과 출력
             String jsonResponse = response.toString();
-            System.out.println(jsonResponse);
             
             // Jackson의 ObjectMapper를 사용해 필요한 값만 쏙 뽑기
             ObjectMapper objectMapper = new ObjectMapper();

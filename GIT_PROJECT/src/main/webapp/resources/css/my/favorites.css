@@ -1,0 +1,238 @@
+@charset "UTF-8";
+  body { background:#f6f7fb; }
+  .mypage-wrap{ min-height:100vh; }
+
+  /* ✅ 사이드바(이미 쓰던 스타일 그대로) */
+.mySidebar{ background:#fff; border-right:1px solid #e9edf3; min-height:100vh; }
+.mySidebar-inner{ position:sticky; top:0; padding:18px 14px; }
+.mySidebar-brand{ padding:6px 8px 16px; display:flex; align-items:center; gap:10px; }
+.brandText{ font-weight:900; letter-spacing:-.4px; color:#2563eb; font-size:1.2rem; }
+.myNav{ display:flex; flex-direction:column; gap:4px; }
+.myNav-link{
+  display:flex; align-items:center; gap:10px;
+  padding:10px 10px; border-radius:10px;
+  text-decoration:none; color:#334155; font-weight:600; position:relative;
+}
+.myNav-link i{ font-size:1.05rem; color:#94a3b8; width:20px; text-align:center; }
+.myNav-link:hover{ background:#f3f6fb; }
+.myNav-link.active{ background:#eaf2ff; color:#1d4ed8; font-weight:800; }
+.myNav-link.active i{ color:#1d4ed8; }
+.myNav-link.active::before{
+  content:""; position:absolute; left:-6px; top:10px; bottom:10px;
+  width:3px; border-radius:999px; background:#1d4ed8;
+}
+
+/* ✅ 오른쪽 컨텐츠 카드 */
+.myContent{ padding:22px; }
+.myContent-inner{
+  background:#fff;
+  border:1px solid #eef2f7;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(15,23,42,.04);
+  padding:22px;
+  min-height: calc(100vh - 80px);
+}
+
+.page-title{ font-size:1.6rem; font-weight:900; letter-spacing:-.6px; margin:0; }
+.page-desc{ color:#6b7280; font-size:.92rem; margin-top:8px; }
+
+/* =========================
+   ✅ 상단 툴바(삭제/이동/필터/검색)
+   - 사람인 느낌: 얇은 보더 + 라운드
+   ========================= */
+.toolbar{
+  margin-top: 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding: 12px 12px;
+  border:1px solid #eef2f7;
+  border-radius: 12px;
+  background:#fff;
+}
+.toolbar-left, .toolbar-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.chk{
+  width:18px; height:18px;
+  accent-color:#2563eb;
+}
+
+.btn-ghost{
+  border:1px solid #dbe2ee;
+  background:#fff;
+  padding:8px 12px;
+  border-radius:10px;
+  font-weight:800;
+  color:#334155;
+}
+.btn-ghost:hover{ background:#f7f9fc; }
+
+.select{
+  border:1px solid #dbe2ee;
+  border-radius:10px;
+  padding:8px 12px;
+  font-weight:800;
+  color:#334155;
+  background:#fff;
+}
+
+.search-wrap{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid #dbe2ee;
+  border-radius:10px;
+  padding: 8px 12px;
+  min-width: 260px;
+}
+.search-wrap input{
+  border:0;
+  outline:none;
+  width: 220px;
+}
+.search-ico{ color:#94a3b8; font-size:1.1rem; }
+
+/* =========================
+   ✅ 리스트 영역
+   - 한 줄(row) 구조
+   - (1) 제목 클릭 → 상세 이동
+   - (2) 입사지원 버튼
+   - (3) 삭제 아이콘
+   ========================= */
+.list{
+  margin-top: 14px;
+  border-top: 1px solid #eef2f7;
+}
+
+.row-item{
+  display:flex;
+  align-items:flex-start;
+  gap: 14px;
+  padding: 18px 6px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.row-left{
+  width: 24px;
+  padding-top: 3px;
+}
+
+.row-mid{
+  flex: 1;
+  min-width: 0;
+}
+
+.company{
+  color:#6b7280;
+  font-weight:800;
+  font-size:.92rem;
+  margin-bottom: 6px;
+}
+
+/* (1) 제목 클릭 이동 */
+.title-link{
+  display:inline-block;
+  font-weight:900;
+  font-size:1.15rem;
+  color:#111827;
+  text-decoration:none;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+}
+.title-link:hover{ text-decoration:underline; }
+
+.subline{
+  margin-top: 6px;
+  color:#6b7280;
+  font-size:.92rem;
+}
+
+.row-right{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding-top: 4px;
+  min-width: 210px;
+  justify-content:flex-end;
+}
+
+/* (2) 입사지원 버튼 */
+.btn-apply{
+  background:#fff;
+  border:1px solid #ff6b6b;
+  color:#ff6b6b;
+  font-weight:900;
+  border-radius: 10px;
+  padding: 10px 18px;
+}
+.btn-apply:hover{
+  background:#fff5f5;
+}
+
+.btn-dead{
+  background:#f3f4f6;
+  border:1px solid #e5e7eb;
+  color:#9ca3af;
+  font-weight:900;
+  border-radius: 10px;
+  padding: 10px 18px;
+  cursor:not-allowed;
+}
+
+/* (3) 삭제 아이콘 */
+.btn-trash{
+  border:0;
+  background:transparent;
+  font-size:1.3rem;
+  color:#9ca3af;
+  padding: 6px 8px;
+  border-radius: 10px;
+}
+.btn-trash:hover{
+  background:#f3f4f6;
+  color:#6b7280;
+}
+
+/* 날짜/마감 표시(오른쪽 작은 텍스트) */
+.deadline{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap: 4px;
+  margin-left: 6px;
+  min-width: 70px;
+}
+.deadline .d1{ color:#9ca3af; font-weight:800; font-size:.85rem; }
+.deadline .d2{ color:#9ca3af; font-size:.85rem; }
+
+/* 페이지네이션(뼈대) */
+.pager{
+  margin-top: 18px;
+  display:flex;
+  justify-content:center;
+  gap: 8px;
+}
+.pager a{
+  display:inline-block;
+  min-width: 34px;
+  text-align:center;
+  padding: 8px 10px;
+  border:1px solid #e5e7eb;
+  border-radius: 10px;
+  text-decoration:none;
+  color:#374151;
+  font-weight:900;
+  background:#fff;
+}
+.pager a.active{
+  background:#2563eb;
+  border-color:#2563eb;
+  color:#fff;
+}

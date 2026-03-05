@@ -2,235 +2,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+
+<!DOCTYPE html>
+<html>
+<head>
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
+<link rel="stylesheet" href="<c:url value='/resources/css/my/myReview.css'/>">
+</head>
+
+<body>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
-<%-- =========================================================
-     [자기소개서 관리] myReview.jsp
-   ========================================================= --%>
-
-<style>
-  /* ====== 페이지 배경 ====== */
-  body { background:#f6f7fb; }
-  .mypage-wrap{ min-height:100vh; }
-
-  /* ====== 사이드바 스타일 */
-  .mySidebar{
-    background:#fff;
-    border-right:1px solid #e9edf3;
-    min-height: 100vh;
-  }
-  .mySidebar-inner{
-    position: sticky;
-    top: 0;
-    padding: 18px 14px;
-  }
-  .mySidebar-brand{ padding: 6px 8px 16px; display:flex; align-items:center; gap:10px; }
-  .brandText{ font-weight:900; letter-spacing:-.4px; color:#2563eb; font-size:1.2rem; }
-
-  .myNav{ display:flex; flex-direction:column; gap:4px; }
-  .myNav-link{
-    display:flex; align-items:center; gap:10px;
-    padding:10px 10px; border-radius:10px;
-    text-decoration:none; color:#334155; font-weight:600;
-    position:relative;
-  }
-  .myNav-link i{ font-size:1.05rem; color:#94a3b8; width:20px; text-align:center; }
-  .myNav-link:hover{ background:#f3f6fb; }
-  .myNav-link.active{
-    background:#eaf2ff; color:#1d4ed8; font-weight:800;
-  }
-  .myNav-link.active i{ color:#1d4ed8; }
-  .myNav-link.active::before{
-    content:""; position:absolute; left:-6px; top:10px; bottom:10px;
-    width:3px; border-radius:999px; background:#1d4ed8;
-  }
-
-  /* ====== 우측 컨텐츠 카드(공통 톤) ====== */
-  .myContent{ padding:22px 22px; }
-  .myContent-inner{
-    background:#fff;
-    border:1px solid #eef2f7;
-    border-radius:16px;
-    box-shadow:0 10px 30px rgba(15,23,42,.04);
-    padding:22px 22px;
-    min-height: calc(100vh - 80px);
-  }
-
-  .page-title{
-    font-size:1.45rem;
-    font-weight:900;
-    letter-spacing:-.5px;
-    margin:0;
-  }
-  .page-desc{
-    color:#6b7280;
-    font-size:.92rem;
-    margin-top:6px;
-  }
-
-  /* ====== 상단 유틸 ====== */
-  .topbar{
-    margin-top: 14px;
-    padding-top: 8px;
-    border-top: 1px solid #eef2f7;
-    display:flex;
-    align-items:center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  .countText{
-    color:#6b7280;
-    font-weight:700;
-    font-size:.92rem;
-  }
-  .filterSelect{
-    width: 180px;
-    border-radius: 10px;
-    border-color:#d9dde3;
-    padding: .55rem .8rem;
-    font-weight:700;
-  }
-  .filterSelect:focus{
-    box-shadow:none;
-    border-color:#9bbcff;
-  }
-
-  /* ====== 상단 "대표 자소서" 카드 ====== */
-  .reviewCard{
-    margin-top: 18px;
-    border:1px solid #eef2f7;
-    border-radius: 14px;
-    padding: 18px 18px;
-  }
-  .reviewHeader{
-    display:flex;
-    align-items:flex-start;
-    justify-content: space-between;
-    gap: 14px;
-  }
-  
-  .badgeComplete{
-  display:inline-block;
-  padding:2px 8px;
-  border-radius:999px;
-  font-weight:700;
-  font-size:12px;
-  color:#0f766e;           /* 초록 계열 */
-  background:#ecfdf5;
-  border:1px solid #99f6e4;
-  }
-  
-
-  .badgeDraft{
-    display:inline-block;
-    font-size:.78rem;
-    font-weight:900;
-    color:#ef4444;
-    margin-right: 8px;
-  }
-  .reviewTitle{
-    font-size: 1.15rem;
-    font-weight: 900;
-    letter-spacing: -.2px;
-    color:#111827;
-    margin:0;
-  }
-
-  .metaRow{
-    margin-top: 8px;
-    display:flex;
-    flex-wrap:wrap;
-    gap: 14px 18px;
-    color:#6b7280;
-    font-size:.92rem;
-    font-weight:700;
-  }
-  .metaItem{
-    display:flex;
-    align-items:center;
-    gap: 6px;
-  }
-  .metaItem i{ color:#9ca3af; }
-
-  .btn-outline-primary{
-    border-radius: 10px;
-    font-weight:900;
-    padding: .6rem 1.2rem;
-  }
-
-  .memoBar{
-    margin-top: 16px;
-    background:#f3f6fb;
-    border:1px solid #e7eefc;
-    border-radius: 10px;
-    padding: 12px 14px;
-    color:#6b7280;
-    font-size:.9rem;
-    font-weight:700;
-    display:flex;
-    align-items:center;
-    gap: 10px;
-  }
-  .memoBar i{ color:#94a3b8; }
-
-  /* ====== 리스트 ====== */
-  .reviewList{
-    margin-top: 16px;
-    display:grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-  .reviewItem{
-    border:1px solid #eef2f7;
-    border-radius: 14px;
-    padding: 16px 16px;
-    display:flex;
-    align-items:flex-start;
-    justify-content: space-between;
-    gap: 14px;
-    background:#fff;
-  }
-  .reviewItem-title{
-    font-weight:900;
-    color:#111827;
-    margin:0;
-  }
-  .reviewItem-sub{
-    margin-top: 6px;
-    color:#6b7280;
-    font-weight:700;
-    font-size:.9rem;
-  }
-
-  .reviewActions{
-    display:flex;
-    align-items:center;
-    gap: 8px;
-  }
-  .btn-light, .btn-outline-secondary{
-    border-radius: 10px;
-    font-weight:800;
-    padding: .55rem .95rem;
-  }
-
-  .kebabBtn{
-    border:1px solid #eef2f7;
-    background:#fff;
-    border-radius: 10px;
-    width: 40px;
-    height: 40px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#64748b;
-  }
-  .kebabBtn:hover{ background:#f8fafc; }
-</style>
-
-<%-- =========================================================
-     URL 전부 c:url
-   ========================================================= --%>
+<!-- 수정 URL들 -->
 <c:url var="urlMyReview" value="/my/myReview"/>
 <c:url var="urlReviewCreate" value="/my/review/create"/>   <%-- 새 자소서 작성 --%>
 <c:url var="urlReviewEdit" value="/my/review/edit"/>       <%-- 수정 (id param 나중에) --%>
@@ -358,3 +141,8 @@
 </main>
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+
+</body>
+</html>
+
+

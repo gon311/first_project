@@ -2,277 +2,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<!DOCTYPE html>
+<html>
+<head>
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
+<link rel="stylesheet" href="<c:url value='/resources/css/my/recommend.css'/>" type="text/css">
+</head>
+
+<body>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
-<%-- =========================
-     URL (전부 c:url)
-   ========================= --%>
+<!-- 수정 URL들 -->
 <c:url var="urlRecommend" value="/my/recommend"/>              <%-- 목록(필터/정렬 GET) --%>
 <c:url var="urlJobDetail" value="/job/JobDetail"/>             <%-- ?jobId= --%>
 <c:url var="urlApply" value="/job/apply"/>                     <%-- ?jobId= (입사지원) --%>
 <c:url var="urlHide" value="/my/recommend/hide"/>              <%-- POST: jobId --%>
 <c:url var="urlBookmarkToggle" value="/my/bookmark/toggle"/>   <%-- POST: jobId --%>
 <c:url var="urlToggleBookmark" value="/job/toggleBookmark" />  <%-- 스크랩 --%>	
-
-<style>
-  body{ background:#f6f7fb; }
-  .mypage-wrap{ min-height:100vh; }
-
-  /* =========================
-     ✅ 공통 톤(사이드바/카드)
-     ========================= */
-  .mySidebar{ background:#fff; border-right:1px solid #e9edf3; min-height:100vh; }
-  .mySidebar-inner{ position:sticky; top:0; padding:18px 14px; }
-  .mySidebar-brand{ padding:6px 8px 16px; display:flex; align-items:center; gap:10px; }
-  .brandText{ font-weight:900; letter-spacing:-.4px; color:#2563eb; font-size:1.2rem; }
-  .myNav{ display:flex; flex-direction:column; gap:4px; }
-  .myNav-link{
-    display:flex; align-items:center; gap:10px;
-    padding:10px 10px; border-radius:10px;
-    text-decoration:none; color:#334155; font-weight:600; position:relative;
-  }
-  .myNav-link i{ font-size:1.05rem; color:#94a3b8; width:20px; text-align:center; }
-  .myNav-link:hover{ background:#f3f6fb; }
-  .myNav-link.active{ background:#eaf2ff; color:#1d4ed8; font-weight:800; }
-  .myNav-link.active i{ color:#1d4ed8; }
-  .myNav-link.active::before{
-    content:""; position:absolute; left:-6px; top:10px; bottom:10px;
-    width:3px; border-radius:999px; background:#1d4ed8;
-  }
-
-  .myContent{ padding:22px; }
-  .myContent-inner{
-    background:#fff;
-    border:1px solid #eef2f7;
-    border-radius:16px;
-    box-shadow:0 10px 30px rgba(15,23,42,.04);
-    padding:22px;
-    min-height: calc(100vh - 80px);
-  }
-
-  .page-title{ font-size:1.6rem; font-weight:900; letter-spacing:-.6px; margin:0; }
-  .page-desc{ color:#6b7280; font-size:.92rem; margin-top:8px; }
-
-  /* =========================
-     ✅ 상단 툴바(필터/정렬)
-     ========================= */
-  .toolbar{
-    margin-top: 18px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    padding:14px;
-    border:1px solid #eef2f7;
-    border-radius: 12px;
-    background:#fff;
-  }
-  .toolbar-left, .toolbar-right{ display:flex; align-items:center; gap:10px; }
-
-  .select{
-    border:1px solid #dbe2ee;
-    border-radius:10px;
-    padding:10px 12px;
-    font-weight:900;
-    color:#334155;
-    background:#fff;
-    min-width: 140px;
-  }
-
-  .checkline{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding: 10px 12px;
-    border:1px solid #dbe2ee;
-    border-radius:10px;
-    background:#fff;
-    font-weight:900;
-    color:#334155;
-  }
-  .checkline input{ width:16px; height:16px; }
-
-  /* =========================
-     ✅ 리스트(행)
-     ========================= */
-  .job-list{ margin-top: 10px; }
-
-  .job-item{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap: 18px;
-    padding: 22px 8px;
-    border-bottom: 1px solid #eef2f7;
-  }
-
-  .job-left{
-    display:flex;
-    align-items:flex-start;
-    gap: 18px;
-    min-width: 0;
-    flex: 1;
-  }
-
-  .company{
-    width: 140px;
-    color:#6b7280;
-    font-weight:900;
-    flex-shrink:0;
-  }
-
-  .job-main{
-    min-width: 0;
-    flex: 1;
-  }
-
-  .job-title{
-    display:inline-block;
-    font-weight: 900;
-    color:#111827;
-    text-decoration:none;
-    max-width: 760px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .job-title:hover{ text-decoration: underline; }
-
-  .job-meta{
-    margin-top: 6px;
-    color:#6b7280;
-    font-weight:800;
-    font-size: .92rem;
-    display:flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .tag{
-    display:inline-block;
-    margin-top: 10px;
-    padding: 6px 10px;
-    border-radius:999px;
-    background:#f1f5f9;
-    border:1px solid #e2e8f0;
-    color:#334155;
-    font-weight:900;
-    font-size: .85rem;
-  }
-
-  .job-right{
-    display:flex;
-    align-items:center;
-    gap: 12px;
-    flex-shrink:0;
-  }
-
-  .btn-apply{
-    background:#fff;
-    border: 1px solid #ef4444;
-    color:#ef4444;
-    font-weight:900;
-    border-radius: 10px;
-    padding: 10px 18px;
-    text-decoration:none;
-    display:inline-block;
-  }
-  .btn-apply:hover{ background:#fff5f5; }
-
-  .deadline{
-    min-width: 110px;
-    text-align:right;
-    font-weight:900;
-    color:#6b7280;
-  }
-  .deadline .today{ color:#ef4444; }
-
-  /* 더보기(⋮) */
-  .more-btn{
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    border:1px solid #e5e7eb;
-    background:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-  }
-  .more-btn:hover{ background:#f7f9fc; }
-
-  .more-wrap{ position:relative; }
-  .more-menu{
-    display:none;
-    position:absolute;
-    right:0;
-    top: 44px;
-    width: 170px;
-    background:#fff;
-    border:1px solid #eef2f7;
-    border-radius: 12px;
-    box-shadow:0 14px 30px rgba(15,23,42,.10);
-    overflow:hidden;
-    z-index: 10;
-  }
-
-  /* 메뉴 버튼(폼 submit) - ✅ 이거 없으면 버튼이 겹쳐 클릭이 위로 빨리는 경우가 있음 */
-  .more-menu form { margin:0; }
-  .more-menu .menu-btn{
-    display:block;
-    width:100%;
-    text-align:left;
-    border:0;
-    background:#fff;
-    padding: 12px 12px;
-    color:#111827;
-    font-weight:900;
-    font-size:.92rem;
-    cursor:pointer;
-  }
-  .more-menu .menu-btn:hover{ background:#f7f9fc; }
-  .more-divider{ height:1px; background:#eef2f7; }
-
-  /* 빈 화면 */
-  .empty{
-    margin-top: 26px;
-    padding: 90px 0;
-    text-align:center;
-    color:#6b7280;
-  }
-  .empty .big{
-    font-weight:900;
-    font-size:1.1rem;
-    color:#111827;
-    margin-top: 10px;
-  }
-
-  /* 페이지네이션 */
-  .pager{
-    margin-top: 18px;
-    display:flex;
-    justify-content:center;
-    gap: 8px;
-  }
-  .pager a{
-    display:inline-block;
-    min-width: 34px;
-    text-align:center;
-    padding: 8px 10px;
-    border:1px solid #e5e7eb;
-    border-radius: 10px;
-    text-decoration:none;
-    color:#374151;
-    font-weight:900;
-    background:#fff;
-  }
-  .pager a.active{
-    background:#2563eb;
-    border-color:#2563eb;
-    color:#fff;
-  }
-</style>
 
 <main class="container-fluid px-0 mypage-wrap">
   <div class="row g-0">
@@ -470,3 +216,9 @@
     }
   });
 </script>
+</body>
+</html>
+
+
+
+

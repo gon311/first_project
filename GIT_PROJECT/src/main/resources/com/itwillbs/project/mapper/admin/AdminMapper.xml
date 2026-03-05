@@ -834,7 +834,7 @@
         b.ad_id,
         c.company_name,
         j.title AS job_title,
-        p.pay_date AS pay_date,       -- 시작일(결제일)
+        cp.start_date AS start_date,       -- 시작일(결제일)
         cp.end_date AS expiry_date,   -- 종료일
         b.is_display
     FROM 
@@ -846,12 +846,13 @@
    		JOB_POSTING j 
     		ON b.job_id = j.job_id
     LEFT JOIN 
-    	pay p ON b.comp_id = p.user_id 
-    	AND p.pay_status = 'paid'
-    LEFT JOIN 
     	com_product cp 
-    		ON p.pay_id = cp.pay_id
+    		ON c.user_id = cp.user_id
+   	WHERE 
+   		cp.product_id = 'PC-2'
+   		AND cp.use_status = 'active'
     ORDER BY b.ad_id DESC
+    
 </select>
 	
 	<update id="updateBannerStatus">

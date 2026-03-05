@@ -505,6 +505,9 @@ public class MyController {
 	    model.addAttribute("currentMenu", "recommend");
 
 	    MyDTO user = myService.getUser(sId);
+	    
+	    // 추천 생성
+	    myService.refreshRecommendedIfNeeded(user.getUserId());
 
 	    RecommendedCond cond = new RecommendedCond();
 	    cond.setUserId(user.getUserId());

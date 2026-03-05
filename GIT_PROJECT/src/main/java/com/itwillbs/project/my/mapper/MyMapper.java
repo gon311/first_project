@@ -81,6 +81,9 @@ public interface MyMapper {
     int deleteBookmark(@Param("userId") long userId, @Param("jobId") long jobId);
     // 북마크(스크랩)
     int existsBookmark(@Param("userId") long userId, @Param("jobId") long jobId);
+
+    int needRecommendRefresh(@Param("userId") long userId);
+    int upsertRecommendedJobs(@Param("userId") long userId);
     
     
 

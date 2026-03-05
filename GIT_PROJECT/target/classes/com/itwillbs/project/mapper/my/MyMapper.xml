@@ -105,10 +105,7 @@
 		 <result property="openDate" column="open_date"/>
 		 <result property="closeDate" column="close_date"/>
 	</resultMap>
-	
-	
-	
-	
+
 <!-- ======================================== -->
 	
 
@@ -641,7 +638,63 @@
     AND job_id = #{jobId}
 </delete>
 
+<!-- 추천 생성 쿨타임 10 분 -->
+<select id="needRecommendRefresh" resultType="int">
+  SELECT CASE
+           WHEN MAX(recommended_at) IS NULL THEN 1
+           WHEN MAX(recommended_at) &lt; DATE_SUB(NOW(), INTERVAL 10 MINUTE) THEN 1
+           ELSE 0
+         END
+  FROM RECOMMENDED_JOB
+  WHERE person_user_id = #{userId}
+</select>
 
+<insert id="upsertRecommendedJobs">
+  <![CDATA[
+  INSERT INTO RECOMMENDED_JOB (person_user_id, job_id, score, recommended_at, is_active)
+  SELECT
+    #{userId},
+    j.job_id,
+    (
+      CASE WHEN tf.field IS NOT NULL THEN 30 ELSE 0 END
+      + CASE WHEN j.open_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) THEN 10 ELSE 0 END
+      + CASE WHEN j.close_date <= DATE_ADD(CURDATE(), INTERVAL 7 DAY) THEN 10 ELSE 0 END
+    ) AS score,
+    NOW(),
+    1
+  FROM JOB_POSTING j
+
+  LEFT JOIN (
+    SELECT x.field
+    FROM (
+      SELECT jp2.field, COUNT(*) AS cnt
+      FROM job_bookmark b2
+      JOIN JOB_POSTING jp2 ON jp2.job_id = b2.job_id
+      WHERE b2.user_id = #{userId}
+      GROUP BY jp2.field
+      ORDER BY cnt DESC
+      LIMIT 3
+    ) x
+  ) tf
+    ON tf.field = j.field
+
+  LEFT JOIN job_bookmark bm
+    ON bm.user_id = #{userId}
+   AND bm.job_id  = j.job_id
+
+  WHERE j.post_status = 1
+    AND j.close_date >= CURDATE()
+    AND bm.job_id IS NULL
+
+  ORDER BY score DESC, j.open_date DESC
+  LIMIT 50
+
+  ON DUPLICATE KEY UPDATE
+    score = VALUES(score),
+    recommended_at = VALUES(recommended_at),
+    is_active = 1
+  ]]>
+</insert>
 
 	
 </mapper>

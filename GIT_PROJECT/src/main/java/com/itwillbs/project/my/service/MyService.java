@@ -163,6 +163,15 @@ public class MyService {
 	    if (bookmarkId == null) myMapper.insertBookmark(userId, jobId);
 	    else myMapper.deleteBookmark(userId, jobId);
 	}
+	
+	// 추천 생성
+	@Transactional
+	public void refreshRecommendedIfNeeded(long userId) {
+	    int need = myMapper.needRecommendRefresh(userId); // 0/1
+	    if (need == 1) {
+	        myMapper.upsertRecommendedJobs(userId); // 네 추천 UPSERT SQL
+	    }
+	}
 
 
 	

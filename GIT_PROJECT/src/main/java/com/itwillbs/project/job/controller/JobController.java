@@ -147,16 +147,6 @@ public class JobController {
 		return "/job/job_detail";
 	}
 	
-	@GetMapping("/JobManagement")
-	public String management(HttpSession session) {
-		
-		String sId = (String) session.getAttribute("userType");
-//		System.out.println(sId);
-	    if (sId == null || "P".equals(sId)) return "redirect:/user/login";
-		
-		return "/job/job_management";
-	}
-	
 	@PostMapping("/ApplyAction")
 	public String applyAction(
 			HttpSession session,
@@ -206,6 +196,56 @@ public class JobController {
 	    // 2. 서비스 호출 (성공 시 "success" 반환)
 	    try {
 	        jobService.updateBookmark(userIdx, jobId, status);
+	        return "success";
+	    } catch (Exception e) {
+	        return "error";
+	    }
+	}
+	
+	// ===================================================
+	// 지원자 관리
+	
+	@GetMapping("/comApplicants")
+	public String management(HttpSession session, Model model, 
+	                         @RequestParam(value = "jobId", required = false) Long jobId) {
+	    
+	    String userType = (String) session.getAttribute("userType");
+	    Long compId = (Long) session.getAttribute("userIdx");
+
+	    // 기업 회원이 아니면 접근 불가
+	    if (compId == null || !"C".equals(userType)) return "redirect:/user/login";
+
+	    // 1. 해당 기업의 모든 공고 리스트 (필터용)
+	    // 2. 특정 공고(jobId)의 지원자 리스트 조회
+	    // 아래 서비스 메서드들은 필요에 따라 JobService에 추가 구현이 필요합니다.
+	    List<JobApplicationDTO> applicantList = jobService.getApplicantList(jobId, compId);
+	    
+	    model.addAttribute("applicantList", applicantList);
+	    model.addAttribute("selectedJobId", jobId);
+	    
+	    return "/job/job_management";
+	}
+	
+	// 지원자 전형 상태 업데이트 (서류대기 -> 면접진행 등)
+	@ResponseBody
+	@PostMapping("/updateAppStatus")
+	public String updateAppStatus(@RequestParam("appId") int appId, 
+	                              @RequestParam("appStep") String appStep) {
+	    try {
+	        jobService.updateApplicationStatus(appId, appStep);
+	        return "success";
+	    } catch (Exception e) {
+	        return "error";
+	    }
+	}
+
+	// 관심 지원자(별표) 토글
+	@ResponseBody
+	@PostMapping("/toggleAppFavorite")
+	public String toggleAppFavorite(@RequestParam("appId") int appId, 
+	                                @RequestParam("isFavorite") String isFavorite) {
+	    try {
+	        jobService.updateApplicationFavorite(appId, isFavorite);
 	        return "success";
 	    } catch (Exception e) {
 	        return "error";

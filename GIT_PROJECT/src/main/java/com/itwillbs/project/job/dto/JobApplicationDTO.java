@@ -1,6 +1,7 @@
 package com.itwillbs.project.job.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import lombok.Data;
 import lombok.Getter;
@@ -21,5 +22,15 @@ public class JobApplicationDTO {
     private String appStep;      // 단계 (기본값: 서류대기)
     private String isFavorite;   // 즐겨찾기 (Y/N)
     private LocalDateTime applyDate;      // 지원 날짜
-	
+    
+    private String userName;   // 지원자 성함
+    private String resumeTitle;   // 이력서 제목 (필요 시)
+    private String postingTitle;   // 공고 제목 (필요 시)
+    private Integer portfolioId;
+    
+    
+    public String getFormattedApplyDate() {
+        if (this.applyDate == null) return "";
+        return this.applyDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+    }
 }

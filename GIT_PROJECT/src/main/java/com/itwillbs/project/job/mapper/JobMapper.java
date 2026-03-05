@@ -46,5 +46,14 @@ public interface JobMapper {
 
 	FileDTO selectFile(Integer fileId);
 
+	// ===================================================
+	// 지원자 관리
+	
+	List<JobApplicationDTO> getApplicantList(@Param("jobId") Long jobId, @Param("compId") Long compId);
 
+	void updateApplicationStatus(@Param("appId") int appId, @Param("appStep") String appStep);
+
+	void updateApplicationFavorite(@Param("appId") int appId, @Param("isFavorite") String isFavorite);
+	
+	// ===================================================
 }

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const createCard = document.querySelector(".resumeList-createCard");
     if (createCard) {
         createCard.addEventListener("click", function () {
-            location.href = "/resume/create";
+         //   location.href = "/resume/create";
         });
     }
 
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
     mainBtns.forEach(btn => {
         btn.addEventListener("click", function () {
             if (confirm("대표 이력서로 설정하시겠습니까?")) {
-                console.log("대표 설정");
+        //        console.log("대표 설정");
             }
         });
     });

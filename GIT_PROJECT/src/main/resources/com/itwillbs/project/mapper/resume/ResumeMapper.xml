@@ -151,6 +151,26 @@
    		WHERE resume_id = #{resumeId}		
 	</select>
 	
+	<!-- selectResumeList -->
+	<select id="selectResumeList" resultType="resume">
+		select 
+			 resume_id AS resumeId,
+	         user_id AS userId,
+	        title,
+	        created_at AS createdAt,
+	        
+        	hiddenIndustry,
+       		hiddenJob,
+       		hiddenCompanyType,
+	        companyName
+		
+		from 
+			resume
+		where
+			user_id = #{userId}	        
+	
+	</select>
+	
 <!-- 	updateResume -->
 	<update id="updateResume">
 		update 
@@ -183,12 +203,10 @@
 			enlist_date = #{enlistDate},
 			discharge_date = #{dischargeDate},
 			exemption_reason = #{exemptionReason}
-			
-			
-						
+									
 		where 
-			resume_id = #{userId} 
-	
+			resume_id = #{resumeId}
+			 and user_id  = #{userId} 
 	</update>
 		 	
 		 	

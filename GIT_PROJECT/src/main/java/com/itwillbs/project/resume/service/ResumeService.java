@@ -1,5 +1,7 @@
 package com.itwillbs.project.resume.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,11 @@ public class ResumeService {
 	public int modifyResume(ResumeDTO resumeDTO) {
 		// 
 		return resumeMapper.updateResume(resumeDTO);
+	}
+
+	public List<ResumeDTO> getResumeList(int userIdx) {
+		// productMapper.selectProductList();
+		return resumeMapper.selectResumeList(userIdx);
 	}
 
 }

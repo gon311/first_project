@@ -1,5 +1,7 @@
 package com.itwillbs.project.resume.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.itwillbs.project.resume.dto.ResumeDTO;
@@ -15,5 +17,8 @@ public interface ResumeMapper {
 
 	// 이력서 업데이트. 
 	int updateResume(ResumeDTO resumeDTO);
+
+	// 내 이력서 리스트를 가져옵니다. selectResumeList() 
+	List<ResumeDTO> selectResumeList(Integer userIdx);
 
 }

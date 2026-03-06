@@ -67,40 +67,23 @@ public class ResumeDTO {
     private String hiddenJob;
     private String hiddenRole;
     private String hiddenCompanyType;
+    
+    // resume_my 에 필요한 부분.
+    private String status;				// 상태 - DEFAULT 'COMPLETE'
+    private String createdAt;				// 생성일
+    private String updatedAt;				// 수정일
+    private String isDeleted;				// 삭제 여부.
+    
 
     private List<ResumeEducationDTO> educationList;
     private List<ResumeExperienceDTO> experienceList;
 }
 
-
-//CREATE TABLE resume (
-//	    resume_id INT AUTO_INCREMENT PRIMARY KEY, -- 이력서 아이디
-//		user_id BIGINT NOT NULL,                  -- 소유자 유저 ID (FK)
-//	    name_kor VARCHAR(50) NOT NULL,            -- 이력서 이름(한글)
-//	    name_eng VARCHAR(50),                     -- 이력서 이름(영문)
-//	    name_han VARCHAR(50),                     -- 이력서 이름(한문)
-//	    birth_date DATE,                          -- 생년월일
-//	    gender VARCHAR(10),                       -- 성별
-//	    phone_number VARCHAR(20),                 -- 전화번호
-//	    email VARCHAR(100),                       -- 이메일
+//status VARCHAR(20) NOT NULL DEFAULT 'COMPLETE',      -- 상태 (예: DRAFT=미완성, COMPLETE=완성 등)
+//memo VARCHAR(500) NULL,                           -- 메모 (예: "11/25까지 제출" 같은 메모)
 //
-//	    veteran_status VARCHAR(30),               -- 보훈대상 여부
-//	    veteran_number VARCHAR(30),               -- 보훈번호
-//	    disability_status VARCHAR(30),            -- 장애 여부
-//	    multicultural_status VARCHAR(30),         -- 다문화가정 여부
-//	    north_defector VARCHAR(30),               -- 북한이탈주민 여부
-//	    low_income_status VARCHAR(30),            -- 기초생활수급자/차상위계층 여부
+//created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,                 -- 생성일
+//updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+//           ON UPDATE CURRENT_TIMESTAMP,                                 -- 최종수정일(업데이트 시 자동 갱신)
+//is_deleted TINYINT(1) NOT NULL DEFAULT 0,                               -- 삭제여부(0=정상, 1=삭제/숨김)
 //
-//	    military_service VARCHAR(20),             -- 군필 여부
-//	    military_branch VARCHAR(30),              -- 군별
-//	    military_rank VARCHAR(30),                -- 계급
-//	    discharge_reason VARCHAR(30),             -- 전역사유
-//	    enlist_date DATE,                         -- 입대일
-//	    discharge_date DATE,                      -- 전역일
-//	    exemption_reason VARCHAR(30),              -- 면제사유
-//	    
-//		CONSTRAINT fk_resume_user
-//		FOREIGN KEY (user_id) REFERENCES USER(user_id)
-//		ON DELETE CASCADE
-//	    
-//	);

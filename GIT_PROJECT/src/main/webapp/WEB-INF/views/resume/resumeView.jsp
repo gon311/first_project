@@ -6,7 +6,7 @@
 <head>
 <%-- 	<%@ include file="/WEB-INF/views/inc/head.jspf"%> --%>
     <meta charset="UTF-8">
-    <title>이력서 작성</title>
+    <title>이력서</title>
 
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -47,6 +47,8 @@
       <!-- 중앙 메인폼 -->
       <div class="col-12 col-md-8 main-form">
         <form action="<c:url value='/resume/resumeModify' />" method="post" class="resume-form">
+        
+        	<input type="hidden" name="resumeId" value="${resume.resumeId}">
 	        <!-- 1.jsp에서 넘어온 값들을 hidden으로 다시 담아줌 -->
 		    <input type="hidden" name="industryCode" value="${param.industryCode}" />
 		    <input type="hidden" name="jobCode" value="${param.jobCode}" />
@@ -379,7 +381,7 @@
 		</div>
 		
 		<div class="text-center mt-4">
-		  <button type="button" class="btn custom-btn me-3">목록으로</button>
+		  <button type="button" class="btn custom-btn me-3" onclick="location.href='<c:url value="/resume/resumeList" />'">목록으로</button>
 		  <!-- View 페이지에서는 목록, 수정 페이지로 이동만 가능. -->
 		  <button type="button" id="btnModify" class="btn custom-btn" onclick="fn_visible()">수정</button>
 		  

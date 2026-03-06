@@ -11,12 +11,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-<!--     <link rel="stylesheet" href="/resources/css/resumeList.css"> -->
+	<!--     <link rel="stylesheet" href="/resources/css/resumeList.css"> -->
     <link href="<c:url value="/resources/css/resumeList.css" />"
 			rel="stylesheet" type="text/css">
     
 </head>
 <body class="resumeList-body">
+		<%-- header area --%> 
+		<%@ include file="/WEB-INF/views/inc/header.jspf"%>
 
 <div class="container-fluid resumeList-container">
 
@@ -75,7 +77,7 @@
                 <!-- 대표 이력서 카드 -->
                 <div class="col-xl-6 col-lg-6 col-md-12 mb-4">
 
-					<div class="resumeList-card resumeList-itemCard" onclick="location.href='view?idx=${resume.idx}'">
+					<div class="resumeList-card resumeList-itemCard" onclick="">
                         <!-- 대표 리본 -->
                         <div class="resumeList-badge">1st</div>
 
@@ -100,18 +102,25 @@
 
 
                 <!-- 일반 카드 예시 -->
+            <!-- 반복문으로 이력서 리스트 출력 -->
+			<c:forEach var="resume" items="${resumeList}">
                 <div class="col-xl-6 col-lg-6 col-md-12 mb-4">
-                
-                    <div class="resumeList-card resumeList-itemCard"  onclick="location.href='view?idx=${resume.idx}'">
+            <div class="resumeList-card resumeList-itemCard"
+            	 onclick="location.href='<c:url value='/resume/resumeView'>
+                                			<c:param name='resumeId' value='${resume.resumeId}'/>
+                              			</c:url>'">
+
+                    
                         <div class="resumeList-cardHeader">
-                            <div class="resumeList-cardTitle">상세테스트 1</div>
-                            <div class="resumeList-cardDate">2026.02.23</div>
+                            <div class="resumeList-cardTitle">${resume.title}</div>
+                            <div class="resumeList-cardDate">${resume.createdAt}</div>
                         </div>
 
                         <div class="resumeList-cardBody">
-                            <p class="resumeList-cardText">직종: 영업·고객상담</p>
-                            <p class="resumeList-cardText">업종: 서비스업</p>
-                            <p class="resumeList-cardText">기업: 중소기업</p>
+                            <p class="resumeList-cardText">직종: ${resume.hiddenIndustry}</p>
+                            <p class="resumeList-cardText">업종: ${resume.hiddenJob}</p>
+                            <p class="resumeList-cardText">기업형태: ${resume.hiddenCompanyType}</p>
+                            <p class="resumeList-cardText">지원기업: ${resume.companyName}</p>
                         </div>
 
                         <div class="resumeList-cardFooter">
@@ -121,10 +130,11 @@
 
                     </div>
                 </div>
-
+			</c:forEach>
+			<!-- 반복문으로 이력서 리스트 출력 끝. -->
 
             </div>
-        </div>
+        </div> <!-- end 컨텐츠. -->
 
     </div>
 </div>

@@ -29,25 +29,14 @@ public class ReviewController {
 	@Autowired
 	private ReviewService reviewService;
 	
-	@GetMapping("/registForm")
+	//1) AI자소서 1단계 페이지(기본 내용 선택창)
+	@GetMapping("/registForm") 
 	public String registForm() {
 		
 		return "/review/reviewForm";
 	}
-	
-	@GetMapping("/spellCheck")
-	public String spellCheck() {
 		
-		return "/review/reviewSpellCheck";
-	}
-	
-	@GetMapping("/copyCheck")
-	public String copyCheck() {
-		
-		return "/review/reviewCopyCheck";
-	}
-	
-	// 1단계 임시저장 
+	// 1-1) 1단계 임시저장 
 	@PostMapping("/draftSave")
 	@ResponseBody
 	public Map<String, Object> draftSave(@ModelAttribute CoverLetterDTO coverLetterDTO, HttpSession session) {
@@ -61,60 +50,65 @@ public class ReviewController {
 		return result;
 	}
 	
-	// 1단계 저장 후 coverLetterIdx를 주소에 넣어서 redirect
+	// 1-2) 1단계 저장 후 coverLetterIdx를 주소에 넣어서 redirect
 	@PostMapping("/registText")
 	public String registText(CoverLetterDTO coverLetterDTO, HttpSession session, RedirectAttributes ra) {
-		Long userId = (Long)session.getAttribute("userIdx");
+		Long userId = (Long)session.getAttribute("userIdx"); //  coverLetterIdx를 조회하기 위한 userId 저장 
 		coverLetterDTO.setUserId(userId);
 		reviewService.registForm(coverLetterDTO);  
-		Long coverLetterIdx = coverLetterDTO.getCoverLetterIdx();
+		Long coverLetterIdx = coverLetterDTO.getCoverLetterIdx(); 
+		
+		// 2단계 페이지에서 타이틀을 보여주기 위해 title 저장 
 		ra.addAttribute("title", coverLetterDTO.getTitle());
 		
+		// coverLetterIdx를 url에 추가해서 reirect 
 	    return "redirect:/review/" + coverLetterIdx + "/registText";
 	}
 	
-	// 임시) 
-//	@GetMapping("/registText")
-//	public String registTest() {
-//		return "/review/reviewText";
-//	}	
-	
-	// 2단계 작성 
+	// 2) 2단계 작성 
 	@GetMapping("/{coverLetterIdx}/registText")
 	public String registText(@PathVariable Long coverLetterIdx,
 							 @RequestParam String title,
 							 Model model) {
-		model.addAttribute("title", title);
+		
+		model.addAttribute("title", title); // 2단계 페이지의 제목 창에 1단계에서 작성한 제목 그대로 반영 
 		
 		return "/review/reviewText";
 	}
-	
-	// 임시) 
-	@GetMapping("/save")
-	public String save() {
-		return "/review/reviewSave";
-	}	
 		
+	// 3) 3단계 저장
 	@PostMapping("/save")
 	public String reviewSave(CoverLetterDTO coverLetterDTO, Model model) {
-		reviewService.saveTotal(coverLetterDTO);
 		
-		Long coverLetterIdx = coverLetterDTO.getCoverLetterIdx();
+		reviewService.saveTotal(coverLetterDTO); // 2단계에서 작성된 내용 sql 테이블에 update 반영
+		
+		Long coverLetterIdx = coverLetterDTO.getCoverLetterIdx(); // 수정 및 삭제시 coverLetterIdx 필요 
 		model.addAttribute("coverLetterIdx", coverLetterIdx);
 		
 		return "/review/reviewSave";
 	}
 	
+	// 4) 자소서 삭제 
 	@PostMapping("/delete")
 	public String delete(@RequestParam("coverLetterIdx") Long coverLetterIdx) {
-		log.info(">>>>>>>>>>>> 삭제ID :" + coverLetterIdx);
 		reviewService.deleteData(coverLetterIdx);
 		
 		return "redirect:/review/registForm";
 	}
 	
+	// 5) 맞춤법 검사 페이지 이동
+	@GetMapping("/spellCheck")
+	public String spellCheck() {
+		
+		return "/review/reviewSpellCheck";
+	}
 	
-	
+	// 5) 표절 검사 페이지 이동
+	@GetMapping("/copyCheck")
+	public String copyCheck() {
+		
+		return "/review/reviewCopyCheck";
+	}
 	
 
 }

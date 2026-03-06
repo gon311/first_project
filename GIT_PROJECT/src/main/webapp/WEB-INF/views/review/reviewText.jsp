@@ -107,7 +107,7 @@
 				<div class="d-flex justify-content-center align-items-center h-100">
 					<div class="text-center text-white">
 						<div class="spinner-border" role="status"></div>
-						<div class="mt-3">교정 중...</div>
+						<div class="mt-3">자소서 생성 중...</div>
 					</div>
 				</div>
 			</div>

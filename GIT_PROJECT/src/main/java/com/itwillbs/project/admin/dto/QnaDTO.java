@@ -20,6 +20,6 @@ public class QnaDTO {
 	private Date reDate;
 	private String reContent;
 	
-	private String keyword;
+	private String sort;
 	
 }

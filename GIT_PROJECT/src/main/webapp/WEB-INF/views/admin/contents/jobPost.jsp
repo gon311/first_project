@@ -19,7 +19,7 @@
         <h5 class="card-title mb-3">검색</h5>
 			<div class="card">
 			    <div class="card-body">
-			    	 <form action="<c:url value="/admin/contents/JobPost" />" name="searchForm" method="get" class="row g-3 align-items-center">
+			    	 <form action="<c:url value="/admin/contents/JobPost" />" name="searchForm" class="row g-3 align-items-center">
 				        <div class="row my-3">
 					        <!-- 키워드 검색 -->
 					        <div class="col-md-4">
@@ -32,7 +32,7 @@
 					    	</div>  
 					        <!-- 구분 -->
 					        <div class="col-md-4">
-					          <label for="status" class="form-label">공고상태</label>
+					          <label for="postStatus" class="form-label">공고상태</label>
 					          <select class="form-select" name="postStatus">
 					            <option value=""  ${empty jobPostDTO.postStatus ? 'selected' : "" }>전체</option>
 					            <option value="1" ${jobPostDTO.postStatus == 1 ? 'selected' : '' }>모집중</option>

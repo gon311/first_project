@@ -1,5 +1,6 @@
 package com.itwillbs.project.admin.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -241,13 +242,25 @@ public class AdminService{
 //	=================================================================================================
 //	[ 배너 관리 ]
 	
-	public List<BannerDTO> getBannerList() {
-		return adminMapper.getBannerList();
+	public List<BannerDTO> getBannerList(BannerDTO bannerDTO) {
+		return adminMapper.getBannerList(bannerDTO);
+	}
+	public void insertBanner(BannerDTO bannerDTO) {
+		Integer existingCount = adminMapper.countBannerById(bannerDTO.getJobId());
+		
+		if (existingCount != null && existingCount == 0) {
+			adminMapper.insertBanner(bannerDTO);
+		} else {
+			System.out.println("중복 배너 등록 시도 차단: jobId = " + bannerDTO.getJobId());
+		}
+		
 	}
 	
 	public void modifyAdStatus(int adId, int isDisplay) {
 		adminMapper.updateBannerStatus(adId, isDisplay);
 	}
+	
+
 
 //	=================================================================================
 //	[ 데이터 관리 ]

@@ -20,9 +20,10 @@
 	    <thead class="table-light">
 	        <tr>
 	            <th>No</th>
-	            <th>기업 명</th>
+<!-- 	            <th>광고 Id</th> -->
+	            <th>기업 Id</th>
 	            <th>기업 공고명</th>
-	            <th>결제일</th>
+	            <th>이용권 시작 일시</th>
 	            <th>이용권 종료 일시</th>
 	            <th>게시 상태</th>
 	        </tr>
@@ -30,18 +31,19 @@
 	    <tbody>
 	        <c:forEach var="ad" items="${adList}" varStatus="status">
 	            <tr>
-	                <td>${ad.adId}</td>
-	                <td>${ad.companyName}</td>
-	                <td>${ad.jobTitle}</td>
-	                <td><fmt:formatDate value="${ad.payDate}" pattern="yyyy.MM.dd"/></td>
-	                <td><fmt:formatDate value="${ad.expiryDate}" pattern="yyyy.MM.dd"/></td>
+	            	<td>${status.count }
+<%-- 	                <td>${ad.adId}</td> --%>
+	                <td>${ad.compId}</td>
+	                <td>${ad.title}</td>
+	                <td><fmt:formatDate value="${ad.startDate}" pattern="yyyy.MM.dd"/></td>
+	                <td><fmt:formatDate value="${ad.endDate}" pattern="yyyy.MM.dd"/></td>
 	                <td>
 	                    <div class="form-check form-switch">
 	                        <input class="form-check-input" type="checkbox" 
 	                               ${ad.isDisplay == 1 ? 'checked' : ''}
 	                               onchange="updateStatus(${ad.adId}, this.checked)">
 	                        <label class="form-check-label" for="switch_${ad.adId }" id ="label_${ad.adId}">
-	                        	${ad.isDisplay == 1 ? 'On' : 'off'}
+	                        	${ad.isDisplay == 1 ? 'On' : 'Off'}
                         	</label>
 	                    </div>
 	                </td>

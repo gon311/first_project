@@ -59,11 +59,10 @@
         			<div class="card-body p-4">
 
 						<div class="d-flex justify-content-end mb-3">
-							<select class="form-select w-auto" id="sort" onchange="selectSort()">
+							<select class="form-select w-auto" name = "sort" id= "sort">
 								<option value="all">전체</option>
 								<option value="new">최근 일자순</option>
 								<option value="old">오래된 순</option>
-								<option value="abc">가나다 순</option>
 							</select>
 						</div>
 

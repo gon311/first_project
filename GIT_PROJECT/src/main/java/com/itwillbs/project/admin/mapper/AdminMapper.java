@@ -1,6 +1,7 @@
 package com.itwillbs.project.admin.mapper;
 
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -156,9 +157,9 @@ public interface AdminMapper {
 
 	void modifyAnswer(QnaDTO qnaDTO);
 	// -========================================================================
-	// faq 관리
 
-	List<FaqDTO> getFaqList(@Param("keyword") String keyword);
+	List<FaqDTO> getFaqList(FaqDTO faqDTO);
+	
 	List<FaqDTO> getListByUserType(String userType);
 
 	void insertFaq(FaqDTO faqDTO);
@@ -167,12 +168,16 @@ public interface AdminMapper {
 
 	void updateFaq(FaqDTO faqDTO);
 
-	List<FaqDTO> getFaqList(FaqDTO faqDTO);
 
 // ===========================================================================
 //	banner 관리
-	List<BannerDTO> getBannerList();
+	
+	List<BannerDTO> getBannerList(BannerDTO bannerDTO);
+	
+	Integer countBannerById(long jobId);
 
+	void insertBanner(BannerDTO bannerDTO);
+	
 	void updateBannerStatus(@Param("adId") int adId
 							, @Param("isDisplay") int isDisplay);
 

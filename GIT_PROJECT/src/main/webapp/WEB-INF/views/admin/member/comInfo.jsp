@@ -53,6 +53,9 @@
 
 							<dt class="col-4 text-secondary py-2">담당자명</dt>
 							<dd class="col-8 py-2">${com.userName}</dd>
+							
+							<dt class="col-4 text-secondary py-2">보유 이용권</dt>
+							<dd class="col-8 py-2">${com.productName}</dd>
 
 							<dt class="col-4 text-secondary py-2">가입일자</dt>
 							<dd class="col-8 py-2">

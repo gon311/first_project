@@ -64,7 +64,7 @@ public interface AdminMapper {
 								, @Param("sort") String sort);
 	
 	// 기업회원 상세 정보 조회
-	MemberDTO selectComInfo(long userId);
+	MemberDTO selectComInfo(long userId); 
 	
 	// 기업 공고 목록 조회
 	List<JobPostDTO> selectJobPostInfo(long userId);
@@ -206,6 +206,7 @@ public interface AdminMapper {
 	List<Map<String, Object>> getComProductStats();
 
 	List<Map<String, Object>> getComRevenueStats();
+
 
 	
 

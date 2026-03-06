@@ -48,6 +48,9 @@
 								<dt class="col-4 text-secondary py-2">국적</dt>
 								<dd class="col-8 py-2">${user.country}</dd>
 
+								<dt class="col-4 text-secondary py-2">보유 이용권</dt>
+								<dd class="col-8 py-2">${user.productName}</dd>
+
 								<dt class="col-4 text-secondary py-2">가입일자</dt>
 								<dd class="col-8 py-2">
 									<fmt:parseDate var="joinDate" value="${user.joinedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />

@@ -18,7 +18,7 @@
 			, p.product_id
 			, pd.product_name
 		from 
-			user u left outer join pay p
+			user u left outer join user_product p
 		on
 			u.user_id = p.user_id
 		left outer join
@@ -83,12 +83,24 @@
 			, p.pass_count
 			, p.report_received_count
 			, p.profile_url
+			, pd.product_id
+			, pdt.product_name
 		from 
 			user u join user_person p
 		on
 			u.user_id = p.user_id
+		left outer join	
+			user_product pd
+		on 
+			u.user_id = pd.user_id
+		left outer join
+			product pdt
+		on
+			pd.product_id = pdt.product_id
 		where
 			u.user_id = #{userId}
+		and
+			pd.use_status = 'active'
 		
 	</select>
 	
@@ -231,7 +243,7 @@
 		on
 			u.user_id = c.user_id
 		left outer join
-			pay p
+			com_product p
 		on
 			u.user_id = p.user_id
 		left outer join
@@ -240,6 +252,8 @@
 			p.product_id = pd.product_id
 		where
 			u.user_type = 'c'
+		and 
+			p.use_status = 'active'
 			<choose>
 				<when test="type != null and type.equals('basic')">
 					and
@@ -294,16 +308,36 @@
 			, c.company_name
 			, c.ceo_name
 			, c.company_address
+			, p.product_id
+			, pd.product_name
 		from 
 			user u join user_company c
 		on
 			u.user_id = c.user_id
+		left outer join	
+			com_product p
+		on 
+			u.user_id = p.user_id
+		left outer join
+			product pd
+		on
+			p.product_id = pd.product_id
 		where
 			u.user_id = #{userId}
+		and 
+			p.use_status = 'active'
 		
 	</select>
 	
-
+	<!-- 기업 공고 목록 조회 -->
+	<select id="selectJobPostInfo" resultType="jobPost">
+		select *
+		from 
+			job_posting
+		where
+			comp_id = #{userId}
+	</select>
+	
 	
 	<!-- 기업 탈퇴회원 목록 조회 -->
 	<select id="selectComWithdraw" resultType="member">

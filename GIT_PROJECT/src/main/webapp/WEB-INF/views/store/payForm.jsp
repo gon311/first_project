@@ -285,7 +285,7 @@
     		const orderId = "${orderInfo.orderId}";
     		const bankVal = document.getElementById("bankName").value;
     		const depositVal = document.getElementById("depositName").value;
-//     		const reUrl = "http://localhost:8080/project/store/payResult";
+    		const failUrl = "<c:url value="/store/payFailed" />";
     		
     		try {
     			const paymentParam = {

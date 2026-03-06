@@ -158,9 +158,6 @@
 									~ 
 									<fmt:formatDate value="${submit.closeDate}" pattern="yyyy/MM/dd"/>
 								</dd>
-
-								<dt class="col-sm-3 text-secondary">접수방법</dt>
-								<dd class="col-sm-9">-</dd>
 								
 								<dt class="col-sm-3 text-secondary">첨부파일</dt>
 								<dd class="col-sm-9">-</dd>	

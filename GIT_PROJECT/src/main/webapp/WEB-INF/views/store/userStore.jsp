@@ -47,7 +47,7 @@
                                 <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">5,000원</span>
-                                    <button type="button" id="btn10" value="P-U10" class="btn btn-primary btn-lg" onclick="checkRemain('P-U10')">구매하기</button>
+                                    <button type="button" id="btn10" value="P-U10" class="btn btn-primary btn-lg" onclick="checkRemain('P-U10', ${userInfo.userId})">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                                 <hr class="mt-1 mb-2">
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">8,000원</span>
-                                    <button type="button" id="btn30" value="P-U30" class="btn btn-primary btn-lg" onclick="checkRemain('P-U30')">구매하기</button>
+                                    <button type="button" id="btn30" value="P-U30" class="btn btn-primary btn-lg" onclick="checkRemain('P-U30', ${userInfo.userId})">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                                 <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">15,000원</span>
-                                    <button type="button" id="btn60" value="P-U60" class="btn btn-primary btn-lg" onclick="checkRemain('P-U60')">구매하기</button>
+                                    <button type="button" id="btn60" value="P-U60" class="btn btn-primary btn-lg" onclick="checkRemain('P-U60', ${userInfo.userId})">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -128,9 +128,12 @@
 	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 	
 	<script type="text/javascript">
-		const userId = ${userInfo.userId};
-		
-		async function checkRemain(productId) {
+		async function checkRemain(productId, userId) {
+			if(userId == null) {
+				alert("로그인 한 회원만 구매 가능합니다.");
+				location.href = "<c:url value="/user/login" />";
+			}
+			
 			console.log("productId : ", productId);
 			const checkRemainURL = "<c:url value="/store/checkRemain" />";
 			// 비동기 요청 시 아이디 입력값 파라미터로 전송

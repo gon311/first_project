@@ -105,9 +105,9 @@ public class StoreService{
 	}
 	
 	// 결제 조회 api
-	private String SECRET_KEY = "a6ahq9hSCGloLXjNbEEcoxQafWxrTuuUjr0SOFOFNLBUk0hiz8iZIIAQjG1iAnO7W5SkyZFueUu9iyLy";
-//	@Value("${portone.api_key}")
-//	private String SECRET_KEY;
+//	private String SECRET_KEY = "a6ahq9hSCGloLXjNbEEcoxQafWxrTuuUjr0SOFOFNLBUk0hiz8iZIIAQjG1iAnO7W5SkyZFueUu9iyLy";
+	@Value("${portone.api_key}")
+	private String SECRET_KEY;
 
     public PortoneDTO getPayment(String paymentId) {
     	// 1️. PortOne 결제 조회 URL 생성

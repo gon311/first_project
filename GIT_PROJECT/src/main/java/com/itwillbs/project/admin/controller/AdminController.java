@@ -72,6 +72,10 @@ public class AdminController {
 	public String userInfo(Model model, MemberDTO memberDTO) {
 		MemberDTO userDTO = adminService.getUserInfo(memberDTO.getUserId());
 		
+		if(userDTO.getProductName() == null) {
+			userDTO.setProductName("보유 이용권 없음");
+		}
+		
 		model.addAttribute("user", userDTO);
 		
 		// 작성한 게시글 목록 조회
@@ -93,7 +97,7 @@ public class AdminController {
 	}
 	
 	// 구직자 차단
-	@GetMapping("/users//block")
+	@GetMapping("/users/block")
 	public String userBlock(MemberDTO memberDTO, RedirectAttributes ra) {
 		adminService.blockUser(memberDTO.getUserId());
 		ra.addAttribute("userId", memberDTO.getUserId());
@@ -153,6 +157,10 @@ public class AdminController {
 	public String comInfo(Model model, MemberDTO memberDTO) {
 		
 		MemberDTO comDTO = adminService.getComInfo(memberDTO.getUserId());
+		
+		if(comDTO.getProductName() == null) {
+			comDTO.setProductName("보유 이용권 없음");
+		}
 		
 		model.addAttribute("com", comDTO);
 		

@@ -47,6 +47,14 @@
     </main>
 
     <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+    
+    <script>
+		window.onload = function () {
+			if (performance.navigation.type === 2) {
+				window.history.forward();
+			}
+		};
+    </script>
 
 </body>
 </html>

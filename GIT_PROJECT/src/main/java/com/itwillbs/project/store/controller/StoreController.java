@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.service.AdminService;
+import com.itwillbs.project.common.exception.BackwardException;
+import com.itwillbs.project.common.exception.LoginRequiredException;
 import com.itwillbs.project.store.dto.MemberProductDTO;
 import com.itwillbs.project.store.dto.OrderDTO;
 import com.itwillbs.project.store.dto.PaymentDTO;
@@ -46,7 +48,8 @@ public class StoreController {
 		
 		// 회원 아이디 조회
 		MemberDTO userInfo = storeService.getUserInfo(userEmail);
-		model.addAttribute("userInfo", userInfo);
+		
+//		model.addAttribute("userId", userInfo.getUserId());
 		
 		session.setAttribute("userInfo", userInfo);
 		
@@ -60,7 +63,7 @@ public class StoreController {
 
 		// 회원 아이디 조회
 		MemberDTO comInfo = storeService.getUserInfo(userEmail);
-		model.addAttribute("comInfo", comInfo);
+//		model.addAttribute("userId", comInfo.getUserId());
 
 		session.setAttribute("comInfo", comInfo);
 		
@@ -72,6 +75,11 @@ public class StoreController {
 	@ResponseBody
 	@GetMapping("/checkRemain")
 	public Map<String, Object> checkRemain(@RequestParam long id, HttpSession session) {
+		// 로그인 된 회원만 구매하기 페이지 접근 가능
+		if(id == 0) { 
+			throw new LoginRequiredException("로그인 후 구매할 수 있습니다.");
+		}
+		
 		// 구매자의 회원 유형 확인
 		MemberDTO memberInfo = storeService.getUserType(id);
 		
@@ -220,11 +228,12 @@ public class StoreController {
 		return "store/paySuccess";
 	}
 	
+	
 	// 결제에 실패한 경우
 	@GetMapping("/payFailed")
 	public String payFailed() {
 		
-		return "/store/payFailed";
+		return "store/payFailed";
 	}
 	
  

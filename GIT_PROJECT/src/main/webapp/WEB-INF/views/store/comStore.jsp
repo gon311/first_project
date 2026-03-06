@@ -47,7 +47,7 @@
                                 <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">500,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="checkRemainBasic('P-C1')">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="checkRemainBasic('P-C1', ${comInfo.userId})">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -66,12 +66,12 @@
                                     <li class="fs-5">✔ 배너 광고 게재 서비스</li>
                                 </ul>
                                 <p class="small text-muted mb-0 text-center">
-                                    ※ 이용권 기간 내 홈 화면 배너에 채용공고 게재
+                                    ※ 이용권 기간 내 홈 화면 배너에 채용공고 게재 <br>
                                 </p>
                                 <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">1,000,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="checkRemainPremium('P-C2')">구매하기</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="checkRemainPremium('P-C2', ${comInfo.userId})">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -114,6 +114,7 @@
                   </table>
                   <p class="small text-muted text-center">
 			      	※ 본 이용권은 회원 계정에 자동으로 등록되며, 이용권 구매 즉시 사용 가능합니다.<br>
+			      	※ 일반 이용권을 보유 중인 경우, 프리미엄 이용권 구매 시 기존의 일반 이용권이 즉시 소멸됩니다.<br>
 			        ※ 이용권과 관련하여 문의 사항이 있는 경우 고객센터를 통해 문의 바랍니다.
 				  </p>
                 </div>
@@ -126,9 +127,12 @@
 	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 	
 	<script type="text/javascript">
-		const userId = ${comInfo.userId};
-		
-		async function checkRemainBasic(productId) {
+		async function checkRemainBasic(productId, userId) {
+			if(userId == null) {
+				alert("로그인 한 회원만 구매 가능합니다.");
+				location.href = "<c:url value="/user/login" />";
+			}
+			
 			console.log("productId : ", productId);
 			const checkRemainURL = "<c:url value="/store/checkRemain" />";
 			// 비동기 요청 시 아이디 입력값 파라미터로 전송

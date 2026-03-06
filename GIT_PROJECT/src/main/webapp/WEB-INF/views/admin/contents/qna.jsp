@@ -2,6 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,16 +59,15 @@
 				
 				<div class="card shadow-sm" style="border-top-left-radius: 0; border: 1px solid #dee2e6;">
         			<div class="card-body p-4">
-
+					<form action='<c:url value ="/admin/contents/QnA" />' method="get">
 						<div class="d-flex justify-content-end mb-3">
-							<select class="form-select w-auto" id="sort" onchange="selectSort()">
-								<option value="all">전체</option>
-								<option value="new">최근 일자순</option>
-								<option value="old">오래된 순</option>
-								<option value="abc">가나다 순</option>
+							<select class="form-select w-auto" name = "sort"  onchange="location.href='?sort=' + this.value + '&reStatus=${reStatus}'">
+								<option value="all" ${sort eq 'all' ? 'selected' : '' }>전체</option>
+								<option value="new" ${sort eq 'new' ? 'selected' : '' }>최근 일자순</option>
+								<option value="old" ${sort eq 'old' ? 'selected' : '' }>오래된 순</option>
 							</select>
 						</div>
-
+					</form> 
 						<div class="table-responsive">
                 			<table class="table table-hover text-center align-middle">
 						            <thead class="table-light">
@@ -89,7 +90,9 @@
 						                                <td>${status.count}</td>
 						                                <td><a href="<c:url value='/admin/contents/QnADetail?qnaId=${qna.qnaId}'/>">${qna.qnaTitle }</a></td>
 						                                <td>${qna.writerId}</td>
-						                                <td>${qna.regDate}</td>
+						                                <td>
+															<fmt:formatDate value="${qna.regDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+														</td>
 						                                <td>
 						                                    <c:if test="${qna.reStatus eq 'pending'}"><span class="badge bg-warning">미답변</span></c:if>
 						                                    <c:if test="${qna.reStatus eq 'completed'}"><span class="badge bg-success">답변완료</span></c:if>

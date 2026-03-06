@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -239,6 +240,13 @@ public class AdminController {
 		// 공고 승인 시 등록일자를 승인 시점으로 변경
 		if(postCheck == 2) {
 			adminService.changeRegDate(submitDTO.getJobId());
+			
+			// 프리미엄 이용권 구매 기업 공고 배너 관리 페이지로 전송
+			BannerDTO bannerDTO = new BannerDTO();
+			bannerDTO.setJobId(jobId);
+			bannerDTO.setCompId(submitDTO.getCompId());
+			System.out.println(bannerDTO.getJobId());
+			adminService.insertBanner(bannerDTO);
 		}
 		
 		ra.addAttribute("jobId", jobId);
@@ -290,14 +298,15 @@ public class AdminController {
 	//===========================================================================
 	// [ 배너 관리 ]
 	@GetMapping("/banners")
-	public String bannerList(Model model) {
-		List<BannerDTO> adList = adminService.getBannerList();
-		System.out.println("조회된 배너 개수: " + (adList !=null ? adList.size() : "null"));
-		
+	public String bannerList(Model model, BannerDTO bannerDTO) {
+		List<BannerDTO> adList = adminService.getBannerList(bannerDTO);
+//		System.out.println("조회된 배너 개수: " + (adList !=null ? adList.size() : "null"));
+//		System.out.println(adList.toString());
 		model.addAttribute("adList", adList);
 	
 		return "admin/banner";
 	}
+
 	
 	@PostMapping("/updateAdStatus")
 	@ResponseBody

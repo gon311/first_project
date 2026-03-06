@@ -20,7 +20,7 @@
             <div class="card-body p-4">
                 
                 <%-- 검색 영역: FAQ 관리와 동일한 스타일 --%>
-                <form action="${pageContext.request.contextPath}/admin/board" method="get" class="d-flex justify-content-end mb-4">
+                <form action="${pageContext.request.contextPath}/admin/board" class="d-flex justify-content-end mb-4">
                     <div class="input-group" style="width: 350px;">
                         <input type="text" name="searchKeyword" class="form-control form-control-sm" 
                                placeholder="글 제목 검색" value="${param.searchKeyword}">

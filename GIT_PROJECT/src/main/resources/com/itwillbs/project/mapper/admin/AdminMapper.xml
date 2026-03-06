@@ -499,11 +499,11 @@
 		FROM job_posting
 		<!-- 검색 기능 -->
 		WHERE
-			post_check =2
+			post_check = 2
 			<if test="title !=null and title !=''">
 				AND title LIKE CONCAT('%', #{title}, '%')
 			</if>
-			<if test="compId != null and compId !=''">
+			<if test="compId != null and compId != 0">
 				AND comp_id LIKE CONCAT('%', #{compId}, '%')
 			</if>
 			<if test="postStatus != null and postStatus !=0 and postStatus != ''">
@@ -747,12 +747,19 @@
 			<if test="reStatus != null and reStatus != '' and reStatus != 'all'">
 				AND re_status = #{reStatus}
 			</if>
-			
-			<if test="keyword != null and keyword != ''">
-				AND qna_title LIKE ('%', #{keyword], '%')
-			</if>
 		</where>
-		ORDER BY qna_id DESC
+		ORDER BY 
+			<choose>
+				<when test ='sort != null and sort.equals("old")'>
+					reg_date ASC
+				</when>
+				<when test ='sort != null and sort.equals("new")'>
+					reg_date DESC
+				</when>
+				<otherwise>
+					qna_id DESC
+				</otherwise>
+			</choose>
 	</select>
 	
 	<select id = "getQnaById" resultType="qna">
@@ -826,9 +833,24 @@
 			<if test="userType != null and userType != '' and userType != 'all'">
 				AND user_type=#{userType}
 			</if>
-			<if test="keyword != null and keyword != ''">
-				AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+<!-- 			<if test="keyword != null and keyword != ''"> -->
+<!-- 				<when test = "category == 'account"> -->
+<!-- 				AND faq_title LIKE CONCAT ('%', #{keyword), '%') -->
+				
+<!-- 				</when> -->
+<!-- 				<otherwise> -->
+<!-- 				</otherwise> -->
+<!-- 				AND faq_title LIKE CONCAT('%', #{keyword}, '%') -->
+<!-- 			</if> -->
+			
+			<if test="category !=null and category != '' and userType != 'all'">
+				AND category = #{category}
 			</if>
+<!-- 				account -->
+<!-- 				service -->
+<!-- 				error -->
+<!-- 				ect -->
+			
 		</where>
 		ORDER BY faq_id DESC
 			
@@ -864,27 +886,52 @@
 	</update>
 	<!-- ===================================================================================== -->
 	<!-- 배너 관리 -->
+	
+	<select id="countBannerById" resultType = "com.itwillbs.project.admin.dto.BannerDTO">
+		SELECT 
+			IFNULL(count(*),0)
+		FROM
+			banner
+		WHERE
+			job_id = #{jobId}
+	</select>
+    
+    <insert id="insertBanner" parameterType="com.itwillbs.project.admin.dto.BannerDTO">
+    INSERT INTO banner (job_id, comp_id, is_display)
+    SELECT j.job_id, j.comp_id, 1
+    FROM job_posting j
+    JOIN com_product cp 
+    	ON j.comp_id = cp.user_id
+    WHERE 
+    	j.job_id = #{jobId}          
+    	AND 
+    		j.post_check = 2              
+   		AND 
+   			cp.product_id = 'P-C2'        
+		AND 
+			cp.use_status = 'active'      
+	</insert>
+    	
+    	
 	<select id="getBannerList" resultType="com.itwillbs.project.admin.dto.BannerDTO">
     SELECT 
-        b.ad_id,
-        c.company_name,
-        j.title AS job_title,
-        cp.start_date AS start_date,       -- 시작일(결제일)
-        cp.end_date AS expiry_date,   -- 종료일
-        b.is_display
+        b.ad_id
+        , b.job_id
+        , b.comp_id
+        , j.title
+        , cp.start_date       
+        , cp.end_date  
+        , b.is_display
     FROM 
     	banner b
-    JOIN 
-    	USER_COMPANY c 
-    		ON b.comp_id = c.user_id
     JOIN 
    		JOB_POSTING j 
     		ON b.job_id = j.job_id
     LEFT JOIN 
     	com_product cp 
-    		ON c.user_id = cp.user_id
+    		ON b.comp_id = cp.user_id
    	WHERE 
-   		cp.product_id = 'PC-2'
+   		cp.product_id = 'P-C2'
    		AND cp.use_status = 'active'
     ORDER BY b.ad_id DESC
     
@@ -898,6 +945,8 @@
 		WHERE
 			ad_id = #{adId}
 	</update>
+	
+	
 	
 	<!-- ============================================================================================= -->
 	<!-- 데이터 관리 -->	

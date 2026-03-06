@@ -93,7 +93,10 @@ public class AdminContentController {
 			JobPostDTO jobPostDTO
 			, Model model) {
 		
+		
 		List<JobPostDTO> jobPostList = adminService.getJobPostList(jobPostDTO);
+//		System.out.println("postStatus: " + jobPostDTO.getPostStatus());
+		
 		model.addAttribute("jobPostList", jobPostList);
 		model.addAttribute("jobPostDTO", jobPostDTO);
 		return "admin/contents/jobPost";
@@ -126,18 +129,22 @@ public class AdminContentController {
 
 	// FAQ 전체 목록 및 카테고리별 출력
 	@GetMapping("/FaQ")
-	public String faqList(@RequestParam(value="userType", defaultValue="all") String userType,
-			FaqDTO faqDTO,
-            Model model) {
+	public String faqList(@RequestParam(value="userType", defaultValue="all") String userType
+						, @RequestParam(value="category", defaultValue="") String category
+						,FaqDTO faqDTO
+						, Model model) {
+		
+		
 	    
-		faqDTO.setUserType(userType);
 	    // 서비스 호출 (카테고리, 키워드 포함)
 	    List<FaqDTO> faqList = adminService.getFaqList(faqDTO);
 //	    System.out.println(faqList);
+	    System.out.println(category.toString());
 	    
 	    model.addAttribute("faqList", faqList);
 	    model.addAttribute("userType", userType); // 탭 활성화 유지용
 	    model.addAttribute("keyword", faqDTO.getKeyword());   // 검색어 유지용
+	    model.addAttribute("category", category); // 카테고리 유지용
 	    
 	    return "admin/contents/faq"; // faq.jsp로 포워딩
 	}
@@ -192,14 +199,15 @@ public class AdminContentController {
 	@GetMapping("/QnA")
 	public String qnaList(@RequestParam(value="reStatus", defaultValue="all") String reStatus, 
 			@RequestParam(value="page", defaultValue="1") int page,
+			@RequestParam(value="sort", defaultValue="all") String sort,
 			Model model, QnaDTO qnaDTO) {
 	    
-		qnaDTO.setReStatus(reStatus);
 		
 		List<QnaDTO> list = adminService.getQnaList(qnaDTO);
-		
+//		System.out.println("정렬 확인 : " +sort.toString());
 	    model.addAttribute("qnaList", list);
 	    model.addAttribute("reStatus", reStatus); // 현재 탭 활성화를 위해 전달
+	    model.addAttribute("sort", sort);
 	return "admin/contents/qna";
 	}
 //	1:1 문의글 상세 조회

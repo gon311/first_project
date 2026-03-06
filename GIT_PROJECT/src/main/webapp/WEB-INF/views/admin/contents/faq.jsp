@@ -35,10 +35,10 @@
         <div class="card shadow-sm" style="border-top-left-radius: 0; border: 1px solid #dee2e6;">
             <div class="card-body p-4">
                 <%-- 검색 영역 --%>
-                <form action="/admin/faq" method="get" class="d-flex justify-content-end align-items-end mb-4 gap-2">
+                <form action='<c:url value = "/admin/contents/FaQ"/>' class="d-flex justify-content-end align-items-end mb-4 gap-2">
 					<div class="col-md-3">
                         <label class="form-label fw-bold small text-muted">질문 카테고리</label>
-                        <select name="category" class="form-select form-select-sm">
+                        <select name="category" class="form-select form-select-sm" onchange = "this.form.submit()">
                         	<option value="">선택</option>
 			                <option value="account" ${category == 'account' ? 'selected' : ''}>계정/로그인</option>
 			                <option value="service" ${category == 'service' ? 'selected' : ''}>이용문의</option>

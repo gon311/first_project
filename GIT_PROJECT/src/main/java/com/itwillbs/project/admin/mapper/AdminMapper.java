@@ -19,6 +19,7 @@ import com.itwillbs.project.admin.dto.PayDTO;
 import com.itwillbs.project.admin.dto.ProductDTO;
 import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
+import com.itwillbs.project.store.dto.PaymentDTO;
 
 @Mapper
 public interface AdminMapper {
@@ -104,7 +105,7 @@ public interface AdminMapper {
 	
 	//========================================================================
 	// 결제 목록 조회
-	List<PayDTO> selectPayList(@Param("startDate") String startDate
+	List<PaymentDTO> selectPayList(@Param("startDate") String startDate
 								, @Param("endDate") String endDate
 								, @Param("keyword") String keyword
 								, @Param("userType") String userType
@@ -112,7 +113,7 @@ public interface AdminMapper {
 								, @Param("sort") String sort); 
 
 	// 결제 내역 상세 정보 조회
-	PayDTO selectPayInfo(String id);
+	PaymentDTO selectPayInfo(String id);
 	
 	// 결제 취소
 	void updatePayCancel(long payId);

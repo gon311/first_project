@@ -590,7 +590,7 @@
 	
 	<!-- ================================================================================== -->
 	<!-- 결제 목록 조회 -->
-	<select id="selectPayList" resultType="pay">
+	<select id="selectPayList" resultType="payment">
 		select 
 			p.pay_id
 			, p.user_id
@@ -648,7 +648,7 @@
 	</select>
 	
 	<!-- 결제 내역 상세정보 조회 -->
-	<select id="selectPayInfo" resultType="pay">
+	<select id="selectPayInfo" resultType="payment">
 		select 
 			p.pay_id
 			, p.user_id
@@ -659,6 +659,7 @@
 			, pd.product_name
 			, p.pay_method
 			, p.card_name
+			, p.card_num
 			, p.bank_name
 			, p.deposit_account
 			, p.deposit_name

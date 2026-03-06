@@ -5,10 +5,18 @@
   
 <mapper namespace="com.itwillbs.project.store.mapper.StoreMapper">
 
+	<!-- 세션에 저장된 회원 아이디를 통해 회원 정보 조회 -->
+	<select id="selectUserInfo" resultType="member">	
+		select	*
+		from
+			user
+		where
+			email = #{userEmail}
+	</select>
+
 	<!-- 구매자 정보 출력 -->
 	<select id="selectOrderUser" resultType="order">
-		select	
-			*
+		select	*
 		from	
 			user
 		where
@@ -17,20 +25,40 @@
 
 	<!-- 구매할 상품 정보 조회 -->
 	<select id="selectStoreInfo" resultType="store">
-		select	
-			*
+		select	*
 		from
 			product
 		where
 			product_id = #{productId}
 	</select>
 	
-	<!-- 회원이 이용권을 보유하고 있는지 여부 조회 -->
-	<select id="selectRemainById" resultType="memberProduct">
+	<!-- 구매자의 회원 유형 조회 -->
+	<select id="selectUserType" resultType="member">
+		select	*
+		from
+			user
+		where
+			user_id = #{id}
+	</select>
+	
+	<!-- 구직자)회원이 이용권을 보유하고 있는지 여부 조회 -->
+	<select id="selectUserRemain" resultType="memberProduct">
 		select
 			*
 		from
-			product
+			user_product
+		where
+			user_id = #{id}
+		and
+			use_status = 'active'
+	</select>
+	
+	<!-- 기업)회원이 이용권을 보유하고 있는지 여부 조회 -->
+	<select id="selectComRemain" resultType="memberProduct">
+		select
+			*
+		from
+			com_product
 		where
 			user_id = #{id}
 		and
@@ -151,6 +179,26 @@
 			))
 		)
 	</insert>
+	
+	<!-- 기업회원이 일반 이용권을 보유중인지 여부 조회 -->
+	<select id="selectBasicProduct" resultType="memberProduct">
+		select	*
+		from	com_product
+		where
+			product_id = 'P-C1'
+		and 
+			use_status = 'active'
+	</select>
+	
+	<!-- 일반 이용권 보유중인 기업 회원이 프리미엄 이용권을 구매한 경우, 기존의 일반 이용권은 소멸됨 -->
+	<update id="updateUseStatus">
+		update
+			com_product
+		set
+			use_status = 'expired'
+		where
+			pay_id = #{payId}
+	</update>
 	
 </mapper>
 

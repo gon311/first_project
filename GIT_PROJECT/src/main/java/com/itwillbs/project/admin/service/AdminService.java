@@ -20,6 +20,7 @@ import com.itwillbs.project.admin.dto.ProductDTO;
 import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.admin.mapper.AdminMapper;
+import com.itwillbs.project.store.dto.PaymentDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -140,12 +141,12 @@ public class AdminService{
 
 	//======================================================================================
 	// 결제 내역 전체 목록 조회
-	public List<PayDTO> getPayList(String startDate, String endDate, String keyword, String userType, String payStatus, String sort) {
+	public List<PaymentDTO> getPayList(String startDate, String endDate, String keyword, String userType, String payStatus, String sort) {
 		return adminMapper.selectPayList(startDate, endDate, keyword, userType, payStatus, sort);
 	}
  
 	// 결제 내역 상세정보
-	public PayDTO getPayInfo(String id) {
+	public PaymentDTO getPayInfo(String id) {
 		return adminMapper.selectPayInfo(id);
 	}
 	

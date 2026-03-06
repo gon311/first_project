@@ -46,7 +46,7 @@
 	    		, #{birthDate}
 	    		, #{gender}
 	    		, #{country}
-	    		, 0
+	    		, 5
 	    		, 0
 	        	
 	    )
@@ -60,7 +60,6 @@
 	    		, #{companyName}
 	    		, #{ceoName}
 	    		, #{companyAddress}
-	        	
 	    )
 	</insert>
 	

@@ -47,8 +47,8 @@
 	                                <label class="form-label">휴대폰 번호</label>
 	                                <div class="form-input-group">
 	                                    <select style="width: 25%;" id="id-phone-1"><option>010</option></select> - 
-	                                    <input type="text" style="width: 25%;" id="id-phone-2" maxlength="4"> - 
-	                                    <input type="text" style="width: 25%;" id="id-phone-3" maxlength="4">
+	                                    <input type="text" style="width: 25%;" id="id-phone-2" name="phoneInput" maxlength="4" pattern="^d{4}$"> - 
+	                                    <input type="text" style="width: 25%;" id="id-phone-3" name="phoneInput" maxlength="4" pattern="^d{4}$">
 	                                    <button type="button" class="btn-auth" id="btn-id-send" onclick="sendVerification('id')">인증번호 전송</button>
 	                                    <div id="id-feedback" class="invalid-feedback"></div> 
 	                                </div>
@@ -130,8 +130,8 @@
 	                                <label class="form-label">휴대폰 번호</label>
 	                                <div class="form-input-group">
 	                                    <select style="width: 25%;" id="pw-phone-1"><option>010</option></select> - 
-	                                    <input type="text" style="width: 25%;" id="pw-phone-2" maxlength="4"> - 
-	                                    <input type="text" style="width: 25%;" id="pw-phone-3" maxlength="4">
+	                                    <input type="text" style="width: 25%;" id="pw-phone-2" name="phoneInput" maxlength="4"> - 
+	                                    <input type="text" style="width: 25%;" id="pw-phone-3" name="phoneInput" maxlength="4">
 	                                    <button type="button" class="btn-auth" id="btn-pw-send" onclick="sendVerification('pw')">인증번호 전송</button>
 		                                <div id="pw-feedback" class="invalid-feedback"></div> 
 	                                </div>
@@ -191,6 +191,8 @@
 	
     <script>
     	const verificationStatus = { id: false, pw: false };
+    	
+    	// 사업자 번호 하이픈
 		const bizInputs = document.querySelectorAll('input[name="bizRegNo"]');
 	    bizInputs.forEach(input => {
 	        input.addEventListener('input', function(e) {
@@ -204,6 +206,16 @@
 	                val = val.substring(0, 3) + '-' + val.substring(3, 5) + '-' + val.substring(5, 10);
 	            }
 	            
+	            e.target.value = val;
+	        });
+	    });
+	    
+    	// 전화번호 숫자만 남기기
+		const phoneInputs = document.querySelectorAll('input[name="phoneInput"]');
+		phoneInputs.forEach(input => {
+	        input.addEventListener('input', function(e) {
+	            // 숫자만 남기기
+	            let val = e.target.value.replace(/[^0-9]/g, ''); 
 	            e.target.value = val;
 	        });
 	    });
@@ -317,7 +329,9 @@
              const p1 = document.getElementById(mode + '-phone-1');
              const p2 = document.getElementById(mode + '-phone-2');
              const p3 = document.getElementById(mode + '-phone-3');
-             if (!p2.value.trim() || !p3.value.trim()) {
+             const phoneRegex = /^(010|011)[-\s]?[\d]{3,4}[-\s]?[\d]{4}$/;
+             
+             if (!phoneRegex.test(val)) {
                  alert('휴대폰 번호를 올바르게 입력해 주세요.');
                  if(!p2.value) p2.focus(); else p3.focus();
                  return;

@@ -347,30 +347,45 @@
 	    WHERE file_id = #{fileId}
 	</delete>
 	
+	<select id="getApplicantList" resultType="application">
+	    SELECT 
+	        a.app_id as appId,
+	        a.job_id as jobId,
+	        a.user_id as userId,
+	        a.resume_id as resumeId,
+	        a.app_step as appStep,
+	        a.is_favorite as isFavorite,
+	        a.apply_date as applyDate,
+	        DATE_FORMAT(a.apply_date, '%Y-%m-%d') as formattedApplyDate,
+	        u.user_name as userName,
+	        j.title as postingTitle
+	    FROM job_application a
+	    JOIN job_posting j ON a.job_id = j.job_id
+	    JOIN user u ON a.user_id = u.user_id
+	    WHERE j.comp_id = #{compId}
+	    <if test="jobId != null">
+	        AND a.job_id = #{jobId}
+	    </if>
+	    ORDER BY a.apply_date DESC
+	</select>
+	
+	<update id="updateApplicationStatus">
+	    UPDATE job_application
+	    SET app_step = #{appStep}
+	    WHERE app_id = #{appId}
+	</update>
+	
+	<update id="updateApplicationFavorite">
+	    UPDATE job_application
+	    SET is_favorite = #{isFavorite}
+	    WHERE app_id = #{appId}
+	</update>
+	
+	<select id="getPostingTitle" resultType="string">
+		SELECT title
+		FROM JOB_POSTING
+		WHERE job_id = #{jobId}
+	</select>
+	
+	
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

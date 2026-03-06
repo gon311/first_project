@@ -8,27 +8,41 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="<c:url value="/resources/css/jobCss/jobManagement.css" />" rel="stylesheet" type="text/css">
-<style>
-    /* 1. 배경 및 레이아웃 수정 */
-    
-</style>
 </head>
 <body>
-
 <div class="manage-container">
     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px;">
         <h2>지원자 관리 <small style="font-size:15px; color:#888; margin-left:10px; font-weight:400;">입사지원자를 검토하고 전형 상태를 업데이트하세요.</small></h2>
-        <span style="font-size: 14px; color: #666;">공고명: <strong>[신입/경력] UI/UX 디자이너 채용</strong></span>
+        <span style="font-size: 14px; color: #666;">공고명: <strong>${postingTitle}</strong></span>
     </div>
 
-    <section class="status-tabs">
-        <div class="status-tab active"><span class="label">전체</span><span class="count">25</span></div>
-        <div class="status-tab"><span class="label">서류대기</span><span class="count">10</span></div>
-        <div class="status-tab"><span class="label">서류통과</span><span class="count">5</span></div>
-        <div class="status-tab"><span class="label">면접진행</span><span class="count">5</span></div>
-        <div class="status-tab"><span class="label">최종합격</span><span class="count">3</span></div>
-        <div class="status-tab"><span class="label">불합격</span><span class="count">2</span></div>
-    </section>
+    <c:set var="waitCount" value="0" />
+	<c:set var="passCount" value="0" />
+	<c:set var="interviewCount" value="0" />
+	<c:set var="finalCount" value="0" />
+	<c:set var="failCount" value="0" />
+	
+	<c:forEach var="app" items="${applicantList}">
+	    <c:choose>
+	        <c:when test="${app.appStep == '서류대기'}"><c:set var="waitCount" value="${waitCount + 1}" /></c:when>
+	        <c:when test="${app.appStep == '서류통과'}"><c:set var="passCount" value="${passCount + 1}" /></c:when>
+	        <c:when test="${app.appStep == '면접진행'}"><c:set var="interviewCount" value="${interviewCount + 1}" /></c:when>
+	        <c:when test="${app.appStep == '최종합격'}"><c:set var="finalCount" value="${finalCount + 1}" /></c:when>
+	        <c:when test="${app.appStep == '불합격'}"><c:set var="failCount" value="${failCount + 1}" /></c:when>
+	    </c:choose>
+	</c:forEach>
+	
+	<section class="status-tabs">
+	    <div class="status-tab active">
+	        <span class="label">전체</span>
+	        <span class="count">${applicantList.size()}</span>
+	    </div>
+	    <div class="status-tab"><span class="label">서류대기</span><span class="count">${waitCount}</span></div>
+	    <div class="status-tab"><span class="label">서류통과</span><span class="count">${passCount}</span></div>
+	    <div class="status-tab"><span class="label">면접진행</span><span class="count">${interviewCount}</span></div>
+	    <div class="status-tab"><span class="label">최종합격</span><span class="count">${finalCount}</span></div>
+	    <div class="status-tab"><span class="label">불합격</span><span class="count">${failCount}</span></div>
+	</section>
 
     <section class="filter-bar">
         <div class="filter-row">
@@ -60,49 +74,47 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td style="text-align: center;"><input type="checkbox"></td>
-                    <td style="color: #888;">105</td>
-                    <td>
-                        <span class="name-tag">홍길동 (28세)</span>
-                        <div class="doc-links">
-                            <a href="#" class="doc-btn"><i class="fa-solid fa-file-user"></i> 이력서</a>
-                            <a href="#" class="doc-btn"><i class="fa-solid fa-folder-open"></i> 포트폴리오</a>
-                        </div>
-                    </td>
-                    <td style="font-size: 14px;">UI/UX 디자이너 채용</td>
-                    <td style="font-size: 14px; color: #666;">2024.02.08</td>
-                    <td>
-                        <select class="status-select">
-                            <option selected>서류대기</option>
-                            <option>서류통과</option>
-                            <option>면접진행</option>
-                            <option>최종합격</option>
-                            <option>불합격</option>
-                        </select>
-                    </td>
-                    <td style="text-align: center;"><i class="fa-solid fa-star star-icon active"></i></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;"><input type="checkbox"></td>
-                    <td style="color: #888;">104</td>
-                    <td>
-                        <span class="name-tag">김철수 (32세)</span>
-                        <div class="doc-links">
-                            <a href="#" class="doc-btn"><i class="fa-solid fa-file-user"></i> 이력서</a>
-                        </div>
-                    </td>
-                    <td style="font-size: 14px;">UI/UX 디자이너 채용</td>
-                    <td style="font-size: 14px; color: #666;">2024.02.07</td>
-                    <td>
-                        <select class="status-select">
-                            <option>서류대기</option>
-                            <option selected>면접진행</option>
-                        </select>
-                    </td>
-                    <td style="text-align: center;"><i class="fa-solid fa-star star-icon"></i></td>
-                </tr>
-            </tbody>
+			    <c:forEach var="app" items="${applicantList}">
+			        <tr>
+			            <td style="text-align: center;">
+			                <input type="checkbox" name="selectedApp" value="${app.appId}">
+			            </td>
+			            <td style="color: #888;">${app.appId}</td>
+			            <td>
+			                <span class="name-tag">${app.userName}</span>
+			                <div class="doc-links">
+			                    <a href="<c:url value='/resume/detail?id=${app.resumeId}'/>" class="doc-btn">
+			                        <i class="fa-solid fa-file-user"></i> 이력서
+			                    </a>
+			                </div>
+			            </td>
+			            <td style="font-size: 14px;">${app.postingTitle}</td>
+			            <td style="font-size: 14px; color: #666;">${app.formattedApplyDate}</td>
+			            <td>
+			                <select class="status-select" onchange="changeStatus(${app.appId}, this.value)">
+			                    <option value="서류대기" ${app.appStep == '서류대기' ? 'selected' : ''}>서류대기</option>
+			                    <option value="서류통과" ${app.appStep == '서류통과' ? 'selected' : ''}>서류통과</option>
+			                    <option value="면접진행" ${app.appStep == '면접진행' ? 'selected' : ''}>면접진행</option>
+			                    <option value="최종합격" ${app.appStep == '최종합격' ? 'selected' : ''}>최종합격</option>
+			                    <option value="불합격" ${app.appStep == '불합격' ? 'selected' : ''}>불합격</option>
+			                </select>
+			            </td>
+			            <td style="text-align: center;">
+			                <i class="fa-solid fa-star star-icon ${app.isFavorite == 'Y' ? 'active' : ''}" 
+			                   onclick="toggleAppFavorite(${app.appId}, this)" 
+			                   style="cursor:pointer;"></i>
+			            </td>
+			        </tr>
+			    </c:forEach>
+			    
+			    <c:if test="${empty applicantList}">
+			        <tr>
+			            <td colspan="7" style="text-align: center; padding: 50px 0; color: #999;">
+			                조회된 지원자가 없습니다.
+			            </td>
+			        </tr>
+			    </c:if>
+			</tbody>
         </table>
     </div>
 
@@ -116,4 +128,46 @@
 </div>
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 </body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+// 1. 전형 상태 업데이트 (SELECT 박스 변경 시)
+function changeStatus(appId, newStep) {
+    if(!confirm("전형 상태를 '" + newStep + "'(으)로 변경하시겠습니까?")) return;
+
+    $.ajax({
+        url: '<c:url value="/job/updateAppStatus"/>',
+        type: 'POST',
+        data: { appId: appId, appStep: newStep },
+        success: function(response) {
+            if(response === "success") {
+                alert("상태가 변경되었습니다.");
+            } else {
+                alert("상태 변경에 실패했습니다.");
+            }
+        },
+        error: function() { alert("서버 통신 오류가 발생했습니다."); }
+    });
+}
+
+// 2. 관심 지원자(별표) 토글
+function toggleAppFavorite(appId, element) {
+    const isActive = $(element).hasClass('active');
+    const nextStatus = isActive ? 'N' : 'Y';
+
+    $.ajax({
+        url: '<c:url value="/job/toggleAppFavorite"/>',
+        type: 'POST',
+        data: { appId: appId, isFavorite: nextStatus },
+        success: function(response) {
+            if(response === "success") {
+                $(element).toggleClass('active');
+            } else {
+                alert("처리에 실패했습니다.");
+            }
+        }
+    });
+}
+</script>
+
 </html>

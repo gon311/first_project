@@ -1,6 +1,7 @@
 package com.itwillbs.project.job.service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -106,6 +107,33 @@ public class JobService {
 	public List<FileDTO> getFileList(Long jobId) {
 		return jobMapper.selectFileList(jobId);
 	}
+
+	// ===================================================
+	// 지원자 관리
+
+	public List<JobApplicationDTO> getApplicantList(Long jobId, Long compId) {
+	    // 특정 공고(jobId)를 선택해서 볼 수도 있고, 선택 안 하면 기업의 전체 공고 지원자를 보여줍니다.
+	    return jobMapper.getApplicantList(jobId, compId);
+	}
+
+	public void updateApplicationStatus(int appId, String appStep) {
+	    // 전형 상태(서류대기, 면접진행 등) 업데이트
+	    jobMapper.updateApplicationStatus(appId, appStep);
+	}
+
+	public void updateApplicationFavorite(int appId, String isFavorite) {
+	    // 관심 지원자(별표) 여부 업데이트
+	    jobMapper.updateApplicationFavorite(appId, isFavorite);
+	}
+
+	public String getPostingTitle(Long jobId) {
+		return jobMapper.getPostingTitle(jobId);
+	}
+
+	// ===================================================
+		
+
+		
 
 
 }

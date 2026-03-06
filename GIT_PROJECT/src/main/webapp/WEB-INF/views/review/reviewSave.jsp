@@ -65,7 +65,8 @@
 										onclick="location.href='<c:url value="/review/copyCheck" />'">
 										표절검사</button>
 									<button type="button"
-										class="btn btn-light border text-center action-btn"
+										class="btn btn-light border text-center action-btn", 
+										onclick ="location.href='<c:url value="/my/myReview" />'">
 										<%-- 목록으로 클릭 시 마이페이지 내 이력서/자조서 페이지로 이동 --%>
 										>목록으로</button>
 								</div>

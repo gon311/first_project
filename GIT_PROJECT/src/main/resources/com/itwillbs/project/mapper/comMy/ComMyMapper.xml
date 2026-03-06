@@ -126,6 +126,35 @@
 		WHERE email = #{sId}
 	</select>
 	
+<!-- ==============================
+     내정보 수정 저장
+     parameter: MyDTO (email, userName, phone ...)
+     result: int (affected rows)
+============================== -->
+	<update id="updateUser" parameterType="com.itwillbs.project.comMy.dto.ComMyDTO">
+		 UPDATE user
+		 SET user_name = #{userName},
+		     phone = #{phone}
+		 WHERE email = #{email}
+	</update>
+	
+<!-- ==============================
+     비밀번호 변경
+     parameter: PasswordChangeDTO.java
+     result: String
+============================== -->	
+	<select id="selectPassword" parameterType="string" resultType="string">
+		SELECT password
+		FROM user
+		WHERE email = #{sId}
+	</select>
+
+	<update id="updatePassword">
+		UPDATE user
+		SET password = #{password}
+		WHERE email = #{sId}
+	</update>	
+	
 
   <!-- =========================
        목록 조회 (페이징)

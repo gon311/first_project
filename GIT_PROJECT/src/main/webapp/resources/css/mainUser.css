@@ -1,4 +1,9 @@
 @charset "UTF-8";
+div {
+	border: 1px solid "red";
+}
+
+
 /* header 영역 */
 #header-upper{
 	background-color: #FFFFFF;
@@ -44,11 +49,24 @@
 
 
 /* main 영역 */
-.adMain, .btAi {
+.ad-menu, .btnAi, .card-group {
 	width: fit-content;
 	margin: 0 auto;
 	text-align: center;
 }
+.card-group {
+	background-color: "grey";
+}
+
+.card {
+	border: 1px solid "red";
+	
+}
+
+.card-body {
+	width: 80px;
+}
+
 
 
 /* footer 영역 */

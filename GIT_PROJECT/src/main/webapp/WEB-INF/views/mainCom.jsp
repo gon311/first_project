@@ -6,9 +6,8 @@
 	<head>
 		<%@ include file="/WEB-INF/views/inc/head.jspf"%>
 		
-		<%-- 현재 페이지(main.jsp) 전용 CSS 영역--%>
-		<link href="<c:url value="/resources/css/mainCom.css" />"
-			rel="stylesheet" type="text/css">
+		<%-- 현재 페이지(mainCom.jsp) 전용 CSS 영역--%>
+		<link href="<c:url value="/resources/css/mainCom.css" />" rel="stylesheet" type="text/css">
 	</head>
 	<body>
 		<%-- header area --%>

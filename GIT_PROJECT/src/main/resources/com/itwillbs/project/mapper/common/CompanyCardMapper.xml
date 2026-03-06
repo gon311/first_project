@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.project.common.mapper.CompanyCardMapper">
+
+	<select id="selectTodayCompanies" resultType="com.itwillbs.project.common.DTO.CompanyCardDTO">
+		SELECT 
+		   j.title,
+		   , u.company_name as companyName
+		   , j.salary
+		   , j.close_date as closeDate
+	    FROM JOB_POSTING j JOIN USER_COMPANY u
+	    ON j.comp_id = u.user_id
+		WHERE j.post_status = 1
+		AND j.close_date >= NOW()
+		AND 
+		ORDER BY RAND()
+	    LIMIT 6
+	</select>
+	
+	<select id="selectPopularCompanies" resultType="com.itwillbs.project.common.DTO.CompanyCardDTO">
+		SELECT 
+		    j.title,
+		    u.company_name AS companyName,
+		    j.salary,
+		    j.close_date AS closeDate
+		FROM JOB_POSTING j JOIN USER_COMPANY u
+		ON j.comp_id = u.user_id
+		WHERE j.job_id IN (SELECT job_id
+						    FROM (SELECT job_id
+							        FROM job_application
+							        GROUP BY job_id
+							        ORDER BY COUNT(user_id) DESC
+							        LIMIT 6 ) AS top_jobs)
+	</select>
+	
+	<select id="selectWishlistCompanies" resultType="com.itwillbs.project.common.DTO.CompanyCardDTO">
+		SELECT 
+		    j.title,
+		    u.company_name AS companyName,
+		    j.salary,
+		    j.close_date AS closeDate
+		FROM JOB_POSTING j
+		JOIN USER_COMPANY u
+		    ON j.comp_id = u.user_id
+		WHERE j.job_id IN (
+		    SELECT job_id
+		    FROM (SELECT job_id
+					FROM favorite_company
+					ORDER BY RAND()
+					LIMIT 6) AS wishlist)
+	</select>
+
+</mapper>

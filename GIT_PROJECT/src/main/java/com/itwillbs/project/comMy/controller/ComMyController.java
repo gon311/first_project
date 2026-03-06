@@ -26,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 
+
+
 @Controller
 @RequestMapping("/comMy")
 @Log4j2
@@ -135,11 +137,24 @@ public class ComMyController {
 	@PostMapping("/password")
 	public String passwordSubmit(HttpSession session,
 	                             PasswordChangeDTO form,
+	                             @RequestParam(value = "cf-turnstile-response", required = false) String turnstileToken,
 	                             RedirectAttributes ra) {
 
 	    // 1) 로그인 체크
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) return "redirect:/user/login_form";
+		
+		if (turnstileToken == null || turnstileToken.trim().isEmpty()) {
+		    ra.addFlashAttribute("errorMsg", "자동입력 방지 확인을 완료해주세요.");
+		    return "redirect:/comMy/password";
+		}
+
+		boolean captchaOk = comMyService.verifyTurnstile(turnstileToken);
+
+		if (!captchaOk) {
+		    ra.addFlashAttribute("errorMsg", "자동입력 방지 검증에 실패했습니다. 다시 시도해주세요.");
+		    return "redirect:/comMy/password";
+		}
 
 	    // 2) 1차 입력 검증(빈값/공백)
 		String curPass = form.getCurrentPassword() == null ? "" : form.getCurrentPassword().trim();
@@ -226,6 +241,25 @@ public class ComMyController {
 	    model.addAttribute("q", q);
 	    
 	    return "/comMy/job";
+	}
+	
+	
+	// 공고삭제
+	@PostMapping("/delete")
+	public String deleteJob(@RequestParam Long jobId, HttpSession session) {
+		
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login"; 
+	    
+	    ComMyDTO user = comMyService.getUser(sId);
+	    Long userId = user.getUserId();
+	    
+	    comMyService.deleteJob(userId, jobId);
+	    
+	    int deleted = comMyService.deleteJob(jobId, userId);
+	    
+		
+		return "redirect:/comMy/job";
 	}
 	
 	

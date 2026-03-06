@@ -6,6 +6,7 @@
 <head>
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 <link rel="stylesheet" href="<c:url value='/resources/css/comMyCss/password.css'/>" type="text/css">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body>
@@ -61,29 +62,13 @@
                    placeholder="새 비밀번호 확인" required />
           </div>
 
-          <%-- 캡차 영역(원하면 나중에 실제 캡차로 교체) --%>
-          <div class="mb-3">
-            <label class="form-label">자동입력 방지문자</label>
-            <div class="border rounded-3 p-3 bg-light">
-              <div class="d-flex flex-column flex-md-row gap-2 align-items-md-center">
-                <div class="flex-grow-1">
-                  <div class="text-muted small mb-2">아래 이미지를 보이는 대로 입력해주세요.</div>
-                  <%-- 실제 캡차 이미지/기능 붙이기 전 임시 박스 --%>
-                  <div class="border rounded-3 bg-white d-flex align-items-center justify-content-center"
-                       style="height:74px;">
-                    <span class="text-muted">CAPTCHA IMAGE</span>
-                  </div>
-                </div>
-                <div class="d-flex flex-md-column gap-2">
-                  <button type="button" class="btn btn-outline-secondary">새로고침</button>
-                  <button type="button" class="btn btn-outline-secondary">음성으로 듣기</button>
-                </div>
-              </div>
-
-              <input type="text" name="captcha" class="form-control mt-3"
-                     placeholder="자동입력 방지문자" required />
-            </div>
-          </div>
+		  <div class="mb-3">
+			<label class="form-label">자동입력 방지</label>
+			  <div class="border rounded-3 p-3 bg-light">
+			    <div class="cf-turnstile"
+			         data-sitekey="0x4AAAAAACnFvtsMiRr6zWEI"></div>
+			  </div>
+		  </div>
 
           <div class="d-grid gap-2 mt-4">
             <button type="submit" class="btn btn-primary">확인</button>

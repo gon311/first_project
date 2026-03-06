@@ -29,7 +29,12 @@
                         <div class="col-9">
                             <div class="position-relative mb-2">
                                 <i class="fa-regular fa-user position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
-                                <input type="text" class="form-control form-control-lg ps-5" name="email" value="${type != 'C' ? errorId : ''}" placeholder="개인 ID">
+                                <input 
+                                	type="text" 
+                                	class="form-control form-control-lg ps-5" 
+                                	name="email" 
+                                	value="${cookie['remember-type'].value == 'P' ? type == 'P' ? errorId : cookie['remember-id'].value : ''}"
+                                	placeholder="개인 ID">
                             </div>
                             <div class="position-relative">
                                 <i class="fa-solid fa-lock position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
@@ -41,9 +46,12 @@
                         <div class="col-3">
                             <button class="btn btn-primary w-100 btn-big-login p-0">로그인</button>
                         </div>
-                            <div class="position-relative">
-                                <p id="error">${type != 'C' ? errorMsg : ''}</p>
-                            </div>
+	                    <div class="position-relative">
+	                        <label><input type="checkbox" name="rememberId" <c:if test="${cookie['remember-type'].value == 'P'}">checked</c:if>> 아이디 기억하기</label>
+	                    </div>
+	                    <div class="position-relative">
+	                        <p id="error">${type != 'C' ? errorMsg : ''}</p>
+	                    </div>
                     </div>
                 </form>
 
@@ -74,7 +82,7 @@
                         <div class="col-9">
                             <div class="position-relative mb-2">
                                 <i class="fa-regular fa-building position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
-                                <input type="text" class="form-control form-control-lg ps-5" name="email" value="${type == 'C' ? errorId : ''}" placeholder="기업 ID">
+                                <input type="text" class="form-control form-control-lg ps-5" name="email" value="${cookie['remember-type'].value == 'C' ? type == 'C' ? errorId : cookie['remember-id'].value : ''}" placeholder="기업 ID">
                             </div>
                             <div class="position-relative">
                                 <i class="fa-solid fa-lock position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
@@ -86,6 +94,9 @@
                         <div class="col-3">
                             <button class="btn btn-primary w-100 btn-big-login p-0">로그인</button>
                         </div>
+                        <div class="position-relative">
+	                        <label><input type="checkbox" name="rememberId" <c:if test="${cookie['remember-type'].value == 'C'}">checked</c:if>> 아이디 기억하기</label>
+	                    </div>
                         <div class="position-relative">
                         	<p id="error">${type == 'C' ? errorMsg : ''}</p>
                         </div>

@@ -80,12 +80,22 @@ public class UserController {
 			cookie.setMaxAge(60 * 60 * 24 * 30); 
 			cookie.setHttpOnly(true);
 			response.addCookie(cookie);
-		} else { 
 			
+			Cookie cookie2 = new Cookie("remember-type", dbUser.getUserType());
+			cookie2.setPath("/"); // 현재 서버 범위 내에서 현재 쿠키 접근 가능하도록 설정
+			cookie2.setMaxAge(60 * 60 * 24 * 30); 
+			cookie2.setHttpOnly(true);
+			response.addCookie(cookie2);
+		} else { 
 			Cookie cookie = new Cookie("remember-id", userDTO.getEmail()); 
 			cookie.setPath("/");
 			cookie.setMaxAge(0);
 			response.addCookie(cookie);
+			
+			Cookie cookie2 = new Cookie("remember-type", dbUser.getUserType());
+			cookie2.setPath("/");
+			cookie2.setMaxAge(0);
+			response.addCookie(cookie2);
 		}
 		
 		return "redirect:/";
@@ -141,7 +151,10 @@ public class UserController {
 	
 	// 아이디/비밀번호 찾기 페이지로 이동
 	@GetMapping("/find")
-	public String find() {
+	public String find(HttpSession session) {
+		if(session.getAttribute("userType") != null) {
+			throw new BackwardException("잘못된 접근입니다!");
+		}
 		
 		return "/user/find_form";
 	}
@@ -160,8 +173,12 @@ public class UserController {
 	
 	// 새 비밀번호 작성 페이지
 	@GetMapping("/findPw")
-	public String findPw() {
-				
+	public String findPw(HttpSession session) {
+		
+		if(session.getAttribute("userType") != null) {
+			throw new BackwardException("잘못된 접근입니다!");
+		}
+		
 		return "/user/find_pw";
 	}
 	
@@ -176,11 +193,11 @@ public class UserController {
 		
 		if(userDTO.getUserType().equals("P")) {
 			if(userdb == null || !userDTO.getUserType().equals(userdb.getUserType()) || !userDTO.getPhone().equals(userdb.getPhone()) || !userDTO.getUserName().equals(userdb.getUserName())) {
-				return "redirect:/user/find";
+				throw new BackwardException("일치하는 정보가 없습니다");
 			}
 		} else if(userDTO.getUserType().equals("C")) {
 			if(userdb == null || !userDTO.getUserType().equals(userdb.getUserType()) || userDTO.getBizRegNo().equals(userdb.getBizRegNo()) || userDTO.getCeoName().equals(userdb.getCeoName())) {
-				return "redirect:/user/find";
+				throw new BackwardException("일치하는 정보가 없습니다");
 			}
 		} 
 		

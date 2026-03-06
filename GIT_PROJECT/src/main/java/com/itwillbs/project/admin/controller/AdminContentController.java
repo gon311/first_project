@@ -95,7 +95,7 @@ public class AdminContentController {
 		
 		
 		List<JobPostDTO> jobPostList = adminService.getJobPostList(jobPostDTO);
-		System.out.println("postStatus: " + jobPostDTO.getPostStatus());
+//		System.out.println("postStatus: " + jobPostDTO.getPostStatus());
 		
 		model.addAttribute("jobPostList", jobPostList);
 		model.addAttribute("jobPostDTO", jobPostDTO);
@@ -201,11 +201,9 @@ public class AdminContentController {
 			@RequestParam(value="sort", defaultValue="all") String sort,
 			Model model, QnaDTO qnaDTO) {
 	    
-		qnaDTO.setReStatus(reStatus);
-		qnaDTO.setSort(sort);
 		
 		List<QnaDTO> list = adminService.getQnaList(qnaDTO);
-//		System.out.println(sort.toString());
+//		System.out.println("정렬 확인 : " +sort.toString());
 	    model.addAttribute("qnaList", list);
 	    model.addAttribute("reStatus", reStatus); // 현재 탭 활성화를 위해 전달
 	    model.addAttribute("sort", sort);

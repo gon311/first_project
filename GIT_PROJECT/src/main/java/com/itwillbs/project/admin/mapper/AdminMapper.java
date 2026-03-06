@@ -145,8 +145,6 @@ public interface AdminMapper {
 
 	List<QnaDTO> getQnaList(QnaDTO qnaDTO);
 
-	List<QnaDTO> getListByStatus(String reStatus);
-	
 	QnaDTO getQnaById(int qnaId);
 
 	void registAnswer(QnaDTO qnaDTO);

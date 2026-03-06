@@ -191,11 +191,7 @@ public class AdminService{
 
 		return adminMapper.getQnaList(qnaDTO);
 	}
-	// 상태 따라 div 영역 출력
-	public List<QnaDTO> getListByStatus(String reStatus) {
-		return adminMapper.getListByStatus(reStatus);
-	}
-	
+
 	public QnaDTO getQnADetail(int qnaId) {
 		return adminMapper.getQnaById(qnaId);
 	}

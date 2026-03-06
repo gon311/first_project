@@ -715,16 +715,15 @@
 		</where>
 		ORDER BY 
 			<choose>
-				<when test ='sort == "old"'>
+				<when test ='sort != null and sort.equals("old")'>
 					reg_date ASC
 				</when>
-				<when test ='sort == "new"'>
+				<when test ='sort != null and sort.equals("new")'>
 					reg_date DESC
 				</when>
 				<otherwise>
 					qna_id DESC
 				</otherwise>
-			
 			</choose>
 	</select>
 	

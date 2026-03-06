@@ -315,8 +315,8 @@ public class AdminController {
 	@GetMapping("/banners")
 	public String bannerList(Model model, BannerDTO bannerDTO) {
 		List<BannerDTO> adList = adminService.getBannerList(bannerDTO);
-		System.out.println("조회된 배너 개수: " + (adList !=null ? adList.size() : "null"));
-		System.out.println(adList.toString());
+//		System.out.println("조회된 배너 개수: " + (adList !=null ? adList.size() : "null"));
+//		System.out.println(adList.toString());
 		model.addAttribute("adList", adList);
 	
 		return "admin/banner";

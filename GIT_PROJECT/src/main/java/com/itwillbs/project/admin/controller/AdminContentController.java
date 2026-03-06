@@ -139,6 +139,7 @@ public class AdminContentController {
 	    // 서비스 호출 (카테고리, 키워드 포함)
 	    List<FaqDTO> faqList = adminService.getFaqList(faqDTO);
 //	    System.out.println(faqList);
+	    System.out.println(category.toString());
 	    
 	    model.addAttribute("faqList", faqList);
 	    model.addAttribute("userType", userType); // 탭 활성화 유지용

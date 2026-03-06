@@ -798,12 +798,24 @@
 			<if test="userType != null and userType != '' and userType != 'all'">
 				AND user_type=#{userType}
 			</if>
-			<if test="keyword != null and keyword != ''">
-				AND faq_title LIKE CONCAT('%', #{keyword}, '%')
-			</if>
-			<if test="category !=null and category != ''">
+<!-- 			<if test="keyword != null and keyword != ''"> -->
+<!-- 				<when test = "category == 'account"> -->
+<!-- 				AND faq_title LIKE CONCAT ('%', #{keyword), '%') -->
+				
+<!-- 				</when> -->
+<!-- 				<otherwise> -->
+<!-- 				</otherwise> -->
+<!-- 				AND faq_title LIKE CONCAT('%', #{keyword}, '%') -->
+<!-- 			</if> -->
+			
+			<if test="category !=null and category != '' and userType != 'all'">
 				AND category = #{category}
 			</if>
+<!-- 				account -->
+<!-- 				service -->
+<!-- 				error -->
+<!-- 				ect -->
+			
 		</where>
 		ORDER BY faq_id DESC
 			

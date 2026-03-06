@@ -54,6 +54,8 @@ public interface JobMapper {
 	void updateApplicationStatus(@Param("appId") int appId, @Param("appStep") String appStep);
 
 	void updateApplicationFavorite(@Param("appId") int appId, @Param("isFavorite") String isFavorite);
+
+	String getPostingTitle(Long jobId);
 	
 	// ===================================================
 }

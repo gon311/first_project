@@ -219,9 +219,11 @@ public class JobController {
 	    // 2. 특정 공고(jobId)의 지원자 리스트 조회
 	    // 아래 서비스 메서드들은 필요에 따라 JobService에 추가 구현이 필요합니다.
 	    List<JobApplicationDTO> applicantList = jobService.getApplicantList(jobId, compId);
+	    String postingTitle = jobService.getPostingTitle(jobId);
 	    
 	    model.addAttribute("applicantList", applicantList);
 	    model.addAttribute("selectedJobId", jobId);
+	    model.addAttribute("postingTitle", postingTitle);
 	    
 	    return "/job/job_management";
 	}

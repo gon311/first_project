@@ -126,6 +126,10 @@ public class JobService {
 	    jobMapper.updateApplicationFavorite(appId, isFavorite);
 	}
 
+	public String getPostingTitle(Long jobId) {
+		return jobMapper.getPostingTitle(jobId);
+	}
+
 	// ===================================================
 		
 

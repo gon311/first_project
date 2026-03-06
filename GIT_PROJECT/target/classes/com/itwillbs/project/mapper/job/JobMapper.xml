@@ -381,5 +381,11 @@
 	    WHERE app_id = #{appId}
 	</update>
 	
+	<select id="getPostingTitle" resultType="string">
+		SELECT title
+		FROM JOB_POSTING
+		WHERE job_id = #{jobId}
+	</select>
+	
 	
 </mapper>

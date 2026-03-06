@@ -154,12 +154,26 @@ public class MyController {
 	@PostMapping("/password")
 	public String passwordSubmit(HttpSession session,
 	                             PasswordChangeDTO form,
+	                             @RequestParam(value = "cf-turnstile-response", required = false) String turnstileToken,
 	                             RedirectAttributes ra) {
 
 	    // 1) 로그인 체크
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) return "redirect:/user/login_form";
+		
+		
+		if (turnstileToken == null || turnstileToken.trim().isEmpty()) {
+		    ra.addFlashAttribute("errorMsg", "자동입력 방지 확인을 완료해주세요.");
+		    return "redirect:/my/password";
+		}
 
+		boolean captchaOk = myService.verifyTurnstile(turnstileToken);
+
+		if (!captchaOk) {
+		    ra.addFlashAttribute("errorMsg", "자동입력 방지 검증에 실패했습니다. 다시 시도해주세요.");
+		    return "redirect:/my/password";
+		}
+		
 	    // 2) 1차 입력 검증(빈값/공백)
 		String curPass = form.getCurrentPassword() == null ? "" : form.getCurrentPassword().trim();
 		String newPass = form.getNewPassword() == null ? "" : form.getNewPassword().trim();

@@ -3,6 +3,7 @@ package com.itwillbs.project.my.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,17 @@ import com.itwillbs.project.my.mapper.MyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 @RequiredArgsConstructor
 @Log4j2
@@ -32,6 +44,11 @@ public class MyService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Value("${turnstile.secret-key}")
+	private String turnstileSecretKey;
+
+	private final ObjectMapper objectMapper = new ObjectMapper();
 	
 	// 내 정보
 	public MyDTO getUser(String sId) {
@@ -170,6 +187,51 @@ public class MyService {
 	    int need = myMapper.needRecommendRefresh(userId); // 0/1
 	    if (need == 1) {
 	        myMapper.upsertRecommendedJobs(userId); // 네 추천 UPSERT SQL
+	    }
+	}
+	
+	// 캡챠
+	public boolean verifyTurnstile(String turnstileToken) {
+		
+	    if (turnstileToken == null || turnstileToken.trim().isEmpty()) {
+	        return false;
+	    }
+
+	    try {
+	        URL url = new URL("https://challenges.cloudflare.com/turnstile/v0/siteverify");
+	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	        conn.setRequestMethod("POST");
+	        conn.setDoOutput(true);
+	        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+	        String params = "secret=" + URLEncoder.encode(turnstileSecretKey, "UTF-8")
+	                + "&response=" + URLEncoder.encode(turnstileToken, "UTF-8");
+
+	        try (OutputStream os = conn.getOutputStream()) {
+	            os.write(params.getBytes(StandardCharsets.UTF_8));
+	        }
+	        
+	        if (conn.getResponseCode() != 200) {
+	            return false;
+	        }
+
+	        try (BufferedReader br = new BufferedReader(
+	                new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
+
+	            StringBuilder sb = new StringBuilder();
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                sb.append(line);
+	            }
+	            
+
+	            JsonNode jsonNode = objectMapper.readTree(sb.toString());
+	            return jsonNode.path("success").asBoolean(false);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
 	    }
 	}
 

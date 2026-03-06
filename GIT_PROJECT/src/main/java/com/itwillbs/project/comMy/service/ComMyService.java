@@ -143,6 +143,11 @@ public class ComMyService {
 	        return false;
 	    }
 	}
+
+	// 공고 삭제
+	public int deleteJob(Long userId, Long jobId) {
+		return comMyMapper.deleteJob(userId, jobId);
+	}
 	
 }
 

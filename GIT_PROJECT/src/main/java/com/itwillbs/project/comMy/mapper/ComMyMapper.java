@@ -33,6 +33,10 @@ public interface ComMyMapper {
 	String selectPassword(@Param("sId") String sId);
 	int updatePassword(@Param("sId") String sId, @Param("password") String password);
 	
+	// 공고 목록 삭제
+	int deleteJob(@Param("userId") Long userId, 
+				@Param("jobId") Long jobId);
+	
 	
 	
 	

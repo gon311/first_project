@@ -12,6 +12,7 @@
 <c:url var="urlApplicantManage" value="/job/comApplicants"/>   <%-- ?jobId= --%>
 <c:url var="urlJobDetail" value="/job/JobDetail"/>               <%-- ?jobId= (있으면 사용) --%>
 <c:url var="urlJobEdit" value="/job/edit"/>                   <%-- ?jobId= (있으면 사용) --%>
+<c:url var="urlJobDelete" value="/comMy/delete"/>				  <!-- 삭제 -->
 
 <style>
   body{ background:#f6f7fb; }
@@ -109,12 +110,19 @@
     border:1px solid #eef2f7;
     border-radius:14px;
     background:#fff;
-    padding:16px;
+    padding:16px 18px;
     display:flex;
     justify-content:space-between;
-    gap:14px;
+    align-items:center;
+    gap:18px;
   }
-  .jobLeft{ flex: 1; min-width:0; }
+  .jobLeft{
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
   .jobTitle{
     font-weight:900;
     font-size:1.05rem;
@@ -122,6 +130,7 @@
     color:#111827;
     text-decoration:none;
     display:inline-block;
+    line-height:1.35;
   }
   .jobTitle:hover{ text-decoration:underline; }
 
@@ -129,93 +138,154 @@
     margin-top:8px;
     display:flex;
     flex-wrap:wrap;
-    gap:8px 12px;
+    align-items:center;
+    gap:8px 14px;
     color:#6b7280;
     font-weight:700;
     font-size:.9rem;
+    line-height:1.5;
   }
-  .jobMeta span{ display:inline-flex; align-items:center; gap:6px; }
+  .jobMeta span{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    white-space:nowrap;
+  }
 
   .jobRight{
     display:flex;
     flex-direction:column;
     align-items:flex-end;
-    justify-content:space-between;
-    gap:10px;
-    min-width: 220px;
+    justify-content:center;
+    gap:12px;
+    min-width:220px;
+    flex-shrink:0;
+  }
+
+  .jobStatus{
+    display:flex;
+    justify-content:flex-end;
+    width:100%;
+    min-height:32px;
+    align-items:center;
   }
 
   .badge{
-    display:inline-block;
-    padding: 6px 10px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 10px;
     border-radius:999px;
     font-weight:900;
     font-size:.85rem;
     border:1px solid transparent;
     white-space:nowrap;
+    line-height:1;
   }
   .badge-open{ background:#ecfdf5; color:#047857; border-color:#a7f3d0; }
   .badge-closed{ background:#fff7ed; color:#9a3412; border-color:#fed7aa; }
   .badge-draft{ background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; }
 
-  .btns{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+  .btns{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    align-items:center;
+  }
+
+  .delete-form{
+    display:inline-flex;
+    align-items:center;
+    margin:0;
+  }
+
+  .delete-form input[type="hidden"]{
+    display:none;
+  }
+
+  .btn-lite,
+  .btn-strong,
+  .btn-danger{
+    min-width:96px;
+    height:42px;
+    padding:0 14px;
+    font-size:14px;
+    font-weight:900;
+    border-radius:10px;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    box-sizing:border-box;
+    line-height:1;
+    white-space:nowrap;
+    cursor:pointer;
+    margin:0;
+    vertical-align:middle;
+  }
+
   .btn-lite{
     background:#fff;
     border:1px solid #cbd5e1;
     color:#334155;
-    font-weight:900;
-    border-radius:10px;
-    padding: 8px 12px;
-    text-decoration:none;
-    display:inline-block;
   }
-  .btn-lite:hover{ background:#f7f9fc; }
+  .btn-lite:hover{
+    background:#f7f9fc;
+  }
 
   .btn-strong{
     background:#111827;
     border:1px solid #111827;
     color:#fff;
-    font-weight:900;
-    border-radius:10px;
-    padding: 8px 12px;
-    text-decoration:none;
-    display:inline-block;
   }
-  .btn-strong:hover{ filter:brightness(.96); }
+  .btn-strong:hover{
+    filter:brightness(.96);
+  }
+
+  .btn-danger{
+    background:#dc3545;
+    border:1px solid #dc3545;
+    color:#fff;
+    appearance:none;
+  }
+  .btn-danger:hover{
+    background:#c82333;
+  }
 
   /* 빈 상태 */
   .empty{
-    margin-top: 20px;
-    padding: 80px 0;
+    margin-top:20px;
+    padding:80px 0;
     text-align:center;
     color:#6b7280;
     border:1px solid #eef2f7;
-    border-radius: 14px;
+    border-radius:14px;
     background:#fff;
   }
   .empty .big{
     font-weight:900;
     font-size:1.1rem;
     color:#111827;
-    margin-top: 10px;
+    margin-top:10px;
   }
   .empty .sub{ margin-top:6px; }
-  .empty .actions{ margin-top: 16px; }
+  .empty .actions{ margin-top:16px; }
 
   /* 페이지네이션 */
   .pager{
-    margin-top: 18px;
+    margin-top:18px;
     display:flex;
     justify-content:center;
-    gap: 8px;
+    gap:8px;
   }
   .pager a{
     display:inline-block;
-    min-width: 34px;
+    min-width:34px;
     text-align:center;
-    padding: 8px 10px;
+    padding:8px 10px;
     border:1px solid #e5e7eb;
-    border-radius: 10px;
+    border-radius:10px;
     text-decoration:none;
     color:#374151;
     font-weight:900;
@@ -226,7 +296,47 @@
     border-color:#2563eb;
     color:#fff;
   }
+
+  @media (max-width: 992px){
+    .toolbar{
+      flex-direction:column;
+      align-items:stretch;
+    }
+
+    .toolbar-left,
+    .toolbar-right{
+      width:100%;
+    }
+
+    .search-wrap{
+      min-width:100%;
+      width:100%;
+    }
+
+    .search-wrap input{
+      width:100%;
+    }
+
+    .jobCard{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+
+    .jobRight{
+      width:100%;
+      align-items:flex-start;
+    }
+
+    .jobStatus{
+      justify-content:flex-start;
+    }
+
+    .btns{
+      justify-content:flex-start;
+    }
+  }
 </style>
+
 <main class="container-fluid px-0 mypage-wrap">
   <div class="row g-0">
 
@@ -318,7 +428,7 @@
 
                 <div class="jobRight">
                   <%-- 상태 배지 --%>
-                  <div>
+                  <div class="jobStatus">
                     <c:choose>
                       <c:when test="${j.postStatus == 'OPEN'}">
                         <span class="badge badge-open">진행중</span>
@@ -339,7 +449,16 @@
                     <a class="btn-lite" href="${urlJobEdit}?jobId=${j.jobId}">
                       공고 수정
                     </a>
+
+                    <!-- 삭제버튼 -->
+                    <form action="${urlJobDelete}" method="post" class="delete-form"
+                          onsubmit="return confirm('이 공고를 삭제하시겠습니까?');">
+                      <input type="hidden" name="jobId" value="${j.jobId}">
+                      <button type="submit" class="btn-danger">공고 삭제</button>
+                    </form>
+
                   </div>
+
                 </div>
 
               </div>

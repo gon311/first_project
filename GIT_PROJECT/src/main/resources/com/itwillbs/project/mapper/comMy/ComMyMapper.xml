@@ -157,7 +157,7 @@
 	
 
   <!-- =========================
-       목록 조회 (페이징)
+       목록 조회 (페이징) 공고
        ========================= -->
 	<select id="selectJobList"
 	        parameterType="com.itwillbs.project.comMy.dto.JobCond"
@@ -200,6 +200,15 @@
 	
 	  <include refid="jobWhere"/>
 	</select>
+	
+	  <!-- =========================
+       삭제
+       ========================= -->
+	<delete id="deleteJob">
+	  DELETE FROM JOB_POSTING
+	  WHERE comp_id = #{userId}
+	    AND job_id = #{jobId}
+	</delete>	
 		
 	
 <!-- ==============================

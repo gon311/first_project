@@ -244,6 +244,25 @@ public class ComMyController {
 	}
 	
 	
+	// 공고삭제
+	@PostMapping("/delete")
+	public String deleteJob(@RequestParam Long jobId, HttpSession session) {
+		
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login"; 
+	    
+	    ComMyDTO user = comMyService.getUser(sId);
+	    Long userId = user.getUserId();
+	    
+	    comMyService.deleteJob(userId, jobId);
+	    
+	    int deleted = comMyService.deleteJob(jobId, userId);
+	    
+		
+		return "redirect:/comMy/job";
+	}
+	
+	
 	// 결제내역
 	@GetMapping("/payment")
 	public String payment(HttpSession session, 

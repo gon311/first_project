@@ -38,8 +38,8 @@
 			
 			                    <!-- 제목 -->
 			                    <div class="mb-3">
-			                        <label for="subject" class="form-label">제목</label>
-			                        <input type="text" id="subject" name="subject" class="form-control" placeholder="제목을 입력하세요" required>
+			                        <label for="title" class="form-label">제목</label>
+			                        <input type="text" id="title" name="title" class="form-control" placeholder="제목을 입력하세요" required>
 			                    </div>
 			
 			                    <!-- 본문 -->

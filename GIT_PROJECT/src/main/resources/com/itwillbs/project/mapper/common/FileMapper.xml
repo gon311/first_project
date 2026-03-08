@@ -32,7 +32,7 @@
 		<foreach collection="fileList" item="file" separator=",">
 			(
 				#{postId}
-				, #{category_idx}
+				, #{categoryIdx}
 				, #{file.originName}
 				, #{file.storedName}
 				, #{file.filePath}

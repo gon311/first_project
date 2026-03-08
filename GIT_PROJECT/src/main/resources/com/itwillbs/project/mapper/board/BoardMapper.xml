@@ -10,7 +10,6 @@
 			, author_member_id
 			, title
 			, content
-			, readcount
 			, created_at
 		)
 		VALUES ( 
@@ -18,7 +17,6 @@
 			, #{authorMemberId}
 			, #{title}
 			, #{content}
-			, 0
 			, NOW()
 		)
 	</insert>

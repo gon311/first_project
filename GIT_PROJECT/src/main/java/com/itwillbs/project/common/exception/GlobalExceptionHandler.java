@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
 		// 모델 객체에 예외처리 과정에서 필요한 메세지 및 이동 방식과 이동할 주소 등을 저장
 		model.addAttribute("msg", e.getMessage()); // 예외 발생 메세지 저장
 		model.addAttribute("moveType", "redirect"); // 예외 처리 후 이동방식 저장
-		model.addAttribute("url", "/member/login"); // 예외 처리 후 이동 url 저장
+		model.addAttribute("url", "/user/login"); // 예외 처리 후 이동 url 저장
 				
 		//공통 에러 메세지 출력 jsp로 포워딩
 		return "/common/alert"; 

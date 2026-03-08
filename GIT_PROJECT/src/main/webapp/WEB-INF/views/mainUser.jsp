@@ -8,12 +8,7 @@
 		 
 		 <%-- 현재 페이지(mainUser.jsp) 전용 CSS 영역--%>
 		<link href="<c:url value="/resources/css/mainUser.css" />" rel="stylesheet" type="text/css">
-		<style type="text/css">
-		div {
-			border: 1px solid "red";
-		}
-		
-		</style>
+		<link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet">
 	</head>
 	<body>
 		<%-- header area --%>
@@ -73,12 +68,11 @@
 		<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 		
 		<%-- 개별 페이지 자바스크립트 영역 --%>
-		<script type="text/javascript">
-			
-				
-			
-		</script>
+		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 		
+		<script type="text/javascript">
+		
+		</script>
 	</body>
 </html>
 

@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+
+/* header 영역 */
+#header-upper{
+	background-color: #FFFFFF;
+	height: 90px;
+}
+#header-bottom{
+	background-color: #FFFFFF;
+	color : #191970;
+}
+
+.nav-link{
+	color: #0047AB;
+}
+
+/* 드롭다운: 기본 숨김(명시적으로) */
+.nav-item.dropdown .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 2000; /* 다른 요소보다 위로 */
+}
+
+/* hover 시 드롭다운 보이기 (PC 전용) */
+.nav-item.dropdown:hover > .dropdown-menu {
+  display: block;
+}
+
+/* 혹시 상위 요소에 overflow가 있어 가려질 경우를 대비 */
+#header-upper,
+#globalMenu,
+.navbar,
+.container-fluid {
+  overflow: visible !important;
+}
+
+/* 시각적 hover 개선 */
+.dropdown-item:hover {
+  background-color: #f0f4ff;
+  color: #0047AB;
+}
+
+
+
+
+/* footer 영역 */
+
+.footer-link {
+	color: #333;
+	text-decoration: none;
+	margin: 0 4px;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}

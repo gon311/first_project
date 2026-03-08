@@ -1,82 +1,63 @@
 @charset "UTF-8";
-div {
-	border: 1px solid "red";
-}
+
+/* mainUser 전용 */
 
 
-/* header 영역 */
-#header-upper{
-	background-color: #FFFFFF;
-	height: 90px;
-}
-#header-bottom{
-	background-color: #FFFFFF;
-	color : #191970;
-}
-
-.nav-link{
-	color: #0047AB;
-}
-
-/* 드롭다운: 기본 숨김(명시적으로) */
-.nav-item.dropdown .dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 2000; /* 다른 요소보다 위로 */
-}
-
-/* hover 시 드롭다운 보이기 (PC 전용) */
-.nav-item.dropdown:hover > .dropdown-menu {
-  display: block;
-}
-
-/* 혹시 상위 요소에 overflow가 있어 가려질 경우를 대비 */
-#header-upper,
-#globalMenu,
-.navbar,
-.container-fluid {
-  overflow: visible !important;
-}
-
-/* 시각적 hover 개선 */
-.dropdown-item:hover {
-  background-color: #f0f4ff;
-  color: #0047AB;
-}
-
-
-
-/* main 영역 */
 .ad-menu, .btnAi, .card-group {
 	width: fit-content;
 	margin: 0 auto;
 	text-align: center;
 }
-.card-group {
-	background-color: "grey";
+
+
+/* 공고 카드 영역 */
+.job-section {
+    background: #f5f6f8;
+    padding: 40px;
+    border-radius: 20px;
 }
 
-.card {
-	border: 1px solid "red";
-	
+.job-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    height: 260px;
+    transition: 0.3s;
+    cursor: pointer;
 }
 
-.card-body {
-	width: 80px;
+.job-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
-
-
-/* footer 영역 */
-
-.footer-link {
-	color: #333;
-	text-decoration: none;
-	margin: 0 4px;
+.company-logo {
+    height: 40px;
+    object-fit: contain;
+    margin-bottom: 20px;
 }
 
-.footer-link:hover {
-  text-decoration: underline;
+.job-title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
+
+.company-name {
+    font-size: 14px;
+    color: #666;
+    margin-top: 8px;
+}
+
+.deadline {
+    margin-top: 20px;
+    font-size: 14px;
+    text-align: right;
+    color: #888;
+}
+

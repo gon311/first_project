@@ -32,7 +32,7 @@ public class FileUtils {
 	
 	// 파일 업로드 처리
 	public static List<FileDTO> uploadBoardFile(List<MultipartFile> files) throws IOException {
-		String subDir = createDirectories();
+		String filePath = createDirectories();
 		
 		// 파일 업로드 처리 
 		// 복수개 파일 저장, 관리할 List<FileDTO>
@@ -40,19 +40,33 @@ public class FileUtils {
 		
 		// 파일이 저장된 List<MultipartFile> 객체 반복
 		for(MultipartFile mFile : files ) {
+			if(mFile.isEmpty()) {
+				continue; // 파일이 비어있으면 스킵
+			}
 			
-			// 각 파일의 원본 파일명 추출 
-			String originalFileName = mFile.getOriginalFilename();
+			String originName = mFile.getOriginalFilename();
+	        // 확장자 추출 (table의 file_ext 대응)
+	        String fileExt = originName.substring(originName.lastIndexOf(".") + 1);
+	        // 저장용 이름 생성
+	        String storedName = UUID.randomUUID().toString().substring(24) + "_" + originName;
 			
-			// 파일명 중복을 방지하기 위한 난수 및 특수문자 추가 
-			String fileName = UUID.randomUUID().toString().substring(24) + "_" + originalFileName;
+	        // 실제 저장 경로 (물리적 서버 경로)
+	        Path uploadDirectory = Paths.get(uploadBaseLocation, boardFileLocation, filePath).toAbsolutePath().normalize();
+	        Path uploadPath = uploadDirectory.resolve(storedName);
 			
-			// 디렉토리와 파일명 결합한 새 Path 객체 생성 
-			Path uploadDirectory = Paths.get(uploadBaseLocation, boardFileLocation, subDir).toAbsolutePath().normalize();
-			// 기본 Path 객체가 있을 경우, Path 객체의 resolve() 메서드 호출하여 결합할 경로 전달
-			Path uploadPath = uploadDirectory.resolve(fileName);
-			
-			mFile.transferTo(uploadPath);
+	        // 파일 물리적 저장
+	        mFile.transferTo(uploadPath);
+	        
+	        // 1개 파일 정보를 FileDTO 객체에 저장 
+	        FileDTO fileDTO = new FileDTO();
+	        fileDTO.setOriginName(originName); 
+	        fileDTO.setStoredName(storedName);     
+	        fileDTO.setFilePath(filePath);         
+	        fileDTO.setFileSize(mFile.getSize());   
+	        fileDTO.setFileExt(fileExt);         
+	        
+	        // List<FileDTO> 객체에 1개의 FileDTO 객체 추가 
+	        fileList.add(fileDTO);
 		}
 		return fileList;
 	}

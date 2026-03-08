@@ -10,5 +10,38 @@
 		FROM 	file 
 		WHERE 	file_id = #{fileId}
 	</select>
-
+	
+	<!-- 파일 저장 - INSERT -->
+	<insert id="insertFiles">
+		<selectKey keyProperty="categoryIdx" resultType="int" order="BEFORE"> 
+			SELECT category_idx 
+			FROM file_category 
+			WHERE category_code = #{categoryCode} 
+		</selectKey>
+		
+		INSERT INTO uploaded_file ( 
+			-- file_id
+			post_id
+			, category_idx
+			, origin_name
+			, stored_name
+			, file_path
+			, file_size
+			, file_ext
+			, reg_date ) VALUES 
+		<foreach collection="fileList" item="file" separator=",">
+			(
+				#{postId}
+				, #{category_idx}
+				, #{file.originName}
+				, #{file.storedName}
+				, #{file.filePath}
+				, #{file.fileSize}
+				, #{file.fileExt}
+				, NOW()
+			)
+		</foreach>
+	</insert>
+	
 </mapper>
+

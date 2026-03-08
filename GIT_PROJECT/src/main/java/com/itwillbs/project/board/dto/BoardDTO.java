@@ -11,11 +11,13 @@ import lombok.ToString;
 @Setter
 @ToString
 public class BoardDTO {
-	private Long commentId;
 	private Long postId;
-	private Long authorMemberId;
+	private String boardType;   //NOTICE/FREE/QNA
+	private Long authorMemberId;  // USER.user_id
+	private String title;
 	private String content;
 	private int readcount;
 	private String status;
 	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 }

@@ -3,57 +3,180 @@
 
 /* header 영역 */
 #header-upper{
-	background-color: #FFFFFF;
+	background-color: #FFFFFF !important;
 	height: 90px;
 }
 #header-bottom{
-	background-color: #FFFFFF;
-	color : #191970;
+	background-color: #FFFFFF !important;
 }
 
-.nav-link{
-	color: #0047AB;
+#header-upper .navbar,
+#globalMenu {
+    background-color: transparent !important;
 }
 
-/* 드롭다운: 기본 숨김(명시적으로) */
+/* 1. 메인 메뉴 링크 스타일 */
+.nav-link {
+    color: #1A365D !important; /* 너무 쨍한 파란색보다 깊이감 있는 다크 네이비 */
+    font-weight: 600;
+    transition: color 0.2s ease-in-out;
+    padding: 0.5rem 1rem;
+}
+
+.nav-link:hover {
+    color: #0047AB !important; /* 호버 시에만 포인트 블루로 변경 */
+}
+
+/* 2. 일반 드롭다운 메뉴 (dropdown-menu) 스타일 수정 */
 .nav-item.dropdown .dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 2000; /* 다른 요소보다 위로 */
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 180px;
+    padding: 0.8rem 0;
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0; /* 아주 연한 경계선 */
+    border-radius: 12px; /* 둥근 모서리로 트렌디하게 */
+    box-shadow: 0 10px 20px rgba(0, 71, 171, 0.05); /* 은은한 푸른빛 그림자 */
+    z-index: 2000;
+    /* 부드러운 나타남 효과를 위한 애니메이션 설정 */
+    animation: fadeInDown 0.3s ease-out;
 }
 
-/* hover 시 드롭다운 보이기 (PC 전용) */
+/* 3. Hover 시 드롭다운 노출 */
 .nav-item.dropdown:hover > .dropdown-menu {
-  display: block;
+    display: block;
 }
 
-/* 혹시 상위 요소에 overflow가 있어 가려질 경우를 대비 */
+/* 4. 드롭다운 내부 아이템 스타일 */
+.dropdown-item {
+    color: #4A5568;
+    padding: 0.6rem 1.2rem;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #F0F7FF; /* 아이시 화이트와 어울리는 연한 하늘색 배경 */
+    color: #0047AB; /* 포인트 블루 글자 */
+    padding-left: 1.5rem; /* 살짝 밀리는 효과로 세련미 추가 */
+}
+
+/* 5. 레이아웃 겹침 방지 */
 #header-upper,
 #globalMenu,
 .navbar,
 .container-fluid {
-  overflow: visible !important;
+    overflow: visible !important;
 }
 
-/* 시각적 hover 개선 */
-.dropdown-item:hover {
-  background-color: #f0f4ff;
-  color: #0047AB;
+/* [추가] 부드럽게 내려오는 애니메이션 */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
+/* 전체 메뉴 버튼 클릭 시 모든 드롭다운을 강제로 보이게 함 */
+.show-all .dropdown-menu {
+    display: block !important;
+    position: static !important; /* 가로로 나열되거나 레이아웃을 깨지 않게 하려면 상황에 따라 조절 */
+    box-shadow: none !important;
+    border: none !important;
+}
 
+/* (선택) 전체 메뉴가 활성화되었을 때의 레이아웃 조정 */
+.show-all .nav-item {
+    position: relative;
+}
+
+/* 메가 메뉴 컨테이너 - 아이시 화이트 */
+.mega-menu-content {
+    display: none !important; 
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    width: 100%; 
+    /* 은은한 푸른빛이 도는 화이트 배경 */
+    background-color: #F8F9FB !important; 
+    border-radius: 0 0 20px 20px;
+    z-index: 9999 !important;
+    /* 부드러운 그림자로 깊이감 부여 */
+    box-shadow: 0 15px 30px rgba(0, 71, 171, 0.08);
+    /* 상단에 아주 얇은 경계선으로 구분 */
+    border-top: 1px solid #E1E8F0;
+}
+
+/* 활성화 상태 */
+.mega-menu-content.active {
+    display: block !important;
+}
+
+/* 내부 레이아웃 */
+.mega-menu-inner {
+    display: flex;
+    justify-content: flex-start;
+    gap: 120px; /* 그룹 간 간격을 넉넉히 */
+    padding: 50px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 메뉴 그룹 제목 (포인트 파란색 활용) */
+.menu-group h6 {
+    color: #0047AB; /* 홈페이지 포인트 블루 */
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+/* 제목 아래 작은 포인트 바 (선택 사항) */
+.menu-group h6::after {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 2px;
+    background-color: #0047AB;
+    margin-top: 8px;
+}
+
+/* 하위 메뉴 링크 스타일 */
+.menu-group ul li a {
+    color: #4A5568 !important; /* 차분한 다크 그레이 */
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.menu-group ul li a:hover {
+    color: #0047AB !important; /* 호버 시 포인트 블루 */
+    padding-left: 5px; /* 살짝 옆으로 움직이는 효과 */
+    font-weight: 500;
+}
 
 
 /* footer 영역 */
 
+footer.footer {
+    background-color: #1B263B !important; /* 세련된 딥 네이비 */
+    color: #FFFFFF !important;           /* 흰색 글자 */
+    padding: 60px 0;
+}
+
 .footer-link {
-	color: #333;
-	text-decoration: none;
-	margin: 0 4px;
+    color: #ADB5BD !important;           /* 링크는 약간 연한 회색으로 */
+    text-decoration: none;
 }
 
 .footer-link:hover {
-  text-decoration: underline;
+    color: #FFFFFF !important;           /* 호버 시 흰색으로 강조 */
+    text-decoration: underline;
 }

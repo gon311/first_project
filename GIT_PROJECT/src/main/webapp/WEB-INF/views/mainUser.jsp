@@ -20,7 +20,7 @@
 		<%@ include file="/WEB-INF/views/inc/header.jspf" %>
 		<%-- main area --%>
 		<main>
-		<!-- 기업 목록 노출 영역 -->
+		<!-- 기업 공고 목록 노출 영역 -->
 		<section class="sec01">
 			<div class="ad-menu">
 				<ul class="nav nav-pills mb-3" id="jobTabs">
@@ -35,7 +35,7 @@
 				        <button data-type ="popular" class="company-btn nav-link" data-bs-toggle="pill" 
 				        data-bs-target="#popular"
 				        onclick="loadCompanies('popular')">
-				            인기 기업
+				           🔥 인기 기업
 				        </button>
 				    </li>
 				    <c:if test="${!empty sessionScope.sId}">
@@ -51,7 +51,9 @@
 			</div>
 			<div class="card-group">
 				<div class="swiper mySwiper">
+					<%-- 카드 생성 영역 --%>
 					<div class="swiper-wrapper" id="cardContainer"></div>
+					
 					<div class="swiper-button-next"></div>
 					<div class="swiper-button-prev"></div>
 				</div>

@@ -16,9 +16,13 @@
 		WHERE j.post_status = 1
 		AND j.close_date >= NOW()
 		AND j.reg_date = (SELECT MAX(j1.reg_date)
-							FROM job_posting j1 JOIN user_company u1
-		                    ON j1.comp_id = u1.user_id
-		                    WHERE u1.company_name = u.company_name)
+						  FROM 	job_posting j1 
+						  JOIN 	user_company u1
+		                  ON 	j1.comp_id = u1.user_id
+		                  WHERE u1.company_name = u.company_name)
+		AND j.comp_id in (SELECT	p.user_id
+						  FROM		com_product p
+                   		  WHERE		p.use_status = 'active')
 		ORDER BY RAND()
 		LIMIT 6
 	</select>

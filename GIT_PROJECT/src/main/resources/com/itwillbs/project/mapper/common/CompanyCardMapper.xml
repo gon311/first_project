@@ -5,17 +5,18 @@
 <mapper namespace="com.itwillbs.project.common.mapper.CompanyCardMapper">
 
 	<select id="selectTodayCompanies" resultType="com.itwillbs.project.common.DTO.CompanyCardDTO">
-		SELECT 
-		   j.title
-		   , u.company_name as companyName
-		   , j.salary
-		   , j.close_date as closeDate
-		   , reg_date
+		SELECT
+			j.job_id as jobId
+			, j.title
+		   	, u.company_name as companyName
+		  	, j.salary
+		  	, j.close_date as closeDate
+		   	, reg_date
 		FROM JOB_POSTING j JOIN USER_COMPANY u
-		ON j.comp_id = u.user_id
+		ON 	j.comp_id = u.user_id
 		WHERE j.post_status = 1                                    -- 구인중인 공고 
-		AND j.close_date >= NOW()								   -- 마감일이 남은 공고  
-		AND j.reg_date = (SELECT MAX(j1.reg_date)                  -- 기업별 가장 최근 공고
+		AND	j.close_date >= NOW()								   -- 마감일이 남은 공고  
+		AND	j.reg_date = (SELECT MAX(j1.reg_date)                  -- 기업별 가장 최근 공고
 						  FROM 	job_posting j1 JOIN user_company u1
 		                  ON 	j1.comp_id = u1.user_id
 		                  WHERE u1.company_name = u.company_name)
@@ -27,11 +28,12 @@
 	</select>
 	
 	<select id="selectPopularCompanies" resultType="com.itwillbs.project.common.DTO.CompanyCardDTO">
-		SELECT 
-		    j.title,
-		    u.company_name AS companyName,
-		    j.salary,
-		    j.close_date AS closeDate
+		SELECT
+			j.job_id as jobId
+			, j.title
+		    , u.company_name AS companyName
+		    , j.salary
+		    , j.close_date AS closeDate
 		FROM JOB_POSTING j JOIN USER_COMPANY u
 		ON j.comp_id = u.user_id
 		WHERE j.job_id IN (SELECT job_id
@@ -42,12 +44,13 @@
 							      LIMIT 	6 ) AS top_jobs)
 	</select>
 	
-	<select id="selectWishlistCompanies" resultType="com.itwillbs.project.common.DTO.CompanyCardDTO">
+	<select id="selectBookmarkCompanies" resultType="com.itwillbs.project.common.DTO.CompanyCardDTO">
 		SELECT 
-		    j.title,
-		    u.company_name AS companyName,
-		    j.salary,
-		    j.close_date AS closeDate
+			j.job_id as jobId
+		    , j.title
+		    , u.company_name AS companyName
+		    , j.salary
+		    , j.close_date AS closeDate
 		FROM JOB_POSTING j
 		JOIN USER_COMPANY u
 		    ON j.comp_id = u.user_id
@@ -55,8 +58,9 @@
 		    SELECT job_id
 		    FROM (SELECT job_id
 					FROM favorite_company
+					WHERE person_user_id = #{userIdx}
 					ORDER BY RAND()
-					LIMIT 6) AS wishlist)
+					LIMIT 6) AS bookmark)
 	</select>
 
 </mapper>

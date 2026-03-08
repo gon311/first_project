@@ -13,7 +13,7 @@ public interface CompanyCardMapper {
 
 	List<CompanyCardDTO> selectPopularCompanies();
 
-	List<CompanyCardDTO> selectWishlistCompanies();
+	List<CompanyCardDTO> selectBookmarkCompanies(Long userIdx);
 	
 
 }

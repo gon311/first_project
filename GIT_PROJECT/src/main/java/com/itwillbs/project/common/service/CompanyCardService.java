@@ -14,7 +14,7 @@ public class CompanyCardService {
 	@Autowired
 	private CompanyCardMapper companyCardMapper;
 
-	public List<CompanyCardDTO> getCardList(String type) {
+	public List<CompanyCardDTO> getCardList(String type, Long userIdx) {
 		
 		switch(type){
 			
@@ -24,11 +24,14 @@ public class CompanyCardService {
 			case "popular": 
 				return companyCardMapper.selectPopularCompanies();
 	
-			case "wishlist":
-				return companyCardMapper.selectWishlistCompanies();
+			case "bookmark":
+				if(userIdx == null) {
+					return Collections.emptyList();
+				}
+				return companyCardMapper.selectBookmarkCompanies(userIdx);
 			
 			default : 
-				return Collections.emptyList();
+				return companyCardMapper.selectTodayCompanies();
 		}
 
 	}

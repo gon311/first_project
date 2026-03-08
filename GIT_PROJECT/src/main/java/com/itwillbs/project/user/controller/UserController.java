@@ -57,6 +57,16 @@ public class UserController {
 		UserDTO dbUser = userService.getUser(userDTO.getEmail());
 		ra.addFlashAttribute("type", type);
 		
+		if(dbUser.getUserType().equals("A") && passwordEncoder.matches(userDTO.getPassword(), dbUser.getPassword())) {
+			session.setAttribute("userIdx", dbUser.getUserId());
+			session.setAttribute("sId", dbUser.getEmail());
+			session.setAttribute("userName", dbUser.getUserName());
+			session.setAttribute("userType", dbUser.getUserType());
+			session.setMaxInactiveInterval(60 * 60 * 24);
+			
+			return "redirect:/";
+		}
+		
 		if(dbUser == null || !dbUser.getUserType().equals(type) || !passwordEncoder.matches(userDTO.getPassword(), dbUser.getPassword())) {
 			ra.addFlashAttribute("errorMsg", "아이디 또는 비밀번호가 일치하지 않습니다.");
 			ra.addFlashAttribute("errorId", userDTO.getEmail());

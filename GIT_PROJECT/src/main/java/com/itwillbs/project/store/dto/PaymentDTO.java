@@ -43,7 +43,9 @@ public class PaymentDTO {
 	private String depositAccount;
 	private String depositName;
 	private int payPrice;
-	private LocalDateTime payDate; 
+	private LocalDateTime payDate;
+	private LocalDateTime issuedAt;		// 계좌발급 시점
+	private LocalDateTime expiredAt;	// 입금 유효기간
 	private String payStatus; 
 	
 	public void setUserType(String userType) {

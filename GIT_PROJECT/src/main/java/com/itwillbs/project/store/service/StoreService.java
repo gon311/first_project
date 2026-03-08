@@ -1,5 +1,7 @@
 package com.itwillbs.project.store.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -105,9 +107,9 @@ public class StoreService{
 	}
 	
 	// 결제 조회 api
-//	private String SECRET_KEY = "a6ahq9hSCGloLXjNbEEcoxQafWxrTuuUjr0SOFOFNLBUk0hiz8iZIIAQjG1iAnO7W5SkyZFueUu9iyLy";
-	@Value("${portone.api_key}")
-	private String SECRET_KEY;
+	private String SECRET_KEY = "a6ahq9hSCGloLXjNbEEcoxQafWxrTuuUjr0SOFOFNLBUk0hiz8iZIIAQjG1iAnO7W5SkyZFueUu9iyLy";
+//	@Value("${portone.api_key}")
+//	private String SECRET_KEY;
 
     public PortoneDTO getPayment(String paymentId) {
     	// 1️. PortOne 결제 조회 URL 생성
@@ -140,6 +142,11 @@ public class StoreService{
         }
         
     }
+
+    // 가상계좌 입금 시 입금 정보 업데이트
+	public void changeVirtualAccountInfo(String depositName, LocalDateTime payDate, String payStatus, long userId) {
+		storeMapper.updateVirtualAccountInfo(depositName, payDate, payStatus, userId);
+	}
 
 	
 

@@ -1,5 +1,7 @@
 package com.itwillbs.project.store.mapper;
 
+import java.time.LocalDateTime;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -58,6 +60,12 @@ public interface StoreMapper {
 	// 일반 이용권 보유중인 기업회원이 프리미엄 이용권을 구매한 경우
 	// 이용권 테이블의 use_status 를 'expired' 로 변경
 	void updateUseStatus(String payId);
+
+	// 가상계좌 입금 시 입금 정보 업데이트
+	void updateVirtualAccountInfo(@Param("depositName") String depositName
+								, @Param("payDate") LocalDateTime payDate
+								, @Param("payStatus") String payStatus
+								, @Param("userId") long userId);
 
 
 	

@@ -111,7 +111,7 @@
 			order_id = #{orderId}
 	</update>
 	
-	<!-- 결제 성공 시 결제 테이블에 저장 -->
+	<!-- 결제 테이블에 저장 -->
 	<insert id="insertPaymentInfo">
 		insert into pay (
 			pay_id
@@ -120,9 +120,14 @@
 			, pay_method
 			, card_name
 			, card_num
+			, bank_name
+			, deposit_account
+			, deposit_name
 			, pay_price
 			, pay_date
 			, pay_status
+			, issued_at
+			, expired_at
 		)
 		values (
 			#{payId}
@@ -131,9 +136,14 @@
 			, #{payMethod}
 			, #{cardName}
 			, #{cardNum}
+			, #{bankName}
+			, #{depositAccount}
+			, #{depositName}
 			, #{payPrice}
 			, #{payDate}
 			, #{payStatus}
+			, #{issuedAt}
+			, #{expiredAt}
 		)
 		
 	</insert>
@@ -198,6 +208,20 @@
 			use_status = 'expired'
 		where
 			pay_id = #{payId}
+	</update>
+	
+	<!-- 가상계좌 입금 시 결제 정보 변경 -->
+	<update id="updateVirtualAccountInfo">
+		update
+			pay
+		set
+			deposit_name = #{depositName}
+		and
+			pay_date = #{payDate}
+		and
+			pay_status = #{payStatus}
+		where
+			user_id = #{userId}
 	</update>
 	
 </mapper>

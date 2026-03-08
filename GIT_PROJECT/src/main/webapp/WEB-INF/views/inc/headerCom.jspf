@@ -51,7 +51,7 @@
 							aria-labelledby="dropdownReview" id="submenu-review">
 							<li><a class="dropdown-item"
 								href="<c:url value='/job/JobPosting' />">공고 등록</a></li>
-							<li><a class="dropdown-item" href="<c:url value='#' />">내
+							<li><a class="dropdown-item" href="<c:url value='/job/JobManagement' />">내
 									공고</a></li>
 						</ul></li>
 
@@ -86,7 +86,7 @@
 							<h6 class="fw-bold">고용관리</h6>
 							<ul class="list-unstyled">
 								<li><a href="<c:url value='/job/JobPosting' />">공고 등록</a></li>
-								<li><a href="<c:url value='#' />">내 공고</a></li>
+								<li><a href="<c:url value='/job/JobManagement' />">내 공고</a></li>
 							</ul>
 						</div>
 

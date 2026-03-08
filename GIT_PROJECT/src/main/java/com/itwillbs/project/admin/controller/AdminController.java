@@ -20,10 +20,13 @@ import com.itwillbs.project.admin.dto.FreeDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.PayDTO;
+import com.itwillbs.project.admin.dto.PaymentPageDTO;
 import com.itwillbs.project.admin.dto.ProductDTO;
 import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
+import com.itwillbs.project.admin.dto.SubmitPageDTO;
+import com.itwillbs.project.admin.dto.UserPageDTO;
 import com.itwillbs.project.admin.service.AdminService;
 import com.itwillbs.project.store.dto.PaymentDTO;
 
@@ -42,27 +45,36 @@ public class AdminController {
 	// [ 구직자 관리 페이지 ]
 	// 구직자 회원 목록(정렬 구현중)
 	@GetMapping("/users")
-	public String userList(@RequestParam(name="activeTab", defaultValue="all") String activeTab
-							, @RequestParam(value="page", defaultValue="1") int page
-							, Model model
+	public String userList(@RequestParam(defaultValue="all") String activeTab
+							, @RequestParam(defaultValue="1") Integer pageNum
+							, Model model  
 							, SearchDTO searchDTO
 							, String sort) {
 		// tab 파라미터가 없으면 기본값 "all"로 설정됨
 		model.addAttribute("activeTab", activeTab); 
 		//-----------------------------------------------------
 		// 전체 회원 목록 조회
-		List<MemberDTO> userList = adminService.getUserList(searchDTO.getKeyword()
+//		String keyword = searchDTO.getKeyword().trim();
+		
+		UserPageDTO userPageDTO = adminService.getUserList(searchDTO.getKeyword()
 															, searchDTO.getType()
 															, searchDTO.getStatus()
-															, sort);
-		model.addAttribute("userList", userList);
+															, sort
+															, pageNum);
 		
-		// 탈퇴 회원 목록 조회
-		List<MemberDTO> userWithdraw = adminService.getUserWithdraw(searchDTO.getKeyword()
-																	, searchDTO.getStartDate()
-																	, searchDTO.getEndDate()
-																	, sort);
-		model.addAttribute("userWithdraw", userWithdraw);
+		model.addAttribute("userList", userPageDTO.getUserList());
+		model.addAttribute("pageInfo", userPageDTO.getPageInfoDTO()); 
+			
+		// 탈퇴회원 조회
+		UserPageDTO userWithdrawPageDTO = adminService.getUserWithdraw(searchDTO.getKeyword()
+																		, searchDTO.getStartDate()
+																		, searchDTO.getEndDate()
+																		, sort
+																		, pageNum);
+		
+		model.addAttribute("userWithdraw", userWithdrawPageDTO.getUserList());
+		model.addAttribute("withdrawPageInfo", userWithdrawPageDTO.getPageInfoDTO());
+		
 		
 		return "admin/member/userList";
 			
@@ -73,9 +85,10 @@ public class AdminController {
 	public String userInfo(Model model, MemberDTO memberDTO) {
 		MemberDTO userDTO = adminService.getUserInfo(memberDTO.getUserId());
 		
+		// 회원이 보유한 이용권이 없을 경우
 		if(userDTO.getProductName() == null) {
 			userDTO.setProductName("보유 이용권 없음");
-		}
+		} 
 		
 		model.addAttribute("user", userDTO);
 		
@@ -129,6 +142,7 @@ public class AdminController {
 	// 기업회원 목록 조회
 	@GetMapping("/coms")
 	public String comList(@RequestParam(defaultValue="all") String activeTab
+							, @RequestParam(defaultValue="1") Integer pageNum
 							, Model model
 							, SearchDTO searchDTO
 							, String sort) {
@@ -136,18 +150,26 @@ public class AdminController {
 		model.addAttribute("activeTab", activeTab); 
 		//-----------------------------------------------------------
 		// 전체 회원 목록 조회
-		List<MemberDTO> comList = adminService.getComList(searchDTO.getKeyword()
+		char userType = 'c';
+		
+		UserPageDTO comPageDTO = adminService.getComList(searchDTO.getKeyword()
 														, searchDTO.getType()
 														, searchDTO.getStatus()
-														, sort);
-		model.addAttribute("comList", comList);
+														, sort
+														, pageNum);
+		
+		model.addAttribute("comList", comPageDTO.getUserList());
+		model.addAttribute("pageInfo", comPageDTO.getPageInfoDTO());
 		
 		// 탈퇴 회원 목록 조회
-		List<MemberDTO> comWithdraw = adminService.getComWithdraw(searchDTO.getKeyword()
+		UserPageDTO comWithdrawDTO = adminService.getComWithdraw(searchDTO.getKeyword()
 																, searchDTO.getStartDate()
 																, searchDTO.getEndDate()
-																, sort);
-		model.addAttribute("comWithdraw", comWithdraw);
+																, sort
+																, pageNum);
+		
+		model.addAttribute("comWithdrawList", comWithdrawDTO.getUserList());
+		model.addAttribute("withdrawPageInfo", comWithdrawDTO.getPageInfoDTO());
 		 
 		return "admin/member/comList";
 			
@@ -199,15 +221,18 @@ public class AdminController {
 	// [ 제출된 공고 관리 ](상세정보 구현 예정)
 	// 제출된 공고 목록 조회
 	@GetMapping("/submits")
-	public String submitList(SubmitDTO submitDTO, Model model, SearchDTO searchDTO, String sort) {
+	public String submitList(SubmitDTO submitDTO, Model model, SearchDTO searchDTO, String sort
+								, @RequestParam(defaultValue="1") Integer pageNum) {
 		
-		List<SubmitDTO> submitList = adminService.getSubmitList(searchDTO.getStartDate()
+		SubmitPageDTO submitPageDTO  = adminService.getSubmitList(searchDTO.getStartDate()
 																, searchDTO.getEndDate()
 																, searchDTO.getKeyword()
 																, searchDTO.getSubmitStatus()
-																, sort);
+																, sort
+																, pageNum);
 		
-		model.addAttribute("submitList", submitList);
+		model.addAttribute("submitList", submitPageDTO.getSubmitList());
+		model.addAttribute("pageInfo", submitPageDTO.getPageInfoDTO());
 		
 		return "admin/submit/submitList";
 	}
@@ -261,14 +286,16 @@ public class AdminController {
 	// [ 결제 관리 ]
 	// 결제 내역 목록 조회
 	@GetMapping("/payments")
-	public String payList(Model model, SearchDTO searchDTO, String sort) {
-		List<PaymentDTO> payList = adminService.getPayList(searchDTO.getStartDate()
+	public String payList(Model model, SearchDTO searchDTO, String sort, @RequestParam(defaultValue="1") Integer pageNum) {
+		PaymentPageDTO paymentPageDTO = adminService.getPayList(searchDTO.getStartDate()
 													, searchDTO.getEndDate()
 													, searchDTO.getKeyword()
 													, searchDTO.getUserType()
 													, searchDTO.getPayStatus()
-													, sort);
-		model.addAttribute("payList", payList);
+													, sort
+													, pageNum);
+		model.addAttribute("payList", paymentPageDTO.getPaymentList());
+		model.addAttribute("pageInfo", paymentPageDTO.getPageInfoDTO());
 		
 		return "admin/payment/payList"; 
 	}

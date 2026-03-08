@@ -118,6 +118,13 @@
 					</tr>
 				</thead>
 	 			<tbody>
+	 				<c:if test="${empty payList}">
+						<tr>
+							<td colspan="9" class="text-center">
+								게시물이 존재하지 않습니다.
+							</td>
+						</tr>
+					</c:if>
 					<c:forEach var="pay" varStatus="status" items="${payList}">
 						<tr class="clickable-row" onclick="location.href='payments/info?payId=${pay.payId}'">
 							<td>${status.count}</td>
@@ -150,18 +157,33 @@
 	
 			</table>
 			
-			<!-- 페이징(구현예정) -->
-	        <div class="d-flex flex-column align-items-center mt-5">
-	            <nav aria-label="Page navigation">
-	                <ul class="pagination pagination-sm m-0">
-	                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
-	                    <c:forEach begin="1" end="5" var="i">
-	                        <li class="page-item ${i == 12 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
-	                    </c:forEach>
-	                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-	                </ul>
-	            </nav>
-			</div>
+			<!-- 페이징 -->
+	        <c:if test="${not empty pageInfo and not empty pageInfo.maxPage and pageInfo.maxPage > 0}">
+		        <div class="d-flex flex-column align-items-center mt-5">
+		            <nav aria-label="Page navigation">
+		                <ul class="pagination pagination-sm m-0">
+		                    <li class="page-item <c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>">
+		                    	<a class="page-link" href="<c:url value="/admin/payments?pageNum=${pageInfo.pageNum - 1}&activeTab=${activeTab}" />">&lt;</a>
+		                    </li>
+		                    
+		                    <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+								<c:choose>
+									<c:when test="${i eq pageInfo.pageNum}">
+										<a class="page-link">${i}</a>
+									</c:when>
+									<c:otherwise>
+										<a class="page-link" href="<c:url value="/admin/payments?pageNum=${i}&activeTab=${activeTab}" />">${i}</a>
+									</c:otherwise>
+								</c:choose>
+		                    </c:forEach>
+		                    
+		                    <li class="page-item <c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>">
+		                    	<a class="page-link" href="<c:url value="/admin/payments?pageNum=${pageInfo.pageNum + 1}&activeTab=${activeTab}" />">&gt;</a>
+		                    </li>
+		                </ul>
+		            </nav>
+				</div>
+			</c:if>
 			
 		</div>
 		

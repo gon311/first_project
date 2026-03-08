@@ -1,7 +1,5 @@
 package com.itwillbs.project.admin.mapper;
 
-import java.math.BigInteger;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +13,6 @@ import com.itwillbs.project.admin.dto.FreeDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
-import com.itwillbs.project.admin.dto.PayDTO;
 import com.itwillbs.project.admin.dto.ProductDTO;
 import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
@@ -23,13 +20,32 @@ import com.itwillbs.project.store.dto.PaymentDTO;
 
 @Mapper
 public interface AdminMapper {
-
+	
+	// 구직자 전체 회원 목록 갯수 조회
+	int selectUserListCount(@Param("keyword") String keyword
+							, @Param("type") String type
+							, @Param("status") String status);
 
 	// 구직자 회원 목록
-	List<MemberDTO> selectUserList(@Param("keyword") String keyword
+	List<MemberDTO> selectUserList(@Param("startRow") int startRow
+								, @Param("listLimit") int listLimit
+								, @Param("keyword") String keyword
 								, @Param("type") String type
 								, @Param("status") String status
 								, @Param("sort") String sort);
+	
+	// 구직자 탈퇴회원 전체 회원 목록 갯수 조회
+	int selectWithdrawListCount(@Param("keyword") String keyword
+								, @Param("startDate") String startDate
+								, @Param("endDate") String endDate);
+	
+	// 탈퇴 회원 목록 조회
+	List<MemberDTO> selectUserWithdraw(@Param("startRow") int startRow
+									, @Param("listLimit") int listLimit
+									, @Param("keyword") String keyword
+									, @Param("startDate") String startDate
+									, @Param("endDate") String endDate
+									, @Param("sort") String sort);
 
 	// 회원 상세 정보
 	MemberDTO selectUserInfo(long userId);
@@ -52,29 +68,39 @@ public interface AdminMapper {
 	// 탈퇴한 회원 삭제
 	void deleteUserInfo(long userId);
 	
+	// 기업 전체 회원 목록 갯수 조회
+	int selectComListCount(@Param("keyword") String keyword
+							, @Param("type") String type
+							, @Param("status") String status);
+
+	// 기업회원 목록 조회
+	List<MemberDTO> selectComList(@Param("startRow") int startRow
+								, @Param("listLimit") int listLimit
+								, @Param("keyword") String keyword
+								, @Param("type") String type
+								, @Param("status") String status
+								, @Param("sort") String sort);
+	
+	// 기업 탈퇴회원 전체 회원 목록 갯수 조회
+	int selectComWithdrawListCount(@Param("keyword") String keyword
+								, @Param("startDate") String startDate
+								, @Param("endDate") String endDate);
+	
 	// 탈퇴 회원 목록 조회
-	List<MemberDTO> selectUserWithdraw(@Param("keyword") String keyword
+	List<MemberDTO> selectComWithdraw(@Param("startRow") int startRow
+									, @Param("listLimit") int listLimit
+									, @Param("keyword") String keyword
 									, @Param("startDate") String startDate
 									, @Param("endDate") String endDate
 									, @Param("sort") String sort);
 	
-	// 기업회원 목록 조회
-	List<MemberDTO> selectComList(@Param("keyword") String keyword
-								, @Param("type") String type
-								, @Param("status") String status
-								, @Param("sort") String sort);
+	
 	
 	// 기업회원 상세 정보 조회
 	MemberDTO selectComInfo(long userId); 
 	
 	// 기업 공고 목록 조회
 	List<JobPostDTO> selectJobPostInfo(long userId);
-	
-	// 탈퇴 회원 목록 조회
-	List<MemberDTO> selectComWithdraw(@Param("keyword") String keyword
-									, @Param("startDate") String startDate
-									, @Param("endDate") String endDate
-									, @Param("sort") String sort);
 	
 	//========================================================================
 	// 공지사항 리스트 조회
@@ -104,13 +130,22 @@ public interface AdminMapper {
 	void deleteJobPost(int jobId);
 	
 	//========================================================================
+	// 결제 목록 전체 갯수 조회
+	int selectPaymentListCount(@Param("keyword") String keyword
+							, @Param("startDate") String startDate
+							, @Param("endDate") String endDate
+							, @Param("userType") String userType
+							, @Param("payStatus") String payStatus);
+	
 	// 결제 목록 조회
-	List<PaymentDTO> selectPayList(@Param("startDate") String startDate
-								, @Param("endDate") String endDate
-								, @Param("keyword") String keyword
-								, @Param("userType") String userType
-								, @Param("payStatus") String payStatus
-								, @Param("sort") String sort); 
+	List<PaymentDTO> selectPaymentList(@Param("startRow") int startRow
+									, @Param("listLimit") int listLimit
+									,@Param("startDate") String startDate
+									, @Param("endDate") String endDate
+									, @Param("keyword") String keyword
+									, @Param("userType") String userType
+									, @Param("payStatus") String payStatus
+									, @Param("sort") String sort); 
 
 	// 결제 내역 상세 정보 조회
 	PaymentDTO selectPayInfo(String id);
@@ -119,8 +154,16 @@ public interface AdminMapper {
 	void updatePayCancel(long payId);
 
 	//========================================================================
+	// 제출된 공고 목록 전체 갯수 조회
+	int selectSubmitListCount(@Param("keyword") String keyword
+							, @Param("startDate") String startDate
+							, @Param("endDate") String endDate
+							, @Param("submitStatus") String submitStatus);
+	
 	// 제출된 공고 목록 조회
-	List<SubmitDTO> selectSubmitList(@Param("startDate") String startDate
+	List<SubmitDTO> selectSubmitList(@Param("startRow") int startRow
+									, @Param("listLimit") int listLimit
+									, @Param("startDate") String startDate
 									, @Param("endDate") String endDate
 									, @Param("keyword") String keyword
 									, @Param("submitStatus") String submitStatus
@@ -209,6 +252,12 @@ public interface AdminMapper {
 	List<Map<String, Object>> getComProductStats();
 
 	List<Map<String, Object>> getComRevenueStats();
+
+	
+
+	
+
+	
 
 
 	

@@ -1,6 +1,6 @@
 package com.itwillbs.project.admin.service;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +15,13 @@ import com.itwillbs.project.admin.dto.FreeDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
-import com.itwillbs.project.admin.dto.PayDTO;
+import com.itwillbs.project.admin.dto.PageInfoDTO;
+import com.itwillbs.project.admin.dto.PaymentPageDTO;
 import com.itwillbs.project.admin.dto.ProductDTO;
 import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
+import com.itwillbs.project.admin.dto.SubmitPageDTO;
+import com.itwillbs.project.admin.dto.UserPageDTO;
 import com.itwillbs.project.admin.mapper.AdminMapper;
 import com.itwillbs.project.store.dto.PaymentDTO;
 
@@ -32,15 +35,101 @@ public class AdminService{
 	private AdminMapper adminMapper;
 	
 	// 구직자 목록 조회
-	public List<MemberDTO> getUserList(String keyword, String type, String status, String sort) {
-		return adminMapper.selectUserList(keyword, type, status, sort); 
+	public UserPageDTO getUserList(String keyword, String type, String status, String sort, Integer pageNum) {
+		// [페이징 처리]
+		// 1. 페이징 처리를 위해 조회할 목록 갯수 조절에 사용할 변수 선언
+		int listLimit = 10;		// 한 페이지 당 표시할 게시물 갯수
+		
+		// 회원 목록 중 조회할 페이지의 첫번째 행 번호 계산
+		int startRow = (pageNum - 1) * listLimit;
+		
+		// 2. 실페 뷰페이지에서 페이징 처리를 수행하는데 필요한 계산 작업 및 페이지 목록 조회 작업
+		// 1) 전체 회원 목록 갯수 조회
+		int listCount = adminMapper.selectUserListCount(keyword, type, status);
+		
+		// 조회된 회원 수가 0보다 클 경우에만 페이지 계산 및 게시물 목록 조회 처리
+		if(listCount == 0) {
+//			return null; 
+			return new UserPageDTO(new ArrayList<>(), null);
+		}
+		// 2) 한 페이지에서 표시할 목록 갯수 설정
+		int pageListLimit = 5;	// 한 페이지 당 표시할 페이지 목록 번호 갯수
+		
+		// 3) 최대 페이지 번호 계산
+		int maxPage = (int)Math.ceil((double)listCount / listLimit);
+		
+		// 4) 현재 페이지에서 보여줄 시작 페이지 번호 계산 => 페이지 목록의 맨 앞 번호
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		
+		// 5) 현재 페이지에서 보여줄 마지막 페이지 번호 계산 => 페이지 목록의 맨 뒷 번호
+		int endPage = startPage + pageListLimit - 1;
+		
+		// 6) 단, 마지막 페이지 번호 값이 최대 페이지 번호 보다 클 경우 마지막 페이지 번호를 최대 페이지 번호로 교체
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		// 3. 페이징 정보를 관리하는 객체에 pageInfoDTO 객체에 계산 결과 저장
+		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum);
+		
+		// 4. 회원 목록 조회
+		List<MemberDTO> userList = adminMapper.selectUserList(startRow, listLimit, keyword, type, status, sort);
+		  
+		// 5. UserPageDTO 객체에 게시물 목록 정보와 페이징 정보 저장 후 리턴
+		return new UserPageDTO(userList, pageInfoDTO);
 	} 
+	 
+	// 탈퇴한 회원 목록
+	public UserPageDTO getUserWithdraw(String keyword, String startDate, String endDate, String sort, Integer pageNum) {
+		// [페이징 처리]
+		// 1. 페이징 처리를 위해 조회할 목록 갯수 조절에 사용할 변수 선언
+		int listLimit = 10;		// 한 페이지 당 표시할 게시물 갯수
+		
+		// 회원 목록 중 조회할 페이지의 첫번째 행 번호 계산
+		int startRow = (pageNum - 1) * listLimit; 
+		
+		// 2. 실페 뷰페이지에서 페이징 처리를 수행하는데 필요한 계산 작업 및 페이지 목록 조회 작업
+		// 1) 전체 회원 목록 갯수 조회
+		int listCount = adminMapper.selectWithdrawListCount(keyword, startDate, endDate);
+		
+		System.out.println("listcount : " + listCount);
+		
+		// 조회된 회원 수가 0보다 클 경우에만 페이지 계산 및 게시물 목록 조회 처리
+		if(listCount == 0) {
+			return new UserPageDTO(new ArrayList<>(), null);
+		}
+		// 2) 한 페이지에서 표시할 목록 갯수 설정
+		int pageListLimit = 5;	// 한 페이지 당 표시할 페이지 목록 번호 갯수
+		
+		// 3) 최대 페이지 번호 계산
+		int maxPage = (int)Math.ceil((double)listCount / listLimit);
+		
+		// 4) 현재 페이지에서 보여줄 시작 페이지 번호 계산 => 페이지 목록의 맨 앞 번호
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		
+		// 5) 현재 페이지에서 보여줄 마지막 페이지 번호 계산 => 페이지 목록의 맨 뒷 번호
+		int endPage = startPage + pageListLimit - 1;
+		
+		// 6) 단, 마지막 페이지 번호 값이 최대 페이지 번호 보다 클 경우 마지막 페이지 번호를 최대 페이지 번호로 교체
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		// 3. 페이징 정보를 관리하는 객체에 pageInfoDTO 객체에 계산 결과 저장
+		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum);
+		
+		// 4. 회원 목록 조회
+		List<MemberDTO> userList = adminMapper.selectUserWithdraw(startRow, listLimit, keyword, startDate, endDate, sort);
+		  
+		// 5. UserPageDTO 객체에 게시물 목록 정보와 페이징 정보 저장 후 리턴
+		return new UserPageDTO(userList, pageInfoDTO);
+	}
 
 	// 구직자 상세 정보 조회
 	public MemberDTO getUserInfo(long userId) {
 		return adminMapper.selectUserInfo(userId);
 	}
-	
+	 
 	// 회원 게시글 조회
 	public List<FreeDTO> getFreeInfo(long userId) {
 		return adminMapper.selectFreeInfo(userId);
@@ -71,17 +160,99 @@ public class AdminService{
 		adminMapper.deleteUserInfo(userId);
 	}
 	
-	// 탈퇴한 회원 목록
-	public List<MemberDTO> getUserWithdraw(String keyword, String startDate, String endDate, String sort) {
-		return adminMapper.selectUserWithdraw(keyword, startDate, endDate, sort);
-	}
 	
 	//---------------------------------------------------------------------------------------------
 	// 기업회원 목록 조회
-	public List<MemberDTO> getComList(String keyword, String type, String status, String sort) {
-		return adminMapper.selectComList(keyword, type, status, sort);
+	public UserPageDTO getComList(String keyword, String type, String status, String sort, Integer pageNum) {
+		// [페이징 처리]
+		// 1. 페이징 처리를 위해 조회할 목록 갯수 조절에 사용할 변수 선언
+		int listLimit = 10;		// 한 페이지 당 표시할 게시물 갯수
+		
+		// 회원 목록 중 조회할 페이지의 첫번째 행 번호 계산
+		int startRow = (pageNum - 1) * listLimit;
+		
+		// 2. 실페 뷰페이지에서 페이징 처리를 수행하는데 필요한 계산 작업 및 페이지 목록 조회 작업
+		// 1) 전체 회원 목록 갯수 조회
+		int listCount = adminMapper.selectComListCount(keyword, type, status);
+		
+		// 조회된 회원 수가 0보다 클 경우에만 페이지 계산 및 게시물 목록 조회 처리
+		if(listCount == 0) {
+//					return null; 
+			return new UserPageDTO(new ArrayList<>(), null);
+		}
+		// 2) 한 페이지에서 표시할 목록 갯수 설정
+		int pageListLimit = 5;	// 한 페이지 당 표시할 페이지 목록 번호 갯수
+		
+		// 3) 최대 페이지 번호 계산
+		int maxPage = (int)Math.ceil((double)listCount / listLimit);
+		
+		// 4) 현재 페이지에서 보여줄 시작 페이지 번호 계산 => 페이지 목록의 맨 앞 번호
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		
+		// 5) 현재 페이지에서 보여줄 마지막 페이지 번호 계산 => 페이지 목록의 맨 뒷 번호
+		int endPage = startPage + pageListLimit - 1;
+		
+		// 6) 단, 마지막 페이지 번호 값이 최대 페이지 번호 보다 클 경우 마지막 페이지 번호를 최대 페이지 번호로 교체
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		// 3. 페이징 정보를 관리하는 객체에 pageInfoDTO 객체에 계산 결과 저장
+		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum);
+		
+		// 4. 회원 목록 조회
+		List<MemberDTO> userList = adminMapper.selectComList(startRow, listLimit, keyword, type, status, sort);
+		  
+		// 5. UserPageDTO 객체에 게시물 목록 정보와 페이징 정보 저장 후 리턴
+		return new UserPageDTO(userList, pageInfoDTO);
 	}
 	
+	// 탈퇴한 회원 목록
+	public UserPageDTO getComWithdraw(String keyword, String startDate, String endDate, String sort, Integer pageNum) {
+		// [페이징 처리]
+		// 1. 페이징 처리를 위해 조회할 목록 갯수 조절에 사용할 변수 선언
+		int listLimit = 10;		// 한 페이지 당 표시할 게시물 갯수
+		
+		// 회원 목록 중 조회할 페이지의 첫번째 행 번호 계산
+		int startRow = (pageNum - 1) * listLimit; 
+		
+		// 2. 실페 뷰페이지에서 페이징 처리를 수행하는데 필요한 계산 작업 및 페이지 목록 조회 작업
+		// 1) 전체 회원 목록 갯수 조회
+		int listCount = adminMapper.selectComWithdrawListCount(keyword, startDate, endDate);
+		
+		System.out.println("listcount : " + listCount);
+		
+		// 조회된 회원 수가 0보다 클 경우에만 페이지 계산 및 게시물 목록 조회 처리
+		if(listCount == 0) {
+			return new UserPageDTO(new ArrayList<>(), null);
+		}
+		// 2) 한 페이지에서 표시할 목록 갯수 설정
+		int pageListLimit = 5;	// 한 페이지 당 표시할 페이지 목록 번호 갯수
+		
+		// 3) 최대 페이지 번호 계산
+		int maxPage = (int)Math.ceil((double)listCount / listLimit);
+		
+		// 4) 현재 페이지에서 보여줄 시작 페이지 번호 계산 => 페이지 목록의 맨 앞 번호
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		
+		// 5) 현재 페이지에서 보여줄 마지막 페이지 번호 계산 => 페이지 목록의 맨 뒷 번호
+		int endPage = startPage + pageListLimit - 1;
+		
+		// 6) 단, 마지막 페이지 번호 값이 최대 페이지 번호 보다 클 경우 마지막 페이지 번호를 최대 페이지 번호로 교체
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		// 3. 페이징 정보를 관리하는 객체에 pageInfoDTO 객체에 계산 결과 저장
+		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum);
+		
+		// 4. 회원 목록 조회
+		List<MemberDTO> userList = adminMapper.selectComWithdraw(startRow, listLimit, keyword, startDate, endDate, sort);
+		  
+		// 5. UserPageDTO 객체에 게시물 목록 정보와 페이징 정보 저장 후 리턴
+		return new UserPageDTO(userList, pageInfoDTO);
+	}
+
 	// 기업회원 상세 정보 조회
 	public MemberDTO getComInfo(long userId) {
 		return adminMapper.selectComInfo(userId);
@@ -90,11 +261,6 @@ public class AdminService{
 	// 기업 공고 정보 조회
 	public List<JobPostDTO> getJobPostInfo(long userId) {
 		return adminMapper.selectJobPostInfo(userId); 
-	}
-	
-	// 탈퇴한 회원 목록
-	public List<MemberDTO> getComWithdraw(String keyword, String startDate, String endDate, String sort) {
-		return adminMapper.selectComWithdraw(keyword, startDate, endDate, sort);
 	}
 	
 	//======================================================================================
@@ -141,8 +307,47 @@ public class AdminService{
 
 	//======================================================================================
 	// 결제 내역 전체 목록 조회
-	public List<PaymentDTO> getPayList(String startDate, String endDate, String keyword, String userType, String payStatus, String sort) {
-		return adminMapper.selectPayList(startDate, endDate, keyword, userType, payStatus, sort);
+	public PaymentPageDTO getPayList(String startDate, String endDate, String keyword, String userType, String payStatus, String sort, Integer pageNum) {
+		// [페이징 처리]
+		// 1. 페이징 처리를 위해 조회할 목록 갯수 조절에 사용할 변수 선언
+		int listLimit = 10;		// 한 페이지 당 표시할 게시물 갯수
+		
+		// 결제 내역 목록 중 조회할 페이지의 첫번째 행 번호 계산
+		int startRow = (pageNum - 1) * listLimit;
+		
+		// 2. 실페 뷰페이지에서 페이징 처리를 수행하는데 필요한 계산 작업 및 페이지 목록 조회 작업
+		// 1) 전체 결제 내역 목록 갯수 조회
+		int listCount = adminMapper.selectPaymentListCount(keyword, startDate, endDate, userType, payStatus);
+		
+		// 조회된 결제 내역 수가 0보다 클 경우에만 페이지 계산 및 결제 내역 목록 조회 처리
+		if(listCount == 0) {
+			return new PaymentPageDTO(new ArrayList<>(), null);
+		}
+		// 2) 한 페이지에서 표시할 목록 갯수 설정
+		int pageListLimit = 5;	// 한 페이지 당 표시할 페이지 목록 번호 갯수
+		
+		// 3) 최대 페이지 번호 계산
+		int maxPage = (int)Math.ceil((double)listCount / listLimit);
+		
+		// 4) 현재 페이지에서 보여줄 시작 페이지 번호 계산 => 페이지 목록의 맨 앞 번호
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		
+		// 5) 현재 페이지에서 보여줄 마지막 페이지 번호 계산 => 페이지 목록의 맨 뒷 번호
+		int endPage = startPage + pageListLimit - 1;
+		
+		// 6) 단, 마지막 페이지 번호 값이 최대 페이지 번호 보다 클 경우 마지막 페이지 번호를 최대 페이지 번호로 교체
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		// 3. 페이징 정보를 관리하는 객체에 pageInfoDTO 객체에 계산 결과 저장
+		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum);
+		 
+		// 4. 결제 내역 목록 조회
+		List<PaymentDTO> paymentList = adminMapper.selectPaymentList(startRow, listLimit, keyword, startDate, endDate, userType, payStatus, sort);
+		  
+		// 5. SubmitPageDTO 객체에 게시물 목록 정보와 페이징 정보 저장 후 리턴
+		return new PaymentPageDTO(paymentList, pageInfoDTO);
 	}
  
 	// 결제 내역 상세정보
@@ -157,8 +362,47 @@ public class AdminService{
 	
 	//========================================================================================
 	// 제출된 공고 목록 조회
-	public List<SubmitDTO> getSubmitList(String startDate, String endDate, String keyword, String submitStatus, String sort) {
-		return adminMapper.selectSubmitList(startDate, endDate, keyword, submitStatus, sort);
+	public SubmitPageDTO getSubmitList(String startDate, String endDate, String keyword, String submitStatus, String sort, Integer pageNum) {
+		// [페이징 처리]
+		// 1. 페이징 처리를 위해 조회할 목록 갯수 조절에 사용할 변수 선언
+		int listLimit = 10;		// 한 페이지 당 표시할 게시물 갯수
+		
+		// 공고 목록 중 조회할 페이지의 첫번째 행 번호 계산
+		int startRow = (pageNum - 1) * listLimit;
+		
+		// 2. 실페 뷰페이지에서 페이징 처리를 수행하는데 필요한 계산 작업 및 페이지 목록 조회 작업
+		// 1) 전체 공고 목록 갯수 조회
+		int listCount = adminMapper.selectSubmitListCount(keyword, startDate, endDate, submitStatus);
+		
+		// 조회된 공고 수가 0보다 클 경우에만 페이지 계산 및 게시물 목록 조회 처리
+		if(listCount == 0) {
+			return new SubmitPageDTO(new ArrayList<>(), null);
+		}
+		// 2) 한 페이지에서 표시할 목록 갯수 설정
+		int pageListLimit = 5;	// 한 페이지 당 표시할 페이지 목록 번호 갯수
+		
+		// 3) 최대 페이지 번호 계산
+		int maxPage = (int)Math.ceil((double)listCount / listLimit);
+		
+		// 4) 현재 페이지에서 보여줄 시작 페이지 번호 계산 => 페이지 목록의 맨 앞 번호
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		
+		// 5) 현재 페이지에서 보여줄 마지막 페이지 번호 계산 => 페이지 목록의 맨 뒷 번호
+		int endPage = startPage + pageListLimit - 1;
+		
+		// 6) 단, 마지막 페이지 번호 값이 최대 페이지 번호 보다 클 경우 마지막 페이지 번호를 최대 페이지 번호로 교체
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		// 3. 페이징 정보를 관리하는 객체에 pageInfoDTO 객체에 계산 결과 저장
+		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum);
+		 
+		// 4. 공고 목록 조회
+		List<SubmitDTO> SubmitList = adminMapper.selectSubmitList(startRow, listLimit, keyword, startDate, endDate, submitStatus, sort);
+		  
+		// 5. SubmitPageDTO 객체에 게시물 목록 정보와 페이징 정보 저장 후 리턴
+		return new SubmitPageDTO(SubmitList, pageInfoDTO);
 	}
 	
 	// 제출된 공고 상세 조회

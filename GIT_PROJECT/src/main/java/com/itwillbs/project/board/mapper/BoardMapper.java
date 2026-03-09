@@ -8,6 +8,11 @@ import com.itwillbs.project.board.dto.BoardDTO;
 public interface BoardMapper {
 
 	void insertBoard(BoardDTO boardDTO);
+	
+	// 게시물 상세
+	BoardDTO selectBoard(Long postId);
+
+	void updateReadcount(Long postId);
 
 
 

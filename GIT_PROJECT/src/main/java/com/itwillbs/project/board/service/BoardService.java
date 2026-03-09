@@ -42,8 +42,16 @@ public class BoardService {
 			fileMapper.insertFiles(fileList, boardDTO.getPostId(), "FREE");   //파일리스트, 게시판 파일 번호, 카테고리코드
 		}
 	}
+
 	
 	// 게시물 상세정보 조회
+	public BoardDTO getBoard(Long postId) {
+	    return boardMapper.selectBoard(postId);
+	}
+
+	public void increaseReadcount(Long postId) {
+	    boardMapper.updateReadcount(postId);
+	}
 	
 	// 게시물 목록 조회
 

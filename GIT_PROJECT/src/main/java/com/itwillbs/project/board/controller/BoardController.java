@@ -12,13 +12,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.project.board.dto.BoardCond;
 import com.itwillbs.project.board.dto.BoardDTO;
 import com.itwillbs.project.board.service.BoardService;
 import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.common.exception.LoginRequiredException;
+import com.itwillbs.project.common.paging.BaseCond;
+import com.itwillbs.project.common.paging.PageRes;
 import com.itwillbs.project.common.util.FileUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -32,16 +36,27 @@ public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
-
+	
+	
+	// 게시판 리스트
 	@GetMapping({"", "/"})
-	public String board() {
-		return "/board/board_list";
-	}
+	public String board(BoardCond cond, Model model) {
 
-	@GetMapping("/detail")
-	public String boardDetail() {
-		return "/board/board_detail";
+//	    List<BoardDTO> posts = boardService.getBoardList(cond);
+//
+//	    int total = boardService.getBoardCount(cond);
+//
+//	    PageRes page = PageRes.of(cond.getPage(), total);
+//
+//	    model.addAttribute("posts", posts);
+//	    model.addAttribute("page", page);
+//	    model.addAttribute("cond", cond);
+//	    model.addAttribute("totalCount", total);
+
+	    return "/board/board";
 	}
+	
+	
 
 	// 게시글 작성 페이지
 	@GetMapping("/write")
@@ -79,10 +94,25 @@ public class BoardController {
 
 		return "redirect:/board/detail";
 	}
+	
+	// 게시물 상세
+	@GetMapping("/detail")
+	public String boardDetail(@RequestParam Long postId, Model model) {
 
-	// 게시물 상세정보 조회
-	// @GetMapping("/detail")
+	    boardService.increaseReadcount(postId);
+
+	    BoardDTO post = boardService.getBoard(postId);
+
+	    model.addAttribute("post", post);
+
+	    return "/board/board_detail";
+	}
+	
 
 	// 게시물 목록 조회
 	// @GetMapping("/list")
+	
+	
+	
+	
 }

@@ -181,41 +181,173 @@ public class StoreController {
 	    // (기업회원의 경우) 일반 이용권 보유 유무 조회
 	    MemberProductDTO memberProductDTO = storeService.getMemberProduct(orderInfo.getUserId());
 	     
-	    // 3️ 카드 결제 처리
-	    if("PAID".equals(paymentInfo.getStatus())) {
-	        // 결제 성공 상태(PAID)인 경우
-	    	orderInfo.setStatus("PAID");       // 주문 상태를 PAID로 업데이트
-	        storeService.setOrderStatus(orderInfo);    // DB 반영
+	    // 결제 내역에 저장
+	    paymentDTO.setPayId(responsePaymentDTO.getPaymentId());
+	    paymentDTO.setUserId(orderInfo.getUserId());          
+	    paymentDTO.setProductId(orderInfo.getProductId());    
 	    
-		    // 결제 내역에 저장
-		    paymentDTO.setPayId(responsePaymentDTO.getPaymentId());
-		    paymentDTO.setUserId(orderInfo.getUserId());          
-		    paymentDTO.setProductId(orderInfo.getProductId());    
-		    paymentDTO.setPayMethod("신용카드");
-		    paymentDTO.setCardName(paymentInfo.getMethod().getCard().getName());
-		    paymentDTO.setCardNum(paymentInfo.getMethod().getCard().getNumber() + "**********");
-		    paymentDTO.setPayPrice(paymentInfo.getAmount().getTotal());
-		    paymentDTO.setPayDate(paymentInfo.getPaidAt());
-		    paymentDTO.setPayStatus(paymentInfo.getStatus());
-		    
-		    // 결제 테이블에 주문 정보 저장
-		    storeService.setPaymentInfo(paymentDTO);
-		    
-		    // 이용권 테이블에 구매자의 이용권 정보 저장
-		    if(orderInfo.getUserType() == 'P') {
-		    	storeService.setUserProduct(paymentDTO);
-		    } else if(orderInfo.getUserType() == 'C') {
-		    	storeService.setComProduct(paymentDTO);
-		    }
-		    
-		    // 만약, 일반 이용권을 보유중인 기업회원이 프리미엄 이용권을 구매한 경우 일반 이용권은 소멸됨
-		    if(paymentDTO.getProductId().equals("P-C2") && memberProductDTO.getUserId() == paymentDTO.getUserId()) {
-		    	storeService.changeUseStatus(memberProductDTO.getPayId());
-		    }
-	     
-	    	return "success";     // 결제 성공 페이지 반환
-	    }
+	    System.out.println("상태 : " + paymentInfo.getStatus());
+	    System.out.println("수단 : " + paymentInfo.getMethod().getType());
+	    System.out.println("계좌 : " + paymentInfo.getMethod().getBank());
+	    
+	    // 카드 결제 시
+	    if(paymentInfo.getMethod().getType().equals("PaymentMethodCard")) {
+	    	if(paymentInfo.getStatus().equals("PAID")) {
+	    		// 결제 성공 상태(PAID)인 경우
+		    	orderInfo.setStatus("PAID");       			// 주문 상태를 PAID로 업데이트
+		        storeService.setOrderStatus(orderInfo);     // DB 반영
+		        
+		        // 결제 내역에 저장
+//			    paymentDTO.setPayId(responsePaymentDTO.getPaymentId());
+//			    paymentDTO.setUserId(orderInfo.getUserId());          
+//			    paymentDTO.setProductId(orderInfo.getProductId());    
+			    paymentDTO.setPayMethod("신용카드");
+			    paymentDTO.setCardName(paymentInfo.getMethod().getCard().getName());
+			    paymentDTO.setCardNum(paymentInfo.getMethod().getCard().getNumber() + "**********");
+			    paymentDTO.setPayDate(paymentInfo.getPaidAt());
+			    paymentDTO.setPayPrice(paymentInfo.getAmount().getTotal());
+			    paymentDTO.setPayStatus(paymentInfo.getStatus());
+			    
+			    // 결제 테이블에 주문 정보 저장
+			    storeService.setPaymentInfo(paymentDTO);
+			    
+			    // 이용권 테이블에 구매자의 이용권 정보 저장
+			    if(orderInfo.getUserType() == 'P') {
+			    	storeService.setUserProduct(paymentDTO);
+			    } else if(orderInfo.getUserType() == 'C') {
+			    	storeService.setComProduct(paymentDTO);
+			    }
+			    
+			    // 만약, 일반 이용권을 보유중인 기업회원이 프리미엄 이용권을 구매한 경우 일반 이용권은 소멸됨
+			    if(paymentDTO.getProductId().equals("P-C2") && memberProductDTO.getUserId() == paymentDTO.getUserId()) {
+			    	storeService.changeUseStatus(memberProductDTO.getPayId());
+			    }
+		     
+		    	return "success";     // 결제 성공 페이지 반환
+		    	
+	    	} else {
+	    		return "fail";	// 결제 실패 페이지 반환
+	    	}
 
+	    } else if(paymentInfo.getMethod().getType().equals("PaymentMethodVirtualAccount")) {
+	    	
+	    	 if(paymentInfo.getStatus().equals("VIRTUAL_ACCOUNT_ISSUED")) {
+	    		// 입금계좌가 발급된 경우(입금대기)
+				orderInfo.setStatus("READY");       			// 주문 상태를 PAID로 업데이트
+				storeService.setOrderStatus(orderInfo); 
+	    		
+	    		paymentDTO.setPayMethod("가상계좌");
+		    	paymentDTO.setBankName(paymentInfo.getMethod().getBank());
+		    	paymentDTO.setDepositAccount(paymentInfo.getMethod().getAccountNumber());
+			    paymentDTO.setIssuedAt(paymentInfo.getMethod().getIssuedAt());
+			    paymentDTO.setExpiredAt(paymentInfo.getMethod().getExpiredAt());
+			    paymentDTO.setPayPrice(paymentInfo.getAmount().getTotal());
+			    paymentDTO.setPayStatus("READY");
+			    
+			    // 결제 테이블에 주문 정보 저장
+			    storeService.setPaymentInfo(paymentDTO);
+			    
+			    return "success";
+			    
+	    	} else if(paymentInfo.getStatus().equals("PAID")) {
+	    		// 결제 성공 상태(PAID)인 경우
+		    	orderInfo.setStatus("PAID");       			// 주문 상태를 PAID로 업데이트
+		        storeService.setOrderStatus(orderInfo);     // DB 반영
+		        
+		        // 결제 내역에 저장
+		    	paymentDTO.setDepositName(paymentInfo.getMethod().getRemitterName());
+			    paymentDTO.setPayDate(paymentInfo.getPaidAt());
+			    paymentDTO.setPayStatus("PAID");
+
+			    // 결제 내역에 반영
+			    storeService.changeVirtualAccountInfo(paymentDTO.getDepositName()
+			    									, paymentDTO.getPayDate()
+			    									, paymentDTO.getPayStatus()
+			    									, paymentDTO.getUserId());
+			    
+			    // 이용권 테이블에 구매자의 이용권 정보 저장
+			    if(orderInfo.getUserType() == 'P') {
+			    	storeService.setUserProduct(paymentDTO);
+			    } else if(orderInfo.getUserType() == 'C') {
+			    	storeService.setComProduct(paymentDTO);
+			    }
+			    
+			    // 만약, 일반 이용권을 보유중인 기업회원이 프리미엄 이용권을 구매한 경우 일반 이용권은 소멸됨
+			    if(paymentDTO.getProductId().equals("P-C2") && memberProductDTO.getUserId() == paymentDTO.getUserId()) {
+			    	storeService.changeUseStatus(memberProductDTO.getPayId());
+			    }
+		     
+		    	return "success";     // 결제 성공 페이지 반환
+		    	
+	    	} else {
+	    		
+	    		return "fail";
+	    	}
+	    }
+	     
+//	    // 3️ 카드 결제 처리
+//	    if("PAID".equals(paymentInfo.getStatus())) {
+//	        // 결제 성공 상태(PAID)인 경우
+//	    	orderInfo.setStatus("PAID");       			// 주문 상태를 PAID로 업데이트
+//	        storeService.setOrderStatus(orderInfo);     // DB 반영
+//	        
+//	        // 결제 수단 비교
+//		    if(paymentInfo.getMethod().getType().equals("CARD")) {
+//			    paymentDTO.setPayMethod("신용카드");
+//			    paymentDTO.setCardName(paymentInfo.getMethod().getCard().getName());
+//			    paymentDTO.setCardNum(paymentInfo.getMethod().getCard().getNumber() + "**********");
+//			    paymentDTO.setPayDate(paymentInfo.getPaidAt());
+//
+//		    } else {
+//		    	paymentDTO.setPayMethod("가상계좌");
+//		    	paymentDTO.setBankName(paymentInfo.getMethod().getVirtualAccount().getBank());
+//		    	paymentDTO.setDepositAccount(paymentInfo.getMethod().getVirtualAccount().getAccountNumber());
+//		    	paymentDTO.setDepositName(paymentInfo.getMethod().getVirtualAccount().getRemitterName());
+//		    	paymentDTO.setPayDate(paymentInfo.getPaidAt());
+//		    	
+//		    	
+//		    }
+//	    
+//		    // 결제 내역에 저장
+////		    paymentDTO.setPayId(responsePaymentDTO.getPaymentId());
+////		    paymentDTO.setUserId(orderInfo.getUserId());          
+////		    paymentDTO.setProductId(orderInfo.getProductId());    
+////		    paymentDTO.setPayMethod("신용카드");
+////		    paymentDTO.setCardName(paymentInfo.getMethod().getCard().getName());
+////		    paymentDTO.setCardNum(paymentInfo.getMethod().getCard().getNumber() + "**********");
+////		    paymentDTO.setPayDate(paymentInfo.getPaidAt());
+//		    paymentDTO.setPayPrice(paymentInfo.getAmount().getTotal());
+//		    paymentDTO.setPayStatus(paymentInfo.getStatus());
+//		    
+//		    // 결제 테이블에 주문 정보 저장
+//		    storeService.setPaymentInfo(paymentDTO);
+//		    
+//		    // 이용권 테이블에 구매자의 이용권 정보 저장
+//		    if(orderInfo.getUserType() == 'P') {
+//		    	storeService.setUserProduct(paymentDTO);
+//		    } else if(orderInfo.getUserType() == 'C') {
+//		    	storeService.setComProduct(paymentDTO);
+//		    }
+//		    
+//		    // 만약, 일반 이용권을 보유중인 기업회원이 프리미엄 이용권을 구매한 경우 일반 이용권은 소멸됨
+//		    if(paymentDTO.getProductId().equals("P-C2") && memberProductDTO.getUserId() == paymentDTO.getUserId()) {
+//		    	storeService.changeUseStatus(memberProductDTO.getPayId());
+//		    }
+//	     
+//	    	return "success";     // 결제 성공 페이지 반환
+//	    	
+//	    } else { // 가상계좌 - 미입금 시
+//	    	orderInfo.setStatus("READY");       		// 주문 상태를 READY로 업데이트
+//	        storeService.setOrderStatus(orderInfo);    // DB 반영
+//	        
+//	        paymentDTO.setPayMethod("가상계좌");
+//	        paymentDTO.setBankName(paymentInfo.getMethod().getVirtualAccount().getBank());
+//	        paymentDTO.setDepositAccount(paymentInfo.getMethod().getVirtualAccount().getAccountNumber());
+//	    	paymentDTO.setDepositName(paymentInfo.getMethod().getVirtualAccount().getRemitterName());
+//	        
+//	        storeService.setPaymentInfo(paymentDTO);
+//	    }
+//
 	    // 위의 경우 외 실패 처리
 	    return "fail";
 	}

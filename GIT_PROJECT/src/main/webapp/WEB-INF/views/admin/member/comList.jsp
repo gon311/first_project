@@ -118,6 +118,13 @@
 	                        </tr>
 	                    </thead>
 	                    <tbody>
+	                    	<c:if test="${empty comList}">
+								<tr>
+									<td colspan="8" class="text-center">
+										게시물이 존재하지 않습니다.
+									</td>
+								</tr>
+							</c:if>
 	                        <c:forEach var="com" varStatus="status" items="${comList}">
 	                            <tr class="clickable-row"
 	                                onclick="location.href='coms/info?userId=${com.userId}'">
@@ -134,18 +141,33 @@
 	                    </tbody>
 	                </table>
 	                
-	                <!-- 전체회원 페이징(구현예정) -->
-			        <div class="d-flex flex-column align-items-center mt-5">
-			            <nav aria-label="Page navigation">
-			                <ul class="pagination pagination-sm m-0">
-			                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
-			                    <c:forEach begin="1" end="5" var="i">
-			                        <li class="page-item ${i == 12 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
-			                    </c:forEach>
-			                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-			                </ul>
-			            </nav>
-					</div>
+	                <!-- 전체회원 페이징 -->
+			        <c:if test="${not empty pageInfo and not empty pageInfo.maxPage and pageInfo.maxPage > 0}">
+				        <div class="d-flex flex-column align-items-center mt-5">
+				            <nav aria-label="Page navigation">
+				                <ul class="pagination pagination-sm m-0">
+				                    <li class="page-item <c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>">
+				                    	<a class="page-link" href="<c:url value="/admin/coms?pageNum=${pageInfo.pageNum - 1}&activeTab=${activeTab}" />">&lt;</a>
+				                    </li>
+				                    
+				                    <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+										<c:choose>
+											<c:when test="${i eq pageInfo.pageNum}">
+												<a class="page-link">${i}</a>
+											</c:when>
+											<c:otherwise>
+												<a class="page-link" href="<c:url value="/admin/coms?pageNum=${i}&activeTab=${activeTab}" />">${i}</a>
+											</c:otherwise>
+										</c:choose>
+				                    </c:forEach>
+				                    
+				                    <li class="page-item <c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>">
+				                    	<a class="page-link" href="<c:url value="/admin/coms?pageNum=${pageInfo.pageNum + 1}&activeTab=${activeTab}" />">&gt;</a>
+				                    </li>
+				                </ul>
+				            </nav>
+						</div>
+					</c:if>
 	                
 	            </div>
 	        </div>
@@ -231,7 +253,14 @@
 	                        </tr>
 	                    </thead>
 	                    <tbody>
-	                        <c:forEach var="withdraw" varStatus="status" items="${comWithdraw}">
+	                    	<c:if test="${empty comWithdrawList}">
+								<tr>
+									<td colspan="7" class="text-center">
+										게시물이 존재하지 않습니다.
+									</td>
+								</tr>
+							</c:if>
+	                        <c:forEach var="withdraw" varStatus="status" items="${comWithdrawList}">
 	                        	<!-- 탈퇴 일자(일 계산) -->
                                	<fmt:parseDate var="withdrawDate" value="${withdraw.withdrawnAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
                                	<fmt:parseNumber var="wDate" value="${withdrawDate.time / (1000*60*60*24)}" integerOnly="true" />
@@ -265,18 +294,33 @@
 	                    </tbody>
 	                </table>
 	                
-	                <!-- 탈퇴회원 페이징(구현예정) -->
-			        <div class="d-flex flex-column align-items-center mt-5">
-			            <nav aria-label="Page navigation">
-			                <ul class="pagination pagination-sm m-0">
-			                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
-			                    <c:forEach begin="1" end="5" var="i">
-			                        <li class="page-item ${i == 12 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
-			                    </c:forEach>
-			                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-			                </ul>
-			            </nav>
-					</div>
+	                <!-- 탈퇴회원 페이징 -->
+			        <c:if test="${not empty withdrawPageInfo and not empty withdrawPageInfo.maxPage and withdrawPageInfo.maxPage > 0}">
+				        <div class="d-flex flex-column align-items-center mt-5">
+				            <nav aria-label="Page navigation">
+				                <ul class="pagination pagination-sm m-0">
+				                    <li class="page-item <c:if test="${withdrawPageInfo.pageNum eq 1}">disabled</c:if>">
+				                    	<a class="page-link" href="<c:url value="/admin/coms?pageNum=${withdrawPageInfo.pageNum - 1}&activeTab=${activeTab}" />">&lt;</a>
+				                    </li>
+				                    
+				                    <c:forEach var="i" begin="${withdrawPageInfo.startPage}" end="${withdrawPageInfo.endPage}">
+										<c:choose>
+											<c:when test="${i eq withdrawPageInfo.pageNum}">
+												<a class="page-link">${i}</a>
+											</c:when>
+											<c:otherwise>
+												<a class="page-link" href="<c:url value="/admin/coms?pageNum=${i}&activeTab=${activeTab}" />">${i}</a>
+											</c:otherwise>
+										</c:choose>
+				                    </c:forEach>
+				                    
+				                    <li class="page-item <c:if test="${withdrawPageInfo.pageNum eq withdrawPageInfo.maxPage}">disabled</c:if>">
+				                    	<a class="page-link" href="<c:url value="/admin/coms?pageNum=${withdrawPageInfo.pageNum + 1}&activeTab=${activeTab}" />">&gt;</a>
+				                    </li>
+				                </ul>
+				            </nav>
+						</div>
+					</c:if>
 	                
 	            </div>
 	

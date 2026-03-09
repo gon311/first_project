@@ -287,6 +287,13 @@
     		const depositVal = document.getElementById("depositName").value;
     		const failUrl = "<c:url value="/store/payFailed" />";
     		
+    		// 가상계좌를 선택한 경우 모레 자정에 입금마감
+			const today = new Date();
+		    const endDate = new Date(today);
+		    endDate.setDate(today.getDate() + 1);
+		    endDate.setHours(23, 59, 59, 0);
+			const dueDateStr = getKSTISOString(endDate);
+    		
     		try {
     			const paymentParam = {
    					storeId: "store-a4df7838-ace2-488d-96eb-32ca15d4dfa3",
@@ -301,30 +308,40 @@
    						email: userEmail,  
    						phoneNumber: userPhone
    					},
+   					
+					virtualAccount: {
+						accountExpiry: {
+							dueDate: dueDateStr
+					    }
+					}
+   					
 //    					redirectUrl: reUrl,
 //    				  	forceRedirect: true,
-   					method: {} // 초기화
+//    					method: {} // 초기화
     			};
     			
     			
-    			if(selectedPayMethod == "VIRTUAL_ACCOUNT") {
+//     			if(selectedPayMethod == "VIRTUAL_ACCOUNT") {
     				// 가상계좌를 선택한 경우 모레 자정에 입금마감
-    				const today = new Date();
-				    const endDate = new Date(today);
-				    endDate.setDate(today.getDate() + 2);
-				    endDate.setHours(0, 0, 0, 0);
-					const dueDateStr = getKSTISOString(endDate);
+//     				const today = new Date();
+// 				    const endDate = new Date(today);
+// 				    endDate.setDate(today.getDate() + 1);
+// 				    endDate.setHours(0, 0, 0, 0);
+// 					const dueDateStr = getKSTISOString(endDate);
     				
-					 // 기존 method 객체를 유지하면서 virtualAccount 추가
-				    paymentParam.method.virtualAccount = {
-				        bank: bankVal,       
-				        remitteeName: depositVal, 
-				        expiry: { 
-				        	dueDate: dueDateStr 
-			        	}
+				 	// 기존 method 객체를 유지하면서 virtualAccount 추가
+// 				    const paymentParam.payMethod.virtualAccount = {
+// // 				        bank: bankVal,       
+// // 				        remitteeName: depositVal, 
+// 						accountExpiry: {
+// 							dueDate: dueDateStr
+// 					    }
+// // 				        expiry: { 
+// // 				        	dueDate: dueDateStr 
+// // 			        	}
  
-				    };
-    			}
+// 				    };
+//     			}
     			
     			// 결제 결과
 				const response = await PortOne.requestPayment(paymentParam);

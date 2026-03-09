@@ -1,6 +1,7 @@
 package com.itwillbs.project.board.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,5 +30,10 @@ public class BoardDTO {
 	private int viewCount;
 	private String excerpt;
 	private String createdAtText;
+	
+	public String getCreatedAtText() {
+	    DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+	    return createdAt.format(f);
+	}
 	
 }

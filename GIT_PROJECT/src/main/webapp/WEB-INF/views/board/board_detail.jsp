@@ -33,7 +33,7 @@
 
           <!-- 메타정보 -->
           <div class="meta">
-            <span>${post.createdAt}</span>
+            <span>${post.createdAtText}</span>
             <span class="dot">·</span>
             <span>조회 ${post.readcount}</span>
           </div>
@@ -84,7 +84,7 @@
 	      </c:forEach>
 	    </div>
 	  </div>
-	</c:if>
+	</c:if>\
 
 
       <!-- 하단 버튼 -->

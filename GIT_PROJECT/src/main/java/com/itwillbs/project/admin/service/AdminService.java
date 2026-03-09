@@ -92,8 +92,6 @@ public class AdminService{
 		// 1) 전체 회원 목록 갯수 조회
 		int listCount = adminMapper.selectWithdrawListCount(keyword, startDate, endDate);
 		
-		System.out.println("listcount : " + listCount);
-		
 		// 조회된 회원 수가 0보다 클 경우에만 페이지 계산 및 게시물 목록 조회 처리
 		if(listCount == 0) {
 			return new UserPageDTO(new ArrayList<>(), null);
@@ -219,8 +217,6 @@ public class AdminService{
 		// 2. 실페 뷰페이지에서 페이징 처리를 수행하는데 필요한 계산 작업 및 페이지 목록 조회 작업
 		// 1) 전체 회원 목록 갯수 조회
 		int listCount = adminMapper.selectComWithdrawListCount(keyword, startDate, endDate);
-		
-		System.out.println("listcount : " + listCount);
 		
 		// 조회된 회원 수가 0보다 클 경우에만 페이지 계산 및 게시물 목록 조회 처리
 		if(listCount == 0) {

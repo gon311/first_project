@@ -131,7 +131,7 @@
 		where
 			u.user_id = #{userId}
 		and
-			pd.use_status = 'active' or pd.use_status is null
+			(pd.use_status = 'active' or pd.use_status is null)
 		
 	</select>
 	
@@ -722,8 +722,10 @@
 	
 	<!-- 제출된 공고 상세정보 조회 -->
 	<select id="selectSubmitInfo" resultType="submit">
-		select *
-		from job_posting
+		select 
+			*
+		from 
+			job_posting
 		where 
 			job_id = #{jobId}
 	</select>
@@ -808,6 +810,7 @@
 			, p.deposit_name
 			, p.pay_price
 			, p.pay_date
+			, p.issued_at
 			, p.pay_status
 		from 
 			pay p join product pd
@@ -867,6 +870,7 @@
 			, p.bank_name
 			, p.deposit_account
 			, p.deposit_name
+			, p.issued_at
 			, p.pay_price
 			, p.pay_date
 			, p.pay_status

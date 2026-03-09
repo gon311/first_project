@@ -53,6 +53,19 @@
 			use_status = 'active'
 	</select>
 	
+	<!-- 가상계좌 입금전으로 인해 ready 상태에 있는 경우 -->
+	<select id="selectProductSave" resultType="order">
+		select
+			*
+		from 
+			pay
+		where
+			user_id = #{id}
+		and
+			pay_status = 'ready'
+	</select>
+	
+	
 	<!-- 기업)회원이 이용권을 보유하고 있는지 여부 조회 -->
 	<select id="selectComRemain" resultType="memberProduct">
 		select

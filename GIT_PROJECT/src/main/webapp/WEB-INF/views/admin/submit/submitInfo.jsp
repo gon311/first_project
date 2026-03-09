@@ -52,7 +52,7 @@
 								<dd class="col-8 py-2">${com.userName}</dd>
 
 								<dt class="col-4 text-secondary py-2">보유 이용권</dt>
-								<dd class="col-8 py-2">-</dd>
+								<dd class="col-8 py-2">${com.productName}</dd>
 
 								<dt class="col-4 text-secondary py-2">상태</dt>
 								<dd class="col-8 py-2">${com.status}</dd>

@@ -10,6 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class MemberProductDTO {
+	// 구직자 회원 이용권 dto
 	private String payId;
 	private String productId;
 	private long userId;

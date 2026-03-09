@@ -43,15 +43,32 @@
 
 							<dt class="col-5 text-secondary py-2">결제일시</dt>
 							<dd class="col-7 py-2">
-								<fmt:parseDate var="payDate" value="${pay.payDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-								<fmt:formatDate value="${payDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+								<c:choose>
+									<c:when test="${not empty pay.issuedAt}">	<%-- 가상결제 --%>
+										<fmt:parseDate var="issuedAt" value="${pay.issuedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+										<fmt:formatDate value="${issuedAt}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+									</c:when>
+									<c:otherwise>	<%-- 카드결제 --%>
+										<fmt:parseDate var="payDate" value="${pay.payDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+									<fmt:formatDate value="${payDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+									</c:otherwise>
+								</c:choose>
 							</dd>
 
 							<dt class="col-5 text-secondary py-2">결제 상품명</dt>
 							<dd class="col-7 py-2">${pay.productName}</dd>
 
 							<dt class="col-5 text-secondary py-2">결제수단</dt>
-							<dd class="col-7 py-2">${pay.payMethod}/${pay.cardName} <small class="text-secondary">(${pay.cardNum})</small> </dd>
+							<dd class="col-7 py-2">
+								<c:choose>
+									<c:when test="${pay.payMethod eq '신용카드'}">
+										${pay.payMethod}/${pay.cardName} <small class="text-secondary">(${pay.cardNum})</small> 
+									</c:when>
+									<c:otherwise>
+										${pay.payMethod} / ${pay.bankName} <small class="text-secondary">(${pay.depositAccount})</small> 
+									</c:otherwise>
+								</c:choose>
+							</dd>
 
 							<dt class="col-5 text-secondary py-2">결제금액</dt>
 							<dd class="col-7 py-2">

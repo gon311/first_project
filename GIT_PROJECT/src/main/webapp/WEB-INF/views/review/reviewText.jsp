@@ -131,55 +131,55 @@
 				    updateCount();
 				});
 				
-// 				2) 생성하기 버튼
-				document.getElementById("generate").addEventListener('click', () => {
-					document.getElementById("loadingOverlay").classList.remove("d-none");
-					
-					// 입력받은 내용 가져오기 
-					const coverLetterIdx = document.getElementById("coverLetterIdx").value;
-					const questionCode = document.getElementById("questionCode").value;
-					const inputContent = document.getElementById("content").value;
-					
-					async function requestGenerate() {
-						try {
-							// chatGPT에 전달하기 
-							const response = await fetch("<c:url value="/gpt/generateContent" />", {
-								method: "POST", 
-								headers: { 
-									"Content-Type": "application/json"
-								}, 
-								body: JSON.stringify({
-									coverLetterIdx : coverLetterIdx, 
-									questionCode : questionCode,
-									content : inputContent
-								})
-							});
-							
-							if(!response.ok) {
-								throw new Error("오류 발생!");
-							}
-							
-							// 생성된 값 화면에 출력 
-							const result = await response.json();
-							console.log("TITLE:", result.title);
-							console.log("CONTENT:", result.content);
-							
-							const outputArea = document.getElementById("outputText");
-							outputArea.textContent = result.title + "\n\n" + result.content;
-							
-						} catch(error) {
-							console.error("Error:", error);
-					        alert("자기소개서 생성 중 문제가 발생했습니다.");
-					        
-						} finally {
-							
-							document.getElementById("loadingOverlay").classList.add("d-none");
-						}
-					}
-					requestGenerate();
+ 				// 2) 생성하기 버튼 (async 키워드 추가)
+				document.getElementById("generate").addEventListener('click', async () => {
+				    
+				    // 회원권 체크 및 차감 로직 호출
+				    const canGenerate = await checkCount();
+				    if(!canGenerate) {
+				        return; // 잔여 횟수가 없으면 중단
+				    }
+				    
+				    document.getElementById("loadingOverlay").classList.remove("d-none");
+				    
+				    // 입력받은 내용 가져오기 
+				    const coverLetterIdx = document.getElementById("coverLetterIdx").value;
+				    const questionCode = document.getElementById("questionCode").value;
+				    const inputContent = document.getElementById("content").value;
+				    
+				    // 요청 함수 실행
+				    await requestGenerate(coverLetterIdx, questionCode, inputContent);
 				});
 				
-				
+				// 생성 요청 함수
+				async function requestGenerate(coverLetterIdx, questionCode, inputContent) {
+				    try {
+				        const response = await fetch("<c:url value='/gpt/generateContent' />", {
+				            method: "POST", 
+				            headers: { 
+				                "Content-Type": "application/json"
+				            }, 
+				            body: JSON.stringify({
+				                coverLetterIdx : coverLetterIdx, 
+				                questionCode : questionCode,
+				                content : inputContent
+				            })
+				        });
+				        
+				        if(!response.ok) throw new Error("오류 발생!");
+				        
+				        const result = await response.json();
+				        const outputArea = document.getElementById("outputText");
+				        outputArea.textContent = result.title + "\n\n" + result.content;
+				        
+				    } catch(error) {
+				        console.error("Error:", error);
+				        alert("자기소개서 생성 중 문제가 발생했습니다.");
+				    } finally {
+				        document.getElementById("loadingOverlay").classList.add("d-none");
+				    }
+				}
+								
 // 				3) 적용하기 버튼 
 				document.addEventListener('DOMContentLoaded', () => {
 					const applyBtn = document.getElementById('apply');
@@ -194,6 +194,28 @@
 						if(typeof updateCount === 'function') updateCount();
 					});
 				});
+				
+				// 4) 회원권 체크 함수
+				async function checkCount() {
+					try {
+						const response = await fetch("<c:url value="/gpt/checkAndDeductPass" />",{
+							method: "POST",
+							headers: {"Content-Type": "application/json"}						
+						});
+						
+						const result = await response.json();
+						
+						if(!result.success) {
+							alert(result.message);
+							return false;
+						}
+						return true; // 차감 성공 시 진행 
+					} catch(error) {
+						console.error("회원권 확인 중 오류: ", error);
+						alert("시스템 오류가 발생했습니다.")
+						return false;
+					}
+				}
 			</script>
 	</body>
 </html>

@@ -27,4 +27,36 @@
 	    LEFT JOIN career_level cl ON c.career_idx = cl.career_idx
 	    WHERE c.cover_letter_idx = #{coverLetterIdx}
 	</select>
+	
+	<!-- 구직자 이용권 status 확인 -->
+	<select id="selectCount" resultType="com.itwillbs.project.gpt.dto.PassCheckDTO">
+		SELECT 
+			remaining_count
+			, use_status
+		FROM user_product
+		WHERE user_id = #{userId}
+	</select>
+	
+	<!-- 패스권 횟수 차감 user_person update -->
+	<update id="updatePersonPass">
+		UPDATE	user_person
+		SET		pass_count = pass_count -1
+		WHERE 	user_id = #{userId}
+	</update>
+	
+	<!-- 패스권 횟수 차감 user_product update -->
+	<update id="updateProductRemain">
+		UPDATE	user_product
+		SET		remaining_count = remaining_count -1
+		WHERE 	user_id = #{userId}
+	</update>
+	
+	<update id="updateStatusToExpired">
+		UPDATE	user_product
+		SET		use_status = 'expired'
+		WHERE 	user_id = #{userId}
+	</update>
+	
+	
+	
 </mapper>

@@ -3,12 +3,14 @@ package com.itwillbs.project.gpt.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.project.gpt.dto.CopyCheckDTO;
 import com.itwillbs.project.gpt.dto.GptGenerateDTO;
 import com.itwillbs.project.gpt.dto.GptResponseDTO;
+import com.itwillbs.project.gpt.dto.PassCheckDTO;
 import com.itwillbs.project.gpt.dto.SpellCheckDTO;
 import com.itwillbs.project.gpt.mapper.GptGenerateMapper;
 import com.openai.client.OpenAIClient;
@@ -32,6 +34,29 @@ public class GptGenerateService {
 		this.client = OpenAIOkHttpClient.builder()
 				.apiKey(apiKey)
 				.build();
+	}
+	
+	// 생성하기 전 회원권 체크 및 차감 
+	@Transactional
+	public boolean deductUserPass(Long userId) {
+		
+		// 이용권 상태 및 잔여 횟수 조회 
+		PassCheckDTO passCheckDTO = generateMapper.selectCount(userId);  // status 정보 가져옴 
+		
+		// 예외 처리 
+		if(passCheckDTO == null || "expired".equals(passCheckDTO.getUseStatus()) || passCheckDTO.getRemainingCount() <= 0) {
+			return false;
+		}
+		
+		// 횟수 차감 
+		generateMapper.updatePersonPass(userId);
+	    generateMapper.updateProductRemain(userId);
+		
+		// 차감 후 0이 되었다면 상태를 expired로 변경 
+	    if (passCheckDTO.getRemainingCount() - 1 == 0) {
+	        generateMapper.updateStatusToExpired(userId);
+	    }
+		return true;
 	}
 	
 	public String generateContent(GptGenerateDTO generateDTO) throws JsonProcessingException {		
@@ -225,6 +250,10 @@ public class GptGenerateService {
 		
 		return objectMapper.writeValueAsString(result);
 	}
+	
+	
+	
+	
 
 	
 	

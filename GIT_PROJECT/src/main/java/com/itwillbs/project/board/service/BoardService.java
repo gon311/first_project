@@ -39,7 +39,7 @@ public class BoardService {
 		
 		// 파일 목록 List 객체가 비어있지 않을 경우 파일 정보 DB 등록 요청
 		if(!fileList.isEmpty()) {
-			fileMapper.insertFiles(fileList, boardDTO.getPostId(), "FREE");
+			fileMapper.insertFiles(fileList, boardDTO.getPostId(), "FREE");   //파일리스트, 게시판 파일 번호, 카테고리코드
 		}
 	}
 	

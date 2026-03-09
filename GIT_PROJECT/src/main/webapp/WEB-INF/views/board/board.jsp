@@ -1,202 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<!DOCTYPE html>
+<html>
+<head>
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
+<link rel="stylesheet" href="<c:url value='/resources/css/board/board.css'/>" type="text/css">
+</head>
+
+
+<body>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
-<%-- =========================
-     URL 설정
-   ========================= --%>
+<!-- 수정 URL 들 -->
 <c:url var="urlBoardList" value="/board"/>
 <c:url var="urlBoardDetail" value="/board/detail"/>
 <c:url var="urlBoardWrite" value="/board/write"/>
 <c:url var="urlBoardSearch" value="/board"/>
 <c:url var="urlBoardDeleteBulk" value="/board/deleteBulk"/>
 
-<style>
-  body { background:#f6f7fb; }
-  .board-wrap { min-height:100vh; }
-
-  .boardContent { padding:22px; }
-
-  .boardContent-inner{
-    background:#fff;
-    border:1px solid #eef2f7;
-    border-radius:16px;
-    box-shadow:0 10px 30px rgba(15,23,42,.04);
-    padding:22px;
-    min-height: calc(100vh - 80px);
-  }
-
-  .page-title{
-    font-size:1.6rem;
-    font-weight:900;
-    letter-spacing:-.6px;
-    margin:0;
-  }
-
-  .page-desc{
-    color:#6b7280;
-    font-size:.92rem;
-    margin-top:8px;
-  }
-
-  .chipbar{
-    margin-top:16px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-
-  .chip{
-    display:inline-flex;
-    align-items:center;
-    padding:8px 12px;
-    border-radius:999px;
-    border:1px solid #dbe2ee;
-    background:#fff;
-    text-decoration:none;
-    color:#334155;
-    font-weight:900;
-  }
-
-  .chip.active{
-    background:#111827;
-    border-color:#111827;
-    color:#fff;
-  }
-
-  .toolbar{
-    margin-top:14px;
-    display:flex;
-    justify-content:space-between;
-    gap:12px;
-    padding:12px;
-    border:1px solid #eef2f7;
-    border-radius:12px;
-    background:#fff;
-  }
-
-  .toolbar-left,
-  .toolbar-right{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
-  }
-
-  .btn-primaryish{
-    border:1px solid #111827;
-    background:#111827;
-    color:#fff;
-    padding:8px 12px;
-    border-radius:10px;
-    font-weight:900;
-    text-decoration:none;
-    
-    display:inline-flex;
-    align-items: center;
-    justify-content: center;
-    
-    
-  }
-
-  .select{
-    border:1px solid #dbe2ee;
-    border-radius:10px;
-    padding:8px 12px;
-    font-weight:900;
-  }
-
-  .search-wrap{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    border:1px solid #dbe2ee;
-    border-radius:10px;
-    padding:8px 12px;
-    background:#fff;
-  }
-
-  .search-wrap input{
-    border:0;
-    outline:none;
-    width:220px;
-  }
-
-  .list{
-    margin-top:14px;
-    border-top:1px solid #eef2f7;
-  }
-
-  .row-item{
-    display:flex;
-    gap:14px;
-    padding:18px 6px;
-    border-bottom:1px solid #eef2f7;
-  }
-
-  .row-mid{ flex:1; }
-
-  .meta-top{
-    display:flex;
-    gap:8px;
-    align-items:center;
-    margin-bottom:8px;
-  }
-
-  .badge-cat{
-    padding:4px 10px;
-    border-radius:999px;
-    background:#eef2ff;
-    font-weight:900;
-    font-size:.82rem;
-  }
-
-  .title-link{
-    font-weight:900;
-    font-size:1.15rem;
-    color:#111827;
-    text-decoration:none;
-  }
-
-  .subline{
-    margin-top:8px;
-    color:#6b7280;
-    font-size:.92rem;
-  }
-
-  .row-right{
-    display:flex;
-    gap:12px;
-    justify-content:flex-end;
-    min-width:200px;
-  }
-
-  .stat{
-    text-align:right;
-  }
-
-  .pager{
-    margin-top:18px;
-    display:flex;
-    justify-content:center;
-    gap:8px;
-  }
-
-  .pager a{
-    padding:8px 10px;
-    border:1px solid #e5e7eb;
-    border-radius:10px;
-    text-decoration:none;
-    font-weight:900;
-  }
-
-  .pager a.active{
-    background:#2563eb;
-    color:#fff;
-  }
-</style>
 
 <main class="container board-wrap">
   <section class="boardContent">
@@ -298,4 +120,7 @@
   </section>
 </main>
 
+
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+</body>
+</html>

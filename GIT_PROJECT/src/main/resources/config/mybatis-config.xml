@@ -15,5 +15,6 @@
 		<typeAlias type="com.itwillbs.project.resume.dto.ResumeDTO" alias="resume"/>
 		<typeAlias type="com.itwillbs.project.job.dto.JobApplicationDTO" alias="application"/>
 		<typeAlias type="com.itwillbs.project.common.dto.FileDTO" alias="fileDTO"/>
+		<typeAlias type="com.itwillbs.project.help.dto.NoticeDTO" alias="notice"/>
 	</typeAliases>
 </configuration>

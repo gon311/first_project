@@ -17,13 +17,5 @@ body {
 .password-toggle-icon { cursor: pointer; color: #777; z-index: 10; display: none; }
 .btn-big-login { height: 106px; background-color: #0066ff; font-size: 18px; font-weight: bold; }
 .btn-big-login:hover { background-color: #0052cc; }
-.social-btn { width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; border-radius: 50%; text-decoration: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.social-btn svg { width: 24px; height: 24px; }
-.bg-naver { background-color: #03C75A; } .bg-naver svg { fill: white; }
-.bg-kakao { background-color: #FEE500; }
-.bg-facebook { background-color: #1877F2; color: white; font-size: 24px; }
-.bg-google { background-color: white; border: 1px solid #ddd; }
-.bg-apple { background-color: black; color: white; font-size: 24px; }
-.toggle-text { border: 1px solid #dee2e6; border-radius: 10px; padding: 1px 6px; font-size: 11px; color: #0066ff; font-weight: bold; }
 
 #error {color: red;}

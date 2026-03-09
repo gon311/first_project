@@ -10,8 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.project.board.dto.BoardDTO;
 import com.itwillbs.project.board.mapper.BoardMapper;
-import com.itwillbs.project.common.DTO.FileDTO;
-import com.itwillbs.project.common.DTO.FileResourceDTO;
+import com.itwillbs.project.common.dto.FileDTO;
+import com.itwillbs.project.common.dto.FileResourceDTO;
 import com.itwillbs.project.common.mapper.FileMapper;
 import com.itwillbs.project.common.util.FileUtils;
 

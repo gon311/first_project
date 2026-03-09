@@ -11,7 +11,7 @@
     /* 1. 전체 레이아웃 및 폰트 */
     body {
         /* font-family: 'Pretendard', sans-serif; */
-        background-color: #f8f9fa;
+/*         background-color: #f8f9fa; */
         margin: 0 !important;   /* 부트스트랩 간섭 방지 */
         padding: 0 !important;
         color: #333;

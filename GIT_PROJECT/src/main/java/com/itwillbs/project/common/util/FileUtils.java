@@ -18,8 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.itwillbs.project.common.DTO.FileDTO;
-import com.itwillbs.project.common.DTO.FileResourceDTO;
+import com.itwillbs.project.common.dto.FileDTO;
+import com.itwillbs.project.common.dto.FileResourceDTO;
 
 import lombok.extern.log4j.Log4j2;
 

@@ -4,8 +4,8 @@ package com.itwillbs.project.common.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.itwillbs.project.common.DTO.FileDTO;
-import com.itwillbs.project.common.DTO.FileResourceDTO;
+import com.itwillbs.project.common.dto.FileDTO;
+import com.itwillbs.project.common.dto.FileResourceDTO;
 import com.itwillbs.project.common.mapper.FileMapper;
 import com.itwillbs.project.common.util.FileUtils;
 

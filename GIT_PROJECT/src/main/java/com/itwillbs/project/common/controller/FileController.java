@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.itwillbs.project.common.DTO.FileResourceDTO;
+import com.itwillbs.project.common.dto.FileResourceDTO;
 import com.itwillbs.project.common.service.FileService;
 
 import lombok.extern.log4j.Log4j2;

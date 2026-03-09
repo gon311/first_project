@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.itwillbs.project.common.DTO.CompanyCardDTO;
+import com.itwillbs.project.common.dto.CompanyCardDTO;
 
 @Mapper
 public interface CompanyCardMapper {

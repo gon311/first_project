@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.itwillbs.project.common.DTO.CompanyCardDTO;
+import com.itwillbs.project.common.dto.CompanyCardDTO;
 import com.itwillbs.project.common.mapper.CompanyCardMapper;
 
 @Service

@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.board.dto.BoardDTO;
 import com.itwillbs.project.board.service.BoardService;
-import com.itwillbs.project.common.DTO.FileDTO;
+import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.common.exception.LoginRequiredException;
 import com.itwillbs.project.common.util.FileUtils;
 

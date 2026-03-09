@@ -1,4 +1,4 @@
-package com.itwillbs.project.common.DTO;
+package com.itwillbs.project.common.dto;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;

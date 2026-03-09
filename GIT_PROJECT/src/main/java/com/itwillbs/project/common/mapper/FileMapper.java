@@ -4,9 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.itwillbs.project.common.DTO.FileDTO;
+import com.itwillbs.project.common.dto.FileDTO;
 
 @Mapper
 public interface FileMapper {

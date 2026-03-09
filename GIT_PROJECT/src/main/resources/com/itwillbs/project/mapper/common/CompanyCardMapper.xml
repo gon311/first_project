@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.project.common.mapper.CompanyCardMapper">
 
-	<select id="selectTodayCompanies" resultType="com.itwillbs.project.common.DTO.CompanyCardDTO">
+	<select id="selectTodayCompanies" resultType="com.itwillbs.project.common.dto.CompanyCardDTO">
 		SELECT
 			j.job_id as jobId
 			, j.title
@@ -27,7 +27,7 @@
 		LIMIT 6
 	</select>
 	
-	<select id="selectPopularCompanies" resultType="com.itwillbs.project.common.DTO.CompanyCardDTO">
+	<select id="selectPopularCompanies" resultType="com.itwillbs.project.common.dto.CompanyCardDTO">
 		SELECT
 			j.job_id as jobId
 			, j.title
@@ -44,7 +44,7 @@
 							      LIMIT 	6 ) AS top_jobs)
 	</select>
 	
-	<select id="selectBookmarkCompanies" resultType="com.itwillbs.project.common.DTO.CompanyCardDTO">
+	<select id="selectBookmarkCompanies" resultType="com.itwillbs.project.common.dto.CompanyCardDTO">
 		SELECT 
 			j.job_id as jobId
 		    , j.title

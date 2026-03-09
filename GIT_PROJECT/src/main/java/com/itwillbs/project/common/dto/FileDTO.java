@@ -1,4 +1,4 @@
-package com.itwillbs.project.common.DTO;
+package com.itwillbs.project.common.dto;
 
 import java.time.LocalDateTime;
 

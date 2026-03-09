@@ -52,7 +52,7 @@
 	                <%-- 구분 필요함!! --%>
 	                	<c:when test="${not empty noticeList}">
 	                    <c:forEach items="${noticeList}" var="notice" varStatus = "status">
-	                    	<c:if test="${noticeDTO.searchType eq '게시 ' }">
+	                    	<c:if test="${notice.status == 'Y' }">
 		                        <tr>
 		                            <td>${status.count}</td>
 		                            <td class="text-start text-center">

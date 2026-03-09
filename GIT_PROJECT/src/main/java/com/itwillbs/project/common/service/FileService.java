@@ -20,11 +20,11 @@ public class FileService {
 	// 파일 상세정보 조회 요청
 	public FileResourceDTO getFile(Integer fileId, HttpSession session) {
 		FileDTO fileDTO = fileMapper.selectFile(fileId);
-		String sId = "/" + session.getAttribute("userIdx");
+//		String sId = "/" + session.getAttribute("userIdx");
 		// -----------------------------------------------------------------
 		// FileUtils - getFileResource() 메서드 호출하여 조회된 파일 정보에 대한 실제 파일 가져오기
 		// => 파라미터 : FileDTO 객체   리턴타입 : FileResourceDTO(fileResourceDTO)
-		FileResourceDTO fileResourceDTO = FileUtils.getFileResource(fileDTO, sId);
+		FileResourceDTO fileResourceDTO = FileUtils.getFileResource(fileDTO);
 		log.info(">>>>>> fileResourceDTO : " + fileResourceDTO);
 		
 		return fileResourceDTO;

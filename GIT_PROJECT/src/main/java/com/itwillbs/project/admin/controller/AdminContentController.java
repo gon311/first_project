@@ -1,8 +1,10 @@
 package com.itwillbs.project.admin.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ import com.itwillbs.project.admin.dto.FreeDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.QnaDTO;
+import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.service.AdminService;
 
 @Controller
@@ -124,14 +127,19 @@ public class AdminContentController {
 //	== [ 자유게시판 관리] ==
 	
 	@GetMapping("/Board")
-	public String boardList(FreeDTO freeDTO
-							, Model model) {
+	public String boardList(
+							@RequestParam(defaultValue="1") Integer pageNum
+							, Model model
+							, SearchDTO searchDTO) {
 		
-		List<FreeDTO> boardList = adminService.getBoardList(freeDTO);
+		
+		List<FreeDTO> boardList = adminService.getBoardList(searchDTO);
+		
 //		System.out.println(freeDTO.getStatus());
 		model.addAttribute("boardList", boardList);
-		
-		
+		model.addAttribute("searchDTO", searchDTO);
+		model.addAttribute("pageNum", pageNum);
+	
 		
 		return "admin/contents/board";
 	}

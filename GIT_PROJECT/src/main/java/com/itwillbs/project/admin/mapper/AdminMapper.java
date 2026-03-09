@@ -15,6 +15,7 @@ import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.ProductDTO;
 import com.itwillbs.project.admin.dto.QnaDTO;
+import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.store.dto.PaymentDTO;
 
@@ -259,7 +260,7 @@ public interface AdminMapper {
 
 	
 //	자유게시판 목록 조회
-	List<FreeDTO> getBoardList(FreeDTO freeDTO);
+	List<FreeDTO> getBoardList(SearchDTO searchDTO);
 
 //	자유게시판 상세 조회
 	FreeDTO getBoardDetail(long postId);
@@ -272,6 +273,7 @@ public interface AdminMapper {
 
 //	자유게시판 댓글 삭제
 	void deleteComment(long commentId);
+
 	
 
 	

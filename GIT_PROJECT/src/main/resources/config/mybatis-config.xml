@@ -29,5 +29,6 @@
 		<typeAlias type="com.itwillbs.project.admin.dto.BannerDTO" alias="dto"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.FreeDTO" alias="free"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.CommentDTO" alias="comment"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.SearchDTO" alias="search"/>
 	</typeAliases>
 </configuration>

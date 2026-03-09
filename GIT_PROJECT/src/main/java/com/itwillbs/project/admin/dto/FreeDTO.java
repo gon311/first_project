@@ -20,4 +20,7 @@ public class FreeDTO {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	
+	private String keyword;
+	private LocalDateTime StartDate;
+	private LocalDateTime endDate;
 }

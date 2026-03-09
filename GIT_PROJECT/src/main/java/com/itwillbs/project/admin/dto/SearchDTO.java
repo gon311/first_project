@@ -17,7 +17,7 @@ public class SearchDTO {
 	private String payStatus;
 	private String startDate;
 	private String endDate;
-	
+	private String userId;
 	
 
 

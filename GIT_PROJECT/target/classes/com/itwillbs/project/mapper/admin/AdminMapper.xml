@@ -1315,15 +1315,31 @@
 	</select>
 <!--  ======================================================================== -->
 <!--  [ 자유게시판 관리 ]-->
-	<select id = "getBoardList" resultType = "free">
-		SELECT 
-			post_id
-			, title
-			, author_member_id
-			, created_at
-			, status
-		FROM
-			board_post
+	<select id="getBoardList" resultType="search">
+	    SELECT 
+	        post_id
+	        , title
+	        , author_member_id
+	        , created_at
+	        , status
+	    FROM board_post
+	    <where>
+	        <if test="startDate != null and startDate != ''">
+	            AND created_at &gt;= #{startDate}
+	        </if>
+	        <if test="endDate != null and endDate != ''">
+	            AND created_at &lt;= CONCAT(#{endDate}, ' 23:59:59')
+	        </if>
+	        <if test="userId != null and userId != 0">
+	            AND author_member_id = #{userId}
+	        </if>
+	        <if test="status != null and status != ''">
+	            AND status = #{status}
+	        </if>
+	        <if test="keyword != null and keyword != ''">
+	            AND title LIKE CONCAT('%', #{keyword}, '%')
+	        </if>
+	    </where>
 	</select>
 	
 	<select id = "getBoardDetail" resultType = "free">
@@ -1341,6 +1357,8 @@
 			board_post 
 		WHERE	
 			post_id = #{postId}
+			
+			
 	</select>
 	
 	<select id = "getCommentByPostId" resultType="comment">

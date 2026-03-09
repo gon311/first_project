@@ -63,7 +63,7 @@
         <div class="menu-card"><i class="fa-regular fa-user"></i><span>계정관리</span></div>
         <div class="menu-card"><i class="fa-regular fa-file-lines"></i><span>이력서관리</span></div>
         <div class="menu-card"><i class="fa-regular fa-paper-plane"></i><span>입사지원현황</span></div>
-        <div class="menu-card"><i class="fa-regular fa-bell"></i><span>공지사항</span></div>
+        <div class="menu-card" onclick="location.href='<c:url value="/help/notice" />'"><i class="fa-regular fa-bell"></i><span>공지사항</span></div>
     </section>
 
     <section class="faq-section">

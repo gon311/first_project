@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>커뮤니티 게시글 관리</title>
+    <title>자유게시판 관리</title>
     <%-- 기존 헤더 설정 포함 (Bootstrap 포함된 곳) --%>
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
@@ -14,7 +14,7 @@
     <div class="container-fluid mt-4">
 		<div class="card shadow-sm p-3">
 			<div class="container w-75 my-4 mx-auto">
-        <h4 class="fw-bold mb-4">커뮤니티 게시글 관리</h4>
+        <h4 class="fw-bold mb-4">자유게시판 관리</h4>
 
         <div class="card shadow-sm border">
             <div class="card-body p-4">
@@ -35,8 +35,9 @@
                             <tr>
                                 <th style="width: 10%;">글 번호</th>
                                 <th style="width: 50%;">글 제목</th>
-                                <th style="width: 20%;">작성자명</th>
-                                <th style="width: 20%;">작성일자</th>
+                                <th style="width: 10%;">작성자명</th>
+                                <th style="width: 10%;">작성일자</th>
+                                <th style="width: 10%">게시 상태</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,13 +50,22 @@
                                 <c:otherwise>
                                     <c:forEach var="board" items="${boardList}">
                                         <%-- 클릭 시 상세 페이지로 이동 --%>
-                                        <tr onclick="location.href='${pageContext.request.contextPath}/admin/boardDetail?boardId=${board.id}'" style="cursor:pointer;">
-                                            <td>${board.id}</td>
-                                            <td class="text-start ps-4">${board.title}</td>
-                                            <td>${board.writer}</td>
+                                        <tr onclick="location.href='${pageContext.request.contextPath}/admin/contents/boardDetail?postId=${board.postId}'" style="cursor:pointer;">
+                                            <td>${board.postId}</td>
+                                            <td class="text-start ps-4 text-center">${board.title}</td>
+                                            <td>${board.authorMemberId}</td>
                                             <td class="text-muted small">
-                                                <fmt:formatDate value="${board.regDate}" pattern="yyyy-MM-dd"/>
+                                       			<fmt:parseDate var="createDate" value="${board.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+                                                <fmt:formatDate value="${createDate}" pattern="yyyy-MM-dd"/>
                                             </td>
+                                            <td>
+                                            <c:if test= '${board.status == "ACTIVE"}'>
+                                            	게시
+                                            </c:if>
+                                            <c:if test = '${board.status == "DELETED"}'>
+                                            	삭제
+                                            </c:if>
+                                           	</td>
                                         </tr>
                                     </c:forEach>
                                 </c:otherwise>

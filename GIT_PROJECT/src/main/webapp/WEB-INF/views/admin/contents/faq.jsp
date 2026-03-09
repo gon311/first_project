@@ -64,6 +64,8 @@
                             </tr>
                         </thead>
                         <tbody>
+                        <c:choose>
+                        	<c:when test = "${not empty faqList }">
 						    <c:forEach var="faq" items="${faqList}" varStatus="status">
 						        <%-- 1. 제목 행 --%>
 						        <tr class="accordion-toggle" 
@@ -72,7 +74,7 @@
 						            style="cursor: pointer;">
 						            <td>${status.count}</td>
 						            <td class="text-start ps-4 fw-bold">
-						                <i class="bi bi-chevron-down me-2 small text-muted"></i>
+						                <i class="bi bi-chevron-down me-2 small text-muted text-center"></i>
 						                ${faq.faqTitle}
 						            </td>
 						            <td>
@@ -93,11 +95,21 @@
 						                            <strong>내용:</strong>
 						                        </div>
 						                        <div style="white-space: pre-wrap;">${faq.faqContent}</div>
-						                    </div>
-						                </div>
-						            </td>
-						        </tr>
-						    </c:forEach>
+						                    	</div>
+						                	</div>
+						            	</td>
+						        	</tr>
+						    	</c:forEach>
+						    	</c:when>
+							    <c:otherwise>
+							    	<tr>
+			                    		<td colspan="5" class="text-center py-5 text-muted">
+			                    			<i class="bi bi-exclamation-circle fs-2 d-bold mb-2"></i>
+			                    			검색 결과가 없습니다.
+			                    		</td>
+			                    	</tr>
+							    </c:otherwise>
+					    	</c:choose>
 						</tbody>
                     </table>
                 </div>

@@ -15,7 +15,9 @@ public class FreeDTO {
 	private long authorMemberId;
 	private String title;
 	private String content;
+	private int readcount;
 	private String status;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
+	
 }

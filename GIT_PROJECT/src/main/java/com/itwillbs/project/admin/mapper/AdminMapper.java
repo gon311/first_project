@@ -210,9 +210,23 @@ public interface AdminMapper {
 
 	List<Map<String, Object>> getComRevenueStats();
 
-
+// =============================================================
+// == [자유게시판 관리] ==
 	
+//	자유게시판 목록 조회
+	List<FreeDTO> getBoardList(FreeDTO freeDTO);
 
+//	자유게시판 상세 조회
+	FreeDTO getBoardDetail(long postId);
+	
+//	자유게시판 조회수 
+	void updateBoardCount(long postId);
+	
+//	자유게시판 댓글 조회
+	List<CommentDTO> getCommentByPostId(long postId);
+
+//	자유게시판 댓글 삭제
+	void deleteComment(long commentId);
 	
 
 	

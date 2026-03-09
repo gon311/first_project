@@ -57,12 +57,37 @@ public class UserController {
 		UserDTO dbUser = userService.getUser(userDTO.getEmail());
 		ra.addFlashAttribute("type", type);
 		
-		if(dbUser.getUserType().equals("A") && passwordEncoder.matches(userDTO.getPassword(), dbUser.getPassword())) {
+		if(dbUser != null && dbUser.getUserType().equals("A") && passwordEncoder.matches(userDTO.getPassword(), dbUser.getPassword())) {
 			session.setAttribute("userIdx", dbUser.getUserId());
 			session.setAttribute("sId", dbUser.getEmail());
 			session.setAttribute("userName", dbUser.getUserName());
 			session.setAttribute("userType", dbUser.getUserType());
 			session.setMaxInactiveInterval(60 * 60 * 24);
+			
+			if(rememberId != null) {
+				log.info("아이디 : " + userDTO.getEmail());
+				Cookie cookie = new Cookie("remember-id", userDTO.getEmail());
+				cookie.setPath("/"); // 현재 서버 범위 내에서 현재 쿠키 접근 가능하도록 설정
+				cookie.setMaxAge(60 * 60 * 24 * 30); 
+				cookie.setHttpOnly(true);
+				response.addCookie(cookie);
+				
+				Cookie cookie2 = new Cookie("remember-type", dbUser.getUserType());
+				cookie2.setPath("/"); // 현재 서버 범위 내에서 현재 쿠키 접근 가능하도록 설정
+				cookie2.setMaxAge(60 * 60 * 24 * 30); 
+				cookie2.setHttpOnly(true);
+				response.addCookie(cookie2);
+			} else { 
+				Cookie cookie = new Cookie("remember-id", userDTO.getEmail()); 
+				cookie.setPath("/");
+				cookie.setMaxAge(0);
+				response.addCookie(cookie);
+				
+				Cookie cookie2 = new Cookie("remember-type", dbUser.getUserType());
+				cookie2.setPath("/");
+				cookie2.setMaxAge(0);
+				response.addCookie(cookie2);
+			}
 			
 			return "redirect:/";
 		}

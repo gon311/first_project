@@ -1,8 +1,10 @@
 package com.itwillbs.project.admin.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +18,9 @@ import com.itwillbs.project.admin.dto.FaqDTO;
 import com.itwillbs.project.admin.dto.FreeDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
+import com.itwillbs.project.admin.dto.PageInfoDTO;
 import com.itwillbs.project.admin.dto.QnaDTO;
+import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.service.AdminService;
 
 @Controller
@@ -124,14 +128,36 @@ public class AdminContentController {
 //	== [ 자유게시판 관리] ==
 	
 	@GetMapping("/Board")
-	public String boardList(FreeDTO freeDTO
-							, Model model) {
+	public String boardList(
+							@RequestParam(defaultValue="1") Integer pageNum
+							, Model model
+							, SearchDTO searchDTO) {
 		
-		List<FreeDTO> boardList = adminService.getBoardList(freeDTO);
+		int listLimit = 10;
+		int pageListLimit = 5; 
+		
+		int listCount = adminService.getBoardTotalCount(searchDTO);
+		
+		int maxPage = (int)Math.ceil((double)listCount/listLimit);
+		int startPage = ((pageNum -1 )/ pageListLimit) * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage,startPage, endPage, pageNum);
+		
+		searchDTO.setOffset((pageNum - 1) * listLimit);
+		searchDTO.setLimit(listLimit);
+		
+		List<FreeDTO> boardList = adminService.getBoardList(searchDTO);
+		
+		
 //		System.out.println(freeDTO.getStatus());
 		model.addAttribute("boardList", boardList);
-		
-		
+		model.addAttribute("searchDTO", searchDTO);
+		model.addAttribute("pageInfoDTO", pageInfoDTO);
+	
 		
 		return "admin/contents/board";
 	}
@@ -171,15 +197,34 @@ public class AdminContentController {
 	@GetMapping("/FaQ")
 	public String faqList(@RequestParam(value="userType", defaultValue="all") String userType
 						, @RequestParam(value="category", defaultValue="") String category
+						, @RequestParam(defaultValue="1") Integer pageNum
 						,FaqDTO faqDTO
+						, SearchDTO searchDTO
 						, Model model) {
 		
 		
+		
+		int listLimit = 10;
+		int pageListLimit = 5; 
+		
+		int listCount = adminService.getFaqTotalCount(searchDTO);
+		
+		int maxPage = (int)Math.ceil((double)listCount/listLimit);
+		int startPage = ((pageNum -1 )/ pageListLimit) * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage,startPage, endPage, pageNum);
+		
+		searchDTO.setOffset((pageNum - 1) * listLimit);
+		searchDTO.setLimit(listLimit);
 	    
 	    // 서비스 호출 (카테고리, 키워드 포함)
-	    List<FaqDTO> faqList = adminService.getFaqList(faqDTO);
+	    List<FaqDTO> faqList = adminService.getFaqList(searchDTO);
 //	    System.out.println(faqList);
-	    System.out.println(category.toString());
+//	    System.out.println(category.toString());
 	    
 //	    faqDTO.getKeyword().trim();
 	    
@@ -190,6 +235,8 @@ public class AdminContentController {
 	    model.addAttribute("userType", userType); // 탭 활성화 유지용
 	    model.addAttribute("keyword", faqDTO.getKeyword());   // 검색어 유지용
 	    model.addAttribute("category", category); // 카테고리 유지용
+	    model.addAttribute("searchDTO", searchDTO);
+	    model.addAttribute("pageInfoDTO", pageInfoDTO);
 	    
 	    return "admin/contents/faq"; // faq.jsp로 포워딩
 	}
@@ -220,10 +267,10 @@ public class AdminContentController {
 	@GetMapping("/FaqUpdate")
 	public String faqUpdate(@RequestParam("faqId") int faqId, Model model) {
 	    // 아코디언 리스트에서 사용하는 DTO를 하나 가져오는 로직 필요
-	    FaqDTO faqDTO = new FaqDTO();
-	    faqDTO.setFaqId(faqId);
+	    SearchDTO  searchDTO = new SearchDTO();
+	    searchDTO.setFaqId(faqId);
 	    
-	    List<FaqDTO> list = adminService.getFaqList(faqDTO);
+	    List<FaqDTO> list = adminService.getFaqList(searchDTO);
 	    
 	    if (list != null && !list.isEmpty()) {
 	    	model.addAttribute("faq", list.get(0));

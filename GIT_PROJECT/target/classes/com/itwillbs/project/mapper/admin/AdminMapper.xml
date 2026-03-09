@@ -990,6 +990,40 @@
 	
 	<!-- ============================================================================ -->
 	<!-- FaQ 리스트 -->
+	<select id ="getFaqTotalCount" resultType ="int">
+		SELECT
+			COUNT(*)
+		FROM 
+			faq
+		<where>
+			<if test="userType != null and userType != '' and userType != 'all'">
+				AND user_type=#{userType}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				<choose>
+					<when test = 'category == ""'>
+						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+					<when test = 'category == "account"'>
+						AND faq_title LIKE CONCAT ('%', #{keyword}, '%')
+					</when>
+					<when test = 'category == "service"'>
+						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+					<when test = 'category == "ect"'>
+						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+				</choose>
+			</if>
+					
+			<if test="category !=null and category != '' and category != 'all'">
+				AND category = #{category}
+			</if>
+
+		</where>
+	</select>
+	
+	
 	<select id ="getFaqList" resultType="faq">
 		SELECT 
 			faq_id
@@ -1019,13 +1053,26 @@
 					</when>
 				</choose>
 			</if>
+			
 					
 			<if test="category !=null and category != '' and category != 'all'">
 				AND category = #{category}
 			</if>
-
-		</where>
-		ORDER BY faq_id DESC
+				<if test="faqId != null">
+	            AND faq_id = #{faqId}
+	        </if>
+	        
+	        <if test="faqId == null">
+	            <if test="keyword != null and keyword != ''">
+	                AND question LIKE CONCAT('%', #{keyword}, '%')
+	            </if>
+            </if>
+	    </where>
+	    	ORDER BY faq_id DESC
+	    <if test="faqId == null">
+	        LIMIT #{offset}, #{limit}
+	    </if>
+		
 			
 	</select>
 	
@@ -1314,15 +1361,63 @@
 	</select>
 <!--  ======================================================================== -->
 <!--  [ 자유게시판 관리 ]-->
-	<select id = "getBoardList" resultType = "free">
+	<select id = "getBoardTotalCount" resultType = 'int'>
 		SELECT 
-			post_id
-			, title
-			, author_member_id
-			, created_at
-			, status
+			count(*)
 		FROM
 			board_post
+    <where>
+        <if test="keyword != null and keyword != ''">
+            AND title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+
+        <if test="startDate != null and startDate != ''">
+            AND created_at &gt;= #{startDate}
+        </if>
+
+        <if test="endDate != null and endDate != ''">
+            AND created_at &lt;= CONCAT(#{endDate}, ' 23:59:59')
+        </if>
+
+        <if test="userId != null and userId != ''">
+            AND author_member_id LIKE CONCAT('%', #{userId}, '%')
+        </if>
+        
+        </where>
+	</select>	
+		
+	
+	<select id="getBoardList" parameterType = "search" resultType="free">
+	    SELECT 
+	        post_id
+	        , title
+	        , author_member_id
+	        , created_at
+	        , status
+	    FROM board_post
+	    <where>
+	        <if test="startDate != null and startDate != ''">
+	            AND created_at &gt;= #{startDate}
+	        </if>
+	        <if test="endDate != null and endDate != ''">
+	            AND created_at &lt;= CONCAT(#{endDate}, ' 23:59:59')
+	        </if>
+	        <if test="userId != null and userId != 0">
+	            AND author_member_id = #{userId}
+	        </if>
+	        <if test="status != null and status != ''">
+	            AND status = #{status}
+	        </if>
+	        <if test="keyword != null and keyword != ''">
+	            AND title LIKE CONCAT('%', #{keyword}, '%')
+	        </if>
+	    </where>
+	    ORDER BY created_at DESC
+	    LIMIT #{offset}, #{limit}
 	</select>
 	
 	<select id = "getBoardDetail" resultType = "free">
@@ -1340,6 +1435,8 @@
 			board_post 
 		WHERE	
 			post_id = #{postId}
+			
+			
 	</select>
 	
 	<select id = "getCommentByPostId" resultType="comment">

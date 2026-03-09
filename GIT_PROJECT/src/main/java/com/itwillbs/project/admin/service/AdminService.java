@@ -19,6 +19,7 @@ import com.itwillbs.project.admin.dto.PageInfoDTO;
 import com.itwillbs.project.admin.dto.PaymentPageDTO;
 import com.itwillbs.project.admin.dto.ProductDTO;
 import com.itwillbs.project.admin.dto.QnaDTO;
+import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.admin.dto.SubmitPageDTO;
 import com.itwillbs.project.admin.dto.UserPageDTO;
@@ -423,12 +424,17 @@ public class AdminService{
 	}
 	
 	// ====================================================================================
-//	 자유게시판 관리
-	// 자유게시판 목록 조회
-	public List<FreeDTO> getBoardList(FreeDTO freeDTO){
-		return adminMapper.getBoardList(freeDTO);
-	}
+//	 [자유게시판 관리]
 	
+	public int getBoardTotalCount(SearchDTO searchDTO) {
+		return adminMapper.getBoardTotalCount(searchDTO);
+	}
+
+	// 자유게시판 목록 조회
+	public List<FreeDTO> getBoardList(SearchDTO searchDTO) {
+		return adminMapper.getBoardList(searchDTO);
+	}
+
 	// 자유게시판 상세 조회
 	public FreeDTO getBoardDetailById(long postId) {
 		adminMapper.updateBoardCount(postId);
@@ -483,8 +489,12 @@ public class AdminService{
 	}
 	// =====================================================================================
 	// faq 목록 조회
-	public List<FaqDTO> getFaqList(FaqDTO faqDTO) {
-		return adminMapper.getFaqList(faqDTO);
+	public List<FaqDTO> getFaqList(SearchDTO searchDTO) {
+		return adminMapper.getFaqList(searchDTO);
+	}
+	
+	public int getFaqTotalCount(SearchDTO searchDTO) {
+		return adminMapper.getFaqTotalCount(searchDTO);
 	}
 	
 	public List<FaqDTO> getListByUserType(String userType){
@@ -567,6 +577,8 @@ public class AdminService{
 	    return result;
 		
 	}
+
+
 
 
 	

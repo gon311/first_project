@@ -15,6 +15,7 @@ import com.itwillbs.project.admin.dto.MemberDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.ProductDTO;
 import com.itwillbs.project.admin.dto.QnaDTO;
+import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.store.dto.PaymentDTO;
 
@@ -188,7 +189,7 @@ public interface AdminMapper {
 	// 1:1 문의글 관리
 
 	List<QnaDTO> getQnaList(QnaDTO qnaDTO);
-
+	
 	QnaDTO getQnaById(int qnaId);
 
 	void registAnswer(QnaDTO qnaDTO);
@@ -199,8 +200,11 @@ public interface AdminMapper {
 
 	void modifyAnswer(QnaDTO qnaDTO);
 	// -========================================================================
+//	FAQ 관리
+	
+	int getFaqTotalCount(SearchDTO searchDTO);
 
-	List<FaqDTO> getFaqList(FaqDTO faqDTO);
+	List<FaqDTO> getFaqList(SearchDTO searchDTO);
 	
 	List<FaqDTO> getListByUserType(String userType);
 
@@ -253,11 +257,14 @@ public interface AdminMapper {
 
 	List<Map<String, Object>> getComRevenueStats();
 
+	
 // =============================================================
 // == [자유게시판 관리] ==
+
+	int getBoardTotalCount(SearchDTO searchDTO);
 	
 //	자유게시판 목록 조회
-	List<FreeDTO> getBoardList(FreeDTO freeDTO);
+	List<FreeDTO> getBoardList(SearchDTO searchDTO);
 
 //	자유게시판 상세 조회
 	FreeDTO getBoardDetail(long postId);
@@ -270,6 +277,8 @@ public interface AdminMapper {
 
 //	자유게시판 댓글 삭제
 	void deleteComment(long commentId);
+
+
 	
 
 	

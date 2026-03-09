@@ -101,17 +101,32 @@
 			
 			
 			<!-- 페이지네이션 구현 -->
-	        <div class="d-flex flex-column align-items-center mt-3">
-	            <nav aria-label="Page navigation">
-	                <ul class="pagination pagination-sm m-0">
-	                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
-	                    <c:forEach begin="1" end="5" var="i">
-	                        <li class="page-item ${i == 12 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
-	                    </c:forEach>
-	                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-	                </ul>
-	            </nav>
-			</div>
+       	 		 <c:if test="${not empty pageInfoDTO and not empty pageInfoDTO.maxPage and pageInfoDTO.maxPage > 0}">
+			        <div class="d-flex flex-column align-items-center mt-5">
+			            <nav aria-label="Page navigation">
+			                <ul class="pagination pagination-sm m-0">
+			                    <li class="page-item <c:if test="${pageInfoDTO.pageNum eq 1}">disabled</c:if>">
+			                    	<a class="page-link" href="<c:url value="/admin/contents/JobPost?pageNum=${pageInfoDTO.pageNum - 1}" />">&lt;</a>
+			                    </li>
+			                    
+			                    <c:forEach var="i" begin="${pageInfoDTO.startPage}" end="${pageInfoDTO.endPage}">
+									<c:choose>
+										<c:when test="${i eq pageInfoDTO.pageNum}">
+											<a class="page-link">${i}</a>
+										</c:when>
+										<c:otherwise>
+											<a class="page-link" href="<c:url value="/admin/contents/JobPost?pageNum=${i}" />">${i}</a>
+										</c:otherwise>
+									</c:choose>
+			                    </c:forEach>
+			                    
+			                    <li class="page-item <c:if test="${pageInfoDTO.pageNum eq pageInfoDTO.maxPage}">disabled</c:if>">
+			                    	<a class="page-link" href="<c:url value="/admin/contents/JobPost?pageNum=${pageInfoDTO.pageNum + 1}}" />">&gt;</a>
+			                    </li>
+			                </ul>
+			            </nav>
+					</div>
+				</c:if>   
 		</div>	
 	</div>
 

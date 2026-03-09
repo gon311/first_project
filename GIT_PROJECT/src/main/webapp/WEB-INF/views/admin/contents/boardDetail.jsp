@@ -11,7 +11,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/admin/common/header.jsp" %>
 	<div class="card shadow-sm p-5">
-    <div class="border-bottom pb-3 mb-4">
+    <div class="pb-3 mb-4">
         <h2 class="fw-bold">${freeDTO.title}</h2> 
        	<div class="text-muted small">
        		<span>

@@ -295,7 +295,7 @@
 			const dueDateStr = getKSTISOString(endDate);
     		
     		try {
-    			const paymentParam = {
+    			let paymentParam = {
    					storeId: "store-a4df7838-ace2-488d-96eb-32ca15d4dfa3",
    					channelKey: "channel-key-718642b3-991e-4a54-b226-b2760dfec1d8",
    					paymentId: orderId,
@@ -309,39 +309,20 @@
    						phoneNumber: userPhone
    					},
    					
-					virtualAccount: {
-						accountExpiry: {
-							dueDate: dueDateStr
-					    }
-					}
-   					
-//    					redirectUrl: reUrl,
-//    				  	forceRedirect: true,
-//    					method: {} // 초기화
     			};
     			
     			
-//     			if(selectedPayMethod == "VIRTUAL_ACCOUNT") {
-    				// 가상계좌를 선택한 경우 모레 자정에 입금마감
-//     				const today = new Date();
-// 				    const endDate = new Date(today);
-// 				    endDate.setDate(today.getDate() + 1);
-// 				    endDate.setHours(0, 0, 0, 0);
-// 					const dueDateStr = getKSTISOString(endDate);
-    				
+    			if(selectedPayMethod === "VIRTUAL_ACCOUNT") {
 				 	// 기존 method 객체를 유지하면서 virtualAccount 추가
-// 				    const paymentParam.payMethod.virtualAccount = {
-// // 				        bank: bankVal,       
-// // 				        remitteeName: depositVal, 
-// 						accountExpiry: {
-// 							dueDate: dueDateStr
-// 					    }
-// // 				        expiry: { 
-// // 				        	dueDate: dueDateStr 
-// // 			        	}
+				    paymentParam.virtualAccount = {
+						accountExpiry: {
+							dueDate: dueDateStr
+					    }
  
-// 				    };
-//     			}
+				    };
+				 	
+    			}
+    			
     			
     			// 결제 결과
 				const response = await PortOne.requestPayment(paymentParam);
@@ -370,7 +351,11 @@
 				        alert("결제 처리 중 오류가 발생했습니다.");
 				        location.href = "<c:url value="/store/payFailed" />";
 				    }
+				} else {
+					alert("결제 처리 중 오류가 발생했습니다.");
+			        location.replace("<c:url value="/store/payFailed" />");
 				}
+				
 				
     			
     		} catch (error){

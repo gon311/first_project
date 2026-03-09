@@ -61,6 +61,15 @@ public class StoreService{
 		
 	} 
 	
+	// 구매자가 이용권을 가상계좌로 결제하고 아직 입금하지 않은 경우
+	public boolean getProductSave(long id) {
+		if(storeMapper.selectProductSave(id) != null) {
+			return false;
+		} else { // 구매가능
+			return true;
+		}
+	}
+	
 	// 기업회원이 이용권을 가지고 있고, 만료되지 않았는지 여부
 	public MemberProductDTO getComRemain(long id) {
 		return storeMapper.selectComRemain(id);
@@ -147,6 +156,8 @@ public class StoreService{
 	public void changeVirtualAccountInfo(String depositName, LocalDateTime payDate, String payStatus, long userId) {
 		storeMapper.updateVirtualAccountInfo(depositName, payDate, payStatus, userId);
 	}
+
+	
 
 	
 

@@ -11,6 +11,8 @@
     
     <%-- 현재 페이지 전용 CSS 영역--%>
 	<link href="<c:url value="/resources/css/payFailed.css" />" rel="stylesheet" type="text/css">
+	
+	<script>history.replaceState(null, '', 'payFailed');</script>
 
 </head>
 <body>
@@ -31,19 +33,8 @@
                         결제 과정에서 문제가 발생하여 처리가 완료되지 않았습니다.
                     </p>
             
-<!--                     <div class="error-box text-start"> -->
-<!--                         <div class="d-flex justify-content-between mb-3 border-bottom pb-2"> -->
-<!--                             <span class="label-text">주문번호</span> -->
-<%--                             <span class="value-text">${payment.orderId != null ? payment.orderId : '미발급'}</span> --%>
-<!--                         </div> -->
-<!--                         <div class="d-flex justify-content-between"> -->
-<!--                             <span class="label-text">사유</span> -->
-<%--                             <span class="value-text text-danger">${errorMessage != null ? errorMessage : '사용자 결제 취소 또는 타임아웃'}</span> --%>
-<!--                         </div> -->
-<!--                     </div> --> 
-            
                     <div class="d-grid gap-3">
-                        <button type="button" class="btn btn-dark btn-retry text-white" onclick="history.back();">
+                        <button type="button" class="btn btn-dark btn-retry text-white" onclick="window.history.go(-2)">
                             <i class="bi bi-arrow-clockwise me-2"></i> 다시 결제 시도하기
                         </button>
             
@@ -65,10 +56,13 @@
     <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
     
     <script>
-		window.onload = function () {
-			if (performance.navigation.type === 2) {
-				window.history.forward();
-			}
+	    // 페이지 로드 시 현재 상태를 히스토리에 한 번 더 쌓음
+		history.pushState(null, null, location.href);
+		
+		window.onpopstate = function() {
+		    // 뒤로가기 감지 시 메인페이지로 강제 이동
+		    alert("잘못된 접근입니다.");
+		    location.replace("<c:url value='/' />"); 
 		};
     </script>
 

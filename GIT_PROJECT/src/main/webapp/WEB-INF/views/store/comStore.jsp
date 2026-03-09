@@ -140,12 +140,18 @@
 			// 비동기 요청에 대한 응답 데이터를 JSON 형식으로 파싱
 			const result = await response.json();
 
-			if(result.posibillity === "none") { // 구매가능
-				location.href = "pay?productId=" + productId;
-			} 
 			
-			if(result.posibillity === "basic" || result.posibillity === "premium") {
-				alert("구매할 수 없는 이용권입니다.");
+			
+			// 가상결제 입금 전인 경우
+			if(result.isSaved) {
+				if(result.posibillity === "none") { // 구매가능
+					location.href = "pay?productId=" + productId;
+				} else if(result.posibillity === "basic" || result.posibillity === "premium") {
+					alert("구매할 수 없는 이용권입니다.");
+					return;
+				}
+			} else {
+				alert("결제 대기 중인 이용권을 보유중입니다.");
 				return;
 			}
 				

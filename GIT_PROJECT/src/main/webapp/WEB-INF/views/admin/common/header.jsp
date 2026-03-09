@@ -9,7 +9,7 @@
         <div class="header-util">
             <a href="/project/" class="btn btn-sm btn-outline-secondary">사용자 페이지</a>
             <span class="badge bg-light text-dark mx-2">관리자 모드</span>
-            <a href="/logout" class="btn btn-sm btn-danger">로그아웃</a>
+            <a href="<c:url value="/user/logout" />" class="btn btn-sm btn-danger">로그아웃</a>
         </div>
     </div>
 

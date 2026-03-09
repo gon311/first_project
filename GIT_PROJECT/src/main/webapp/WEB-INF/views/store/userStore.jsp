@@ -141,10 +141,16 @@
 			// 비동기 요청에 대한 응답 데이터를 JSON 형식으로 파싱
 			const result = await response.json();
 
-			if(result.exists) { // 구매가능
-				location.href = "pay?productId=" + productId;
+			
+			if(result.isSaved) {
+				if(result.exists) { // 구매가능
+					location.href = "pay?productId=" + productId;
+				} else {
+					alert("이미 이용권을 보유중입니다.");
+					return;
+				}
 			} else {
-				alert("이미 이용권을 보유중입니다.");
+				alert("결제 대기 중인 이용권을 보유중입니다.");
 				return;
 			}
 			

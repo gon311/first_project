@@ -253,7 +253,7 @@ public interface AdminMapper {
 
 	List<Map<String, Object>> getComRevenueStats();
 
-
+	
 // =============================================================
 // == [자유게시판 관리] ==
 

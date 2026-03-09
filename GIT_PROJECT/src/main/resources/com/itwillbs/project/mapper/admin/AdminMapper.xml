@@ -343,7 +343,7 @@
 		where
 			u.user_type = 'c'
 		and 
-			p.use_status = 'active'
+			(p.use_status = 'active' or p.use_status is null)
 			<choose>
 				<when test="type != null and type.equals('basic')">
 					and
@@ -413,8 +413,7 @@
 		where
 			u.user_id = #{userId}
 		and 
-			p.use_status = 'active'
-		
+			(p.use_status = 'active' or p.use_status is null)
 	</select>
 	
 	<!-- 기업 공고 목록 조회 -->

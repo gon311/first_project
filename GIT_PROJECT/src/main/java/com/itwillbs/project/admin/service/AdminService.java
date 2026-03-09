@@ -200,7 +200,7 @@ public class AdminService{
 		
 		// 4. 회원 목록 조회
 		List<MemberDTO> userList = adminMapper.selectComList(startRow, listLimit, keyword, type, status, sort);
-		  
+		
 		// 5. UserPageDTO 객체에 게시물 목록 정보와 페이징 정보 저장 후 리턴
 		return new UserPageDTO(userList, pageInfoDTO);
 	}

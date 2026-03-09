@@ -189,7 +189,7 @@ public interface AdminMapper {
 	// 1:1 문의글 관리
 
 	List<QnaDTO> getQnaList(QnaDTO qnaDTO);
-
+	
 	QnaDTO getQnaById(int qnaId);
 
 	void registAnswer(QnaDTO qnaDTO);
@@ -200,8 +200,11 @@ public interface AdminMapper {
 
 	void modifyAnswer(QnaDTO qnaDTO);
 	// -========================================================================
+//	FAQ 관리
+	
+	int getFaqTotalCount(SearchDTO searchDTO);
 
-	List<FaqDTO> getFaqList(FaqDTO faqDTO);
+	List<FaqDTO> getFaqList(SearchDTO searchDTO);
 	
 	List<FaqDTO> getListByUserType(String userType);
 
@@ -258,6 +261,7 @@ public interface AdminMapper {
 // =============================================================
 // == [자유게시판 관리] ==
 
+	int getBoardTotalCount(SearchDTO searchDTO);
 	
 //	자유게시판 목록 조회
 	List<FreeDTO> getBoardList(SearchDTO searchDTO);
@@ -273,6 +277,7 @@ public interface AdminMapper {
 
 //	자유게시판 댓글 삭제
 	void deleteComment(long commentId);
+
 
 	
 

@@ -111,7 +111,35 @@
                     </table>
                 </div> <%-- table-responsive 끝 --%>
                 
+          <%-- 페이지네이션 --%>      
+    	 		 <c:if test="${not empty pageInfoDTO and not empty pageInfoDTO.maxPage and pageInfoDTO.maxPage > 0}">
+				        <div class="d-flex flex-column align-items-center mt-5">
+				            <nav aria-label="Page navigation">
+				                <ul class="pagination pagination-sm m-0">
+				                    <li class="page-item <c:if test="${pageInfoDTO.pageNum eq 1}">disabled</c:if>">
+				                    	<a class="page-link" href="<c:url value="/admin/contents/Board?pageNum=${pageInfoDTO.pageNum - 1}" />">&lt;</a>
+				                    </li>
+				                    
+				                    <c:forEach var="i" begin="${pageInfoDTO.startPage}" end="${pageInfoDTO.endPage}">
+										<c:choose>
+											<c:when test="${i eq pageInfoDTO.pageNum}">
+												<a class="page-link">${i}</a>
+											</c:when>
+											<c:otherwise>
+												<a class="page-link" href="<c:url value="/admin/contents/Board?pageNum=${i}" />">${i}</a>
+											</c:otherwise>
+										</c:choose>
+				                    </c:forEach>
+				                    
+				                    <li class="page-item <c:if test="${pageInfoDTO.pageNum eq pageInfoDTO.maxPage}">disabled</c:if>">
+				                    	<a class="page-link" href="<c:url value="/admin/contents/Board?pageNum=${pageInfoDTO.pageNum + 1}}" />">&gt;</a>
+				                    </li>
+				                </ul>
+				            </nav>
+						</div>
+					</c:if>            
     </div>
+    
 </div>
 
 </body>

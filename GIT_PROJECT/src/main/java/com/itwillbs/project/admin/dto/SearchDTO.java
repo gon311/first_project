@@ -18,7 +18,11 @@ public class SearchDTO {
 	private String startDate;
 	private String endDate;
 	private String userId;
+	private String category;
 	
-
+	private Integer faqId;
+	
+	private int offset;
+	private int limit;
 
 }

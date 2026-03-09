@@ -1,0 +1,122 @@
+@charset "UTF-8";
+
+/* 1. 배경 및 카드 레이아웃 */
+body {
+    background-color: #F8F9FB; /* 아이시 화이트 배경 */
+}
+
+.review-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 71, 171, 0.05) !important;
+}
+
+/* 2. 타이틀 스타일 */
+.h4 {
+    color: #1A365D;
+    font-weight: 800;
+    position: relative;
+    padding-left: 15px;
+}
+
+.h4::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 18px;
+    background-color: #0047AB;
+    border-radius: 2px;
+}
+
+/* 3. 입력/출력 텍스트 영역 */
+.textarea-wrap label {
+    font-weight: 700;
+    color: #4A5568;
+    margin-bottom: 10px;
+}
+
+/* 입력창 */
+#inputText {
+    min-height: 520px;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 15px;
+    line-height: 1.7;
+    resize: none;
+    transition: all 0.2s;
+}
+
+#inputText:focus {
+    border-color: #0047AB;
+    box-shadow: 0 0 0 3px rgba(0, 71, 171, 0.1);
+    background-color: #FFFFFF;
+}
+
+/* 출력창 (결과) */
+#outputText {
+    height: 520px !important; /* 인라인 스타일을 이기기 위해 important */
+    background-color: #F0F7FF !important; /* 아이시 블루 배경 */
+    border: 1px dashed #0047AB !important; /* 교정 결과임을 나타내는 점선 */
+    border-radius: 12px !important;
+    padding: 20px !important;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #2D3748;
+    overflow-y: auto;
+    white-space: pre-wrap; /* 줄바꿈 유지 */
+}
+
+/* 4. 버튼 그룹 */
+.btn {
+    padding: 12px 30px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.2s;
+}
+
+/* 검사하기 버튼 */
+#generateBtn {
+    background: linear-gradient(135deg, #0047AB 0%, #002D6B 100%);
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 71, 171, 0.2);
+}
+
+#generateBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 71, 171, 0.3);
+}
+
+/* 복사하기 버튼 */
+#copyBtn {
+    border: 1px solid #CBD5E0;
+    color: #4A5568;
+}
+
+#copyBtn:hover {
+    background-color: #EDF2F7;
+    color: #1A365D;
+}
+
+/* 5. 로딩 오버레이 */
+#loadingOverlay {
+    backdrop-filter: blur(5px);
+    background: rgba(26, 54, 93, 0.7) !important;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.3em;
+}
+
+/* 6. 반응형 대응 */
+@media (max-width: 991.98px) {
+    #inputText, #outputText {
+        height: 360px !important;
+        min-height: 360px !important;
+    }
+}

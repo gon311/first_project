@@ -21,7 +21,7 @@
 		<%@ include file="/WEB-INF/views/inc/head.jspf"%>
 		
 		<%-- 현재 페이지(main.jsp) 전용 CSS 영역--%>
-		<link href="<c:url value="/resources/css/reviewForm.css" />" rel="stylesheet" type="text/css">
+		<link href="<c:url value="/resources/css/review/reviewForm.css" />" rel="stylesheet" type="text/css">
 	</head>
 	
 	<body>
@@ -397,15 +397,14 @@
 			
 			// 임시저장 토스트 메세지 
 			function showToast(message, isSuccess = true) {
-				const toast = document.getElementById('toast');
-				toast.textContent = message;
-				toast.style.backgroundColor = isSuccess ? "#ADD8E6" : "#f44336"; 
-				toast.className = "toast show";
-				
-				setTimeout(() => {
-					toast.className = toast.className.replace("show", "");
-				}, 3000); // 3초 후 자동 사라짐
-				
+			    const toast = document.getElementById('toast');
+			    toast.textContent = message;
+			    toast.style.background = isSuccess ? "linear-gradient(135deg, #0047AB 0%, #002D6B 100%)" : "#f44336";
+			    toast.className = "toast show";
+			    
+			    setTimeout(() => {
+			        toast.className = toast.className.replace("show", "");
+			    }, 3000);
 			}
 			
 			// 임시저장 버튼 프로세스 

@@ -5,8 +5,8 @@
 <html>
 	<head>
 		<%@ include file="/WEB-INF/views/inc/head.jspf"%>
-		<link href="<c:url value="/resources/css/reviewText.css" />" rel="stylesheet" type="text/css">
 		<%-- 현재 페이지(main.jsp) 전용 CSS 영역--%>
+		<link href="<c:url value="/resources/css/review/reviewText.css" />" rel="stylesheet" type="text/css">
 	</head>
 	<body>
 		<%-- header area --%>
@@ -71,9 +71,7 @@
 							</div>
 							<div class="col-12 col-lg-6">
 								<label for="outputText" class="form-label">출력</label>
-								<div id="outputText" class="form-control" 
-								style="width: 615px; height: 520px; white-space: pre-wrap; overflow-y: auto;">
-								</div>
+								<div id="outputText" class="form-control"></div>
 							</div>
 						</div>
 	

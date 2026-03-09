@@ -6,22 +6,7 @@
 	<head>
 		<%@ include file="/WEB-INF/views/inc/head.jspf"%>
 		<%-- 현재 페이지 전용 CSS 영역--%>
-		<style>
-			.pane textarea {
-				min-height: 240px; /* 우측 상/하 패널 높이 기본값 */
-				resize: vertical;
-			}
-			
-			.left-pane textarea {
-				min-height: 520px; /* 좌측 입력창 큰 높이 */
-			}
-			
-			@media ( max-width : 991.98px) {
-				.left-pane textarea {
-					min-height: 360px;
-				}
-			}
-		</style>
+		<link href="<c:url value="/resources/css/review/copyCheck.css" />" rel="stylesheet" type="text/css">
 	</head>
 	<body>
 		<%-- header area --%>
@@ -46,25 +31,15 @@
 	
 						<!-- 우측: 위/아래 스택 -->
 						<div class="col-12 col-lg-6">
-							<!-- (위) 수정 결과물 출력창 -->
-							<div class="pane mb-3">
-								<div class="col-12 col-lg-6">
-									<label for="correctedResult" class="form-label">수정 결과물</label>
-									<div id="correctedResult" class="form-control" 
-										 style="width: 521px; height: 240px; overflow-y: auto; background-color: #f8f9fa;">
-									 </div>
-								</div>
-							</div>
-	
-							<!-- (아래) 수정 내역 세부 설명창 -->
-							<div class="pane">
-								<div class="col-12 col-lg-6">
-									<label for="analysisDetail" class="form-label">수정 내역 세부 설명</label>
-									<div id="analysisDetail" class="form-control" 
-										 style="width: 521px; height: 240px; overflow-y: auto; background-color: #f8f9fa;">
-									 </div>
-								</div>
-							</div>
+						    <div class="pane mb-3">
+						        <label for="correctedResult" class="form-label">수정 결과물</label>
+						        <div id="correctedResult" class="form-control"></div>
+						    </div>
+						
+						    <div class="pane">
+						        <label for="analysisDetail" class="form-label">수정 내역 세부 설명</label>
+						        <div id="analysisDetail" class="form-control"></div>
+						    </div>
 						</div>
 					</div>
 	

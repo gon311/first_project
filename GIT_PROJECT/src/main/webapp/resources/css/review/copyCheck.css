@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+/* 1. 배경 및 카드 레이아웃 */
+body {
+    background-color: #F8F9FB;
+}
+
+.card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 71, 171, 0.05);
+}
+
+/* 2. 타이틀 스타일 (맞춤법 검사와 통일) */
+.h4 {
+    color: #1A365D;
+    font-weight: 800;
+    position: relative;
+    padding-left: 15px;
+}
+
+.h4::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 18px;
+    background-color: #0047AB;
+    border-radius: 2px;
+}
+
+/* 3. 텍스트 영역 레이아웃 */
+.form-label {
+    font-weight: 700;
+    color: #4A5568;
+    margin-bottom: 10px;
+}
+
+/* 좌측 입력창 */
+#inputText {
+    min-height: 520px;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 15px;
+    line-height: 1.7;
+    resize: none;
+}
+
+/* 우측 결과창 공통 */
+#correctedResult, #analysisDetail {
+    border-radius: 12px !important;
+    padding: 20px !important;
+    font-size: 14.5px;
+    line-height: 1.6;
+    overflow-y: auto;
+    width: 100% !important; /* 인라인 스타일 width 무시 */
+}
+
+/* 수정 결과물 (아이시 블루) */
+#correctedResult {
+    background-color: #F0F7FF !important;
+    border: 1px dashed #0047AB !important;
+    height: 240px !important;
+    color: #2D3748;
+}
+
+/* 세부 설명창 (연한 그레이) */
+#analysisDetail {
+    background-color: #F7FAFC !important;
+    border: 1px solid #EDF2F7 !important;
+    height: 240px !important;
+    color: #4A5568;
+    font-size: 14px;
+}
+
+/* 4. 버튼 디자인 */
+.btn {
+    padding: 12px 30px;
+    font-weight: 600;
+    border-radius: 10px;
+}
+
+#runCheck {
+    background: linear-gradient(135deg, #0047AB 0%, #002D6B 100%);
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 71, 171, 0.2);
+}
+
+#runCheck:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 71, 171, 0.3);
+}
+
+/* 5. 로딩 오버레이 */
+#loadingOverlay {
+    backdrop-filter: blur(5px);
+    background: rgba(26, 54, 93, 0.7) !important;
+}
+
+/* 6. 반응형 대응 */
+@media (max-width: 991.98px) {
+    #inputText { min-height: 360px; }
+    #correctedResult, #analysisDetail { height: 200px !important; }
+}

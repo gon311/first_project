@@ -17,5 +17,5 @@ public class CompanyCardDTO {
 	private String salary;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate closeDate;
-	private Long jobId; 
+	private Long jobId;   
 }

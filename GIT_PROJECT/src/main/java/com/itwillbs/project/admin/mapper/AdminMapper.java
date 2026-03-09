@@ -253,18 +253,10 @@ public interface AdminMapper {
 
 	List<Map<String, Object>> getComRevenueStats();
 
-<<<<<<< HEAD
+
 // =============================================================
 // == [자유게시판 관리] ==
-=======
-	
 
-	
-
-	
-
-
->>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 	
 //	자유게시판 목록 조회
 	List<FreeDTO> getBoardList(FreeDTO freeDTO);

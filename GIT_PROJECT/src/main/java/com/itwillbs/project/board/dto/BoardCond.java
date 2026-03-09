@@ -6,13 +6,9 @@ import lombok.Data;
 @Data
 public class BoardCond extends BaseCond {
 
-    // 카테고리
     private String category = "ALL";
-
-    // 검색어
+    private String sort = "latest";
     private String q;
-
-    // 정렬
-    private String sort = "latest"; // latest / view / comment
+    private String searchType = "all";
 
 }

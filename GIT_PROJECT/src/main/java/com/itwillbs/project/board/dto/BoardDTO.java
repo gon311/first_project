@@ -20,4 +20,14 @@ public class BoardDTO {
 	private String status;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
+	
+	// ===== 리스트 화면용 =====
+	private String categoryName;
+	private String writerNickname;
+	private int likeCount;
+	private int commentCount;
+	private int viewCount;
+	private String excerpt;
+	private String createdAtText;
+	
 }

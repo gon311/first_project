@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.project.board.dto.BoardCond;
 import com.itwillbs.project.board.dto.BoardDTO;
 import com.itwillbs.project.board.mapper.BoardMapper;
 import com.itwillbs.project.common.dto.FileDTO;
@@ -52,7 +53,25 @@ public class BoardService {
 	public void increaseReadcount(Long postId) {
 	    boardMapper.updateReadcount(postId);
 	}
-	
+	// 파일 다운
+	public List<FileDTO> getBoardFiles(Long postId) {
+	    return boardMapper.selectBoardFiles(postId);
+	}
+
+	public FileDTO getFileById(Integer fileId) {
+	    return boardMapper.selectFileById(fileId);
+	}
+
+
+
 	// 게시물 목록 조회
+	public List<BoardDTO> getBoardList(BoardCond cond) {
+	    return boardMapper.selectBoardList(cond);
+	}
+
+	public int getBoardCount(BoardCond cond) {
+	    return boardMapper.selectBoardCount(cond);
+	}
+	
 
 }

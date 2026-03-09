@@ -14,6 +14,7 @@
 <c:url var="urlBoardList" value="/board"/>
 <c:url var="urlBoardEdit" value="/board/edit"/>
 <c:url var="urlBoardDelete" value="/board/delete"/>
+<c:url var="urlBoardDownload" value="/board/download"/>
 
 <main class="container wrap">
 
@@ -63,6 +64,27 @@
       <div class="body">
         ${post.content}
       </div>
+      
+	<c:if test="${not empty fileList}">
+	  <div class="file-wrap">
+	    <div class="file-title">첨부파일</div>
+	
+	    <div class="file-list">
+	      <c:forEach var="file" items="${fileList}">
+	        <div class="file-item">
+	          <a class="file-link" href="${urlBoardDownload}?fileId=${file.fileId}">
+	            ${file.originName}
+	          </a>
+	          <span class="file-meta">
+	            <c:if test="${not empty file.fileExt}">
+	              (${file.fileExt})
+	            </c:if>
+	          </span>
+	        </div>
+	      </c:forEach>
+	    </div>
+	  </div>
+	</c:if>
 
 
       <!-- 하단 버튼 -->

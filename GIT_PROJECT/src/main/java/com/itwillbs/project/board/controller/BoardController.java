@@ -4,9 +4,15 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,14 +20,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.board.dto.BoardCond;
 import com.itwillbs.project.board.dto.BoardDTO;
 import com.itwillbs.project.board.service.BoardService;
 import com.itwillbs.project.common.dto.FileDTO;
+import com.itwillbs.project.common.dto.FileResourceDTO;
 import com.itwillbs.project.common.exception.LoginRequiredException;
-import com.itwillbs.project.common.paging.BaseCond;
 import com.itwillbs.project.common.paging.PageRes;
 import com.itwillbs.project.common.util.FileUtils;
 
@@ -38,20 +45,40 @@ public class BoardController {
 	private BoardService boardService;
 	
 	
-	// 게시판 리스트
-	@GetMapping({"", "/"})
-	public String board(BoardCond cond, Model model) {
+	// 게시글 목록 조회
+	@GetMapping("")
+	public String board(
+	        Model model,
+	        @RequestParam(required = false) String q,
+	        @RequestParam(defaultValue = "ALL") String category,
+	        @RequestParam(defaultValue = "latest") String sort,
+	        @RequestParam(defaultValue = "1") int page,
+	        @RequestParam(defaultValue = "5") int size,
+	        @RequestParam(defaultValue = "all") String searchType
+	) {
 
-//	    List<BoardDTO> posts = boardService.getBoardList(cond);
-//
-//	    int total = boardService.getBoardCount(cond);
-//
-//	    PageRes page = PageRes.of(cond.getPage(), total);
-//
-//	    model.addAttribute("posts", posts);
-//	    model.addAttribute("page", page);
-//	    model.addAttribute("cond", cond);
-//	    model.addAttribute("totalCount", total);
+	    BoardCond cond = new BoardCond();
+
+	    cond.setCategory(category);
+	    cond.setQ(q);
+	    cond.setSort(sort);
+	    cond.setSearchType(searchType);
+
+	    cond.getPage().setPage(page);
+	    cond.getPage().setSize(size);
+
+	    List<BoardDTO> posts = boardService.getBoardList(cond);
+	    int total = boardService.getBoardCount(cond);
+
+	    PageRes pager = PageRes.of(cond.getPage(), total);
+
+	    model.addAttribute("posts", posts);
+	    model.addAttribute("pager", pager);
+
+	    model.addAttribute("q", q);
+	    model.addAttribute("category", category);
+	    model.addAttribute("sort", sort);
+	    model.addAttribute("searchType", searchType);
 
 	    return "/board/board";
 	}
@@ -98,19 +125,36 @@ public class BoardController {
 	// 게시물 상세
 	@GetMapping("/detail")
 	public String boardDetail(@RequestParam Long postId, Model model) {
-
 	    boardService.increaseReadcount(postId);
 
 	    BoardDTO post = boardService.getBoard(postId);
+	    List<FileDTO> fileList = boardService.getBoardFiles(postId);
 
 	    model.addAttribute("post", post);
+	    model.addAttribute("fileList", fileList);
 
 	    return "/board/board_detail";
 	}
 	
+	// 다운로드
+	@GetMapping("/download")
+	public ResponseEntity<Resource> downloadFile(@RequestParam Integer fileId) {
+	    FileDTO fileDTO = boardService.getFileById(fileId);
 
-	// 게시물 목록 조회
-	// @GetMapping("/list")
+	    if (fileDTO == null) {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "파일 정보가 없습니다.");
+	    }
+
+	    FileResourceDTO fileResourceDTO = FileUtils.getFileResource(fileDTO);
+	    Resource resource = fileResourceDTO.getResource();
+
+	    return ResponseEntity.ok()
+	            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+	            .header(HttpHeaders.CONTENT_DISPOSITION, fileResourceDTO.getContentDisposition().toString())
+	            .body(resource);
+	}
+	
+
 	
 	
 	

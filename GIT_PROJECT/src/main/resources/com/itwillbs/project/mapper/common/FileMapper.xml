@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.project.common.mapper.FileMapper">
+	
+	<!--  파일 상세 정보 조회 - SELECT   -->
+	<select id="selectFile" resultType="com.itwillbs.project.common.DTO.FileDTO">
+		SELECT 	* 
+		FROM 	file 
+		WHERE 	file_id = #{fileId}
+	</select>
+	
+	<!-- 파일 저장 - INSERT -->
+	<insert id="insertFiles">
+		<selectKey keyProperty="categoryIdx" resultType="int" order="BEFORE"> 
+			SELECT category_idx 
+			FROM file_category 
+			WHERE category_code = #{categoryCode} 
+		</selectKey>
+		
+		INSERT INTO uploaded_file ( 
+			-- file_id
+			post_id
+			, category_idx
+			, origin_name
+			, stored_name
+			, file_path
+			, file_size
+			, file_ext
+			, reg_date ) VALUES 
+		<foreach collection="fileList" item="file" separator=",">
+			(
+				#{postId}
+				, #{categoryIdx}
+				, #{file.originName}
+				, #{file.storedName}
+				, #{file.filePath}
+				, #{file.fileSize}
+				, #{file.fileExt}
+				, NOW()
+			)
+		</foreach>
+	</insert>
+	
+</mapper>
+

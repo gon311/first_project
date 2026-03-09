@@ -10,6 +10,7 @@
 	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
 	
 	<%-- 현재 페이지 전용 CSS 영역 --%>
+	<link href="<c:url value="/resources/css/board/boardList.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<%-- 헤더 영역 --%>
@@ -90,12 +91,12 @@
 					<c:otherwise>
 						<!-- boardList 객체 크기만큼 반복 -->
 						<c:forEach var="board" items="${boardList}">
-							<tr>
+							<tr class="text-center"> 
 								<td>${board.postId}</td>
-								<td>${board.title}</td>
-								<td>${board.authorMemberId}</td>
-								<td>${board.strCreatedAt}</td>
-								<td>${board.readcount}</td>
+							    <td class="text-start">${board.title}</td> 
+							    <td>${board.authorMemberId}</td>
+							    <td>${board.strCreatedAt}</td>
+							    <td>${board.readcount}</td>
 							</tr>
 						</c:forEach>
 					</c:otherwise>

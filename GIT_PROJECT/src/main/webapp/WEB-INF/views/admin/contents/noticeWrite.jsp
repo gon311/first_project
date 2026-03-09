@@ -2,11 +2,16 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+
 <!DOCTYPE html>
 <html>
 <head>
 	<title>공지사항 글 작성하기</title>
 	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/admin/common/header.jsp" %>
@@ -26,7 +31,7 @@
 	               </div>
 	
 	                    <div class="mb-3">
-	                        <textarea name="noticeContent" class="form-control border-0 px-0" rows="15" 
+	                        <textarea id = "summernote" name="noticeContent" class="form-control border-0 px-0" rows="15" 
 	                                  placeholder="본문을 입력하세요." style="resize: none;"></textarea>
 	                    </div>
 	            </div>
@@ -85,6 +90,27 @@
 			form.submit();
 		}
 	
+		$(document).ready(function() {
+		    $('#summernote').summernote({
+		        placeholder: '내용을 입력해주세요.',
+		        tabsize: 2,
+		        height: 400, // 에디터 높이
+		        lang: 'ko-KR', // 한글 설정
+		        toolbar: [
+		            // [그룹이름, [버튼들]]
+		            ['style', ['style']],
+		            ['font', ['bold', 'underline', 'clear']],
+		            ['fontsize', ['fontsize']], // 글자 크기 설정
+		            ['color', ['color']],       // 글자 색상 설정
+		            ['para', ['ul', 'ol', 'paragraph']],
+		            ['table', ['table']],
+		            ['insert', ['link', 'picture', 'video']], // 이미지 및 비디오 첨부
+		            ['view', ['fullscreen', 'codeview', 'help']]
+		        ],
+		        fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72']
+		    });
+		});
 	</script>
+	
 </body>
 </html>

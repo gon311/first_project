@@ -990,9 +990,6 @@
 	</update>
 	
 	<!-- ============================================================================ -->
-	
-	
-	
 	<!-- FaQ 리스트 -->
 	<select id ="getFaqList" resultType="faq">
 		SELECT 
@@ -1007,24 +1004,27 @@
 			<if test="userType != null and userType != '' and userType != 'all'">
 				AND user_type=#{userType}
 			</if>
-<!-- 			<if test="keyword != null and keyword != ''"> -->
-<!-- 				<when test = "category == 'account"> -->
-<!-- 				AND faq_title LIKE CONCAT ('%', #{keyword), '%') -->
-				
-<!-- 				</when> -->
-<!-- 				<otherwise> -->
-<!-- 				</otherwise> -->
-<!-- 				AND faq_title LIKE CONCAT('%', #{keyword}, '%') -->
-<!-- 			</if> -->
-			
-			<if test="category !=null and category != '' and userType != 'all'">
+			<if test="keyword != null and keyword != ''">
+				<choose>
+					<when test = 'category == ""'>
+						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+					<when test = 'category == "account"'>
+						AND faq_title LIKE CONCAT ('%', #{keyword}, '%')
+					</when>
+					<when test = 'category == "service"'>
+						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+					<when test = 'category == "ect"'>
+						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+				</choose>
+			</if>
+					
+			<if test="category !=null and category != '' and category != 'all'">
 				AND category = #{category}
 			</if>
-<!-- 				account -->
-<!-- 				service -->
-<!-- 				error -->
-<!-- 				ect -->
-			
+
 		</where>
 		ORDER BY faq_id DESC
 			
@@ -1313,4 +1313,69 @@
 	    ORDER BY 
 	    	label ASC
 	</select>
+<!--  ======================================================================== -->
+<!--  [ 자유게시판 관리 ]-->
+	<select id = "getBoardList" resultType = "free">
+		SELECT 
+			post_id
+			, title
+			, author_member_id
+			, created_at
+			, status
+		FROM
+			board_post
+	</select>
+	
+	<select id = "getBoardDetail" resultType = "free">
+		SELECT	
+			post_id
+			, title
+			, author_member_id
+			, content
+			, created_at
+			, updated_at
+			, readcount
+			, status
+			
+		FROM
+			board_post 
+		WHERE	
+			post_id = #{postId}
+	</select>
+	
+	<select id = "getCommentByPostId" resultType="comment">
+		SELECT	
+			comment_id
+			, post_id
+			, author_member_id
+			, content
+			, status
+			, created_at
+		FROM
+			board_comment
+		WHERE	
+			post_id = #{postId}
+		ORDER BY
+			created_at ASC
+	</select>
+	
+	<update id="updateBoardCount">
+		UPDATE 
+			board_post
+		SET 
+			readcount = readcount + 1
+		WHERE 
+			post_id = #{postId}
+	</update>
+	
+	<update id="deleteComment">
+		UPDATE 
+			board_comment
+		SET 
+			status = 'DELETED'
+		WHERE 
+			comment_id = #{commentId}
+	
+	</update>
+	
 	</mapper>

@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itwillbs.project.admin.dto.CommentDTO;
 import com.itwillbs.project.admin.dto.FaqDTO;
+import com.itwillbs.project.admin.dto.FreeDTO;
 import com.itwillbs.project.admin.dto.JobPostDTO;
 import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.QnaDTO;
@@ -57,7 +59,7 @@ public class AdminContentController {
 	public String noticeDetail(@RequestParam("noticeId") int noticeId, Model model) {
 		NoticeDTO noticeDTO =adminService.getNoticeDetail(noticeId);
 		model.addAttribute("noticeDTO", noticeDTO); 
-		System.out.println("데이터 결과값: " + noticeDTO.toString());
+//		System.out.println("데이터 결과값: " + noticeDTO.toString());
 //		System.out.println("제목 리턴값: " + noticeDTO);
 		return "admin/contents/noticeDetail";
 	}
@@ -87,6 +89,7 @@ public class AdminContentController {
 	    return "redirect:/admin/contents/noticeDetail?noticeId=" + noticeDTO.getNoticeId();
 	}
 // ==============================================================================
+//	== [ 채용 공고 관리 ] ==
 //	채용공고목록조회
 	@GetMapping("/JobPost")
 	public String jobPostList(@RequestParam(value="page", defaultValue="1") int page,
@@ -118,15 +121,52 @@ public class AdminContentController {
 	}
 	
 //	==============================================================================
-	
+//	== [ 자유게시판 관리] ==
 	
 	@GetMapping("/Board")
-	public String boardList() {
+	public String boardList(FreeDTO freeDTO
+							, Model model) {
+		
+		List<FreeDTO> boardList = adminService.getBoardList(freeDTO);
+//		System.out.println(freeDTO.getStatus());
+		model.addAttribute("boardList", boardList);
+		
+		
 		
 		return "admin/contents/board";
 	}
+	
+//	자유게시판 게시글 상세 조회
+	@GetMapping("/boardDetail")
+	public String boardDetailById(@RequestParam("postId") long postId
+								, Model model) {
+		FreeDTO freeDTO = adminService.getBoardDetailById(postId);
+		
+		List<CommentDTO> commentList = adminService.getCommentByPostId(postId);
+		
+//		System.out.println(freeDTO.toString());
+//		System.out.println(freeDTO.getContent());
+//		System.out.println(freeDTO.getStatus());
+//		System.out.println(commentList.toString());
+		model.addAttribute("freeDTO", freeDTO);
+		model.addAttribute("commentList", commentList);
+		
+		return "admin/contents/boardDetail";
+	}
+	
+//	자유게시판 게시글 댓글 삭제
+	@GetMapping("/commentDelete")
+	public String commentDelete(@RequestParam("commentId") long commentId
+								, @RequestParam("postId") long postId) {
+	    // 삭제 로직 호출
+	    adminService.deleteComment(commentId);
+	    
+	    // 삭제 후 다시 공지사항 목록으로 리다이렉트
+	    return "redirect:/admin/contents/boardDetail?postId=" + postId;
+	}
+	
 //	==============================================================================
-
+// == [ FAQ 관리 ] ==
 	// FAQ 전체 목록 및 카테고리별 출력
 	@GetMapping("/FaQ")
 	public String faqList(@RequestParam(value="userType", defaultValue="all") String userType
@@ -140,6 +180,11 @@ public class AdminContentController {
 	    List<FaqDTO> faqList = adminService.getFaqList(faqDTO);
 //	    System.out.println(faqList);
 	    System.out.println(category.toString());
+	    
+//	    faqDTO.getKeyword().trim();
+	    
+	    
+	    
 	    
 	    model.addAttribute("faqList", faqList);
 	    model.addAttribute("userType", userType); // 탭 활성화 유지용
@@ -195,7 +240,7 @@ public class AdminContentController {
 	    return "redirect:/admin/contents/FaQ?userType=" + faqDTO.getUserType();
 	}
 //	===============================================================================
-//	1:1 문의글 관리
+//	== [ 1:1 문의글 관리 ] ==
 	@GetMapping("/QnA")
 	public String qnaList(@RequestParam(value="reStatus", defaultValue="all") String reStatus, 
 			@RequestParam(value="page", defaultValue="1") int page,

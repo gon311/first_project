@@ -266,9 +266,9 @@ public class AdminService{
 	}
 	
 	// 공지사항 상세 조회(DTO 리턴)
-	public NoticeDTO getNoticeDetail(int notice_id) {
-		adminMapper.updateReadCount(notice_id);
-		return adminMapper.getNoticeById(notice_id);
+	public NoticeDTO getNoticeDetail(int noticeId) {
+		adminMapper.updateReadCount(noticeId);
+		return adminMapper.getNoticeById(noticeId);
 	}
 	
 	// 공지사항 저장
@@ -422,7 +422,35 @@ public class AdminService{
 		return adminMapper.selectProductInfo(productId);
 	}
 	
+	// ====================================================================================
+//	 자유게시판 관리
+	// 자유게시판 목록 조회
+	public List<FreeDTO> getBoardList(FreeDTO freeDTO){
+		return adminMapper.getBoardList(freeDTO);
+	}
 	
+	// 자유게시판 상세 조회
+	public FreeDTO getBoardDetailById(long postId) {
+		adminMapper.updateBoardCount(postId);
+		
+		return adminMapper.getBoardDetail(postId);
+	}
+
+	// 자유게시판 댓글 조회
+	public List<CommentDTO> getCommentByPostId(long postId) {
+		return adminMapper.getCommentByPostId(postId);
+	}
+
+
+	// 자유게시판 댓글 삭제
+
+	public void deleteComment(long commentId) {
+		adminMapper.deleteComment(commentId);
+	}
+
+
+	
+
 	
 	
 	// =======================================================================================
@@ -540,14 +568,6 @@ public class AdminService{
 		
 	}
 
-
-	
-
-	
-
-	
-
-	
 
 	
 	

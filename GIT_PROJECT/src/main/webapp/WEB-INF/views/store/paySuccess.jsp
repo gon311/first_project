@@ -31,7 +31,7 @@
                         결제 내역은 마이페이지에서 확인하실 수 있습니다.
                     </p>
             
-                    <div class="d-grid gap-3">  <%-- 마이페이지 - 결제내역 연결 필요 --%>
+                    <div class="d-grid gap-3"> 
                         <a href="<c:url value="/my/payment" />" class="btn btn-dark btn-main text-white text-decoration-none">
                             <i class="bi bi-receipt me-2"></i> 결제 내역 확인하기
                         </a>
@@ -49,10 +49,13 @@
     <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
     
     <script>
-		window.onload = function () {
-			if (performance.navigation.type === 2) {
-				window.history.forward();
-			}
+	    // 페이지 로드 시 현재 상태를 히스토리에 한 번 더 쌓음
+		history.pushState(null, null, location.href);
+		
+		window.onpopstate = function() {
+		    // 뒤로가기 감지 시 메인페이지로 강제 이동
+		    alert("잘못된 접근입니다.");
+		    location.replace("<c:url value='/' />"); 
 		};
     </script>
 

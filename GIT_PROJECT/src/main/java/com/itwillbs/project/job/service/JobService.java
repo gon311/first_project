@@ -95,9 +95,9 @@ public class JobService {
 	    // 2. 새 파일 업로드 처리
 	    // files가 null이 아니고, 실제 파일 데이터가 존재하는 경우에만 처리
 	    if (files != null && !files.isEmpty() && !files.get(0).getOriginalFilename().isEmpty()) {
-	        List<FileDTO> fileList = FileUtils.uploadBoardFile(files, sId);
+	        List<FileDTO> fileList = FileUtils.uploadBoardFile(files);
 	        // DB에 새 파일 정보 저장 (기존에 작성된 insertBoardFiles 활용)
-	        jobMapper.insertBoardFiles(fileList, jobDTO.getJobId());
+	        jobMapper.insertBoardFiles(fileList, jobDTO.getJobId(), "jobPosting");
 	    }
 
 	    // 3. 공고 텍스트 정보 업데이트

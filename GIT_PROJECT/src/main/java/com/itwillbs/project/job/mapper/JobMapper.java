@@ -36,7 +36,7 @@ public interface JobMapper {
 	void insertBookmark(@Param("userIdx") Long userIdx, @Param("jobId") Long jobId);
 	void deleteBookmark(@Param("userIdx") Long userIdx, @Param("jobId") Long jobId);
 
-	void insertBoardFiles(@Param("fileList") List<FileDTO> fileList, @Param("jobId") Long jobId);
+	void insertBoardFiles(@Param("fileList") List<FileDTO> fileList, @Param("jobId") Long jobId, @Param("string") String string);
 
 	int updateJob(JobDTO jobDTO);
 

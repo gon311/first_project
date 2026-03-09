@@ -76,25 +76,25 @@
 	        <div class="file-attachments" style="margin-top:25px; padding:15px; background:#f9f9f9; border-radius:8px;">
 			    <h4 style="margin-bottom:15px;"><i class="fa-solid fa-image"></i> 직무 관련 이미지/첨부</h4>
 			    <c:choose>
-			        <c:when test="${not empty fileList}">
+			        <c:when test="${not empty detailFile}">
 			            <div class="file-preview-container" style="display: flex; flex-wrap: wrap; gap: 15px;">
-			                <c:forEach var="file" items="${fileList}">
-			                    <div class="file-item" style="max-width: 100%;">
+			                <c:forEach var="file" items="${detailFile}">
+			                    <div class="file-item" style="width: 100%;">
 			                        <%-- 파일이 이미지인 경우 (간단하게 확장자나 DB의 contentType으로 구분) --%>
 			                        <c:choose>
-			                            <c:when test="${file.contentType.contains('image')}">
+			                            <c:when test="${file.fileExt.contains('image') || file.fileExt.contains('jpg')}">
 			                                <div style="margin-bottom: 10px;">
-			                                    <img src="<c:url value='/upload/job/${post.compId}/${file.subDir}/${file.realFileName}' />" 
-			                                         alt="${file.originalFileName}" 
+			                                    <img src="/upload/board/${file.filePath}/${file.storedName}" 
+			                                         alt="${file.originName}" 
 			                                         style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
 			                                </div>
 			                            </c:when>
 			                            <c:otherwise>
 			                                <%-- 이미지가 아닌 일반 파일은 기존처럼 링크로 표시 --%>
-			                                <a href="<c:url value='/upload/job/${post.compId}/${file.subDir}/${file.realFileName}' />" 
-			                                   download="${file.originalFileName}" 
+			                                <a href="/upload/board/${file.filePath}/${file.storedName}" 
+			                                   download="${file.originName}" 
 			                                   style="color:#007bff; text-decoration:none; display: block; padding: 10px; border: 1px dashed #ccc;">
-			                                    <i class="fa-regular fa-file-lines"></i> ${file.originalFileName} (다운로드)
+			                                    <i class="fa-regular fa-file-lines"></i> ${file.originName} (다운로드)
 			                                </a>
 			                            </c:otherwise>
 			                        </c:choose>

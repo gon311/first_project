@@ -41,13 +41,24 @@ public class JobController {
 	private JobService jobService;
 	
 	@GetMapping("/JobPosting")
-	public String posting(HttpSession session) {
-		
-		String sId = (String) session.getAttribute("userType");
-		System.out.println(sId);
-	    if (sId == null || "P".equals(sId)) return "redirect:/user/login";
-		
-		return "/job/job_posting";
+	public String jobInsert(HttpSession session, Model model, RedirectAttributes rt) {
+	    Long userIdx = (Long) session.getAttribute("userIdx");
+	    String userType = (String) session.getAttribute("userType");
+
+	    if (userIdx == null || !"C".equals(userType)) {
+	        return "redirect:/user/login";
+	    }
+
+	    boolean isActive = jobService.isActiveProduct(userIdx);
+	    
+	    // 만약 이용권이 없으면 페이지 로딩 전에 알림창을 띄우고 돌려보냄
+	    if (!isActive) {
+	    	rt.addFlashAttribute("msg", "이용권이 만료되었습니다. 이용권 결제 후 공고 등록이 가능합니다.");
+	    	return "redirect:/job/JobList"; // 뒤로가기를 시키거나 구매페이지로 리다이렉트
+	    }
+	    model.addAttribute("isActive", isActive);
+	    
+	    return "job/job_posting";
 	}
 	
 	@PostMapping("/JobProcess")
@@ -134,14 +145,17 @@ public class JobController {
 //		System.out.println(userIdx);
 		
 		List<ResumeDTO> resumeList = jobService.getMyResume(userIdx);
-		List<FileDTO> fileList = jobService.getFileList(jobId);
+		List<FileDTO> detailFile = jobService.getFileList(jobId);
 //		System.out.println("! = " + post.getCompanyName());
 //		System.out.println(post.getExpYear());
-//		System.out.println(resumeList);
+//		for (FileDTO file : detailFile) {
+//		    System.out.println("파일명: " + file.getOriginName());
+//		    System.out.println("확장자: " + file.getFileExt());
+//		}
 		
 		model.addAttribute("post", post);
 		model.addAttribute("resumeList", resumeList);
-		model.addAttribute("fileList", fileList);
+		model.addAttribute("detailFile", detailFile);
 //		System.out.println(resumeList);
 		
 		return "/job/job_detail";

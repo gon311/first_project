@@ -26,7 +26,7 @@ public class JobApplicationDTO {
     private String userName;   // 지원자 성함
     private String resumeTitle;   // 이력서 제목 (필요 시)
     private String postingTitle;   // 공고 제목 (필요 시)
-    private String careerLevel;
+    private String careerCode;
     private Integer portfolioId;
     
     

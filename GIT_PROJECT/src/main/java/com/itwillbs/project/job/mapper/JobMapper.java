@@ -36,7 +36,7 @@ public interface JobMapper {
 	void insertBookmark(@Param("userIdx") Long userIdx, @Param("jobId") Long jobId);
 	void deleteBookmark(@Param("userIdx") Long userIdx, @Param("jobId") Long jobId);
 
-	void insertBoardFiles(@Param("fileList") List<FileDTO> fileList, @Param("jobId") Long jobId, @Param("string") String string);
+	void insertBoardFiles(@Param("fileList") List<FileDTO> fileList, @Param("jobId") Long jobId, @Param("categoryCode") String categoryCode);
 
 	int updateJob(JobDTO jobDTO);
 
@@ -45,7 +45,9 @@ public interface JobMapper {
 	List<FileDTO> selectFileList(Long jobId);
 
 	FileDTO selectFile(Integer fileId);
-
+	
+	int checkActiveProduct(Long userId);
+	
 	// ===================================================
 	// 지원자 관리
 	

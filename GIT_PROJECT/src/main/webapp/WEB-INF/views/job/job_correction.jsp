@@ -46,7 +46,7 @@
 		                    <c:forEach var="file" items="${fileList}">
 		                        <div class="existing-file-item">
 		                            <span class="file-info">
-		                                <i class="fas fa-file-alt"></i> ${file.originalFileName}
+		                                <i class="fas fa-file-alt"></i> ${file.originName}
 		                            </span>
 		                            <label class="delete-label">
 		                                <input type="checkbox" name="deleteFiles" value="${file.fileId}"> 삭제

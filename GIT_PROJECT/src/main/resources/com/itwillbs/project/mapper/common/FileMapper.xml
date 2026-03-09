@@ -5,7 +5,7 @@
 <mapper namespace="com.itwillbs.project.common.mapper.FileMapper">
 	
 	<!--  파일 상세 정보 조회 - SELECT   -->
-	<select id="selectFile" resultType="com.itwillbs.project.common.DTO.FileDTO">
+	<select id="selectFile" resultType="com.itwillbs.project.common.dto.FileDTO">
 		SELECT 	* 
 		FROM 	file 
 		WHERE 	file_id = #{fileId}
@@ -32,6 +32,37 @@
 		<foreach collection="fileList" item="file" separator=",">
 			(
 				#{postId}
+				, #{categoryIdx}
+				, #{file.originName}
+				, #{file.storedName}
+				, #{file.filePath}
+				, #{file.fileSize}
+				, #{file.fileExt}
+				, NOW()
+			)
+		</foreach>
+	</insert>
+	
+	<insert id="insertJobFiles">
+		<selectKey keyProperty="categoryIdx" resultType="int" order="BEFORE"> 
+			SELECT category_idx 
+			FROM file_category 
+			WHERE category_code = #{categoryCode} 
+		</selectKey>
+		
+		INSERT INTO uploaded_file ( 
+			-- file_id
+			job_id
+			, category_idx
+			, origin_name
+			, stored_name
+			, file_path
+			, file_size
+			, file_ext
+			, reg_date ) VALUES 
+		<foreach collection="fileList" item="file" separator=",">
+			(
+				#{jobId}
 				, #{categoryIdx}
 				, #{file.originName}
 				, #{file.storedName}

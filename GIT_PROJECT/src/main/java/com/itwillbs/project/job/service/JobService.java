@@ -38,7 +38,7 @@ public class JobService {
 		if(!fileList.isEmpty()) {
 			// BoardMapper - insertBoardFiles() 메서드 호출하여 파일 정보 등록
 			// => 파라미터 : List 객체, 게시물 번호(BoardDTO - idx)   리턴타입 : void
-			jobMapper.insertBoardFiles(fileList, jobDTO.getJobId(), "jobPosting");
+			fileMapper.insertJobFiles(fileList, jobDTO.getJobId(), "JOB_POSTING");
 		}
 		
 	}
@@ -107,7 +107,11 @@ public class JobService {
 	public List<FileDTO> getFileList(Long jobId) {
 		return jobMapper.selectFileList(jobId);
 	}
-
+	
+	public boolean isActiveProduct(Long userId) {
+	    return jobMapper.checkActiveProduct(userId) > 0;
+	}
+	
 	// ===================================================
 	// 지원자 관리
 

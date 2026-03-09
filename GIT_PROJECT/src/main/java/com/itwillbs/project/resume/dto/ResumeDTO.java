@@ -52,7 +52,7 @@ public class ResumeDTO {
     private String companyType;        // 기업형태
     private String appliedField;       // 지원분야
     private String companyName;        // 기업명
-    private String careerLevel;        // 경력사항
+    private String careerCode;        // 경력사항
 }
 
 

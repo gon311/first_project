@@ -173,13 +173,20 @@ const jobData = {
     "교육": ["초중고교사", "대학교수", "전문강사", "학습지교사", "입시강사", "외국어강사", "교직원"],
     "영업·고객상담": ["IT영업", "기술영업", "영업관리", "고객상담(CS)", "인바운드"],
     "의료·보건": ["의사", "간호사", "물리치료사", "임상병리", "약사", "의료코디네이터"]
-};	
+};  
 
 document.addEventListener("DOMContentLoaded", function() {
-    // === [기능 1] 모집분야 카테고리 선택 ===
+    
+    // [중요] 서버에서 넘어온 이용권 상태 확인
+    const isActiveStr = "${isActive}"; 
+    const isActive = (isActiveStr === "true");
+
+    const form = document.querySelector('form');
+    const jobInput = document.getElementById('selectedJobInput'); // 공통 사용을 위해 위로 이동
+
+    // === [기능 1] 모집분야 카테고리 선택 (즉시 실행) ===
     const mainUl = document.getElementById('mainCatList');
     const subUl = document.getElementById('subCatList');
-    const jobInput = document.getElementById('selectedJobInput');
 
     if (mainUl && subUl) {
         Object.keys(jobData).forEach(cat => {
@@ -194,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     subBtn.className = 'sub-job-item';
                     subBtn.textContent = sub;
                     subBtn.onclick = function() {
-                        jobInput.value = sub;
+                        if(jobInput) jobInput.value = sub;
                         document.querySelectorAll('.sub-job-item').forEach(el => el.classList.remove('selected'));
                         this.classList.add('selected');
                     };
@@ -228,9 +235,11 @@ document.addEventListener("DOMContentLoaded", function() {
             if(this.value === 'new') {
                 minSelect.disabled = true;
                 maxSelect.disabled = true;
-            } else if(!noneCheck.checked) {
-                minSelect.disabled = false;
-                maxSelect.disabled = false;
+            } else {
+                if(noneCheck && !noneCheck.checked) {
+                    minSelect.disabled = false;
+                    maxSelect.disabled = false;
+                }
             }
         });
     });
@@ -242,22 +251,17 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
- // === [기능 3] 접수기간 날짜 설정 (개선본) ===
+    // === [기능 3] 접수기간 날짜 설정 ===
     const startDateInput = document.getElementById('startDate');
     const endDateInput = document.getElementById('endDate');
     const today = new Date().toISOString().split('T')[0];
 
     if (startDateInput && endDateInput) {
-        // 1. 시작일과 마감일 모두 오늘 이전 날짜는 선택 불가능하게 설정
         startDateInput.min = today;
         endDateInput.min = today;
-
         startDateInput.addEventListener('change', function() {
             if (this.value) {
-                // 2. 시작일이 정해지면 마감일은 최소 시작일과 같거나 커야 함
                 endDateInput.min = this.value;
-                
-                // 3. 만약 마감일이 이미 입력되어 있는데 시작일보다 빠르다면? 마감일을 시작일로 초기화
                 if (endDateInput.value && endDateInput.value < this.value) {
                     endDateInput.value = this.value;
                 }
@@ -265,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // === [기능 4] 담당자 전화번호 하이픈 자동생성 ===
+    // === [기능 4] 담당자 전화번호 하이픈 ===
     const phoneInput = document.querySelector('input[name="mgrPhone"]');
     if (phoneInput) {
         phoneInput.addEventListener('input', function(e) {
@@ -279,45 +283,47 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // === [기능 5] 폼 제출 시 데이터 최종 검증 및 주소 결합 ===
-    const form = document.querySelector('form');
+    // === [기능 5] 폼 제출 시 최종 검증 ===
     if (form) {
         form.addEventListener('submit', function(e) {
-            // 주소 관련 데이터 추출
-            const pc = document.getElementById('postCode').value;
-            const addr1 = document.getElementById('address1').value;
-            const addr2 = document.getElementById('address2').value;
+            // 1. 이용권 체크
+            if (!isActive) {
+                alert("이용권이 만료되어 공고를 등록할 수 없습니다.");
+                e.preventDefault();
+                return false;
+            }
 
-            // 1. 필수 선택 확인 (모집분야)
-            if (!jobInput.value) {
+            // 2. 모집분야 확인
+            if (!jobInput || !jobInput.value) {
                 alert("모집분야를 선택해주세요.");
                 e.preventDefault();
                 return false;
             }
 
-            // 2. 주소 결합 로직
+            // 3. 주소 결합
+            const pc = document.getElementById('postCode').value;
+            const addr1 = document.getElementById('address1').value;
+            const addr2 = document.getElementById('address2').value;
+
             if (!pc || !addr1) {
                 alert("근무지 주소를 검색하여 입력해주세요.");
                 e.preventDefault();
                 return false;
             }
-            // hidden 필드(name="address")에 최종 결합된 문자열 삽입
             document.getElementById('address').value = "[" + pc + "] " + addr1 + " " + addr2;
 
-            // 3. 전화번호 형식 검증
+            // 4. 전화번호 형식 검증
             const phoneRegex = /^01[0-9]-\d{3,4}-\d{4}$/;
-            if (!phoneRegex.test(phoneInput.value)) {
+            if (phoneInput && !phoneRegex.test(phoneInput.value)) {
                 alert("전화번호 형식을 다시 확인해주세요.");
                 e.preventDefault();
                 return false;
             }
-            
-            // 모든 검사 통과 시 전송
         });
     }
 });
 
-// === [기능 6] 카카오 주소 API 실행 함수 ===
+// === [기능 6] 카카오 주소 API 실행 함수 (DOMContentLoaded 외부에 둠) ===
 function execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
@@ -328,4 +334,5 @@ function execDaumPostcode() {
         }
     }).open();
 }
+
 </script>

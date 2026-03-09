@@ -8,6 +8,8 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="<c:url value="/resources/css/jobCss/jobManagement.css" />" rel="stylesheet" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 <div class="manage-container">
@@ -52,7 +54,11 @@
     <section class="filter-bar">
         <div class="filter-row">
 		    <input type="text" id="searchInput" placeholder="지원자명/키워드 검색" style="width: 280px;">
-		    <select><option>경력전체</option></select>
+			<select id="careerFilter" onchange="applyFilters()">
+			    <option value="전체">경력전체</option>
+			    <option value="신입">신입</option>
+			    <option value="경력">경력</option>
+			</select>
 		    <select><option>학력전체</option></select>
 		    <button class="btn-secondary" onclick="resetFilter()">
 		        <i class="fa-solid fa-rotate-left"></i> 초기화
@@ -64,71 +70,74 @@
             <button class="btn-action">서류 통과</button>
             <button class="btn-action" style="background: #ff5252;">불합격</button>
             <button class="btn-secondary" onclick="processBulkStatus('면접진행')">면접요청</button>
-            <button class="btn-secondary" style="margin-left: auto;"><i class="fa-solid fa-file-pdf"></i> 명단 다운로드</button>
-        </div>
+			<button class="btn-secondary" style="margin-left: auto;" onclick="downloadPDF()">
+			    <i class="fa-solid fa-file-pdf"></i> 명단 다운로드</button>        
+		</div>
     </section>
 
-    <div class="applicant-table-wrap">
-        <table class="applicant-table">
-            <thead>
-			    <tr>
-			        <th style="width: 50px; text-align: center;"><input type="checkbox"></th>
-			        <th style="width: 80px;">번호</th>
-			        <th>지원자 정보</th>
-			        <th style="width: 100px;">경력</th>
-			        <th>지원 공고</th>
-			        <th>지원일</th>
-			        <th style="width: 150px;">전형 상태</th>
-			        <th style="width: 80px; text-align: center;">관심</th>
-			    </tr>
-			</thead>
-            <tbody>
-			    <c:forEach var="app" items="${applicantList}">
-			        <tr>
-			            <td style="text-align: center;">
-			                <input type="checkbox" name="selectedApp" value="${app.appId}">
-			            </td>
-			            <td style="color: #888;">${app.appId}</td>
-			            <td>
-			                <span class="name-tag">${app.userName}</span>
-			                <div class="doc-links">
-			                    <a href="<c:url value='/resume/detail?id=${app.resumeId}'/>" class="doc-btn">
-			                        <i class="fa-solid fa-file-user"></i> 이력서
-			                    </a>
-			                </div>
-			            </td>
-			            
-			            <td style="font-size: 14px;">
-						    <c:choose>
-						        <c:when test="${empty app.careerLevel || app.careerLevel == '신입'}">
-						            <span style="color: #4CAF50; font-weight: 600;">신입</span>
-						        </c:when>
-						        <c:otherwise>
-						            ${app.careerLevel}
-						        </c:otherwise>
-						    </c:choose>
-						</td>
-			
-			            <td style="font-size: 14px;">${app.postingTitle}</td>
-			            <td style="font-size: 14px; color: #666;">${app.formattedApplyDate}</td>
-			            <td>
-			                <select class="status-select" onchange="changeStatus(${app.appId}, this.value)">
-			                    <option value="서류대기" ${app.appStep == '서류대기' ? 'selected' : ''}>서류대기</option>
-			                    <option value="서류통과" ${app.appStep == '서류통과' ? 'selected' : ''}>서류통과</option>
-			                    <option value="면접진행" ${app.appStep == '면접진행' ? 'selected' : ''}>면접진행</option>
-			                    <option value="최종합격" ${app.appStep == '최종합격' ? 'selected' : ''}>최종합격</option>
-			                    <option value="불합격" ${app.appStep == '불합격' ? 'selected' : ''}>불합격</option>
-			                </select>
-			            </td>
-			            <td style="text-align: center;">
-			                <i class="fa-solid fa-star star-icon ${app.isFavorite == 'Y' ? 'active' : ''}" 
-			                   onclick="toggleAppFavorite(${app.appId}, this)" 
-			                   style="cursor:pointer;"></i>
-			            </td>
-			        </tr>
-			    </c:forEach>
-			    </tbody>
-        </table>
+	<div id="pdfArea"> <h2 style="padding: 10px;">지원자 리스트</h2>
+	    <div class="applicant-table-wrap">
+	        <table class="applicant-table">
+	            <thead>
+				    <tr>
+				        <th style="width: 50px; text-align: center;"><input type="checkbox"></th>
+				        <th style="width: 80px;">번호</th>
+				        <th>지원자 정보</th>
+				        <th style="width: 100px;">경력</th>
+				        <th>지원 공고</th>
+				        <th>지원일</th>
+				        <th style="width: 150px;">전형 상태</th>
+				        <th style="width: 80px; text-align: center;">관심</th>
+				    </tr>
+				</thead>
+	            <tbody>
+				    <c:forEach var="app" items="${applicantList}">
+				        <tr>
+				            <td style="text-align: center;">
+				                <input type="checkbox" name="selectedApp" value="${app.appId}">
+				            </td>
+				            <td style="color: #888;">${app.appId}</td>
+				            <td>
+				                <span class="name-tag">${app.userName}</span>
+				                <div class="doc-links">
+				                    <a href="<c:url value='/resume/detail?id=${app.resumeId}'/>" class="doc-btn">
+				                        <i class="fa-solid fa-file-user"></i> 이력서
+				                    </a>
+				                </div>
+				            </td>
+				            
+				            <td style="font-size: 14px;">
+							    <c:choose>
+							        <c:when test="${empty app.careerCode || app.careerCode == '신입'}">
+							            <span style="color: #4CAF50; font-weight: 600;">신입</span>
+							        </c:when>
+							        <c:otherwise>
+							            ${app.careerCode}
+							        </c:otherwise>
+							    </c:choose>
+							</td>
+				
+				            <td style="font-size: 14px;">${app.postingTitle}</td>
+				            <td style="font-size: 14px; color: #666;">${app.formattedApplyDate}</td>
+				            <td>
+				                <select class="status-select" onchange="changeStatus(${app.appId}, this.value)">
+				                    <option value="서류대기" ${app.appStep == '서류대기' ? 'selected' : ''}>서류대기</option>
+				                    <option value="서류통과" ${app.appStep == '서류통과' ? 'selected' : ''}>서류통과</option>
+				                    <option value="면접진행" ${app.appStep == '면접진행' ? 'selected' : ''}>면접진행</option>
+				                    <option value="최종합격" ${app.appStep == '최종합격' ? 'selected' : ''}>최종합격</option>
+				                    <option value="불합격" ${app.appStep == '불합격' ? 'selected' : ''}>불합격</option>
+				                </select>
+				            </td>
+				            <td style="text-align: center;">
+				                <i class="fa-solid fa-star star-icon ${app.isFavorite == 'Y' ? 'active' : ''}" 
+				                   onclick="toggleAppFavorite(${app.appId}, this)" 
+				                   style="cursor:pointer;"></i>
+				            </td>
+				        </tr>
+				    </c:forEach>
+				    </tbody>
+	        </table>
+	    </div>
     </div>
 
     <div class="pagination">
@@ -259,6 +268,7 @@ function filterByStatus(status, element) {
 function resetFilter() {
     // 1. 입력창 및 선택박스 초기화
     $('#searchInput').val('');
+    $('#careerFilter').val('전체'); 
     $('.filter-bar select').prop('selectedIndex', 0);
 
     // 2. 탭 활성화 상태를 '전체'로 변경
@@ -288,6 +298,91 @@ $(function() {
         });
     });
 });
+
+//검색과 경력 필터를 동시에 적용하는 함수
+function applyFilters() {
+    const searchValue = $('#searchInput').val().toLowerCase(); // 검색어
+    const careerValue = $('#careerFilter').val(); // 선택된 경력 (전체/신입/경력)
+    const activeStatus = $('.status-tab.active .label').text(); // 현재 선택된 탭 상태
+
+    $(".applicant-table tbody tr").each(function() {
+        const row = $(this);
+        
+        // 1. 이름/키워드 텍스트 추출
+        const rowText = row.text().toLowerCase();
+        
+        // 2. 해당 행의 경력 텍스트 추출 (4번째 td)
+        const rowCareer = row.find('td:nth-child(4)').text().trim();
+        
+        // 3. 해당 행의 전형 상태 추출
+        const rowStatus = row.find('.status-select').val();
+
+        // 필터 조건 확인
+        const matchesSearch = rowText.indexOf(searchValue) > -1;
+        
+        let matchesCareer = true;
+        if (careerValue === '신입') {
+            matchesCareer = (rowCareer === '신입');
+        } else if (careerValue === '경력') {
+            matchesCareer = (rowCareer !== '신입'); // '신입'이 아니면 경력으로 간주
+        }
+        
+        let matchesStatus = true;
+        if (activeStatus !== '전체') {
+            matchesStatus = (rowStatus === activeStatus);
+        }
+
+        // 모든 조건을 만족해야 표시
+        if (matchesSearch && matchesCareer && matchesStatus) {
+            row.show();
+        } else {
+            row.hide();
+        }
+    });
+}
+
+$(function() {
+    // 검색창 입력 시 필터 적용
+    $('#searchInput').on('keyup', applyFilters);
+    
+    // (기존 filterByStatus 함수 수정 권장) 
+    // 기존 filterByStatus 함수 마지막에 applyFilters(); 를 호출하도록 수정하면 탭 클릭 시에도 경력 필터가 유지됩니다.
+});
+
+async function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    
+    // 1. PDF 객체 생성 (A4 가로 방향)
+    const doc = new jsPDF('l', 'mm', 'a4');
+    
+    // 2. 캡처할 영역 선택 (제목과 테이블을 모두 포함하는 id 사용)
+    const element = document.getElementById("pdfArea");
+
+    try {
+        // 3. html2canvas로 영역 전체를 이미지로 변환
+        const canvas = await html2canvas(element, {
+            scale: 2,        // 해상도 2배 향상
+            useCORS: true,   // 외부 이미지 허용
+            backgroundColor: '#ffffff' // 배경을 흰색으로 강제 설정
+        });
+        
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = 280; // A4 가로 길이에 맞춤 (여백 포함)
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        // 4. PDF에 이미지 추가 (이미지이므로 한글이 깨지지 않음)
+        // 10, 10 위치에 추가
+        doc.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+
+        // 5. 파일 저장
+        const today = new Date().toISOString().slice(0, 10);
+        doc.save(`지원자명단_${today}.pdf`);
+        
+    } catch (error) {
+        console.error("PDF 생성 중 오류 발생:", error);
+        alert("PDF 생성에 실패했습니다.");
+    }
+}
 </script>
 
 </html>

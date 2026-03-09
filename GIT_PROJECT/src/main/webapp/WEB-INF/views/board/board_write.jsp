@@ -1,188 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<!DOCTYPE html>
+<html>
+<head>
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
+<link rel="stylesheet" href="<c:url value='/resources/css/board/board_write.css'/>" type="text/css">
+</head>
+
+<body>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
-<%-- =========================
-     URL 설정 (컨트롤러에 맞게 value만 수정)
-   ========================= --%>
+<!-- URL주소 -->
 <c:url var="urlBoardList"  value="/board"/>
 <c:url var="urlBoardWrite" value="/board/write"/>   <%-- GET: 글쓰기 페이지, POST: 글 등록 처리로 같이 쓰면 OK --%>
 
-<style>
-  body { background:#f6f7fb; }
-  .wrap { min-height:100vh; padding:22px 0; }
-
-  .cardx{
-    background:#fff;
-    border:1px solid #eef2f7;
-    border-radius:16px;
-    box-shadow:0 10px 30px rgba(15,23,42,.04);
-  }
-  .content{ padding:22px; }
-
-  .page-title{
-    font-size:1.5rem;
-    font-weight:900;
-    letter-spacing:-.6px;
-    margin:0;
-    color:#111827;
-  }
-  .page-desc{
-    color:#6b7280;
-    font-size:.92rem;
-    margin-top:8px;
-  }
-
-  .section{
-    margin-top:18px;
-    padding-top:18px;
-    border-top:1px solid #eef2f7;
-  }
-
-  .label{
-    font-weight:900;
-    color:#111827;
-    font-size:.95rem;
-    margin-bottom:8px;
-  }
-  .hint{
-    color:#6b7280;
-    font-weight:800;
-    font-size:.88rem;
-    margin-left:8px;
-  }
-
-  .select, .input{
-    width:100%;
-    border:1px solid #dbe2ee;
-    border-radius:12px;
-    padding:12px 14px;
-    outline:none;
-    font-weight:800;
-    background:#fff;
-  }
-
-  .input::placeholder{ color:#9ca3af; font-weight:800; }
-
-  /* 에디터 */
-  .editor{
-    border:1px solid #dbe2ee;
-    border-radius:12px;
-    overflow:hidden;
-    background:#fff;
-  }
-  .editor-toolbar{
-    display:flex;
-    gap:6px;
-    padding:10px 12px;
-    border-bottom:1px solid #eef2f7;
-    background:#fbfcff;
-    align-items:center;
-    flex-wrap:wrap;
-  }
-  .tool-btn{
-    border:1px solid #e5e7eb;
-    background:#fff;
-    border-radius:10px;
-    padding:6px 10px;
-    font-weight:900;
-    color:#334155;
-    cursor:pointer;
-    font-size:.9rem;
-  }
-  .tool-btn:hover{ background:#f7f9fc; }
-
-  .editor-area{
-    width:100%;
-    border:0;
-    outline:none;
-    resize:vertical;
-    min-height:260px;
-    padding:14px;
-    line-height:1.7;
-  }
-
-  .counter{
-    display:flex;
-    justify-content:flex-end;
-    color:#9ca3af;
-    font-weight:900;
-    font-size:.85rem;
-    margin-top:6px;
-  }
-
-  /* 해시태그 */
-  .tag-wrap{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:10px;
-  }
-  .tag{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    border:1px solid #dbe2ee;
-    background:#fff;
-    padding:8px 10px;
-    border-radius:12px;
-    cursor:pointer;
-    user-select:none;
-    font-weight:900;
-    color:#334155;
-    font-size:.9rem;
-  }
-  .tag input{ display:none; }
-  .tag.active{
-    border-color:#111827;
-    background:#111827;
-    color:#fff;
-  }
-
-  /* 하단 버튼 */
-  .bottom{
-    margin-top:22px;
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    padding-top:18px;
-    border-top:1px solid #eef2f7;
-  }
-  .btn-ghost{
-    border:1px solid #dbe2ee;
-    background:#fff;
-    padding:10px 18px;
-    border-radius:12px;
-    font-weight:900;
-    color:#334155;
-    text-decoration:none;
-    cursor:pointer;
-  }
-  .btn-ghost:hover{ background:#f7f9fc; }
-
-  .btn-primaryish{
-    border:1px solid #111827;
-    background:#111827;
-    color:#fff;
-    padding:10px 18px;
-    border-radius:12px;
-    font-weight:900;
-    text-decoration:none;
-    cursor:pointer;
-
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    min-width:180px;
-  }
-  .btn-primaryish:disabled{
-    opacity:.4;
-    cursor:not-allowed;
-  }
-</style>
 
 <main class="container wrap">
   <div class="cardx">
@@ -344,3 +176,6 @@
     });
   });
 </script>
+
+</body>
+</html>

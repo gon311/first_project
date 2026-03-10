@@ -103,7 +103,6 @@ public class ResumeController {
 	        }
 	    }
 		
-		
 		// 저장 성공 시 -> 내 이력서 상세 페이지로 redirect.
 //		return "/resume/resumeRegist2";
 		return "redirect:/resume/resumeView?resumeId=" + resumeId;
@@ -124,8 +123,8 @@ public class ResumeController {
 	        return "redirect:/resume/list";
 		 }
 		 model.addAttribute("resume", resume);
+		 
 		 return "resume/resumeView";
-		    
 	} // 이력서 상세정보 끝.
 	
 	// 수정페이지
@@ -137,9 +136,35 @@ public class ResumeController {
 	    resumeDTO.setUserId(userIdx);
 
 	    int resultCount = resumeService.modifyResume(resumeDTO);
-	    log.info("resultCount : "+ resultCount);
+	    // log.info("resultCount : "+ resultCount);
 
 	    ra.addAttribute("resumeId", resumeDTO.getResumeId());
+	    
+	    int resumeId = resumeDTO.getResumeId();
+	    
+	 // 3. 학력 수정
+	    if (resumeDTO.getEducationList() != null) {
+	        // 기존 학력 데이터 삭제 (선택) 또는 update
+	        resumeService.deleteResumeEdu(resumeId);
+
+	        // 새로운 학력 데이터 삽입
+	        for (ResumeEducationDTO eduDTO : resumeDTO.getEducationList()) {
+	            eduDTO.setResumeId(resumeId);
+	            resumeService.registResumeEdu(eduDTO);
+	        }
+	    }
+
+	    // 4. 경력 수정
+	    if (resumeDTO.getExperienceList() != null) {
+	        // 기존 경력 데이터 삭제 (선택) 또는 update
+	        resumeService.deleteResumeExp(resumeId);
+
+	        // 새로운 경력 데이터 삽입
+	        for (ResumeExperienceDTO expDTO : resumeDTO.getExperienceList()) {
+	            expDTO.setResumeId(resumeId);
+	            resumeService.registResumeExp(expDTO);
+	        }
+	    }
 
 	    return "redirect:/resume/resumeView";
 	}

@@ -378,6 +378,64 @@
 		  </div>
 		</div>
 		
+		<!-- 경력사항 -->
+      <h3 class="section-title text-center">경력사항</h3>
+
+		<div class="row mb-3">
+		  <div class="col-md-6 col-sm-12">
+		    <label class="resume-label">기업명</label>
+		    <input type="text" name="experienceList[0].companyName"
+		    		value="${resume.experienceList[0].companyName}" class="form-control resume-input" placeholder="학교명 입력">
+		  </div>
+		  
+		  <div class="col-md-6 col-sm-12">
+		    <label class="resume-label">근무부서</label>
+		    <input type="text" name="experienceList[0].depatmentName"
+		    		value="${resume.experienceList[0].depatmentName}" class="form-control resume-input" placeholder="학교명 입력">
+		  </div>
+		  
+		</div>
+		
+		<div class="row mb-3">
+		  
+		    <div class="col-md-6 col-sm-12">
+			    <label class="resume-label">직위/역할</label>
+			    <input type="text" name="experienceList[0].jobPosition"
+			    		value="${resume.experienceList[0].jobPosition}" class="form-control resume-input" placeholder="직위/역할 입력">
+		  	</div>
+		  	
+		  	<div class="col-md-6 col-sm-12">
+		    <label class="resume-label">담당업무</label>
+		    <input type="text" name="experienceList[0].jobDescription"
+		    		value="${resume.experienceList[0].jobDescription}" class="form-control resume-input" placeholder="담당업무 입력">
+		  </div>
+		  
+		</div>
+		
+		<div class="row mb-3">
+		  <div class="col-md-6 col-sm-12">
+		    <label class="resume-label">근무기간</label>
+		    <input type="date" id="startDate" name="experienceList[0].startDate" 
+		    		value="${resume.experienceList[0].startDate}" class="form-control resume-input">
+   			<input type="date" id="endDate" name="experienceList[0].endDate" 
+   					value="${resume.experienceList[0].endDate}" class="form-control resume-input">
+		  </div>
+		  
+		  <div class="col-md-6 col-sm-12">
+		    <label class="resume-label">고용형태</label>
+		    <select name="experienceList[0].employTypeName" class="form-control resume-input">
+		      <option value="-고용 선택-" ${resume.experienceList[0].employTypeName == '-고용 선택-' ? 'selected' : ''}>-고용 선택-</option>
+		      <option value="정규직" ${resume.experienceList[0].employTypeName == '정규직' ? 'selected' : ''}>정규직</option>
+		      <option value="계약직" ${resume.experienceList[0].employTypeName == '계약직' ? 'selected' : ''}>계약직</option>
+		      <option value="인턴" ${resume.experienceList[0].employTypeName == '인턴' ? 'selected' : ''}>인턴</option>
+		      <option value="아르바이트" ${resume.experienceList[0].employTypeName == '아르바이트' ? 'selected' : ''}>아르바이트</option>
+		      <option value="기타" ${resume.experienceList[0].employTypeName == '기타' ? 'selected' : ''}>기타</option>
+		    </select>
+		  </div>
+		  
+		</div>
+		<!-- 경력사항 끝. -->
+		
 		<div class="text-center mt-4">
 		  <button type="button" class="btn custom-btn me-3">목록으로</button>
 		  <button type="submit" class="btn custom-btn">저장</button>

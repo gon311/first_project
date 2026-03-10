@@ -37,3 +37,81 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
+
+// 학력, 경력 추가 
+let eduIndex = 1;
+let expIndex = 1;
+
+$("#addEducation").click(function(){
+
+let html = `
+<div class="education-item border p-3 mb-3">
+
+<div class="row mb-3">
+<div class="col-md-6">
+<label>학력</label>
+<select name="educationList[`+eduIndex+`].educationLevel" class="form-control">
+<option value="고등학교">고등학교</option>
+<option value="대학교(2-3년제)">대학교(2-3년제)</option>
+<option value="대학교(4년제)">대학교(4년제)</option>
+<option value="대학원(석사)">대학원(석사)</option>
+<option value="대학원(박사)">대학원(박사)</option>
+</select>
+</div>
+
+<div class="col-md-6">
+<label>학교명</label>
+<input type="text" name="educationList[`+eduIndex+`].schoolName" class="form-control">
+</div>
+</div>
+
+<button type="button" class="btn btn-danger removeEducation">삭제</button>
+
+</div>
+`;
+
+$("#educationContainer").append(html);
+
+eduIndex++;
+
+});
+
+
+$(document).on("click",".removeEducation",function(){
+$(this).closest(".education-item").remove();
+});
+
+
+
+$("#addExperience").click(function(){
+
+let html = `
+<div class="experience-item border p-3 mb-3">
+
+<div class="row mb-3">
+<div class="col-md-6">
+<label>기업명</label>
+<input type="text" name="experienceList[`+expIndex+`].companyName" class="form-control">
+</div>
+
+<div class="col-md-6">
+<label>근무부서</label>
+<input type="text" name="experienceList[`+expIndex+`].depatmentName" class="form-control">
+</div>
+</div>
+
+<button type="button" class="btn btn-danger removeExperience">삭제</button>
+
+</div>
+`;
+
+$("#experienceContainer").append(html);
+
+expIndex++;
+
+});
+
+
+$(document).on("click",".removeExperience",function(){
+$(this).closest(".experience-item").remove();
+});

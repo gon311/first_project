@@ -23,6 +23,9 @@ public interface ResumeMapper {
 
 	// 선택(작성)한 이력서(상세정보) 불러오기.
 	ResumeDTO selectResume(Integer resumeId);
+	List<ResumeEducationDTO> selectEducationList(int resumeId);
+    List<ResumeExperienceDTO> selectExperienceList(int resumeId);
+		
 
 	// 이력서 업데이트. 
 	int updateResume(ResumeDTO resumeDTO);
@@ -30,6 +33,8 @@ public interface ResumeMapper {
 	// 내 이력서 리스트를 가져옵니다. selectResumeList() 
 	List<ResumeDTO> selectResumeList(Integer userIdx);
 
-	
+	void deleteResumeEdu(int resumeId);
+
+	void deleteResumeExp(int resumeId);
 
 }

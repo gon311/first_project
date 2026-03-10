@@ -6,9 +6,11 @@
   <section id="header-upper">
 	  <nav class="navbar navbar-expand-lg px-3">
 	    <!-- 좌측: 브랜드 -->
-	    <a><img src="<c:url value="/resources/images/logo.png" />" 
+	    <a href="<c:url value="/" />">
+	    <img src="<c:url value="/resources/images/logo.png" />" 
 		         alt="로고" 
 		         class="img-fluid" 
+		         id="logo"
 		         style="width: 180px; height: auto; margin-top: 12px;">
          </a>
 	    <!-- 우측: 인증 관련 메뉴 -->

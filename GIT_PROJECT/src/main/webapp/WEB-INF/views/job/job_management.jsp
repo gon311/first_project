@@ -70,6 +70,7 @@
             <button class="btn-action">서류 통과</button>
             <button class="btn-action" style="background: #ff5252;">불합격</button>
             <button class="btn-secondary" onclick="processBulkStatus('면접진행')">면접요청</button>
+            <button class="btn-action" style="background: GREEN;">최종합격</button>
 			<button class="btn-secondary" style="margin-left: auto;" onclick="downloadPDF()">
 			    <i class="fa-solid fa-file-pdf"></i> 명단 다운로드</button>        
 		</div>
@@ -205,6 +206,10 @@ $(function() {
     // 5. 상단 '불합격 통보' 버튼 클릭 (두 번째 btn-action)
     $('.btn-action').eq(1).on('click', function() { 
         processBulkStatus("불합격"); 
+    });
+    
+    $('.btn-action').eq(2).on('click', function() { 
+        processBulkStatus("최종합격"); 
     });
 });
 

@@ -5,8 +5,7 @@
   
 <configuration>
 	
-	<!-- DB 컬럼명과 DTO 클래스 필드명의 불일치 해결을 위한 자동 변환 설정(DB 컬럼명 -> DTO 클래스 필드명) -->
-	<!-- settings 태그 내의 setting 태그를 사용하여 name 속성값 "mapUnderScoreToCamelCase" 고정, value 속성값 "true" 설정 -->
+	<!-- DB 컬럼명과 DTO 클래스 필드명의 불일치 해결을 위한 자동 변환 설정-->
 	<settings>
 		<setting name="mapUnderscoreToCamelCase" value="true"/>
 	</settings>
@@ -30,5 +29,10 @@
 		<typeAlias type="com.itwillbs.project.admin.dto.FreeDTO" alias="free"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.CommentDTO" alias="comment"/>
 		<typeAlias type="com.itwillbs.project.admin.dto.SearchDTO" alias="search"/>
+		<typeAlias type="com.itwillbs.project.resume.dto.ResumeDTO" alias="resume"/>
+		<typeAlias type="com.itwillbs.project.job.dto.JobApplicationDTO" alias="application"/>
+		<typeAlias type="com.itwillbs.project.common.dto.FileDTO" alias="fileDTO"/>
+		<typeAlias type="com.itwillbs.project.help.dto.NoticeDTO" alias="notice"/>
 	</typeAliases>
+	
 </configuration>

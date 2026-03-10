@@ -18,24 +18,23 @@
 	<context:property-placeholder location="classpath:/config/application.properties" /> 
 		
 	<!-- ============================ [ MyBatis 설정 ]============================ -->	
-		<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
-		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://localhost:3306/first_project"></property>
-		<property name="username" value="root"></property>
-		<property name="password" value="1234"></property>
-	</bean>
-	
-	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-		<constructor-arg ref="hikariConfig"></constructor-arg>
-	</bean>
-	
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> 
-		<property name="dataSource" ref="dataSource"></property>
-		<property name="configLocation" value="classpath:/config/mybatis-config.xml"></property>
-		<property name="mapperLocations" value="classpath:/com/itwillbs/project/mapper/**/*Mapper.xml"></property>
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
+		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://${db.host}:${db.port}/${db.db_name}"/>
+		<property name="username" value="${db.username}"/>
+		<property name="password" value="${db.password}"/>
+		</bean>
+		<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig"/>
+		</bean>
+		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:/config/mybatis-config.xml"/>
+		<property name="mapperLocations" value="classpath:/com/itwillbs/project/mapper/**/*Mapper.xml"/>
 	</bean>
 	
 	<mybatis-spring:scan base-package="com.itwillbs.project"/>
+	
 	<!-- 패스워드 암호화 -->
 	<bean id="passwordEncoder"
       class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>

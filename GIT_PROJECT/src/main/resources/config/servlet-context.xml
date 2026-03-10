@@ -21,7 +21,12 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.itwillbs.project" />
+	<context:component-scan base-package="com.itwillbs.project">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+	</context:component-scan>
+	<context:property-placeholder location="classpath:/config/application.properties"/>
 	
 	<!-- ========================================================== -->	
 	<!-- 스프링 파일 업로드 처리를 위한 설정 -->

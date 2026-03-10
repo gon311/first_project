@@ -42,8 +42,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ComMyService {
 	@Autowired
 	private ComMyMapper comMyMapper;
-	
-	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	@Value("${turnstile.secret-key}")

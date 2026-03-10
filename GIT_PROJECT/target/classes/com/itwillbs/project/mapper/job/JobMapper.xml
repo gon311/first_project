@@ -159,7 +159,8 @@
 	        SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 1) as city
 	        , SUBSTRING_INDEX(SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 2), ' ', -1) as district
 	    FROM JOB_POSTING
-	    WHERE post_status = 1 
+	    WHERE post_status = 1
+	   	  AND post_check = 2
 	      AND address IS NOT NULL
 	</select>
 	

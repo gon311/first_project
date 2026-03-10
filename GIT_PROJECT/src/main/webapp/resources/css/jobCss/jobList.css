@@ -1,6 +1,7 @@
 @charset "UTF-8";
 /* 1. 전체 레이아웃 및 폰트 */
 body {
+    /* font-family: 'Pretendard', sans-serif; */
     background-color: #f8f9fa;
     margin: 0 !important;   /* 부트스트랩 간섭 방지 */
     padding: 0 !important;
@@ -8,13 +9,10 @@ body {
 }
 
 .main-wrapper {
-	width: 100%;
     max-width: 1200px;
     margin: 60px auto;
     padding: 0 20px;
-    flex-shrink: 0; 
 }
-
 
 /* 2. 상단 필터 (경력/학력) */
 .filter-dropdown-row {

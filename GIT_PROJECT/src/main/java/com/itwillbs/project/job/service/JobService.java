@@ -1,8 +1,11 @@
 package com.itwillbs.project.job.service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,8 +36,7 @@ public class JobService {
 		
 		List<FileDTO> fileList = FileUtils.uploadBoardFile(files);
 		if(!fileList.isEmpty()) {
-			// BoardMapper - insertBoardFiles() 메서드 호출하여 파일 정보 등록
-			// => 파라미터 : List 객체, 게시물 번호(BoardDTO - idx)   리턴타입 : void
+			// 파일 정보 등록
 			fileMapper.insertFiles(fileList, jobDTO.getJobId(), "JOB_POSTING");
 		}
 		

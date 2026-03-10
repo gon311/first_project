@@ -132,12 +132,31 @@
 
     function renderMainCategory() {
         const mainUl = document.getElementById('mainCategory');
+        const subDiv = document.getElementById('subCategory'); // 서브 카테고리 영역 추가
         const data = (currentTab === 'region') ? regionData : jobData;
+        
         mainUl.innerHTML = '';
-        Object.keys(data).forEach((cat, index) => {
+        subDiv.innerHTML = ''; // 탭 전환 시 오른쪽 상세 항목 영역을 먼저 비웁니다.
+
+        const keys = Object.keys(data);
+        
+        // 만약 데이터가 없으면 (지역별 공고가 0건인 경우 등)
+        if (keys.length === 0) {
+            const li = document.createElement('li');
+            li.textContent = "해당 조건의 지역이 없습니다.";
+            li.style.color = "#999";
+            li.style.fontSize = "13px";
+            mainUl.appendChild(li);
+            return; // 데이터가 없으므로 여기서 종료
+        }
+
+        keys.forEach((cat, index) => {
             const li = document.createElement('li');
             li.textContent = cat;
-            if(index === 0) { li.classList.add('active'); renderSubCategory(cat); }
+            if(index === 0) { 
+                li.classList.add('active'); 
+                renderSubCategory(cat); 
+            }
             li.onclick = function() {
                 document.querySelectorAll('#mainCategory li').forEach(el => el.classList.remove('active'));
                 this.classList.add('active');

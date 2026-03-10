@@ -3,14 +3,14 @@
 
 <header>
   <%-- 상단: 로고 + 로그인/회원가입/마이페이지/로그아웃 --%>
-  <%-- 차후 url 교체 --%>
   <section id="header-upper">
 	  <nav class="navbar navbar-expand-lg px-3">
 	    <!-- 좌측: 브랜드 -->
-	    <a href="<c:url value="/" />">
-		    <img src="<c:url value="/resources/images/logo.png" />" alt="로고" 
-		    	 class="img-fluid" style="max-width:80px;">
-	    </a>
+	    <a><img src="<c:url value="/resources/images/logo.png" />" 
+		         alt="로고" 
+		         class="img-fluid" 
+		         style="width: 180px; height: auto; margin-top: 12px;">
+         </a>
 	    <!-- 우측: 인증 관련 메뉴 -->
 	    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
 	      <c:choose>
@@ -39,7 +39,6 @@
   </section>
 
   <%-- 하단: 메인 메뉴 바 + 전체 메뉴 버튼 --%>
-  <%-- 차후 url 교체 --%>
   <section id="header-bottom">
 	  <nav id="globalMenu" class="site-nav navbar navbar-expand border-bottom">
 	    <div class="container-fluid position-relative">

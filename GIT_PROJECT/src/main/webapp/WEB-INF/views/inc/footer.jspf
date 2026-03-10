@@ -9,23 +9,24 @@
 
       <!-- 1. 로고 영역 -->
       <div class="col-md-2 mb-3 text-center">
-        <img src="<c:url value="/resources/images/logo.png" />" alt="로고" class="img-fluid" style="max-width:80px;">
+        <img src="<c:url value="/resources/images/logo.png" />" alt="로고" class="img-fluid" style="max-width:200px;">
       </div>
 
       <!-- 2. 회사 정보 영역 -->
       <div class="col-md-5 mb-3">
-        <p class="mb-1">회사명 </p>
-        <p class="mb-1">이메일 : </p>
-        <p class="mb-1">주소 </p>
-        <p class="mb-0">Copyright © ??? All rights reserved.</p>
+        <p class="mb-1">JobAi 고객센터 051-000-0000 (평일 09:00~18:00, 주말 및 공휴일 휴무)</p>
+        <p class="mb-1">이메일 help@jobai.co.kr </p>
+        <p class="mb-1">잡아이(JobAi), (우) 47246 부산광역시 부산진구 동천로 109, 삼한골든게이트 7층</p>
+        <p class="mb-1">* 본 사이트는 1차 프로젝트 일환으로 제작되었습니다.</p>
+        <p class="mb-0">Copyright © 잡아이(JobAi) All rights reserved.</p>
       </div>
 
       <!-- 3. 링크 영역 -->
       <div class="col-md-5 mb-3 text-md-end">
         <a href="<c:url value="/help/helpWord" />" class="footer-link">고객센터</a> |
-        <a href="#" class="footer-link">개인정보처리방침</a> |
-        <a href="#" class="footer-link">이용 약관</a> |
-        <a href="#" class="footer-link">자주하는질문</a>
+        <a href="/help/helpWord" class="footer-link">개인정보처리방침</a> |
+        <a href="/help/helpWord" class="footer-link">이용 약관</a> |
+        <a href="/help/helpWord" class="footer-link">자주하는질문</a>
       </div>
 
     </div>

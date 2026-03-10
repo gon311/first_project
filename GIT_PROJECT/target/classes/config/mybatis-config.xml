@@ -21,5 +21,8 @@
 		
 		<!-- 추가 -->
 		<typeAlias type="com.itwillbs.project.resume.dto.ResumeDTO" alias="resume" />
-	</typeAliases>
+		<typeAlias type="com.itwillbs.project.resume.dto.ResumeEducationDTO" alias="resumeEducation"/>
+		
+	</typeAliases>	
+	
 </configuration>

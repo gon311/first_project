@@ -13,7 +13,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ResumeDTO2 {
+public class ResumeDTO22 {
 	
 	// @DateTimeFormat(pattern = "yyyy-MM-dd") 
 	

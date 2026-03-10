@@ -74,7 +74,7 @@ public class ResumeDTO {
     private String updatedAt;				// 수정일
     private String isDeleted;				// 삭제 여부.
     
-
+    
     private List<ResumeEducationDTO> educationList;
     private List<ResumeExperienceDTO> experienceList;
 }

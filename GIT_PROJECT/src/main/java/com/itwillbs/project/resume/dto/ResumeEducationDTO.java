@@ -20,11 +20,11 @@ public class ResumeEducationDTO {
 	private String educationLevel;
 	private String schoolName;
 	private String department;
+	
 	private String major;
-	// + 추가 부전공, 복수전공, 이중전공 
-	private String minorMajor;		// 부전공
-	private String doubleMajor;		// 복수전공
-	private String dualMajor;		// 이중전공
+	
+	private String minorMajor; // 선택값 (부전공/복수전공/이중전공)
+	private String majorSub;   // 실제 전공명 입력 
 		
 	private BigDecimal hakjum;
 	private String hakjumScale;
@@ -34,5 +34,4 @@ public class ResumeEducationDTO {
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate eduEndDay;
-
 }

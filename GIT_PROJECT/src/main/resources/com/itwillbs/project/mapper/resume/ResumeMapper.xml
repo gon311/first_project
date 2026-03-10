@@ -3,9 +3,72 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.project.resume.mapper.ResumeMapper">
+	
+	<!-- 	이력서 저장 - 학력정보. -->
+	<!-- 	insertResumeEdu(ResumeEducationDTO eduDTO) -->
+	<insert id="insertResumeEdu" useGeneratedKeys="true" keyProperty="resumeId">
+		insert into resume_education(
+				resume_id,     
+			education_level,
+			school_name,   
+			department,     
+			                            
+			major,         
+			minor_major,		
+			major_sub,
+			                            
+			hakjum,        
+			hakjum_scale,   
+			edu_start_day,         
+			edu_end_day           	
+		
+		) values (
+			#{resumeId},
+			#{educationLevel},
+			#{schoolName},
+			#{department},
+			
+			#{major},
+			#{minorMajor},
+			#{majorSub},
+				
+			#{hakjum},
+			#{hakjumScale},
+			#{eduStartDay},
+			#{eduEndDay}
+		
+		)
+	</insert>
+
+<!-- 	이력서 저장 - 경력정보. -->
+<!-- 	insertResumeExp(ResumeEducationDTO expDTO) -->	
+		<insert id="insertResumeExp" useGeneratedKeys="true" keyProperty="resumeId">
+		insert into resume_experience(
+				resume_id,     
+			company_name,
+			depatmentName,   
+			employTypeName,     
+			                            
+			job_positio,         
+			job_description,		
+			start_date,		
+			end_date		
+
+		) values (
+			#{resumeId},
+			#{companyName},
+			#{depatmentName},
+			#{employTypeName},
+			
+			#{jobPosition},
+			#{jobDescription},
+			#{startDate},
+			#{endDate}
+		)
+	</insert>
 
 <!-- 	void insertResume(ResumeDTO resumeDTO) -->
-
+<!-- 	이력서 저장 - 기본정보. -->
 	<insert id="insertResume" useGeneratedKeys="true" keyProperty="resumeId">
 	    INSERT INTO resume (
 	        user_id,            <!-- 소유자 유저 ID (FK) --> 
@@ -99,56 +162,129 @@
 	    );   
 	</insert>	
 	
-	<select id="selectResume" resultType="resume">
+	
+	<!-- 이력서의 학력 매핑 -->
+	 <resultMap id="resumeEducationMap" type="resumeEducation">
+        <id property="eduId" column="edu_id"/>
+        <result property="educationLevel" column="education_level"/>
+        <result property="schoolName" column="school_name"/>
+        <result property="department" column="department"/>
+        <result property="major" column="major"/>
+        <result property="minorMajor" column="minor_major"/>
+        <result property="majorSub" column="major_sub"/>
+        <result property="hakjum" column="hakjum"/>
+        <result property="hakjumScale" column="hakjum_scale"/>
+        <result property="eduStartDay" column="edu_start_day"/>
+        <result property="eduEndDay" column="edu_end_day"/>
+    </resultMap>
+    
+     <!-- ========================= -->
+    <!-- Resume ResultMap -->
+    <!-- ========================= -->
+    <resultMap id="resumeDetailMap" type="resume">
+        <id property="resumeId" column="resumeId"/>
+        <result property="userId" column="userId"/>
+        <result property="title" column="title"/>
+        <result property="nameKor" column="name_kor"/>
+        <result property="nameEng" column="name_eng"/>
+        <result property="nameHan" column="name_han"/>
+        <result property="birthDate" column="birth_date"/>
+        <result property="gender" column="gender"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="email" column="email"/>
+        <result property="address1" column="address1"/>
+        <result property="address2" column="address2"/>
+
+        <!-- 1단계 작성값 -->
+        <result property="industryCode" column="industryCode"/>
+        <result property="jobCode" column="jobCode"/>
+        <result property="roleCode" column="roleCode"/>
+        <result property="companyCode" column="companyCode"/>
+        <result property="appliedField" column="appliedField"/>
+        <result property="companyName" column="companyName"/>
+        <result property="careerCode" column="careerCode"/>
+
+        <!-- 히든 파라미터 -->
+        <result property="hiddenIndustry" column="hiddenIndustry"/>
+        <result property="hiddenJob" column="hiddenJob"/>
+        <result property="hiddenRole" column="hiddenRole"/>
+        <result property="hiddenCompanyType" column="hiddenCompanyType"/>
+
+        <!-- 사회적 우대사항 -->
+        <result property="veteranStatus" column="veteran_status"/>
+        <result property="veteranNumber" column="veteran_number"/>
+        <result property="disabilityStatus" column="disability_status"/>
+        <result property="disabilityGrade" column="disability_grade"/>
+        <result property="multiculturalStatus" column="multicultural_status"/>
+        <result property="northDefector" column="north_defector"/>
+        <result property="lowIncomeStatus" column="low_income_status"/>
+
+        <!-- 병역사항 -->
+        <result property="militaryService" column="military_service"/>
+        <result property="militaryBranch" column="military_branch"/>
+        <result property="militaryRank" column="military_rank"/>
+        <result property="dischargeReason" column="discharge_reason"/>
+        <result property="enlistDate" column="enlist_date"/>
+        <result property="dischargeDate" column="discharge_date"/>
+        <result property="exemptionReason" column="exemption_reason"/>
+
+        <!-- 학력 목록 -->
+        <collection property="educationList" resultMap="resumeEducationMap"/>
+    </resultMap>
+	
+	<!-- 이력서의 상세정보 : selectResume -->
+<!-- 	<select id="selectResume" resultType="resume"> -->
+	<select id="selectResume" resultMap="resumeDetailMap">
 		select 
-		  resume_id AS resumeId,
-        user_id AS userId,
-        title,
-        name_kor AS nameKor,
-        name_eng AS nameEng,
-        name_han AS nameHan,
-        birth_date AS birthDate,
-        gender,
-        phone_number AS phoneNumber,
-        email,
-        address1,
-        address2,
-
-		<!-- 1단계 작성값 -->
-		industryCode,
-        jobCode,
-        roleCode,
-        companyCode,
-        appliedField,
-        companyName,
-        careerCode,
-
-       	<!-- 히든의 파라미터 -->
-       	hiddenIndustry,
-        hiddenJob,
-        hiddenRole,
-        hiddenCompanyType,
-        	       		       	
-       	<!-- 사회적 우대사항 -->
-      	veteran_status AS veteranStatus,
-        veteran_number AS veteranNumber,
-        disability_status AS disabilityStatus,
-        disability_grade AS disabilityGrade,
-        multicultural_status AS multiculturalStatus,
-        north_defector AS northDefector,
-        low_income_status AS lowIncomeStatus,
-       	
-       	<!-- 병역 사항 -->
-       	military_service AS militaryService,
-        military_branch AS militaryBranch,
-        military_rank AS militaryRank,
-        discharge_reason AS dischargeReason,
-        enlist_date AS enlistDate,
-        discharge_date AS dischargeDate,
-        exemption_reason AS exemptionReason
+		r.resume_id AS resumeId,
+            r.user_id AS userId,
+            r.title,
+            r.name_kor, 
+            r.name_eng, 
+            r.name_han,
+            r.birth_date, 
+            r.gender,
+            r.phone_number, 
+            r.email, 
+            r.address1, 
+            r.address2,
+            
+            r.industryCode, 
+            r.jobCode, 
+            r.roleCode, 
+            r.companyCode, 
+            r.appliedField, 
+            r.companyName, 
+            r.careerCode,
+            
+            r.hiddenIndustry, 
+            r.hiddenJob, 
+            r.hiddenRole, 
+            r.hiddenCompanyType,
+            r.veteran_status, r.veteran_number, r.disability_status, r.disability_grade,
+            r.multicultural_status, r.north_defector, r.low_income_status,
+            r.military_service, r.military_branch, r.military_rank, r.discharge_reason,
+            r.enlist_date, 
+            r.discharge_date, 
+            r.exemption_reason,
+            
+            e.edu_id, 
+            e.education_level, 
+            e.school_name, 
+            e.department,
+            e.major, 
+            e.minor_major, 
+            e.major_sub,
+            e.hakjum, 
+            e.hakjum_scale, 
+            e.edu_start_day, 
+            e.edu_end_day
 		
-		FROM resume
-   		WHERE resume_id = #{resumeId}		
+		FROM resume r
+		LEFT JOIN resume_education e ON r.resume_id = e.resume_id
+		LEFT JOIN resume_experience x ON r.resume_id = x.resume_id
+		
+   		WHERE r.resume_id = #{resumeId}		
 	</select>
 	
 	<!-- selectResumeList -->

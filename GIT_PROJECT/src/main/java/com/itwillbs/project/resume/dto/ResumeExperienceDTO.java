@@ -17,6 +17,10 @@ public class ResumeExperienceDTO {
     private Integer resumeId;
 
     private String companyName;
+    
+    private String depatmentName;  // 근무부서 - 추가
+    private String employTypeName; // 고용형태 - 추가
+    
     private String jobPosition;
     private String jobDescription;
 

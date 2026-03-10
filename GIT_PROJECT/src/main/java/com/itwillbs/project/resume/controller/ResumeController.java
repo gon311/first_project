@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.core.appender.rewrite.MapRewritePolicy.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.resume.dto.ResumeDTO;
+import com.itwillbs.project.resume.dto.ResumeEducationDTO;
+import com.itwillbs.project.resume.dto.ResumeExperienceDTO;
 import com.itwillbs.project.resume.service.ResumeService;
 
 import lombok.RequiredArgsConstructor;
@@ -52,30 +55,54 @@ public class ResumeController {
 	@PostMapping("/regist2")
 	public String resumeRegist2(ResumeDTO resumeDTO, HttpServletRequest request) {
 		// 이전 페이지에서 넘어온 파라미터 첵크
-		Enumeration<String> paramNames = request.getParameterNames();
-	    while (paramNames.hasMoreElements()) {
-	        String name = paramNames.nextElement();
-	        String value = request.getParameter(name);
-//	        System.out.println(name + " = " + value);
-	    }   
+//		Enumeration<String> paramNames = request.getParameterNames();
+//	    while (paramNames.hasMoreElements()) {
+//	        String name = paramNames.nextElement();
+//	        String value = request.getParameter(name);
+////	        System.out.println(name + " = " + value);
+//	    }   
 	    
 		return "resume/resumeRegist2";
 	}
 	
 	// resume/resumeSave
-	// 이력서를 저장.
+	// 이력서를 저장.(- 추가 : 학력정보, 경력정보)
+	@Transactional
 	@PostMapping("/resumeSave") 
-	public String resumeSave(ResumeDTO resumeDTO, HttpSession session
-								, HttpServletRequest request) {
+	public String resumeSave(ResumeDTO resumeDTO 
+								,HttpSession session, HttpServletRequest request) {
+		if ( session.getAttribute("userIdx") == null ) {
+	        // 세션 정보가 없으면 로그인 페이지로 이동
+	        return "redirect:/user/login";
+	    }
 		
 		// 세션에서 sId 꺼내오기(유저아디 - bigint)
-	    int userIdx = Integer.parseInt( session.getAttribute("userIdx").toString());
-	    	    
-	    // DTO에 세션 값 추가
+	    Integer userIdx = Integer.parseInt( session.getAttribute("userIdx").toString());
+	    //System.out.println(">>>> userIdx : "+ userIdx);
 	    resumeDTO.setUserId(userIdx);   
 
-	    // 저장 로직.
-		int resumeId = resumeService.registResume(resumeDTO);
+	    // 1. resume 저장.
+		resumeService.registResume(resumeDTO);
+		Integer resumeId = resumeDTO.getResumeId();
+		
+		// 2. 학력 저장.
+		if(resumeDTO.getEducationList() != null) {
+	        for(ResumeEducationDTO eduDTO : resumeDTO.getEducationList()) {
+	        	eduDTO.setResumeId(resumeId);
+	            //resumeMapper.insertEducation(edu);
+	            resumeService.registResumeEdu(eduDTO);
+	        }
+	    }
+		
+		// 3. 경력 저장.
+		if(resumeDTO.getExperienceList() != null) {
+	        for(ResumeExperienceDTO expDTO : resumeDTO.getExperienceList()) {
+	        	expDTO.setResumeId(resumeId);
+	            //resumeMapper.insertEducation(edu);
+	            resumeService.registResumeExp(expDTO);
+	        }
+	    }
+		
 		
 		// 저장 성공 시 -> 내 이력서 상세 페이지로 redirect.
 //		return "/resume/resumeRegist2";
@@ -120,9 +147,12 @@ public class ResumeController {
 	// 내 이력서 리스트 
 	@GetMapping("/resumeList")
 	public String resumeList(HttpSession session, Model model) {
-		// 세션에서 sId 꺼내오기(유저아디 - bigint)
-//	    int userIdx = Integer.parseInt( session.getAttribute("userIdx").toString()) ;
-//	    log.info("userIdx : " + userIdx);
+		// 로그인 예외처리 
+		if ( session.getAttribute("userIdx") == null ) {
+	        // 세션 정보가 없으면 로그인 페이지로 이동
+	        return "redirect:/user/login";
+	    }
+		
 		int userIdx = Integer.parseInt( session.getAttribute("userIdx").toString()) ;
 		
 		List<ResumeDTO> resumeList = resumeService.getResumeList(userIdx);

@@ -302,40 +302,42 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">학력</label>
-		    <select name="educationLevel" class="form-control resume-input">
-		      <option>-학력 선택-</option>
-		      <option>고등학교</option>
-		      <option>대학교(2-3년제)</option>
-		      <option>대학교(4년제)</option>
-		      <option>대학원(석사)</option>
-		      <option>대학원(박사)</option>
+		    <select name="educationList[0].educationLevel" class="form-control resume-input">
+		      <option value="-학력 선택-" ${resume.educationList[0].educationLevel == '-학력 선택-' ? 'selected' : ''}>-학력 선택-</option>
+		      <option value="고등학교" ${resume.educationList[0].educationLevel == '고등학교' ? 'selected' : ''}>고등학교</option>
+		      <option value="대학교(2-3년제)" ${resume.educationList[0].educationLevel == '대학교(2-3년제)' ? 'selected' : ''}>대학교(2-3년제)</option>
+		      <option value="대학교(4년제)" ${resume.educationList[0].educationLevel == '대학교(4년제)' ? 'selected' : ''}>대학교(4년제)</option>
+		      <option value="대학원(석사)" ${resume.educationList[0].educationLevel == '대학원(석사)' ? 'selected' : ''}>대학원(석사)</option>
+		      <option value="대학원(박사)" ${resume.educationList[0].educationLevel == '대학원(박사)' ? 'selected' : ''}>대학원(박사)</option>
 		    </select>
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">학교명</label>
-		    <input type="text" name="schoolName" class="form-control resume-input" placeholder="학교명 입력">
+		    <input type="text" name="educationList[0].schoolName"
+		    		value="${resume.educationList[0].schoolName}" class="form-control resume-input" placeholder="학교명 입력">
 		  </div>
 		</div>
 		
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">계열</label>
-		    <select name="department" class="form-control resume-input">
-		      <option>-계열 선택-</option>
-		      <option>인문계열</option>
-		      <option>사회계열</option>
-		      <option>교육계열</option>
-		      <option>공학계열</option>
-		      <option>자연계열</option>
-		      <option>의학계열</option>
-		      <option>상경계열</option>
-		      <option>법학계열</option>
-		      <option>예체능계열</option>
+		    <select name="educationList[0].department" class="form-control resume-input">
+		      <option value="-계열 선택-" ${resume.educationList[0].department == '-계열 선택-' ? 'selected' : ''}>-계열 선택-</option>
+		      <option value="인문계열" ${resume.educationList[0].department == '인문계열' ? 'selected' : ''}>인문계열</option>
+		      <option value="사회계열" ${resume.educationList[0].department == '사회계열' ? 'selected' : ''}>사회계열</option>
+		      <option value="교육계열" ${resume.educationList[0].department == '교육계열' ? 'selected' : ''}>교육계열</option>
+		      <option value="공학계열" ${resume.educationList[0].department == '공학계열' ? 'selected' : ''}>공학계열</option>
+		      <option value="자연계열" ${resume.educationList[0].department == '자연계열' ? 'selected' : ''}>자연계열</option>
+		      <option value="의학계열" ${resume.educationList[0].department == '의학계열' ? 'selected' : ''}>의학계열</option>
+		      <option value="상경계열" ${resume.educationList[0].department == '상경계열' ? 'selected' : ''}>상경계열</option>
+		      <option value="법학계열" ${resume.educationList[0].department == '법학계열' ? 'selected' : ''}>법학계열</option>
+		      <option value="예체능계열" ${resume.educationList[0].department == '예체능계열' ? 'selected' : ''}>예체능계열</option>
 		    </select>
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">전공</label>
-		    <input type="text" name="major" class="form-control resume-input" placeholder="전공명을 입력해주세요">
+		    <input type="text" name="educationList[0].major" 
+		     			value="${resume.educationList[0].major}" class="form-control resume-input" placeholder="전공명을 입력해주세요">
 		  </div>
 		</div>
 		
@@ -343,28 +345,30 @@
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">학점</label>
 		    <div class="d-flex">
-		      <input type="text" name="hakjum" class="form-control resume-input me-2" placeholder="학점 입력">
-		      <select name="hakjumScale" class="form-control resume-input">
-		        <option>기준 학점</option>
-		        <option>4.0</option>
-		        <option>4.3</option>
-		        <option>4.5</option>
-		        <option>5.0</option>
-		        <option>7.0</option>
-		        <option>100</option>
+		      <input type="text" name="educationList[0].hakjum" 
+		      			value="${resume.educationList[0].hakjum}" class="form-control resume-input me-2" placeholder="학점 입력">
+		      <select name="educationList[0].hakjumScale" class="form-control resume-input">
+		        <option value="기준 학점" ${resume.educationList[0].hakjumScale == '기준 학점' ? 'selected' : ''}>기준 학점</option>
+		        <option value="4.0" ${resume.educationList[0].hakjumScale == '4.0' ? 'selected' : ''}>4.0</option>
+		        <option value="4.3" ${resume.educationList[0].hakjumScale == '4.3' ? 'selected' : ''}>4.3</option>
+		        <option value="4.5" ${resume.educationList[0].hakjumScale == '4.5' ? 'selected' : ''}>4.5</option>
+		        <option value="5.0" ${resume.educationList[0].hakjumScale == '5.0' ? 'selected' : ''}>5.0</option>
+		        <option value="7.0" ${resume.educationList[0].hakjumScale == '7.0' ? 'selected' : ''}>7.0</option>
+		        <option value="100" ${resume.educationList[0].hakjumScale == '100' ? 'selected' : ''}>100</option>
 		      </select>
 		    </div>
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">부/복수전공</label>
 		    <div class="d-flex">
-		      <select class="form-control resume-input me-2">
-		        <option>전공 추가</option>
-		        <option>부전공</option>
-		        <option>복수전공</option>
-		        <option>이중전공</option>
+		      <select name="educationList[0].minorMajor" class="form-control resume-input me-2">
+		        <option value="전공 추가" ${resume.educationList[0].minorMajor == '전공 추가' ? 'selected' : ''}>전공 추가</option>
+		        <option value="부전공" ${resume.educationList[0].minorMajor == '부전공' ? 'selected' : ''}>부전공</option>
+		        <option value="복수전공" ${resume.educationList[0].minorMajor == '복수전공' ? 'selected' : ''}>복수전공</option>
+		        <option value="이중전공" ${resume.educationList[0].minorMajor == '이중전공' ? 'selected' : ''}>이중전공</option>
 		      </select>
-		      <input type="text" id="majorSub" class="form-control resume-input" placeholder="추가 전공 입력">
+		      <input type="text" name="educationList[0].majorSub" id="educationList[0].majorSub"
+		      			 value="${resume.educationList[0].majorSub}" class="form-control resume-input" placeholder="추가 전공 입력">
 		    </div>
 		  </div>
 		</div>
@@ -372,13 +376,16 @@
 		<div class="row mb-3">
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">입학</label>
-		    <input type="date" id="eduStartDay" name="eduStartDay" class="form-control resume-input">
+		    <input type="date" id="eduStartDay" name="educationList[0].eduStartDay" 
+		    			value="${resume.educationList[0].eduStartDay}" class="form-control resume-input">
 		  </div>
 		  <div class="col-md-6 col-sm-12">
 		    <label class="resume-label">졸업</label>
-		    <input type="date" id="eduEndDay" name="eduEndDay" class="form-control resume-input">
+		    <input type="date" id="eduEndDay" name="educationList[0].eduEndDay" 
+		    			value="${resume.educationList[0].eduEndDay}" class="form-control resume-input">
 		  </div>
 		</div>
+		<!-- 학력사항 끝. -->
 		
 		<div class="text-center mt-4">
 		  <button type="button" class="btn custom-btn me-3" onclick="location.href='<c:url value="/resume/resumeList" />'">목록으로</button>

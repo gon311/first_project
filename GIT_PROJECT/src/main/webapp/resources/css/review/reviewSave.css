@@ -1,0 +1,126 @@
+@charset "UTF-8";
+
+/* 1. 배경 및 기본 레이아웃 */
+body {
+    background-color: #F8F9FB; /* 아이시 화이트 배경 */
+}
+
+main {
+    min-height: 80vh;
+}
+
+/* 2. 카드 공통 스타일 */
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 71, 171, 0.05);
+    background-color: #FFFFFF;
+}
+
+/* 3. 제목 영역 */
+.card-title {
+    color: #1A365D; /* 다크 네이비 */
+    font-weight: 800;
+    font-size: 1.25rem;
+    padding: 10px 5px;
+}
+
+/* 4. 본문 내용 박스  */
+.bg-light-subtle {
+    background-color: #FFFFFF !important; 
+    border: 1px solid #E2E8F0 !important;
+    line-height: 1.8;
+    color: #333;
+    font-size: 15px;
+    /* 스크롤바 커스텀 */
+}
+
+/* 스크롤바 디자인 (아이시 블루 톤) */
+.bg-light-subtle::-webkit-scrollbar {
+    width: 8px;
+}
+.bg-light-subtle::-webkit-scrollbar-track {
+    background: #F1F4F9;
+}
+.bg-light-subtle::-webkit-scrollbar-thumb {
+    background: #CBD5E0;
+    border-radius: 10px;
+}
+.bg-light-subtle::-webkit-scrollbar-thumb:hover {
+    background: #0047AB;
+}
+
+/* 5. 우측 액션 버튼 사이드바 */
+.action-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    border: 1px solid #E2E8F0;
+}
+
+/* 수정/검사 등 일반 버튼 호버 */
+.btn-outline-secondary:hover {
+    background-color: #F0F7FF !important;
+    border-color: #0047AB !important;
+    color: #0047AB !important;
+}
+
+/* 삭제 버튼 전용 */
+.btn-outline-danger {
+    border-color: #FED7D7;
+    color: #E53E3E;
+}
+.btn-outline-danger:hover {
+    background-color: #FFF5F5 !important;
+    border-color: #E53E3E !important;
+}
+
+/* 목록으로 버튼 (기본 회색 톤) */
+.btn-light.border {
+    background-color: #F8F9FA;
+    color: #4A5568;
+}
+
+/* 6. 인쇄 최적화 (no-print 클래스 처리) */
+@media print {
+    .no-print, header, footer, .sticky-top {
+        display: none !important;
+    }
+    
+    body {
+        background-color: white;
+    }
+
+    .container {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .col-lg-9 {
+        width: 100% !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    .bg-light-subtle {
+        height: auto !important;
+        overflow: visible !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+}
+
+/* 스티키 사이드바 위치 보정 */
+@media (min-width: 992px) {
+    .sticky-top {
+        top: 2rem !important;
+    }
+}

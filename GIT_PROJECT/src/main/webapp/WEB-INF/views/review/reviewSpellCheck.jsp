@@ -6,18 +6,7 @@
 	<head>
 		<%@ include file="/WEB-INF/views/inc/head.jspf"%>
 		<%-- 현재 페이지 전용 CSS 영역--%>
-		<style>
-			.textarea-wrap textarea {
-				min-height: 520px;
-				resize: vertical;
-			}
-			
-			@media ( max-width : 991.98px) {
-				.textarea-wrap textarea {
-					min-height: 360px;
-				}
-			}
-		</style>
+		<link href="<c:url value="/resources/css/review/spellCheck.css" />" rel="stylesheet" type="text/css">
 	
 	</head>
 	<body>

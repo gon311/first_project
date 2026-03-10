@@ -1,0 +1,133 @@
+@charset "UTF-8";
+
+/* 1. 전체 배경 및 카드 설정 */
+body {
+    background-color: #F8F9FB; /* 아이시 화이트 배경 */
+}
+
+.card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 71, 171, 0.05) !important;
+}
+
+.card-body {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+}
+
+/* 2. 라벨 및 텍스트 스타일 */
+.form-label {
+    color: #1A365D; /* 다크 네이비 */
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+.hint {
+    font-size: 12px;
+    color: #A0AEC0;
+    font-weight: normal;
+}
+
+/* 3. 입력창(Input/Select) 스타일 */
+.form-control, .form-select {
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 12px 15px;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #0047AB;
+    box-shadow: 0 0 0 3px rgba(0, 71, 171, 0.1);
+    background-color: #F0F7FF; /* 포커스 시 연한 블루 */
+}
+
+/* 4. 칩(Chip) 그룹 스타일 - 라디오 버튼을 버튼처럼 */
+.chip-group {
+    gap: 10px;
+}
+
+.chip {
+    border-radius: 30px !important;
+    padding: 8px 18px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    border: 1px solid #E2E8F0 !important;
+    background-color: #FFFFFF !important;
+    color: #4A5568 !important;
+    transition: all 0.2s ease !important;
+}
+
+/* 칩 마우스 오버 */
+.chip:hover {
+    background-color: #F0F7FF !important;
+    border-color: #0047AB !important;
+    color: #0047AB !important;
+}
+
+/* 칩 선택 되었을 때 (Checked) */
+.btn-check:checked + .chip {
+    background-color: #0047AB !important; /* 포인트 블루 */
+    border-color: #0047AB !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 10px rgba(0, 71, 171, 0.2);
+}
+
+/* 업종(Secondary)과 직종(Primary) 색상 구분 제거 후 통일 */
+.btn-outline-primary.chip, .btn-outline-secondary.chip {
+    border-color: #E2E8F0 !important;
+}
+
+/* 5. 하단 버튼 영역 */
+.btn-lg {
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 12px;
+}
+
+.btn-primary {
+    background-color: #0047AB;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 71, 171, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: #003580;
+    transform: translateY(-2px);
+}
+
+.btn-outline-secondary {
+    border-color: #E2E8F0;
+    color: #718096;
+}
+
+/* 6. 토스트 메시지 커스텀 */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 300px;
+    padding: 15px 25px;
+    border-radius: 50px;
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    z-index: 9999;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s, visibility 0.5s;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* 성공 토스트 (아이시 블루 톤) */
+.toast-success {
+    background: linear-gradient(135deg, #0047AB 0%, #002D6B 100%) !important;
+}

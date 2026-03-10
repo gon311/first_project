@@ -7,8 +7,12 @@
 		<%@ include file="/WEB-INF/views/inc/head.jspf"%>
 		
 		<%-- 현재 페이지(main.jsp) 전용 CSS 영역--%>
+<<<<<<< HEAD
 		<link href="<c:url value="/resources/css/reviewForm.css" />"
 			rel="stylesheet" type="text/css">
+=======
+		<link href="<c:url value="/resources/css/review/reviewForm.css" />" rel="stylesheet" type="text/css">
+>>>>>>> refs/heads/reviewText
 	</head>
 	<body>
 		<%-- header area --%>
@@ -331,6 +335,7 @@
 				});
 			});
 			
+<<<<<<< HEAD
 			registForm.onsubmit = function() {
 				if(registForm.industry.value == "") {
 					alert("업종을 선택해주세요.");
@@ -345,6 +350,58 @@
 					alert("경력 사항을 선택해주세요.");
 					return false;
 				}
+=======
+			// 버튼 미 선택시 알림창
+			document.addEventListener("DOMContentLoaded", function(){
+			    const form = document.getElementById("registForm");
+
+			    form.addEventListener("submit", function(e){
+			        if(!form.title.value){
+			            alert("제목을 입력해주세요.");
+			            e.preventDefault();
+			        }
+			        else if(!form.industryCode.value){
+			            alert("업종을 선택해주세요.");
+			            e.preventDefault();
+			        }
+			        else if(!form.jobCode.value){
+			            alert("직종을 선택해주세요.");
+			            e.preventDefault();
+			        }
+			        else if(!form.roleCode.value){
+			            alert("세부직종을 선택해주세요.");
+			            e.preventDefault();
+			        }
+			        else if(!form.companyCode.value){
+			            alert("기업 형태를 선택해주세요.");
+			            e.preventDefault();
+			        }
+			        else if(!form.appliedField.value){
+			            alert("지원 분야를 작성해주세요.");
+			            e.preventDefault();
+			        }
+			        else if(!form.companyName.value){
+			            alert("회사명을 작성해주세요.");
+			            e.preventDefault();
+			        }
+			        else if(!form.careerCode.value){
+			            alert("경력 사항을 선택해주세요.");
+			            e.preventDefault();
+			        }
+			    });
+			});
+			
+			// 임시저장 토스트 메세지 
+			function showToast(message, isSuccess = true) {
+			    const toast = document.getElementById('toast');
+			    toast.textContent = message;
+			    toast.style.background = isSuccess ? "linear-gradient(135deg, #0047AB 0%, #002D6B 100%)" : "#f44336";
+			    toast.className = "toast show";
+			    
+			    setTimeout(() => {
+			        toast.className = toast.className.replace("show", "");
+			    }, 3000);
+>>>>>>> refs/heads/reviewText
 			}
 			
 			document.addEventListener('DOMContentLoaded', () => {

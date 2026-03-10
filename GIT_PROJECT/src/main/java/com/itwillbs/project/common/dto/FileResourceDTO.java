@@ -31,4 +31,4 @@ public class FileResourceDTO {
 		this.contentType = MediaType.valueOf(contentType);
 	}
 
-}
+} 

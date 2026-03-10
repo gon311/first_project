@@ -18,5 +18,5 @@ public class FileDTO {
 	private String filePath;
 	private Long fileSize;
 	private String fileExt;
-	private LocalDateTime createdAt;
+	private LocalDateTime createdAt;   
 }

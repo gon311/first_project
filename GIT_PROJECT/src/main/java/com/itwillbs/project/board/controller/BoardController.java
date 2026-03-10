@@ -31,6 +31,8 @@ import com.itwillbs.project.common.dto.FileResourceDTO;
 import com.itwillbs.project.common.exception.LoginRequiredException;
 import com.itwillbs.project.common.paging.PageRes;
 import com.itwillbs.project.common.util.FileUtils;
+import com.itwillbs.project.my.dto.MyDTO;
+import com.itwillbs.project.my.service.MyService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -43,6 +45,9 @@ public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private MyService myService;
 	
 	
 	// 게시글 목록 조회
@@ -122,16 +127,31 @@ public class BoardController {
 		return "redirect:/board/detail";
 	}
 	
-	// 게시물 상세
+	// 게시글 상세
 	@GetMapping("/detail")
-	public String boardDetail(@RequestParam Long postId, Model model) {
+	public String boardDetail(@RequestParam Long postId,
+	                          HttpSession session,
+	                          Model model) {
+
 	    boardService.increaseReadcount(postId);
 
 	    BoardDTO post = boardService.getBoard(postId);
 	    List<FileDTO> fileList = boardService.getBoardFiles(postId);
 
+	    boolean isOwner = false;
+
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId != null) {
+	        MyDTO user = myService.getUser(sId);
+	        if (user != null && user.getUserId().equals(post.getAuthorMemberId())) {
+	            isOwner = true;
+	        }
+	        model.addAttribute("loginUser", user);
+	    }
+
 	    model.addAttribute("post", post);
 	    model.addAttribute("fileList", fileList);
+	    model.addAttribute("isOwner", isOwner);
 
 	    return "/board/board_detail";
 	}
@@ -152,6 +172,74 @@ public class BoardController {
 	            .contentType(MediaType.APPLICATION_OCTET_STREAM)
 	            .header(HttpHeaders.CONTENT_DISPOSITION, fileResourceDTO.getContentDisposition().toString())
 	            .body(resource);
+	}
+	
+	// 수정
+	@GetMapping("/edit")
+	public String editForm(@RequestParam Long postId,
+	                       HttpSession session,
+	                       Model model,
+	                       RedirectAttributes ra) {
+
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    MyDTO user = myService.getUser(sId);
+
+	    BoardDTO post = boardService.getBoard(postId);
+
+	    if (!user.getUserId().equals(post.getAuthorMemberId())) {
+	        ra.addFlashAttribute("msg", "본인이 작성한 글만 수정할 수 있습니다.");
+	        return "redirect:/board/detail?postId=" + postId;
+	    }
+
+	    model.addAttribute("post", post);
+
+	    return "/board/board_edit";
+	}
+	
+	@PostMapping("/edit")
+	public String editBoard(BoardDTO boardDTO,
+	                        HttpSession session,
+	                        RedirectAttributes ra) {
+
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    MyDTO user = myService.getUser(sId);
+
+	    boolean result = boardService.updateBoard(boardDTO, user.getUserId());
+
+	    if (!result) {
+	        ra.addFlashAttribute("msg", "본인이 작성한 글만 수정할 수 있습니다.");
+	        return "redirect:/board/detail?postId=" + boardDTO.getPostId();
+	    }
+
+	    ra.addFlashAttribute("msg", "게시글이 수정되었습니다.");
+
+	    return "redirect:/board/detail?postId=" + boardDTO.getPostId();
+	}
+	
+	@PostMapping("/delete")
+	public String deleteBoard(@RequestParam Long postId,
+	                          HttpSession session,
+	                          RedirectAttributes ra) {
+
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    MyDTO user = myService.getUser(sId);
+
+	    boolean result = boardService.deleteBoard(postId, user.getUserId());
+
+	    if (!result) {
+	        ra.addFlashAttribute("msg", "본인이 작성한 글만 삭제할 수 있습니다.");
+	        return "redirect:/board/detail?postId=" + postId;
+	    }
+
+	    ra.addFlashAttribute("msg", "게시글이 삭제되었습니다.");
+
+	    return "redirect:/board";
 	}
 	
 

@@ -72,6 +72,35 @@ public class BoardService {
 	public int getBoardCount(BoardCond cond) {
 	    return boardMapper.selectBoardCount(cond);
 	}
+
+	
+	// 게시글 수정
+	public boolean updateBoard(BoardDTO boardDTO, Long userId) {
+
+	    BoardDTO post = boardMapper.selectBoard(boardDTO.getPostId());
+
+	    if (post == null) return false;
+
+	    if (!userId.equals(post.getAuthorMemberId())) {
+	        return false;
+	    }
+
+	    return boardMapper.updateBoard(boardDTO) > 0;
+	}
+	
+	// 게시글 삭제
+	public boolean deleteBoard(Long postId, Long userId) {
+
+	    BoardDTO post = boardMapper.selectBoard(postId);
+
+	    if (post == null) return false;
+
+	    if (!userId.equals(post.getAuthorMemberId())) {
+	        return false;
+	    }
+
+	    return boardMapper.deleteBoard(postId) > 0;
+	}
 	
 
 }

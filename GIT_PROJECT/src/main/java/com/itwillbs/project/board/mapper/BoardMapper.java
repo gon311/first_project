@@ -19,6 +19,9 @@ public interface BoardMapper {
 	List<FileDTO> selectBoardFiles(Long postId);
 	FileDTO selectFileById(Integer fileId);
 	
+	int updateBoard(BoardDTO boardDTO);
+	int deleteBoard(Long postId);
+	
 	
 	// 게시물 리스트
 	List<BoardDTO> selectBoardList(BoardCond cond);

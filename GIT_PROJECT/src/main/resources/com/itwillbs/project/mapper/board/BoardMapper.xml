@@ -46,6 +46,23 @@
 		WHERE post_id = #{postId}
 	</update>
 	
+	<!-- 게시물 수정 -->
+	<update id="updateBoard">
+		UPDATE BOARD_POST
+		SET
+		title = #{title},
+		content = #{content},
+		updated_at = NOW()
+		WHERE post_id = #{postId}
+	</update>
+	
+	<!-- 게시물 삭제 -->
+	<update id="deleteBoard">
+		UPDATE BOARD_POST
+		SET status = 'DELETED'
+		WHERE post_id = #{postId}
+	</update>		
+	
 	<!-- 게시글 목록 -->
 	<select id="selectBoardList"
 	        parameterType="com.itwillbs.project.board.dto.BoardCond"
@@ -178,6 +195,7 @@
 	    FROM uploaded_file
 	    WHERE file_id = #{fileId}
 	</select>
+
 	
 	
 </mapper>

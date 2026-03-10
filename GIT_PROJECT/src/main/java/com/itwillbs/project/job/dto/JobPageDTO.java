@@ -16,6 +16,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class JobPageDTO {
 	private List<JobApplicationDTO> applicantList; // 게시물 목록
+	private List<JobDTO> jobList;
 	private PageInfoDTO pageInfoDTO; // 페이지 정보
 }
 

@@ -70,4 +70,25 @@ public interface JobMapper {
 	    @Param("startRow") int startRow, 
 	    @Param("listLimit") int listLimit
 	);
+	
+	// ===================================================
+	// 채용 목록(JobList) 페이징 처리 추가
+	// 1. 필터링 조건에 맞는 전체 공고 개수 조회
+	int getJobListCount(
+	    @Param("expType") String expType, 
+	    @Param("eduType") String eduType,
+	    @Param("userIdx") Long userIdx,
+	    @Param("selectedItems") List<String> selectedItems
+	);
+
+	// 2. LIMIT 조건이 포함된 페이징 목록 조회
+	List<JobDTO> getJobListPaging(
+	    @Param("expType") String expType, 
+	    @Param("eduType") String eduType,
+	    @Param("userIdx") Long userIdx,
+	    @Param("selectedItems") List<String> selectedItems,
+	    @Param("startRow") int startRow, 
+	    @Param("listLimit") int listLimit
+	);
+	
 }

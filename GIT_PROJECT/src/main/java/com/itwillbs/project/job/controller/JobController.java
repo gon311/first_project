@@ -121,16 +121,21 @@ public class JobController {
 	
 	@GetMapping("/JobList")
 	public String list(Model model, HttpSession session,
+	                   @RequestParam(value="pageNum", defaultValue="1") int pageNum, // 페이지 번호 추가
 	                   @RequestParam(value="expType", required=false) String expType,
 	                   @RequestParam(value="eduType", required=false) String eduType, 
-					   @RequestParam(value="selected_items", required=false) List<String> selectedItems) { 
+	                   @RequestParam(value="selected_items", required=false) List<String> selectedItems) { 
 	    
-		Long userIdx = (Long) session.getAttribute("userIdx");
-	    // 두 필터 조건을 모두 서비스에 전달
-	    List<JobDTO> jobList = jobService.getJobList(expType, eduType, userIdx, selectedItems);
+	    Long userIdx = (Long) session.getAttribute("userIdx");
+
+	    // 서비스 호출 (페이징 처리가 포함된 메서드)
+	    JobPageDTO jobPage = jobService.getJobListPaging(expType, eduType, userIdx, selectedItems, pageNum);
+	    
 	    List<Map<String, String>> existRegions = jobService.getExistingRegions();
-//	    System.out.println(jobList);
-	    model.addAttribute("jobList", jobList);
+
+	    // 기존 jobList 대신 jobPage 안의 리스트와 페이징 정보를 보냄
+	    model.addAttribute("jobList", jobPage.getJobList()); 
+	    model.addAttribute("pageInfo", jobPage.getPageInfoDTO());
 	    model.addAttribute("existRegions", existRegions);
 	    
 	    return "/job/job_list";

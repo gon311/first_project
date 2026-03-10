@@ -157,7 +157,30 @@ public class JobService {
 	    // 3. LIMIT 조건이 포함된 리스트 조회
 	    List<JobApplicationDTO> applicantList = jobMapper.getApplicantListPaging(jobId, compId, startRow, listLimit);
 
-	    return new JobPageDTO(applicantList, pageInfo);
+	    return new JobPageDTO(applicantList, null, pageInfo);
+	}
+
+	public JobPageDTO getJobListPaging(String expType, String eduType, Long userIdx, List<String> selectedItems, int pageNum) {
+		int listLimit = 10; // 한 페이지 공고 수
+	    int startRow = (pageNum - 1) * listLimit;
+
+	    // 1. 필터 조건에 맞는 전체 공고 수 조회
+	    int listCount = jobMapper.getJobListCount(expType, eduType, userIdx, selectedItems);
+
+	    // 2. PageInfoDTO 계산
+	    int pageListLimit = 5; 
+	    int maxPage = (int) Math.ceil((double) listCount / listLimit);
+	    int startPage = ((pageNum - 1) / pageListLimit) * pageListLimit + 1;
+	    int endPage = startPage + pageListLimit - 1;
+	    if (endPage > maxPage) endPage = maxPage;
+
+	    PageInfoDTO pageInfo = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum);
+
+	    // 3. 페이징 처리된 목록 조회 (LIMIT 사용)
+	    List<JobDTO> jobList = jobMapper.getJobListPaging(expType, eduType, userIdx, selectedItems, startRow, listLimit);
+	    // JobPageDTO에 담아서 리턴 (JobPageDTO는 List<JobApplicationDTO> 타입을 쓰므로, 
+	    // 만약 JobDTO 전용 DTO가 없다면 JobPageDTO의 제네릭이나 타입을 체크해야 합니다.)
+	    return new JobPageDTO(null, jobList, pageInfo);
 	}
 
 		

@@ -7,12 +7,14 @@
 <head>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link href="<c:url value="/resources/css/jobCss/jobList.css" />" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <meta charset="UTF-8">
 </head>
 <body>
 
 <div class="main-wrapper">
     <form id="searchForm" action="JobList" method="get">
+    	<input type="hidden" name="pageNum" id="pageNum" value="${pageInfo.pageNum != null ? pageInfo.pageNum : 1}">
         <div class="filter-dropdown-row">
             <select class="filter-select" id="expFilter" name="expType" onchange="changeFilter()">
                 <option value="" ${empty param.expType ? 'selected' : ''}>경력 전체</option>
@@ -101,16 +103,50 @@
 			</div>
 	    </c:forEach>
 	</div>
+	
+	<div class="pagination-container">
+	    <%-- 이전 페이지 버튼 --%>
+	    <c:if test="${pageInfo.pageNum > 1}">
+	        <a href="javascript:void(0);" onclick="changePage(${pageInfo.pageNum - 1})" class="page-link">
+	            <i class="fa-solid fa-chevron-left"></i>
+	        </a>
+	    </c:if>
+	
+	    <%-- 페이지 번호 목록 --%>
+	    <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+	        <a href="javascript:void(0);" onclick="changePage(${i})" 
+	           class="page-link ${pageInfo.pageNum == i ? 'active' : ''}">
+	            ${i}
+	        </a>
+	    </c:forEach>
+	
+	    <%-- 다음 페이지 버튼 --%>
+	    <c:if test="${pageInfo.pageNum < pageInfo.maxPage}">
+	        <a href="javascript:void(0);" onclick="changePage(${pageInfo.pageNum + 1})" class="page-link">
+	            <i class="fa-solid fa-chevron-right"></i>
+	        </a>
+	    </c:if>
+	</div>
+	
 </div>
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 <script>
 	const regionData = {};
 	
 	<c:forEach var="reg" items="${existRegions}">
-	    if(!regionData['${reg.city}']) {
-	        regionData['${reg.city}'] = [];
-	    }
-	    regionData['${reg.city}'].push('${reg.district}');
+	    (function() {
+	        var city = "<c:out value='${reg.city}' />";
+	        var district = "<c:out value='${reg.district}' />";
+	        
+	        if(city && city !== "" && city !== "null") {
+	            if(!regionData[city]) {
+	                regionData[city] = [];
+	            }
+	            if(district && district !== "" && district !== "null") {
+	                regionData[city].push(district);
+	            }
+	        }
+	    })();
 	</c:forEach>
 	
 
@@ -215,6 +251,7 @@
     }
 
     function changeFilter() {
+        document.getElementById('pageNum').value = 1; // 필터 변경 시 다시 1페이지부터 조회
         syncHiddenFields();
         document.getElementById("searchForm").submit();
     }
@@ -251,6 +288,15 @@
                 alert("서버 통신 중 오류가 발생했습니다.");
             }
         });
+    }
+    
+    function changePage(num) {
+        // 1. 히든 필드에 클릭한 페이지 번호 세팅
+        document.getElementById('pageNum').value = num;
+        // 2. 지역/직무 선택 항목 동기화
+        syncHiddenFields();
+        // 3. 폼 전송
+        document.getElementById("searchForm").submit();
     }
     
     document.addEventListener('DOMContentLoaded', renderMainCategory);

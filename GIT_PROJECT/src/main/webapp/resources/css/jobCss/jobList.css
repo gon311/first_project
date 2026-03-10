@@ -327,3 +327,59 @@ body {
 .scrap-icon:hover {
     transform: scale(1.2); /* 마우스 올리면 살짝 커짐 */
 }
+
+/* 8. 페이지네이션 (추가된 부분) */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px; /* list-title-area와 간격 통일 */
+    gap: 8px;
+}
+
+.page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid #ddd;
+    border-radius: 6px; /* 카드 디자인과 맞춤 */
+    color: #444;
+    text-decoration: none;
+    background-color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    box-sizing: border-box;
+}
+
+.page-link:hover {
+    border-color: #007bff;
+    color: #007bff;
+    background-color: #f0f7ff;
+}
+
+.page-link.active {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    font-weight: 700;
+    cursor: default;
+}
+
+/* 화살표 아이콘 미세 조정 */
+.page-link i {
+    font-size: 12px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 이전/다음 버튼 비활성화 상태(필요 시) */
+.page-link.disabled {
+    color: #ccc;
+    pointer-events: none;
+    background-color: #fafafa;
+}

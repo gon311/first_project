@@ -3,45 +3,14 @@
 
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
-<!DOCTYPE html>
-<html>
-<head>
+<link href="<c:url value="/resources/css/jobCss/jobPosting.css" />" rel="stylesheet" type="text/css">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<meta charset="UTF-8">
-<title>채용공고 등록</title>
-<style>
-    body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; padding: 20px; }
-    .container { max-width: 900px; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: auto; }
-    .form-group { display: flex; align-items: flex-start; margin-bottom: 20px; }
-    .label-box { width: 150px; font-weight: bold; padding-top: 10px; }
-    .input-box { flex: 1; }
-    input[type="text"], input[type="date"], textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-    .file-upload-area { background: #e9ecef; padding: 20px; border: 2px dashed #ccc; text-align: center; border-radius: 5px; margin: 10px 0; }
-    .info-box { background: #f0f7ff; padding: 15px; border-radius: 5px; font-size: 0.9em; color: #0066cc; }
-	.button-group {display: flex; justify-content: center; gap: 10px; margin: 40px 0; padding-bottom: 20px;}
-	.button-group button {padding: 12px 25px; border-radius: 5px; font-size: 15px; font-weight: bold; cursor: pointer; border: 1px solid #ddd; transition: 0.2s;}
-	.btn-submit {background-color: #333 !important; color: #fff !important; border: none !important;}
-	.btn-reset {background-color: #e9ecef; color: #333;}
-	.btn-cancel {background-color: #fff; color: #666;}
-	.btn-submit:hover { background-color: #000 !important; }
-	.btn-reset:hover { background-color: #dee2e6; }
-	.btn-cancel:hover { background-color: #f8f9fa; }
-    .job-selector-wrapper { display: flex; border: 1px solid #ddd; border-radius: 5px; height: 250px; margin-top: 10px; overflow: hidden; }
-    .main-cat-list { width: 30%; background: #f1f3f5; border-right: 1px solid #ddd; overflow-y: auto; list-style: none; padding: 0; margin: 0; }
-    .sub-cat-list { width: 70%; background: #fff; overflow-y: auto; list-style: none; padding: 10px; margin: 0; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; }
-    .main-cat-list li { padding: 12px 15px; cursor: pointer; border-bottom: 1px solid #e9ecef; font-size: 0.95em; }
-    .main-cat-list li:hover, .main-cat-list li.active { background: #333; color: #fff; }
-    .sub-job-item { padding: 6px 12px; border: 1px solid #dee2e6; border-radius: 20px; cursor: pointer; font-size: 0.85em; background: #fff; transition: 0.2s; }
-    .sub-job-item:hover, .sub-job-item.selected { background: #007bff; color: #fff; border-color: #007bff; }
-</style>
-</head>
-<body>
 
 <div class="container">
     <form action="<c:url value="/job/JobProcess" />" method="post" enctype="multipart/form-data">
         
         <div class="form-group">
-        	<input type="hidden" name="compId" value="1">
+        	<input type="hidden" name="compId" value="${userIdx}">
             <div class="label-box">공고제목 <span style="color:red">*</span></div>
             <div class="input-box"><input type="text" name="title" placeholder="디자이너 채용" required></div>
         </div>
@@ -71,7 +40,7 @@
             <div class="input-box">
                 <div class="file-upload-area">
                     <p>이미지 첨부파일 기능 추가</p>
-                    <input type="file" name="attachFile" multiple>
+                    <input type="file" name="files" multiple>
                 </div>
             </div>
         </div>
@@ -80,7 +49,7 @@
 		    <div class="label-box">고용 형태 <span style="color:red">*</span></div>
 		    <div class="input-box">
 		        <select name="empType" required style="width: 200px; display:inline-block;">
-		            <option value="정규직">정규직</option>
+		            <option value="정규직" selected>정규직</option>
 		            <option value="계약직">계약직</option>
 		            <option value="인턴">인턴</option>
 		        </select>
@@ -94,10 +63,11 @@
 		    <div class="label-box">경력 <span style="color:red">*</span></div>
 		    <div class="input-box">
 		        <label><input type="checkbox" name="expType" value="new" class="expCheck"> 신입</label>
+		        <label><input type="checkbox" name="expType" value="newCareer" class="expCheck"> 신입·경력</label>
 		        <label style="margin-right: 15px;"><input type="checkbox" name="expType" value="career" class="expCheck" checked> 경력</label>
 		
 		        <select name="minExp" id="minExp" style="width: 140px; display:inline-block;">
-		            <option value="0">1년 미만</option>
+		            <option value="0" selected>1년 미만</option>
 		            <option value="1">1년 이상</option>
 		            <option value="3">3년 이상</option>
 		            <option value="5">5년 이상</option>
@@ -105,11 +75,11 @@
 		        </select>
 		        <span style="margin: 0 5px;">~</span>
 		        <select name="maxExp" id="maxExp" style="width: 140px; display:inline-block;">
-		            <option value="3">3년 이하</option>
-		            <option value="5">5년 이하</option>
-		            <option value="8">8년 이하</option>
-		            <option value="10">10년 이하</option>
-		            <option value="99">제한 없음</option>
+		            <option value="3년" selected>3년 이하</option>
+		            <option value="5년">5년 이하</option>
+		            <option value="8년">8년 이하</option>
+		            <option value="10년">10년 이하</option>
+		            <option value="제한 없음">제한 없음</option>
 		        </select>
 		        <label style="margin-left: 15px;">
 		            <input type="checkbox" name="expNone" id="expNone"> 경력무관
@@ -121,7 +91,7 @@
             <div class="label-box">학력 <span style="color:red">*</span></div>
             <div class="input-box">
                 <select name="edu">
-                    <option>학력무관</option>
+                    <option selected>학력무관</option>
                     <option>고등학교 졸업</option>
                     <option>대학교(2,3년) 졸업</option>
                     <option>대학교(4년) 졸업</option>
@@ -134,7 +104,7 @@
             <div class="label-box">급여 <span style="color:red">*</span></div>
             <div class="input-box">
                 <select name="salary">
-                    <option>면접 후 결정</option>
+                    <option selected>면접 후 결정</option>
                     <option>회사내규에 따름</option>
                 </select>
                 <div class="info-box" style="margin-top:10px;">
@@ -191,6 +161,7 @@
 		</div>
     </form>
 </div>
+<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
 <script>
 // 1. 모집분야 데이터 정의
@@ -202,13 +173,20 @@ const jobData = {
     "교육": ["초중고교사", "대학교수", "전문강사", "학습지교사", "입시강사", "외국어강사", "교직원"],
     "영업·고객상담": ["IT영업", "기술영업", "영업관리", "고객상담(CS)", "인바운드"],
     "의료·보건": ["의사", "간호사", "물리치료사", "임상병리", "약사", "의료코디네이터"]
-};
+};  
 
 document.addEventListener("DOMContentLoaded", function() {
-    // === [기능 1] 모집분야 카테고리 선택 ===
+    
+    // [중요] 서버에서 넘어온 이용권 상태 확인
+    const isActiveStr = "${isActive}"; 
+    const isActive = (isActiveStr === "true");
+
+    const form = document.querySelector('form');
+    const jobInput = document.getElementById('selectedJobInput'); // 공통 사용을 위해 위로 이동
+
+    // === [기능 1] 모집분야 카테고리 선택 (즉시 실행) ===
     const mainUl = document.getElementById('mainCatList');
     const subUl = document.getElementById('subCatList');
-    const jobInput = document.getElementById('selectedJobInput');
 
     if (mainUl && subUl) {
         Object.keys(jobData).forEach(cat => {
@@ -223,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     subBtn.className = 'sub-job-item';
                     subBtn.textContent = sub;
                     subBtn.onclick = function() {
-                        jobInput.value = sub;
+                        if(jobInput) jobInput.value = sub;
                         document.querySelectorAll('.sub-job-item').forEach(el => el.classList.remove('selected'));
                         this.classList.add('selected');
                     };
@@ -243,10 +221,10 @@ document.addEventListener("DOMContentLoaded", function() {
     if (minSelect && maxSelect) {
         minSelect.addEventListener('change', function() {
             const minVal = parseInt(this.value);
-            if (minVal === 0 || minVal === 1) maxSelect.value = "3";
-            else if (minVal === 3) maxSelect.value = "5";
-            else if (minVal === 5) maxSelect.value = "8";
-            else if (minVal === 10) maxSelect.value = "99";
+            if (minVal === 0 || minVal === 1) maxSelect.value = "3년";
+            else if (minVal === 3) maxSelect.value = "5년";
+            else if (minVal === 5) maxSelect.value = "8년";
+            else if (minVal === 10) maxSelect.value = "제한 없음";
         });
     }
 
@@ -257,9 +235,11 @@ document.addEventListener("DOMContentLoaded", function() {
             if(this.value === 'new') {
                 minSelect.disabled = true;
                 maxSelect.disabled = true;
-            } else if(!noneCheck.checked) {
-                minSelect.disabled = false;
-                maxSelect.disabled = false;
+            } else {
+                if(noneCheck && !noneCheck.checked) {
+                    minSelect.disabled = false;
+                    maxSelect.disabled = false;
+                }
             }
         });
     });
@@ -271,22 +251,17 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
- // === [기능 3] 접수기간 날짜 설정 (개선본) ===
+    // === [기능 3] 접수기간 날짜 설정 ===
     const startDateInput = document.getElementById('startDate');
     const endDateInput = document.getElementById('endDate');
     const today = new Date().toISOString().split('T')[0];
 
     if (startDateInput && endDateInput) {
-        // 1. 시작일과 마감일 모두 오늘 이전 날짜는 선택 불가능하게 설정
         startDateInput.min = today;
         endDateInput.min = today;
-
         startDateInput.addEventListener('change', function() {
             if (this.value) {
-                // 2. 시작일이 정해지면 마감일은 최소 시작일과 같거나 커야 함
                 endDateInput.min = this.value;
-                
-                // 3. 만약 마감일이 이미 입력되어 있는데 시작일보다 빠르다면? 마감일을 시작일로 초기화
                 if (endDateInput.value && endDateInput.value < this.value) {
                     endDateInput.value = this.value;
                 }
@@ -294,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // === [기능 4] 담당자 전화번호 하이픈 자동생성 ===
+    // === [기능 4] 담당자 전화번호 하이픈 ===
     const phoneInput = document.querySelector('input[name="mgrPhone"]');
     if (phoneInput) {
         phoneInput.addEventListener('input', function(e) {
@@ -308,45 +283,47 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // === [기능 5] 폼 제출 시 데이터 최종 검증 및 주소 결합 ===
-    const form = document.querySelector('form');
+    // === [기능 5] 폼 제출 시 최종 검증 ===
     if (form) {
         form.addEventListener('submit', function(e) {
-            // 주소 관련 데이터 추출
-            const pc = document.getElementById('postCode').value;
-            const addr1 = document.getElementById('address1').value;
-            const addr2 = document.getElementById('address2').value;
+            // 1. 이용권 체크
+            if (!isActive) {
+                alert("이용권이 만료되어 공고를 등록할 수 없습니다.");
+                e.preventDefault();
+                return false;
+            }
 
-            // 1. 필수 선택 확인 (모집분야)
-            if (!jobInput.value) {
+            // 2. 모집분야 확인
+            if (!jobInput || !jobInput.value) {
                 alert("모집분야를 선택해주세요.");
                 e.preventDefault();
                 return false;
             }
 
-            // 2. 주소 결합 로직
+            // 3. 주소 결합
+            const pc = document.getElementById('postCode').value;
+            const addr1 = document.getElementById('address1').value;
+            const addr2 = document.getElementById('address2').value;
+
             if (!pc || !addr1) {
                 alert("근무지 주소를 검색하여 입력해주세요.");
                 e.preventDefault();
                 return false;
             }
-            // hidden 필드(name="address")에 최종 결합된 문자열 삽입
             document.getElementById('address').value = "[" + pc + "] " + addr1 + " " + addr2;
 
-            // 3. 전화번호 형식 검증
+            // 4. 전화번호 형식 검증
             const phoneRegex = /^01[0-9]-\d{3,4}-\d{4}$/;
-            if (!phoneRegex.test(phoneInput.value)) {
+            if (phoneInput && !phoneRegex.test(phoneInput.value)) {
                 alert("전화번호 형식을 다시 확인해주세요.");
                 e.preventDefault();
                 return false;
             }
-            
-            // 모든 검사 통과 시 전송
         });
     }
 });
 
-// === [기능 6] 카카오 주소 API 실행 함수 ===
+// === [기능 6] 카카오 주소 API 실행 함수 (DOMContentLoaded 외부에 둠) ===
 function execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
@@ -357,6 +334,5 @@ function execDaumPostcode() {
         }
     }).open();
 }
+
 </script>
-</body>
-</html>

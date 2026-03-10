@@ -1,0 +1,190 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<%@ include file="/WEB-INF/views/inc/head.jspf" %>
+<link rel="stylesheet" href="<c:url value='/resources/css/comMyCss/payment.css'/>" type="text/css">
+</head>
+
+<body>
+<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+
+<!-- URL -->
+<c:url var="urlPaymentList" value="/comMy/payment"/>
+<c:url var="urlPaymentDetail" value="/comMy/payment/detail"/> <%-- ?orderId= --%>
+<c:url var="urlPayAgain" value="/pay/again"/>               <%-- ?orderId= (미결제/실패 재결제용) --%>
+
+<main class="container-fluid px-0 mypage-wrap">
+  <div class="row g-0">
+
+    <%-- ✅ 왼쪽 사이드바(inc) --%>
+    <%@ include file="/WEB-INF/views/inc/comMySidebar.jspf" %>
+
+    <%-- ✅ 오른쪽 컨텐츠 --%>
+    <section class="col-10 myContent">
+      <div class="myContent-inner">
+
+        <h2 class="page-title">결제내역</h2>
+        <div class="page-desc">결제 내역을 조회하고, 주문 상세를 확인할 수 있어요.</div>
+
+        <%-- =========================
+             상단 필터/검색 (사람인 참고)
+             - 기간, 결제상태, 검색
+           ========================= --%>
+		<form action="${urlPaymentList}" method="get" class="toolbar">
+		
+		  <div class="toolbar-left">
+		    <select class="select" name="period" onchange="this.form.page.value=1; this.form.submit()">
+		      <option value="3m" ${period=='3m' ? 'selected' : ''}>최근 3개월</option>
+		      <option value="6m" ${period=='6m' ? 'selected' : ''}>최근 6개월</option>
+		      <option value="1y" ${period=='1y' ? 'selected' : ''}>최근 1년</option>
+		      <option value="5y" ${period=='5y' ? 'selected' : ''}>최근 5년</option>
+		    </select>
+		
+		    <!-- size: 5/10/15 -->
+		    <select class="select" name="size" onchange="this.form.page.value=1; this.form.submit()">
+		      <option value="5"  ${pager.size==5  ? 'selected' : ''}>5개씩</option>
+		      <option value="10" ${pager.size==10 ? 'selected' : ''}>10개씩</option>
+		      <option value="15" ${pager.size==15 ? 'selected' : ''}>15개씩</option>
+		    </select>
+		
+		    <!-- ✅ 컨트롤러 param명(status)과 통일 -->
+		    <select class="select" name="status" onchange="this.form.page.value=1; this.form.submit()">
+		      <option value="all" ${status=='all' ? 'selected' : ''}>전체</option>
+		      <option value="ready" ${status=='ready' ? 'selected' : ''}>준비중</option>
+		      <option value="paid" ${status=='paid' ? 'selected' : ''}>결제됨</option>
+		      <option value="cancelled" ${status=='cancelled' ? 'selected' : ''}>취소됨</option>
+		    </select>
+		
+		    <!-- page hidden (없으면 컨트롤러 default 1로 가긴 하는데, 확실하게 두는 편 추천) -->
+		    <input type="hidden" name="page" value="${pager.page}">
+		  </div>
+		
+		  <div class="toolbar-right">
+		    <div class="search-wrap">
+		      <i class="bi bi-search search-ico"></i>
+		      <input type="text" name="q" value="${q}" placeholder="주문한 상품명을 검색해 보세요">
+		    </div>
+		  </div>
+		
+		</form>
+
+   
+		 <!-- =========================
+		       결제내역 테이블(실데이터)
+		     - 상품명 클릭 -> 상세
+		     - ready면 '결제하기'
+		 ========================= -->
+		 
+		<!--  데이터 없을 때 -->
+		<c:if test="${empty payments}">
+		  <div class="empty">
+		    <div style="font-size:48px;">🧾</div>
+		    <div class="big">해당 기간 내에 주문하신 내역이 없습니다</div>
+		    <div>기간을 변경하여 확인해 보세요</div>
+		  </div>
+		</c:if>
+
+		<c:if test="${not empty payments}">
+		  <div class="table-wrap">
+		    <table>
+		      <thead>
+		        <tr>
+		          <th style="width:140px;">결제일시</th>
+		          <th>결제상품</th>
+		          <th style="width:120px;">결제금액</th>
+		          <th style="width:110px;">결제상태</th>
+		          <th style="width:160px;">결제수단/증빙</th>
+		          <th style="width:140px;">비고</th>
+		        </tr>
+		      </thead>
+		
+		      <tbody>
+		        <c:forEach var="p" items="${payments}">
+		          <tr>
+		            <!-- 결제일시 -->
+		            <td>${p.payDateText}</td>
+		
+		            <!-- 상품명(상세 링크) -->
+		            <td>
+		              <a class="prod-link" href="${urlPaymentDetail}?payId=${p.payId}">
+		                ${p.productName}
+		              </a>
+		            </td>
+		
+		            <!-- 금액 -->
+		            <td>${p.payPrice}원</td>
+		
+		            <!-- 상태 배지 -->
+		            <td>
+		              <c:choose>
+		                <c:when test="${p.payStatus == 'paid' && p.payPrice == 0}">
+		                  <span class="badge badge-free">무료결제</span>
+		                </c:when>
+		                <c:when test="${p.payStatus == 'paid'}">
+		                  <span class="badge badge-paid">결제완료</span>
+		                </c:when>
+		                <c:when test="${p.payStatus == 'ready'}">
+		                  <span class="badge badge-unpaid">미결제</span>
+		                </c:when>
+		                <c:otherwise>
+		                  <span class="badge badge-cancelled">취소됨</span>
+		                </c:otherwise>
+		              </c:choose>
+		            </td>
+		
+		            <!-- 수단/증빙 -->
+		            <td>
+		              <c:choose>
+		                <c:when test="${empty p.payMethod}">-</c:when>
+		                <c:otherwise>${p.payMethod}</c:otherwise>
+		              </c:choose>
+		            </td>
+		
+		            <!-- 비고 -->
+		            <td>
+		              <c:choose>
+		                <c:when test="${p.payStatus == 'ready'}">
+		                  <a class="btn-pay" href="${urlPayAgain}?payId=${p.payId}">결제하기</a>
+		                </c:when>
+		                <c:otherwise>-</c:otherwise>
+		              </c:choose>
+		            </td>
+		          </tr>
+		        </c:forEach>
+		      </tbody>
+		    </table>
+		  </div>
+
+		  <!-- ✅ 페이저 -->
+		  <div class="pager">
+		    <c:if test="${pager.hasPrev}">
+		      <a href="?period=${period}&status=${status}&q=${q}&page=${pager.page-1}&size=${pager.size}">이전</a>
+		    </c:if>
+		
+		    <c:forEach var="i" begin="${pager.startPage}" end="${pager.endPage}">
+		      <a href="?period=${period}&status=${status}&q=${q}&page=${i}&size=${pager.size}"
+		         class="${i == pager.page ? 'active' : ''}">
+		        ${i}
+		      </a>
+		    </c:forEach>
+		
+		    <c:if test="${pager.hasNext}">
+		      <a href="?period=${period}&status=${status}&q=${q}&page=${pager.page+1}&size=${pager.size}">다음</a>
+		    </c:if>
+		  </div>
+		</c:if>
+
+
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+</body>
+</html>
+

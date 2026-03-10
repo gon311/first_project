@@ -1,0 +1,285 @@
+@charset "UTF-8";
+body {
+/*  font-family: 'Pretendard', sans-serif; */
+    background-color: #f8f9fa;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.5;
+}
+
+/* header 아래 hr 정리 */
+header + hr {
+    margin: 0 !important;
+    border: 0;
+    height: 1px;
+    background-color: #dee2e6;
+}
+
+/* =========================
+   메인 컨테이너 (공고등록과 동일)
+========================= */
+
+.container {
+    max-width: 900px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin: 40px auto;   /* 가운데 정렬 */
+}
+
+/* =========================
+   폼 레이아웃
+========================= */
+
+.form-group {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.label-box {
+    width: 150px;
+    font-weight: bold;
+    padding-top: 10px;
+}
+
+.input-box {
+    flex: 1;
+}
+
+/* =========================
+   입력 요소
+========================= */
+
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* =========================
+   파일 관리 영역 (수정페이지용)
+========================= */
+
+.file-management-box {
+    background: #e9ecef; 
+    padding: 20px; 
+    border: 2px dashed #ccc; 
+    text-align: center; 
+    border-radius: 5px; 
+    margin: 10px 0; 
+    
+    /* 추가된 스타일 */
+    display: flex;
+    flex-direction: column; /* 요소들을 세로로 나열 */
+    align-items: center;    /* 가로축 중앙 정렬 */
+    justify-content: center; /* 세로축 중앙 정렬 */
+}
+
+.file-section-title {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* 기존 파일 리스트 */
+
+.existing-file-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.existing-file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 삭제 체크박스 */
+
+.delete-label {
+    font-size: 13px;
+    color: #dc3545;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* 새 파일 input */
+
+input[type="file"].form-control-file {
+/*     font-size: 13px; */
+/*     width: 100%; */
+    display: block;
+    margin: 0 auto;
+}
+
+/* 구분선 */
+
+.file-divider {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 15px 0;
+}
+
+/* =========================
+   파일 업로드 안내
+========================= */
+
+.file-upload-area {
+    background: #e9ecef;
+    padding: 20px;
+    border: 2px dashed #ccc;
+    text-align: center;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+/* 안내 박스 */
+
+.info-box {
+    background: #f0f7ff;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    color: #0066cc;
+}
+
+/* =========================
+   버튼 영역
+========================= */
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 40px 0;
+    padding-bottom: 20px;
+}
+
+.button-group button {
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    transition: 0.2s;
+}
+
+/* 버튼 색상 */
+
+.btn-submit {
+    background-color: #333 !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+.btn-reset {
+    background-color: #e9ecef;
+    color: #333;
+}
+
+.btn-cancel {
+    background-color: #fff;
+    color: #666;
+}
+
+/* hover */
+
+.btn-submit:hover {
+    background-color: #000 !important;
+}
+
+.btn-reset:hover {
+    background-color: #dee2e6;
+}
+
+.btn-cancel:hover {
+    background-color: #f8f9fa;
+}
+
+/* =========================
+   모집 분야 선택기
+========================= */
+
+.job-selector-wrapper {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 250px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.main-cat-list {
+    width: 30%;
+    background: #f1f3f5;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sub-cat-list {
+    width: 70%;
+    background: #fff;
+    overflow-y: auto;
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 8px;
+}
+
+.main-cat-list li {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 0.95em;
+}
+
+.main-cat-list li:hover,
+.main-cat-list li.active {
+    background: #333;
+    color: #fff;
+}
+
+.sub-job-item {
+    padding: 6px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85em;
+    background: #fff;
+    transition: 0.2s;
+}
+
+.sub-job-item:hover,
+.sub-job-item.selected {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}

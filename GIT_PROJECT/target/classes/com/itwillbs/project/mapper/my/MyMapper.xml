@@ -4,6 +4,10 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.project.my.mapper.MyMapper">
 
+<!-- ==============================
+     resultMap
+============================== -->
+	<!-- MyDTO -->
 	<resultMap id="userMap" type="com.itwillbs.project.my.dto.MyDTO">
 	  <id     property="userId"   column="user_id" />
 	  <result property="email"    column="email" />
@@ -11,6 +15,200 @@
 	  <result property="phone"    column="phone" />
 	  <result property="userType" column="user_type" />
 	</resultMap>
+	
+	<!-- MyResumeDTO -->
+	<resultMap id="resumeMap" type="com.itwillbs.project.my.dto.MyResumeDTO">
+	  <id     property="resumeId"   column="resume_id"/>
+	
+	  <result property="userId"     column="user_id"/>
+	  <result property="title"      column="title"/>
+	  <result property="status"     column="status"/>
+	
+	  <result property="createdAt"  column="created_at"/>
+	  <result property="updatedAt"  column="updated_at"/>
+	  <result property="isDeleted"  column="is_deleted"/>
+	
+	  <result property="updatedAtStr" column="updated_at_str"/>
+	</resultMap>
+	
+	<!-- MyReviewDTO -->
+	<resultMap id="reviewMap" type="com.itwillbs.project.my.dto.MyReviewDTO">
+	  <id     property="coverLetterIdx" column="cover_letter_idx"/>
+	
+	  <result property="userId"          column="user_id"/>
+	  <result property="title"           column="title"/>
+	  <result property="status"          column="save_status"/>  <!-- 여기 중요 -->
+	  <result property="companyName"     column="company_name"/>
+	
+	  <result property="createdAt"       column="created_at"/>
+	  <result property="createdAtStr"    column="created_at_str"/>
+	</resultMap>
+	
+	  <!-- FavoriteJobRowDTO -->
+	<resultMap id="favoriteJobMap" type="com.itwillbs.project.my.dto.FavoriteJobRowDTO">
+	  <id     property="jobId"         column="job_id"/>
+	  <result property="compId"        column="comp_id"/>
+	  <result property="companyName"   column="company_name"/>
+	  <result property="title"         column="title"/>
+	  <result property="expType"       column="exp_type"/>
+	  <result property="expYear"       column="exp_year"/>
+	  <result property="edu"           column="edu"/>
+	  <result property="empType"       column="emp_type"/>
+	  <result property="address"       column="address"/>
+	  <result property="closeDate"     column="close_date"/>
+	  <result property="closed"        column="closed"/>
+	  <result property="deadlineLabel" column="deadline_label"/>
+	</resultMap>
+	
+	<!-- MyPaymentDTO -->
+	<resultMap id="paymentMap" type="com.itwillbs.project.my.dto.MyPaymentDTO">
+		<id 	property="payId"  		   column="pay_id"  />
+		<result property="userId" 		   column="user_id"/>
+		<result property="productId" 	   column="product_id"/>
+		<result property="payDate" 		   column="pay_date"/>
+		<result property="productName" 	   column="product_name"/>
+		<result property="payPrice" 	   column="pay_price"/>
+		<result property="payStatus" 	   column="pay_status"/>
+		<result property="payMethod" 	   column="pay_method"/>
+		<result property="payDateText" 	   column="pay_date_text"/>
+	</resultMap>
+
+	<!-- ApplyRowDTO  -->
+	<resultMap id="applyRowMap" type="com.itwillbs.project.my.dto.ApplyRowDTO">
+		<id property="appId" column="app_id" />
+		<result property="jobId" column="job_id" />
+	
+		<result property="companyName" column="company_name" />
+		<result property="title" column="title" />
+	
+		<result property="expType" column="exp_type" />
+		<result property="expYear" column="exp_year" />
+		<result property="edu" column="edu" />
+		<result property="empType" column="emp_type" />
+		<result property="address" column="address" />
+	
+		<result property="applyDateStr" column="apply_date_str" />
+		<result property="closeDate" column="close_date" />
+		<result property="closed" column="closed" />
+	
+		<result property="step" column="app_step" />
+		<result property="statusLabel" column="status_label" />
+	</resultMap>
+	
+		<!-- RecommendedRowDTO  -->
+	<resultMap id="recommendedRowMap" type="com.itwillbs.project.my.dto.RecommendedRowDTO">
+		 <id property="jobId" column="job_id"/>
+		 <result property="score" column="score"/>
+		 <result property="title" column="title"/>
+		 <result property="field" column="field"/>
+		 <result property="address" column="address"/>
+		 <result property="openDate" column="open_date"/>
+		 <result property="closeDate" column="close_date"/>
+	</resultMap>
+
+<!-- ======================================== -->
+	
+
+<!-- 공통 WHERE 절-->
+
+<!-- 결제 -->
+
+<sql id="paymentWhere">
+  WHERE p.user_id = #{userId}
+
+  <!-- 기간 필터: period = 3m/6m/1y/5y -->
+  <if test="period != null and period != ''">
+    <choose>
+      <when test="period == '3m'">
+        AND p.pay_date &gt;= DATE_SUB(NOW(), INTERVAL 3 MONTH)
+      </when>
+      <when test="period == '6m'">
+        AND p.pay_date &gt;= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+      </when>
+      <when test="period == '1y'">
+        AND p.pay_date &gt;= DATE_SUB(NOW(), INTERVAL 1 YEAR)
+      </when>
+      <when test="period == '5y'">
+        AND p.pay_date &gt;= DATE_SUB(NOW(), INTERVAL 5 YEAR)
+      </when>
+      <otherwise>
+        <!-- 아무것도 안 함-->
+      </otherwise>
+    </choose>
+  </if>
+
+  <!-- 상태 필터: status=all이면 조건 제외 -->
+  <if test="status != null and status != '' and status != 'all'">
+    <!-- DB enum이 ready/paid/cancelled라면 그대로 매칭 -->
+    AND p.pay_status = #{status}
+  </if>
+
+  <!-- 검색어: 상품명 기준 -->
+  <if test="q != null and q != ''">
+    AND pr.product_name LIKE CONCAT('%', #{q}, '%')
+  </if>
+</sql>
+
+<!-- 지원 -->
+
+<sql id="applyWhere">
+  WHERE ja.user_id = #{userId}
+
+  <!-- tab -->
+  <if test="tab != null and tab != '' and tab != 'all'">
+    <choose>
+      <when test="tab == 'done'">
+        AND ja.app_step NOT IN ('최종합격','최종불합격','최종발표')
+      </when>
+      <when test="tab == 'final'">
+        AND ja.app_step IN ('최종합격','최종불합격','최종발표')
+      </when>
+    </choose>
+  </if>
+
+  <!-- status OPEN/CLOSED -->
+  <if test="status != null and status != '' and status != 'ALL'">
+    <choose>
+      <when test="status == 'OPEN'">
+        AND jp.close_date &gt;= CURDATE()
+      </when>
+      <when test="status == 'CLOSED'">
+        AND jp.close_date &lt; CURDATE()
+      </when>
+    </choose>
+  </if>
+
+  <!-- keyword -->
+  <if test="keyword != null and keyword != ''">
+    AND (
+         jp.title LIKE CONCAT('%', #{keyword}, '%')
+      OR uc.company_name LIKE CONCAT('%', #{keyword}, '%')
+    )
+  </if>
+</sql>
+
+
+<!-- 추천 -->
+<sql id="recommendedWhere">
+  WHERE r.person_user_id = #{userId}
+    AND r.is_active = 1
+    AND jp.post_status = 1
+    AND jp.close_date &gt;= CURDATE()
+    
+    AND bm.job_id IS NULL
+
+  <if test="onlyApplyable">
+    AND ja2.job_id IS NULL
+  </if>
+</sql>
+
+
+<!-- ========================================= -->
+
+
+
+
+
 	
 <!-- ==============================
      내정보 조회
@@ -52,5 +250,451 @@
 		SET password = #{password}
 		WHERE email = #{sId}
 	</update>
+	
+<!-- ==============================
+     이력서 내력조회 , 최근
+     parameter: MyResumeDTO.java
+     result: Long
+============================== -->	
+	<select id="selectMyResumeList" resultMap="resumeMap">
+	  SELECT
+	      resume_id
+	    , user_id
+	    , title
+	    , status
+	    , created_at
+	    , updated_at
+	    , DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i') AS updated_at_str
+	    , is_deleted
+	  FROM resume
+	  WHERE user_id = #{userId}
+	    AND is_deleted = 0
+	  ORDER BY updated_at DESC, resume_id DESC
+	</select>
+
+
+	<update id="softDeleteResume">
+	  UPDATE resume
+	  SET is_deleted = 1,
+	      updated_at = NOW()
+	  WHERE resume_id = #{resumeId}
+	    AND user_id = #{userId}
+	    AND is_deleted = 0
+	</update>
+	
+<!-- ==============================
+     자소서 내력조회 , 최근
+     parameter: MyReviewDTO.java
+     result: Long
+============================== -->	
+	
+	<select id="selectMyReviewList" resultMap="reviewMap">
+		SELECT
+		    cover_letter_idx
+		  , user_id
+		  , title
+		  , company_name
+		  , save_status AS status
+		  , created_at
+		  , DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') AS created_at_str
+		FROM cover_letter
+		WHERE user_id = #{userId}
+		ORDER BY created_at DESC;
+	</select>
+	
+	<delete id="deleteReview">
+	  DELETE FROM cover_letter
+	  WHERE user_id = #{userId}
+	    AND cover_letter_idx = #{coverLetterIdx}
+	</delete>
+	
+<!-- ==============================
+     관심공고
+     parameter: FavoriteJobCond.java
+     result: Long
+============================== -->		
+<select id="selectFavoriteJobList" resultMap="favoriteJobMap">
+  SELECT
+      jp.job_id
+    , jp.comp_id
+    , uc.company_name
+    , jp.title
+    , jp.exp_type
+    , jp.exp_year
+    , jp.edu
+    , jp.emp_type
+    , jp.address
+    , jp.close_date
+    , (jp.close_date &lt; CURDATE()) AS closed
+    , DATE_FORMAT(jp.close_date, '~ %m/%d(%a)') AS deadline_label
+  FROM job_bookmark jb
+  INNER JOIN JOB_POSTING jp ON jp.job_id = jb.job_id
+  INNER JOIN USER_COMPANY uc ON uc.user_id = jp.comp_id
+  WHERE jb.user_id = #{userId}
+
+  <if test="keyword != null and keyword != ''">
+    AND (
+         jp.title LIKE CONCAT('%', #{keyword}, '%')
+      OR uc.company_name LIKE CONCAT('%', #{keyword}, '%')
+    )
+  </if>
+
+  <if test="status == 'OPEN'">
+    AND jp.close_date >= CURDATE()
+  </if>
+
+  <if test="status == 'CLOSED'">
+    AND jp.close_date &lt; CURDATE()
+  </if>
+
+  <if test="excludeApplied">
+    AND NOT EXISTS (
+      SELECT 1
+      FROM JOB_APPLICATION ja
+      WHERE ja.user_id = jb.user_id
+        AND ja.job_id = jb.job_id
+    )
+  </if>
+
+  ORDER BY jb.reg_date DESC, jb.bookmark_id DESC
+  LIMIT #{page.offset, jdbcType=INTEGER}, #{page.safeSize, jdbcType=INTEGER}
+</select>
+
+<!-- ==============================
+     관심공고
+     parameter: FavoriteJobCond.java
+     result: Long
+============================== -->	
+
+<select id="selectFavoriteJobCount" resultType="int">
+  SELECT COUNT(*)
+  FROM job_bookmark jb
+  INNER JOIN JOB_POSTING jp ON jp.job_id = jb.job_id
+  INNER JOIN USER_COMPANY uc ON uc.user_id = jp.comp_id
+  WHERE jb.user_id = #{userId}
+
+  <if test="keyword != null and keyword != ''">
+    AND (
+         jp.title LIKE CONCAT('%', #{keyword}, '%')
+      OR uc.company_name LIKE CONCAT('%', #{keyword}, '%')
+    )
+  </if>
+
+  <if test="status == 'OPEN'">
+    AND jp.close_date >= CURDATE()
+  </if>
+
+  <if test="status == 'CLOSED'">
+    AND jp.close_date &lt; CURDATE()
+  </if>
+
+  <if test="excludeApplied">
+    AND NOT EXISTS (
+      SELECT 1
+      FROM JOB_APPLICATION ja
+      WHERE ja.user_id = jb.user_id
+        AND ja.job_id = jb.job_id
+    )
+  </if>
+</select>
+
+
+	<delete id="deleteFavoriteJob">
+	  DELETE FROM job_bookmark
+	  WHERE user_id = #{userId}
+	    AND job_id  = #{jobId}
+	</delete>
+	
+	<delete id="deleteFavoriteJobs">
+	  DELETE FROM job_bookmark
+	  WHERE user_id = #{userId}
+	    AND job_id IN
+	    <foreach collection="jobIds" item="id" open="(" separator="," close=")">
+	      #{id}
+	    </foreach>
+	</delete>
+
+<!-- ==============================
+    결제내역
+     parameter:PaymentCond.java
+     result: 
+============================== -->	
+<!-- 리스트 -->
+<select id="selectPaymentList" parameterType="com.itwillbs.project.my.dto.PaymentCond"
+        resultMap="paymentMap">
+  SELECT
+    p.pay_id,
+    p.user_id,
+    p.product_id,
+    DATE_FORMAT(p.pay_date, '%y.%m.%d %H:%i') AS pay_date_text,
+    p.pay_price,
+    p.pay_status,
+    p.pay_method,
+    pr.product_name
+  FROM PAY p
+  JOIN PRODUCT pr ON pr.product_id = p.product_id
+
+  <include refid="paymentWhere"/>
+
+  ORDER BY p.pay_date DESC
+  LIMIT #{page.offset}, #{page.safeSize}
+</select>
+
+<!-- 카운트 -->
+<select id="selectPaymentCount" parameterType="com.itwillbs.project.my.dto.PaymentCond"
+        resultType="int">
+  SELECT COUNT(*)
+  FROM PAY p
+  JOIN PRODUCT pr ON pr.product_id = p.product_id
+
+  <include refid="paymentWhere"/>
+</select>
+
+<!-- ==============================
+    지원내역
+     parameter:ApplyRowDTO 
+     result: 
+============================== -->	
+<select id="selectApplyList"
+        parameterType="com.itwillbs.project.my.dto.ApplyCond"
+        resultMap="applyRowMap">
+  SELECT
+      ja.app_id
+    , ja.job_id
+    , uc.company_name
+    , jp.title
+    , jp.exp_type
+    , jp.exp_year
+    , jp.edu
+    , jp.emp_type
+    , jp.address
+    , jp.close_date
+    , (jp.close_date &lt; CURDATE()) AS closed
+    , ja.app_step
+    , DATE_FORMAT(ja.apply_date, '%Y-%m-%d') AS apply_date_str
+    , CASE
+        WHEN ja.app_step IN ('최종합격','최종불합격','최종발표') THEN '최종발표'
+        ELSE '지원완료'
+      END AS status_label
+  FROM JOB_APPLICATION ja
+  JOIN JOB_POSTING jp ON jp.job_id = ja.job_id
+  JOIN USER_COMPANY uc ON uc.user_id = jp.comp_id
+
+  <include refid="applyWhere"/>
+
+  <choose>
+    <when test="sort == 'DEADLINE_ASC'">
+      ORDER BY jp.close_date ASC, ja.apply_date DESC
+    </when>
+    <when test="sort == 'DEADLINE_DESC'">
+      ORDER BY jp.close_date DESC, ja.apply_date DESC
+    </when>
+    <otherwise>
+      ORDER BY ja.apply_date DESC, ja.app_id DESC
+    </otherwise>
+  </choose>
+
+  LIMIT #{page.offset, jdbcType=INTEGER}, #{page.safeSize, jdbcType=INTEGER}
+</select>
+
+<!-- 카운트 -->
+<select id="selectApplyCount"
+        parameterType="com.itwillbs.project.my.dto.ApplyCond"
+        resultType="int">
+  SELECT COUNT(*)
+  FROM JOB_APPLICATION ja
+  JOIN JOB_POSTING jp ON jp.job_id = ja.job_id
+  JOIN USER_COMPANY uc ON uc.user_id = jp.comp_id
+
+  <include refid="applyWhere"/>
+</select>
+
+<!-- 탭 카운트 -->
+<select id="selectApplyTabCount" resultType="int">
+  SELECT COUNT(*)
+  FROM JOB_APPLICATION ja
+  WHERE ja.user_id = #{userId}
+
+  <if test="tab != null and tab != '' and tab != 'all'">
+    <choose>
+      <when test="tab == 'done'">
+        AND ja.app_step NOT IN ('최종합격','최종불합격','최종발표')
+      </when>
+      <when test="tab == 'final'">
+        AND ja.app_step IN ('최종합격','최종불합격','최종발표')
+      </when>
+    </choose>
+  </if>
+</select>
+
+<!-- 지원 취소 -->
+<delete id="deleteJobApplication">
+  DELETE FROM JOB_APPLICATION
+  WHERE app_id = #{appId}
+    AND user_id = #{userId}
+</delete>
+
+<!-- ==============================
+    추천 공고
+     parameter:RecomendedCond.java
+     result: 
+============================== -->	
+<select id="selectRecommendedList"
+        parameterType="com.itwillbs.project.my.dto.RecommendedCond"
+        resultMap="recommendedRowMap">
+  SELECT
+      r.job_id
+    , r.score
+    , jp.title
+    , jp.field
+    , jp.address
+    , jp.open_date
+    , jp.close_date
+  FROM RECOMMENDED_JOB r
+  JOIN JOB_POSTING jp ON jp.job_id = r.job_id
+  
+  LEFT JOIN job_bookmark bm
+    ON bm.user_id = #{userId}
+   AND bm.job_id  = jp.job_id
+
+  <if test="onlyApplyable">
+    LEFT JOIN JOB_APPLICATION ja2
+      ON ja2.job_id = jp.job_id
+     AND ja2.user_id = #{userId}
+  </if>
+
+  <include refid="recommendedWhere"/>
+
+  <choose>
+    <when test="sort == 'DEADLINE_ASC'">
+      ORDER BY jp.close_date ASC, r.score DESC
+    </when>
+    <when test="sort == 'RECENT_DESC'">
+      ORDER BY jp.open_date DESC, r.score DESC
+    </when>
+    <otherwise>
+      ORDER BY r.score DESC, r.recommended_at DESC
+    </otherwise>
+  </choose>
+
+  LIMIT #{page.offset, jdbcType=INTEGER}, #{page.safeSize, jdbcType=INTEGER}
+</select>
+
+<select id="selectRecommendedCount"
+        parameterType="com.itwillbs.project.my.dto.RecommendedCond"
+        resultType="int">
+  SELECT COUNT(*)
+  FROM RECOMMENDED_JOB r
+  JOIN JOB_POSTING jp ON jp.job_id = r.job_id
+  
+  
+  LEFT JOIN job_bookmark bm
+    ON bm.user_id = #{userId}
+   AND bm.job_id  = jp.job_id
+
+  <if test="onlyApplyable">
+    LEFT JOIN JOB_APPLICATION ja2
+      ON ja2.job_id = jp.job_id
+     AND ja2.user_id = #{userId}
+  </if>
+
+  <include refid="recommendedWhere"/>
+</select>
+
+<!-- 추천 제외 -->
+<update id="updateRecommendedInactive">
+  UPDATE RECOMMENDED_JOB
+  SET is_active = 0
+  WHERE person_user_id = #{userId}
+    AND job_id = #{jobId}
+</update>
+
+<!-- 북마크 토글 -->
+<select id="selectBookmarkId" resultType="long">
+  SELECT bookmark_id
+  FROM job_bookmark
+  WHERE user_id = #{userId}
+    AND job_id = #{jobId}
+</select>
+
+<!-- 북마크 존재 여부 -->
+<select id="existsBookmark" resultType="int">
+  SELECT EXISTS(
+    SELECT 1
+    FROM job_bookmark
+    WHERE user_id = #{userId}
+      AND job_id = #{jobId}
+  )
+</select>
+
+<insert id="insertBookmark">
+  INSERT INTO job_bookmark(user_id, job_id, reg_date)
+  VALUES(#{userId}, #{jobId}, NOW())
+</insert>
+
+<delete id="deleteBookmark">
+  DELETE FROM job_bookmark
+  WHERE user_id = #{userId}
+    AND job_id = #{jobId}
+</delete>
+
+<!-- 추천 생성 쿨타임 10 분 -->
+<select id="needRecommendRefresh" resultType="int">
+  SELECT CASE
+           WHEN MAX(recommended_at) IS NULL THEN 1
+           WHEN MAX(recommended_at) &lt; DATE_SUB(NOW(), INTERVAL 10 MINUTE) THEN 1
+           ELSE 0
+         END
+  FROM RECOMMENDED_JOB
+  WHERE person_user_id = #{userId}
+</select>
+
+<insert id="upsertRecommendedJobs">
+  <![CDATA[
+  INSERT INTO RECOMMENDED_JOB (person_user_id, job_id, score, recommended_at, is_active)
+  SELECT
+    #{userId},
+    j.job_id,
+    (
+      CASE WHEN tf.field IS NOT NULL THEN 30 ELSE 0 END
+      + CASE WHEN j.open_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) THEN 10 ELSE 0 END
+      + CASE WHEN j.close_date <= DATE_ADD(CURDATE(), INTERVAL 7 DAY) THEN 10 ELSE 0 END
+    ) AS score,
+    NOW(),
+    1
+  FROM JOB_POSTING j
+
+  LEFT JOIN (
+    SELECT x.field
+    FROM (
+      SELECT jp2.field, COUNT(*) AS cnt
+      FROM job_bookmark b2
+      JOIN JOB_POSTING jp2 ON jp2.job_id = b2.job_id
+      WHERE b2.user_id = #{userId}
+      GROUP BY jp2.field
+      ORDER BY cnt DESC
+      LIMIT 3
+    ) x
+  ) tf
+    ON tf.field = j.field
+
+  LEFT JOIN job_bookmark bm
+    ON bm.user_id = #{userId}
+   AND bm.job_id  = j.job_id
+
+  WHERE j.post_status = 1
+    AND j.close_date >= CURDATE()
+    AND bm.job_id IS NULL
+
+  ORDER BY score DESC, j.open_date DESC
+  LIMIT 50
+
+  ON DUPLICATE KEY UPDATE
+    score = VALUES(score),
+    recommended_at = VALUES(recommended_at),
+    is_active = 1
+  ]]>
+</insert>
+
 	
 </mapper>

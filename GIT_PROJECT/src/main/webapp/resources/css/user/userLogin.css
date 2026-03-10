@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+body {
+    font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+    background-color: #f4f6f8;
+}
+
+.login-wrapper { max-width: 480px; width: 100%; }
+.custom-tabs { border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: white;}
+.tab-btn { background-color: #f8f9fa; color: #999; border: none; border-bottom: 1px solid #dee2e6; padding: 14px 0; cursor: pointer; font-weight: 500; }
+.tab-btn.active { background-color: #fff; color: #333; font-weight: bold; border-bottom: 1px solid transparent; }
+.tab-content-area { display: none; }
+.tab-content-area.active { display: block; }
+.form-control-lg { height: 48px; font-size: 14px; border-radius: 4px; }
+.form-control:focus { box-shadow: none; border-color: #0066ff; }
+.icon-left { pointer-events: none; z-index: 5; color: #ccc; }
+.password-toggle-icon { cursor: pointer; color: #777; z-index: 10; display: none; }
+.btn-big-login { height: 106px; background-color: #0066ff; font-size: 18px; font-weight: bold; }
+.btn-big-login:hover { background-color: #0052cc; }
+
+#error {color: red;}

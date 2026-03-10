@@ -1,28 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<!DOCTYPE html>
+<html>
+<head>
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+<link rel="stylesheet" href="<c:url value='/resources/css/my/password.css'/>" type="text/css">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
 
-<style>
-  body { background:#f6f7fb; }
-  .pw-wrap { min-height: calc(100vh - 120px); display:flex; align-items:center; }
-  .pw-card {
-    background:#fff;
-    border:1px solid #eef2f7;
-    border-radius:16px;
-    box-shadow:0 10px 30px rgba(15,23,42,.05);
-    padding:22px;
-  }
-  .page-title{ font-size:1.45rem; font-weight:900; letter-spacing:-.5px; margin:0; }
-  .page-desc{ color:#6b7280; font-size:.92rem; margin-top:6px; }
-  .hint-list { margin:10px 0 0; padding-left: 1.1rem; color:#2563eb; }
-  .hint-list li{ margin:4px 0; }
-  .btn-primary { border-radius:12px; font-weight:800; padding:.7rem 1rem; }
-  .btn-outline-secondary { border-radius:12px; font-weight:800; padding:.7rem 1rem; }
-  .form-control { border-radius:12px; padding:.75rem .9rem; }
-  .form-label { font-weight:800; color:#374151; }
-</style>
+<body>
+<%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
 <c:url var="urlSubmit" value="/my/password"/>
 <c:url var="urlCancel" value="/my/myInfo"/>
@@ -74,29 +62,13 @@
                    placeholder="새 비밀번호 확인" required />
           </div>
 
-          <%-- 캡차 영역(원하면 나중에 실제 캡차로 교체) --%>
-          <div class="mb-3">
-            <label class="form-label">자동입력 방지문자</label>
-            <div class="border rounded-3 p-3 bg-light">
-              <div class="d-flex flex-column flex-md-row gap-2 align-items-md-center">
-                <div class="flex-grow-1">
-                  <div class="text-muted small mb-2">아래 이미지를 보이는 대로 입력해주세요.</div>
-                  <%-- 실제 캡차 이미지/기능 붙이기 전 임시 박스 --%>
-                  <div class="border rounded-3 bg-white d-flex align-items-center justify-content-center"
-                       style="height:74px;">
-                    <span class="text-muted">CAPTCHA IMAGE</span>
-                  </div>
-                </div>
-                <div class="d-flex flex-md-column gap-2">
-                  <button type="button" class="btn btn-outline-secondary">새로고침</button>
-                  <button type="button" class="btn btn-outline-secondary">음성으로 듣기</button>
-                </div>
-              </div>
-
-              <input type="text" name="captcha" class="form-control mt-3"
-                     placeholder="자동입력 방지문자" required />
-            </div>
-          </div>
+		  <div class="mb-3">
+			<label class="form-label">자동입력 방지</label>
+			  <div class="border rounded-3 p-3 bg-light">
+			    <div class="cf-turnstile"
+			         data-sitekey="0x4AAAAAACnFvtsMiRr6zWEI"></div>
+			  </div>
+		  </div>
 
           <div class="d-grid gap-2 mt-4">
             <button type="submit" class="btn btn-primary">확인</button>
@@ -109,6 +81,8 @@
     </div>
   </div>
 </main>
+
+<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
 <script>
   // 새 비밀번호 확인 일치 검사(프론트 1차)
@@ -133,4 +107,6 @@
   })();
 </script>
 
-<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+</body>
+</html>
+

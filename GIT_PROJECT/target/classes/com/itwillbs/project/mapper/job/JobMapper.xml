@@ -398,5 +398,39 @@
 	      AND use_status = 'active'
 	</select>
 	
+	<select id="getApplicantCount" resultType="int">
+	    SELECT COUNT(*)
+	    FROM job_application a
+	    JOIN job_posting j ON a.job_id = j.job_id
+	    WHERE j.comp_id = #{compId}
+	    <if test="jobId != null">
+	        AND a.job_id = #{jobId}
+	    </if>
+	</select>
+	
+	<select id="getApplicantListPaging" resultType="application">
+	    SELECT 
+	        a.app_id as appId,
+	        a.job_id as jobId,
+	        a.user_id as userId,
+	        a.resume_id as resumeId,
+	        a.app_step as appStep,
+	        a.is_favorite as isFavorite,
+	        a.apply_date as applyDate,
+	        r.careerCode as careerCode,
+	        DATE_FORMAT(a.apply_date, '%Y-%m-%d') as formattedApplyDate,
+	        u.user_name as userName,
+	        j.title as postingTitle
+	    FROM job_application a
+	    JOIN job_posting j ON a.job_id = j.job_id
+	    JOIN user u ON a.user_id = u.user_id
+	    LEFT JOIN resume r ON a.resume_id = r.resume_id
+	    WHERE j.comp_id = #{compId}
+	    <if test="jobId != null">
+	        AND a.job_id = #{jobId}
+	    </if>
+	    ORDER BY a.is_favorite DESC, a.apply_date DESC
+	    LIMIT #{startRow}, #{listLimit}
+	</select>
 	
 </mapper>

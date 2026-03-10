@@ -16,6 +16,8 @@ import com.itwillbs.project.common.mapper.FileMapper;
 import com.itwillbs.project.common.util.FileUtils;
 import com.itwillbs.project.job.dto.JobApplicationDTO;
 import com.itwillbs.project.job.dto.JobDTO;
+import com.itwillbs.project.job.dto.JobPageDTO;
+import com.itwillbs.project.job.dto.PageInfoDTO;
 import com.itwillbs.project.job.mapper.JobMapper;
 import com.itwillbs.project.resume.dto.ResumeDTO;
 
@@ -135,7 +137,28 @@ public class JobService {
 	}
 
 	// ===================================================
-		
+	// 지원자 관리 페이징 처리 추가
+	public JobPageDTO getApplicantListPaging(Long jobId, Long compId, int pageNum) {
+	    int listLimit = 10; // 한 페이지에 표시할 지원자 수
+	    int startRow = (pageNum - 1) * listLimit;
+
+	    // 1. 해당 조건의 전체 지원자 수 조회
+	    int listCount = jobMapper.getApplicantCount(jobId, compId);
+
+	    // 2. 페이징 정보 계산 (전달해주신 PageInfoDTO 활용)
+	    int pageListLimit = 5; 
+	    int maxPage = (int) Math.ceil((double) listCount / listLimit);
+	    int startPage = ((pageNum - 1) / pageListLimit) * pageListLimit + 1;
+	    int endPage = startPage + pageListLimit - 1;
+	    if (endPage > maxPage) endPage = maxPage;
+
+	    PageInfoDTO pageInfo = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum);
+
+	    // 3. LIMIT 조건이 포함된 리스트 조회
+	    List<JobApplicationDTO> applicantList = jobMapper.getApplicantListPaging(jobId, compId, startRow, listLimit);
+
+	    return new JobPageDTO(applicantList, pageInfo);
+	}
 
 		
 

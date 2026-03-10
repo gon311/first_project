@@ -25,6 +25,7 @@ import com.itwillbs.project.common.util.FileUtils;
 import com.itwillbs.project.common.exception.BackwardException;
 import com.itwillbs.project.job.dto.JobApplicationDTO;
 import com.itwillbs.project.job.dto.JobDTO;
+import com.itwillbs.project.job.dto.JobPageDTO;
 import com.itwillbs.project.job.service.JobService;
 import com.itwillbs.project.resume.dto.ResumeDTO;
 
@@ -219,23 +220,24 @@ public class JobController {
 	// ===================================================
 	// 지원자 관리
 	
+	// JobController.java (약 174라인)
 	@GetMapping("/comApplicants")
 	public String management(HttpSession session, Model model, 
-	                         @RequestParam(value = "jobId", required = false) Long jobId) {
-	    
+	                         @RequestParam(value = "jobId", required = false) Long jobId,
+	                         @RequestParam(value = "pageNum", defaultValue = "1") int pageNum) { // pageNum 파라미터 추가
+
 	    String userType = (String) session.getAttribute("userType");
 	    Long compId = (Long) session.getAttribute("userIdx");
 
-	    // 기업 회원이 아니면 접근 불가
 	    if (compId == null || !"C".equals(userType)) return "redirect:/user/login";
 
-	    // 1. 해당 기업의 모든 공고 리스트 (필터용)
-	    // 2. 특정 공고(jobId)의 지원자 리스트 조회
-	    // 아래 서비스 메서드들은 필요에 따라 JobService에 추가 구현이 필요합니다.
-	    List<JobApplicationDTO> applicantList = jobService.getApplicantList(jobId, compId);
+	    // 페이징 처리를 위해 JobService의 메서드 호출 (JobPageDTO 반환)
+	    JobPageDTO jobPage = jobService.getApplicantListPaging(jobId, compId, pageNum);
 	    String postingTitle = jobService.getPostingTitle(jobId);
 	    
-	    model.addAttribute("applicantList", applicantList);
+	    // JSP에서 사용할 수 있게 데이터 바인딩
+	    model.addAttribute("applicantList", jobPage.getApplicantList()); // 목록
+	    model.addAttribute("pageInfo", jobPage.getPageInfoDTO());       // 페이징 정보 객체
 	    model.addAttribute("selectedJobId", jobId);
 	    model.addAttribute("postingTitle", postingTitle);
 	    

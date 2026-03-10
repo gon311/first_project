@@ -142,12 +142,23 @@
     </div>
 
     <div class="pagination">
-        <a href="#" class="page-link"><i class="fa-solid fa-angle-left"></i></a>
-        <a href="#" class="page-link active">1</a>
-        <a href="#" class="page-link">2</a>
-        <a href="#" class="page-link">3</a>
-        <a href="#" class="page-link"><i class="fa-solid fa-angle-right"></i></a>
-    </div>
+	    <c:if test="${pageInfo.pageNum > 1}">
+	        <a href="comApplicants?jobId=${selectedJobId}&pageNum=${pageInfo.pageNum - 1}" class="page-link">
+	            <i class="fa-solid fa-angle-left"></i>
+	        </a>
+	    </c:if>
+	
+	    <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+	        <a href="comApplicants?jobId=${selectedJobId}&pageNum=${i}" 
+	           class="page-link ${pageInfo.pageNum == i ? 'active' : ''}">${i}</a>
+	    </c:forEach>
+	
+	    <c:if test="${pageInfo.pageNum < pageInfo.maxPage}">
+	        <a href="comApplicants?jobId=${selectedJobId}&pageNum=${pageInfo.pageNum + 1}" class="page-link">
+	            <i class="fa-solid fa-angle-right"></i>
+	        </a>
+	    </c:if>
+	</div>
 </div>
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 </body>

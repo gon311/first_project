@@ -60,4 +60,14 @@ public interface JobMapper {
 	String getPostingTitle(Long jobId);
 	
 	// ===================================================
+	
+	// JobMapper.java 인터페이스 하단에 추가
+	int getApplicantCount(@Param("jobId") Long jobId, @Param("compId") Long compId);
+
+	List<JobApplicationDTO> getApplicantListPaging(
+	    @Param("jobId") Long jobId, 
+	    @Param("compId") Long compId, 
+	    @Param("startRow") int startRow, 
+	    @Param("listLimit") int listLimit
+	);
 }

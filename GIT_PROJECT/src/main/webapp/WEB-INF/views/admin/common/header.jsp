@@ -9,7 +9,7 @@
         <div class="header-util">
             <a href="/project/" class="btn btn-sm btn-outline-secondary">사용자 페이지</a>
             <span class="badge bg-light text-dark mx-2">관리자 모드</span>
-            <a href="/logout" class="btn btn-sm btn-danger">로그아웃</a>
+            <a href="<c:url value="/user/logout" />" class="btn btn-sm btn-danger">로그아웃</a>
         </div>
     </div>
 
@@ -39,9 +39,9 @@
                     	<ul class="dropdown-menu" aria-labelledby="contentDrop">
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/JobPost" />">채용공고 게시판 관리</a></li>
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/notice" />">공지사항 관리</a></li>
-		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/Board" />">커뮤니티 관리</a></li>
+		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/Board" />">자유게시판 관리</a></li>
 		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/QnA" />">문의글 관리</a></li>
-		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/FnQ" />">FNQ 관리</a></li>
+		                    <li><a class="dropdown-item" href="<c:url value="/admin/contents/FaQ" />">FaQ 관리</a></li>
                     	</ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/banners" />">배너 관리</a></li>

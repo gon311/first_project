@@ -1,7 +1,6 @@
 package com.itwillbs.project.job.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,12 +21,8 @@ public class JobService {
 		jobMapper.insertJob(jobDTO);
 	}
 
-	public List<JobDTO> getJobList(String expType, String eduType, List<String> selectedItems) {
-	    return jobMapper.getJobList(expType, eduType, selectedItems);
-	}
-
-	public List<Map<String, String>> getExistingRegions() {
-		return jobMapper.getExistingRegions();
+	public List<JobDTO> getJobList(String expType) { // 매개변수 추가
+	    return jobMapper.getJobList(expType);
 	}
 
 

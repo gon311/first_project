@@ -97,35 +97,11 @@ public class JobDTO {
         }
     }
     
+ // 이 메서드를 추가해두면 JSP에서 ${job.displayAddress}로 호출 가능합니다.
     public String getDisplayAddress() {
-        if (this.address == null || this.address.isEmpty()) {
-            return "";
-        }
-
-        // 1. 특수문자(쉼표, 대괄호 등)를 공백으로 치환하고 양끝 공백 제거
-        String cleanAddr = this.address.replaceAll("[,\\[\\]]", " ").trim();
-        
-        // 2. 공백을 기준으로 단어 분리
-        String[] parts = cleanAddr.split("\\s+");
-        StringBuilder sb = new StringBuilder();
-        int count = 0;
-
-        for (String part : parts) {
-            // 3. 우편번호 형태(숫자, 대시 포함 숫자)는 무조건 패스
-            if (part.matches("^[0-9\\-]+$")) continue;
-
-            // 4. 글자가 시작되는 지점부터 딱 두 단어만 챙기기 (예: 서울 강남구)
-            if (count < 2) {
-                if (sb.length() > 0) sb.append(" ");
-                sb.append(part);
-                count++;
-            } else {
-                break;
-            }
-        }
-
-        return sb.toString();
+        if (this.address == null) return "";
+        // [12345] 처럼 대괄호와 그 안의 내용을 삭제
+        return this.address.replaceAll("\\[\\d{5}\\]\\s?", "");
     }
-    
     
 }

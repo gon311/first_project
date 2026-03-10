@@ -4,39 +4,37 @@
 <header>
   <%-- 상단: 로고 + 로그인/회원가입/마이페이지/로그아웃 --%>
   <%-- 차후 url 교체 --%>
-  <section id="header-upper">
-	  <nav class="navbar navbar-expand-lg px-3">
-	    <!-- 좌측: 브랜드 -->
-	    <a href="<c:url value="/" />">
-		    <img src="<c:url value="/resources/images/logo.png" />" alt="로고" 
-		    	 class="img-fluid" style="max-width:80px;">
-	    </a>
-	    <!-- 우측: 인증 관련 메뉴 -->
-	    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
-	      <c:choose>
-	        <c:when test="${empty sessionScope.sId}">
-	          <li class="nav-item">
-	            <a class="nav-link" href="<c:url value='/user/login' />">로그인</a>
-	          </li>
-	          <li class="nav-item">
-	            <a class="nav-link" href="<c:url value='/user/regist' />">회원가입</a>
-	          </li>
-	          <li class="nav-item">
-	            <a class="nav-link" href="<c:url value='/mainCom' />">기업회원</a>
-	          </li>
-	        </c:when>
-	        <c:otherwise>
-	          <li class="nav-item">
-	            <a class="nav-link" href="<c:url value='/my/myInfo' />">${userName} 님</a>
-	          </li>
-	          <li class="nav-item">
-	            <a class="nav-link" href="javascript:void(0)" onclick="requestLogout()">로그아웃</a>
-	          </li>
-	        </c:otherwise>
-	      </c:choose>
-	    </ul>
-	  </nav>
-  </section>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <!-- 좌측: 브랜드 -->
+    <a href="<c:url value="/" />">
+	    <img src="<c:url value="/resources/images/logo.png" />" alt="로고" 
+	    	 class="img-fluid" style="max-width:80px;">
+    </a>
+    <!-- 우측: 인증 관련 메뉴 -->
+    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+      <c:choose>
+        <c:when test="${empty sessionScope.sId}">
+          <li class="nav-item">
+            <a class="nav-link" href="<c:url value='/user/login' />">로그인</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<c:url value='/user/regist' />">회원가입</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<c:url value='/mainCom' />">기업회원</a>
+          </li>
+        </c:when>
+        <c:otherwise>
+          <li class="nav-item">
+            <a class="nav-link" href="<c:url value='/my/myInfo' />">${userName} 님</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0)" onclick="requestLogout()">로그아웃</a>
+          </li>
+        </c:otherwise>
+      </c:choose>
+    </ul>
+  </nav>
 
   <%-- 하단: 메인 메뉴 바 + 전체 메뉴 버튼 --%>
   <%-- 차후 url 교체 --%>

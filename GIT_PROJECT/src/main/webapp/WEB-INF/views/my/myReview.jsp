@@ -7,6 +7,10 @@
 
 <%-- =========================================================
      [자기소개서 관리] myReview.jsp
+     - myResume.jsp 구성 그대로 가져옴(통일감)
+     - 좌측: mySidebar.jspf include
+     - 우측: 사람인 "자소서 관리" 느낌의 카드/리스트 UI
+     - 나중에 DB 붙이면: reviews 리스트를 c:forEach로 자동 출력
    ========================================================= --%>
 
 <style>
@@ -14,7 +18,8 @@
   body { background:#f6f7fb; }
   .mypage-wrap{ min-height:100vh; }
 
-  /* ====== 사이드바 스타일 */
+  /* ====== (참고) 사이드바 스타일은 mySidebar.jspf에 넣어도 되지만
+     지금은 myResume.jsp랑 동일하게 여기에도 둠(통일감/빠른 작업용) ====== */
   .mySidebar{
     background:#fff;
     border-right:1px solid #e9edf3;
@@ -109,18 +114,6 @@
     justify-content: space-between;
     gap: 14px;
   }
-  
-  .badgeComplete{
-  display:inline-block;
-  padding:2px 8px;
-  border-radius:999px;
-  font-weight:700;
-  font-size:12px;
-  color:#0f766e;           /* 초록 계열 */
-  background:#ecfdf5;
-  border:1px solid #99f6e4;
-  }
-  
 
   .badgeDraft{
     display:inline-block;
@@ -229,130 +222,166 @@
 </style>
 
 <%-- =========================================================
-     URL 전부 c:url
+     URL 전부 c:url로 (ctx 변수 없음)
+     - 매핑은 일단 뼈대용. 나중에 컨트롤러/DTO 맞춰서 변경하면 됨.
    ========================================================= --%>
 <c:url var="urlMyReview" value="/my/myReview"/>
+
 <c:url var="urlReviewCreate" value="/my/review/create"/>   <%-- 새 자소서 작성 --%>
 <c:url var="urlReviewEdit" value="/my/review/edit"/>       <%-- 수정 (id param 나중에) --%>
 <c:url var="urlReviewDelete" value="/my/review/delete"/>   <%-- 삭제 (나중에 POST 추천) --%>
 
 <main class="container-fluid px-0 mypage-wrap">
   <div class="row g-0">
-	<!-- 사이드바 -->
+
+    <%-- ✅ 좌측 사이드바 include --%>
     <%@ include file="/WEB-INF/views/inc/mySidebar.jspf" %>
 
+    <%-- ✅ 우측 컨텐츠 --%>
     <section class="col-10 myContent">
       <div class="myContent-inner">
 
-        <!-- 타이틀 -->
         <h2 class="page-title">내 자기소개서</h2>
         <div class="page-desc">자기소개서를 작성/관리하고, 필요할 때 빠르게 수정할 수 있어요.</div>
 
-        <!-- 필터 기본값 -->
-        <c:set var="filter" value="${empty param.filter ? 'ALL' : param.filter}"/>
-
-        <!-- 상단: 총 건수 + 작성 버튼 + 상태 필터 -->
+        <%-- 상단 유틸 --%>
         <div class="topbar">
           <div class="countText">
-            총 <strong><c:out value="${empty myReviews ? 0 : fn:length(myReviews)}"/></strong>건
+            총 <strong><c:out value="${empty reviews ? 0 : fn:length(reviews)}"/></strong>건
           </div>
 
           <div class="d-flex align-items-center gap-2">
-            <a class="btn btn-outline-primary" href="${urlReviewCreate}">
-              새 자기소개서 작성
-            </a>
-
-            <select class="form-select filterSelect"
-                    aria-label="filter"
-                    onchange="location.href='${urlMyReview}?filter=' + this.value;">
-              <option value="ALL"      ${filter eq 'ALL' ? 'selected' : ''}>전체</option>
-              <option value="DRAFT"    ${filter eq 'DRAFT' ? 'selected' : ''}>미완성</option>
-              <option value="COMPLETE" ${filter eq 'COMPLETE' ? 'selected' : ''}>완성</option>
+            <select class="form-select filterSelect" aria-label="filter">
+              <option selected>전체</option>
+              <option>대표</option>
+              <option>미완성</option>
+              <option>완성</option>
             </select>
           </div>
         </div>
 
-        <!-- 리스트 -->
+        <%-- 대표/최근 자소서 카드(샘플) --%>
+        <div class="reviewCard">
+          <div class="reviewHeader">
+            <div>
+              <div>
+                <span class="badgeDraft">미완성</span>
+                <span class="reviewTitle"><c:out value="${loginUser.name}"/>의 자기소개서 입니다</span>
+              </div>
+
+              <div class="metaRow">
+                <div class="metaItem">
+                  <i class="bi bi-file-earmark-text"></i>
+                  <span>문항: -</span>
+                </div>
+                <div class="metaItem">
+                  <i class="bi bi-calendar3"></i>
+                  <span>최종수정: -</span>
+                </div>
+                <div class="metaItem">
+                  <i class="bi bi-building"></i>
+                  <span>지원기업: -</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+              <a class="btn btn-outline-primary" href="${urlReviewCreate}">
+                새 자기소개서 작성
+              </a>
+
+              <div class="dropdown">
+                <button class="kebabBtn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="${urlReviewEdit}">수정</a></li>
+                  <li><a class="dropdown-item" href="#">대표 설정</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item text-danger" href="${urlReviewDelete}">삭제</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="memoBar">
+            <i class="bi bi-card-text"></i>
+            <span>자소서 관련 중요한 메모를 남겨보세요. 예) 2/28까지 제출</span>
+          </div>
+        </div>
+
+        <%-- 리스트 영역 (DB 붙으면 자동 출력) --%>
         <div class="reviewList">
+
           <c:choose>
-            <c:when test="${not empty myReviews}">
-              <c:forEach var="rv" items="${myReviews}">
+            <c:when test="${not empty reviews}">
+              <c:forEach var="rv" items="${reviews}">
+                <div class="reviewItem">
+                  <div>
+                    <p class="reviewItem-title">
+                      <c:out value="${rv.title}"/>
+                      <c:if test="${rv.representative}">
+                        <span class="badge text-bg-warning ms-2">대표</span>
+                      </c:if>
+                    </p>
 
-                <!-- 필터 조건: COMPLETE(0) / DRAFT(1,2) -->
-                <c:if test="${filter eq 'ALL'
-                              || (filter eq 'COMPLETE' && rv.status == 0)
-                              || (filter eq 'DRAFT' && rv.status != 0)}">
-
-                  <div class="reviewCard">
-                    <div class="reviewHeader">
-
-                      <div>
-                        <div>
-                          <!-- 상태 배지 -->
-                          <c:choose>
-                            <c:when test="${rv.status == 0}">
-                              <span class="badgeComplete">완성</span>
-                            </c:when>
-                            <c:when test="${rv.status == 1}">
-                              <span class="badgeDraft">작성중</span>
-                            </c:when>
-                            <c:otherwise>
-                              <span class="badgeDraft">임시저장</span>
-                            </c:otherwise>
-                          </c:choose>
-
-                          <!-- 제목 -->
-                          <span class="reviewTitle"><c:out value="${rv.title}"/></span>
-                        </div>
-
-                        <!-- 메타 -->
-                        <div class="metaRow">
-                          <div class="metaItem">
-                            <i class="bi bi-building"></i>
-                            <span>기업: <c:out value="${rv.companyName}"/></span>
-                          </div>
-                          <div class="metaItem">
-                            <i class="bi bi-calendar3"></i>
-                            <span>작성일: <c:out value="${rv.createdAtStr}"/></span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- 액션 -->
-                      <div class="d-flex align-items-center gap-2">
-                        <a class="btn btn-outline-primary"
-                           href="${urlReviewEdit}?coverLetterIdx=${rv.coverLetterIdx}"
-                           onclick="return confirm('자기소개서를 수정하시겠습니까?');">
-                          수정
-                        </a>
-
-                        <a class="btn btn-light"
-                           href="${pageContext.request.contextPath}/my/review/copy?coverLetterIdx=${rv.coverLetterIdx}"
-                           onclick="return confirm('이 자기소개서를 복사하시겠습니까?');">
-                          복사
-                        </a>
-
-                        <a class="btn btn-outline-danger"
-                           href="${urlReviewDelete}?coverLetterIdx=${rv.coverLetterIdx}"
-                           onclick="return confirm('정말 삭제하시겠습니까? 삭제 후 복구가 어려울 수 있어요.');">
-                          삭제
-                        </a>
-                      </div>
-
+                    <div class="reviewItem-sub">
+                      기업: <c:out value="${rv.companyName}"/> ·
+                      최종수정: <c:out value="${rv.updatedAt}"/> ·
+                      상태: <c:out value="${rv.status}"/>
                     </div>
                   </div>
 
-                </c:if>
+                  <div class="reviewActions">
+                    <%-- id 파라미터 붙이는 버전 (나중에 그대로 쓰면 됨) --%>
+                    <a class="btn btn-outline-secondary"
+                       href="<c:url value='/my/review/edit'><c:param name='id' value='${rv.id}'/></c:url>">
+                      수정
+                    </a>
+                    <button class="btn btn-light" type="button">복사</button>
+
+                    <div class="dropdown">
+                      <button class="kebabBtn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">대표 설정</a></li>
+                        <li><a class="dropdown-item text-danger" href="#">삭제</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </c:forEach>
             </c:when>
 
             <c:otherwise>
-              <div class="reviewCard">
-                아직 작성한 자기소개서가 없습니다.
+              <%-- 데이터 없을 때 샘플 --%>
+              <div class="reviewItem">
+                <div>
+                  <p class="reviewItem-title">샘플 자기소개서 #1</p>
+                  <div class="reviewItem-sub">기업: - · 최종수정: 2026-02-19 · 상태: 미완성</div>
+                </div>
+                <div class="reviewActions">
+                  <a class="btn btn-outline-secondary" href="#">수정</a>
+                  <button class="btn btn-light" type="button">복사</button>
+                  <button class="kebabBtn" type="button"><i class="bi bi-three-dots-vertical"></i></button>
+                </div>
+              </div>
+
+              <div class="reviewItem">
+                <div>
+                  <p class="reviewItem-title">샘플 자기소개서 #2</p>
+                  <div class="reviewItem-sub">기업: - · 최종수정: 2026-02-10 · 상태: 완성</div>
+                </div>
+                <div class="reviewActions">
+                  <a class="btn btn-outline-secondary" href="#">수정</a>
+                  <button class="btn btn-light" type="button">복사</button>
+                  <button class="kebabBtn" type="button"><i class="bi bi-three-dots-vertical"></i></button>
+                </div>
               </div>
             </c:otherwise>
-
           </c:choose>
+
         </div>
 
       </div>
@@ -362,3 +391,8 @@
 </main>
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+
+<%-- dropdown 동작하려면 bootstrap.bundle.js 필요
+     footer.jspf에 없으면 아래 주석 해제
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+--%>

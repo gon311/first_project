@@ -134,11 +134,14 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class MyDTO {
-	private Long userId; // 회원 ID
+	private long userId; // 회원 ID
 	private String userName; // 회원 이름
 	private String email; // 이메일
 	private String phone; // 전화번호
 	private String userType; // 회원 상태 "P" or "C"
+	
+	
+	
 
 
 }

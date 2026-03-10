@@ -52,7 +52,7 @@
 								<dd class="col-8 py-2">${com.userName}</dd>
 
 								<dt class="col-4 text-secondary py-2">보유 이용권</dt>
-								<dd class="col-8 py-2">-</dd>
+								<dd class="col-8 py-2">${com.productName}</dd>
 
 								<dt class="col-4 text-secondary py-2">상태</dt>
 								<dd class="col-8 py-2">${com.status}</dd>
@@ -74,7 +74,20 @@
 						<div class="d-flex justify-content-between align-items-center">
 							<h5 class="mb-0 fw-bold">공고 상세 검토</h5>
 							<span class="badge bg-warning text-dark px-3 py-2">
-								${submit.postCheck}
+								<c:choose>
+									<c:when test="${submit.postCheck == 1}">
+										검토전
+									</c:when>
+									<c:when test="${submit.postCheck == 2}">
+										승인
+									</c:when>
+									<c:when test="${submit.postCheck == 3}">
+										보류
+									</c:when>
+									<c:otherwise>
+										삭제됨
+									</c:otherwise>
+								</c:choose>
 							</span>
 						</div>
 					</div>
@@ -84,7 +97,8 @@
 						<div class="mb-4 position-relative">
 						    <h4 class="fw-bold mb-1">${submit.title}</h4>
 						    <small class="text-muted position-absolute bottom-0 end-0">
-								제출일 : ${submit.regDate}
+						    	<fmt:parseDate var="regDate" value="${submit.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+								등록일 : <fmt:formatDate value="${regDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
 						    </small>
 						</div>
 
@@ -92,7 +106,7 @@
 
 							<dl class="row mb-0">
 
-								<dt class="col-sm-3 text-secondary">게재기간</dt>
+								<dt class="col-sm-3 text-secondary">접수기간</dt>
 								<dd class="col-sm-9">
 									<fmt:formatDate value="${submit.openDate}" pattern="yyyy년 MM월 dd일"/> 
 									~ 
@@ -108,7 +122,7 @@
 								<dt class="col-sm-3 text-secondary">고용형태</dt>
 								<dd class="col-sm-9">${submit.empType}</dd>
 								
-								<dt class="col-sm-3 text-secondary">수습기간 여부</dt>
+								<dt class="col-sm-3 text-secondary">수습기간</dt>
 								<dd class="col-sm-9">${submit.probation}</dd>
 
 								<dt class="col-sm-3 text-secondary">경력</dt>
@@ -144,12 +158,34 @@
 									~ 
 									<fmt:formatDate value="${submit.closeDate}" pattern="yyyy/MM/dd"/>
 								</dd>
-
-								<dt class="col-sm-3 text-secondary">접수방법</dt>
-								<dd class="col-sm-9">-</dd>
 								
 								<dt class="col-sm-3 text-secondary">첨부파일</dt>
-								<dd class="col-sm-9">-</dd>	
+								<dd class="col-sm-9">
+								    <c:choose>
+								        <c:when test="${not empty fileDTO.originalName}">
+								            <div class="d-flex align-items-center p-2 border rounded bg-white" style="max-width: 400px;">
+								                <i class="bi bi-file-earmark-arrow-down fs-4 text-primary me-2"></i>
+								                
+								                <div class="flex-grow-1 overflow-hidden">
+								                    <div class="text-truncate small fw-bold" title="${fileDTO.originalName}">
+								                        ${fileDTO.originalName}
+								                    </div>
+								                </div>
+								
+								                <div class="ms-3 d-flex gap-1">
+								                    <a href="<c:url value="/file/${fileDTO.fileId}" />" class="btn btn-sm btn-light border" title="다운로드">
+								                        <i class="bi bi-download"></i>
+								                    </a>
+								                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteFile(${fileDTO.fileId})" title="삭제">
+								                        <i class="bi bi-trash"></i></button>
+								                </div>
+								            </div>
+								        </c:when>
+								        <c:otherwise>
+								            <span class="text-muted small">첨부된 파일이 없습니다.</span>
+								        </c:otherwise>
+								    </c:choose>
+								</dd>
 								
 							</dl>
 
@@ -166,15 +202,53 @@
 							</p>
 
 							<div class="mt-2 mt-md-0">
-								<button class="btn btn-primary me-2">
-									승인
-								</button>
-								<button class="btn btn-secondary me-2">
-									보류
-								</button>
-								<button class="btn btn-danger">
-									삭제
-								</button>
+								<c:choose>
+									<c:when test="${submit.postCheck == 1}">
+										<button id="approval" class="btn btn-primary me-2" onclick="changeApproval(${submit.jobId})">
+											승인
+										</button>
+										<button id="defer" class="btn btn-secondary me-2" onclick="changeDefer(${submit.jobId})">
+											보류
+										</button>
+										<button id="delete" class="btn btn-danger" onclick="changeDelete(${submit.jobId})">
+											삭제
+										</button>
+									</c:when>	
+									<c:when test="${submit.postCheck == 2}">
+										<button id="approval" class="btn btn-primary me-2" disabled="disabled">
+											승인
+										</button>
+										<button id="defer" class="btn btn-secondary me-2" onclick="changeDefer(${submit.jobId})">
+											보류
+										</button>
+										<button id="delete" class="btn btn-danger" onclick="changeDelete(${submit.jobId})">
+											삭제
+										</button>
+									</c:when>		
+									<c:when test="${submit.postCheck == 3}">
+										<button id="approval" class="btn btn-primary me-2" onclick="changeApproval(${submit.jobId})">
+											승인
+										</button>
+										<button id="defer" class="btn btn-secondary me-2" disabled="disabled">
+											보류
+										</button>
+										<button id="delete" class="btn btn-danger" onclick="changeDelete(${submit.jobId})">
+											삭제
+										</button>
+									</c:when>	
+									<c:otherwise>
+										<button id="approval" class="btn btn-primary me-2" disabled="disabled">
+											승인
+										</button>
+										<button id="defer" class="btn btn-secondary me-2" disabled="disabled">
+											보류
+										</button>
+										<button id="delete" class="btn btn-danger" disabled="disabled">
+											삭제
+										</button>
+									</c:otherwise>			
+								</c:choose>
+							
 							</div>
 
 						</div>
@@ -195,6 +269,26 @@
 		</div>
 
 	</main>
+	
+	<script>
+		function changeApproval(jobId) {
+			if(confirm("해당 공고를 승인하시겠습니까?")) {
+				location.href="<c:url value='/admin/submits/status' />" + "?jobId=" + jobId + "&postCheck=" + 2;
+			}
+		}
+		
+		function changeDefer(jobId) {
+			if(confirm("해당 공고를 보류하시겠습니까?")) {
+				location.href="<c:url value='/admin/submits/status' />" + "?jobId=" + jobId + "&postCheck=" + 3;
+			}
+		}
+		
+		function changeDelete(jobId) {
+			if(confirm("해당 공고를 삭제하시겠습니까?")) {
+				location.href="<c:url value='/admin/submits/status' />" + "?jobId=" + jobId + "&postCheck=" + 4;
+			}
+		}
+	</script>
 
 </body>
 </html>

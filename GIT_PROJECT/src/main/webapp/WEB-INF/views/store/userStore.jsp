@@ -47,7 +47,7 @@
                                 <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">5,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U10'">구매하기</button>
+                                    <button type="button" id="btn10" value="P-U10" class="btn btn-primary btn-lg" onclick="checkRemain('P-U10', ${userInfo.userId})">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -68,11 +68,10 @@
                                 <p class="small text-muted text-center mb-0">
                                     기본 첨삭 5회 + 30회 추가 제공
                                 </p>
-<<<<<<< HEAD
                                 <hr class="mt-1 mb-2">
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">8,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=30'">구매하기</button>
+                                    <button type="button" id="btn30" value="P-U30" class="btn btn-primary btn-lg" onclick="checkRemain('P-U30', ${userInfo.userId})">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -92,10 +91,10 @@
                                 <p class="small text-muted text-center mb-0">
                                     기본 첨삭 5회 + 60회 추가 제공
                                 </p>
-                                <hr class="mt-1 mb-2"> <!-- 구분선 아래 간격 줄임 -->
+                                <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">15,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U60'">구매하기</button>
+                                    <button type="button" id="btn60" value="P-U60" class="btn btn-primary btn-lg" onclick="checkRemain('P-U60', ${userInfo.userId})">구매하기</button>
                                 </div>
                             </div>
                         </div>
@@ -103,42 +102,6 @@
                 </div>
                 
                 <!-- 이용권 상세 안내 -->
-=======
-                                <hr class="mt-1 mb-2"> <!-- 구분선 아래 간격 줄임 -->
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <span class="fs-4 fw-bold text-primary">8,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U30'">구매하기</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 60회권 -->
-                    <div class="col">
-                        <div class="card subscription-card h-100 shadow-lg border-0">
-                            <div class="card-header bg-light text-center">
-                                <h4 class="fw-semibold">60회권</h4>
-                            </div>
-                            <div class="card-body d-flex flex-column justify-content-between">
-                                <ul class="list-unstyled mb-5 text-center">
-                                    <li class="fs-6 text-dark fw-semibold">✔ AI를 활용한 자소서 첨삭 시</li>
-                                    <li class="fs-6 text-dark fw-semibold">추가적인 첨삭을 통해 퀄리티 향상</li>
-                                </ul>
-                                <p class="small text-muted text-center mb-0">
-                                    기본 첨삭 5회 + 60회 추가 제공
-                                </p>
-                                <hr class="mt-1 mb-2"> <!-- 구분선 아래 간격 줄임 -->
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <span class="fs-4 fw-bold text-primary">15,000원</span>
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='pay?productId=P-U60'">구매하기</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 비교 테이블 대신 이용권 상세 안내 -->
->>>>>>> branch 'Team-1' of https://github.com/gon311/first_project.git
 				<h2 class="display-7 text-center mt-5 mt-lg-7 mb-4 mb-lg-6">이용권 상세 안내</h2>
 				<div class="bg-light p-4 p-lg-5 rounded shadow-sm mb-5 mb-lg-7">
 				    <p class="fs-5 text-dark text-center mb-4">
@@ -163,5 +126,36 @@
     
     <%-- footer area --%>
 	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+	
+	<script type="text/javascript">
+		async function checkRemain(productId, userId) {
+			if(userId == null) {
+				alert("로그인 한 회원만 구매 가능합니다.");
+				location.href = "<c:url value="/user/login" />";
+			}
+			
+			console.log("productId : ", productId);
+			const checkRemainURL = "<c:url value="/store/checkRemain" />";
+			// 비동기 요청 시 아이디 입력값 파라미터로 전송
+			const response = await fetch(checkRemainURL + "?id=" + userId);
+			// 비동기 요청에 대한 응답 데이터를 JSON 형식으로 파싱
+			const result = await response.json();
+
+			
+			if(result.isSaved) {
+				if(result.exists) { // 구매가능
+					location.href = "pay?productId=" + productId;
+				} else {
+					alert("이미 이용권을 보유중입니다.");
+					return;
+				}
+			} else {
+				alert("결제 대기 중인 이용권을 보유중입니다.");
+				return;
+			}
+			
+				
+		}
+	</script>
 </body>
 </html>

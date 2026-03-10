@@ -6,7 +6,16 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%-- =========================================================
      [이력서 관리] myResume.jsp
+     - common.css 없이: 이 파일 내부 style로만 구성
+     - 좌측: mySidebar.jspf include
+     - 우측: 사람인 "이력서 관리" 느낌의 카드/리스트 UI
+     - 나중에 DB 붙이면: resumes 리스트를 c:forEach로 자동 출력
    ========================================================= --%>
+
+<%-- (선택) head.jspf에 부트스트랩이 없다면 아래 주석 해제
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+--%>
 
 <style>
   /* ====== 페이지 배경 ====== */
@@ -122,18 +131,6 @@
     color:#ef4444;
     margin-right: 8px;
   }
-  
-  .badgeComplete{
-  display:inline-block;
-  padding:2px 8px;
-  border-radius:999px;
-  font-weight:700;
-  font-size:12px;
-  color:#0f766e;           /* 초록 계열 */
-  background:#ecfdf5;
-  border:1px solid #99f6e4;
-  }
-  
   .resumeTitle{
     font-size: 1.15rem;
     font-weight: 900;
@@ -226,8 +223,6 @@
     font-weight:800;
     padding: .55rem .95rem;
   }
-  
-  
 
   /* ====== 점3개 드롭다운 버튼 느낌(사람인스럽게) ====== */
   .kebabBtn{
@@ -246,197 +241,180 @@
 
 <%-- =========================================================
      URL을 c:url로 통일 (ctx 변수 제거)
+     - 컨트롤러 매핑은 네가 쓰는 /my/* 기준
    ========================================================= --%>
 <c:url var="urlMyResume" value="/my/myResume"/>
-<c:url var="urlResumeCreate" value="/my/resume/create"/>   <%-- 새 이력서 작성 --%>
-<c:url var="urlResumeEdit" value="/my/resume/edit"/>       <%-- 수정 --%>
+<c:url var="urlResumeCreate" value="/my/resume/create"/>   <%-- 새 이력서 작성(나중에) --%>
+<c:url var="urlResumeEdit" value="/my/resume/edit"/>       <%-- 수정(나중에 파라미터 붙이기) --%>
 <c:url var="urlResumeDelete" value="/my/resume/delete"/>   <%-- 삭제(나중에 POST) --%>
 
 <main class="container-fluid px-0 mypage-wrap">
   <div class="row g-0">
 
-    <%-- ✅ 좌측 사이드바 include --%>
+    <%-- ✅ 좌측 사이드바 include
+         - 이 페이지 active는 컨트롤러에서 currentMenu='resume' 내려주는 방식 추천
+         - (지금은 네 mySidebar.jspf가 알아서 active 처리하도록 두면 됨)
+     --%>
     <%@ include file="/WEB-INF/views/inc/mySidebar.jspf" %>
 
     <%-- ✅ 우측 컨텐츠 --%>
     <section class="col-10 myContent">
       <div class="myContent-inner">
-      
+
         <%-- 타이틀 --%>
         <h2 class="page-title">내 이력서</h2>
         <div class="page-desc">이력서를 관리하고, 필요할 때 빠르게 수정할 수 있어요.</div>
-        
-        <%-- 상단: 총 건수 + 상태 필터 --%>
-		<c:set var="filter" value="${empty param.filter ? 'ALL' : param.filter}"/>
 
-		<div class="topbar">
-		  <div class="countText">
-		    총 <strong><c:out value="${empty myResumes ? 0 : fn:length(myResumes)}"/></strong>건
-		  </div>
-		
-		  <select class="form-select filterSelect"
-		          aria-label="filter"
-		          onchange="location.href='${urlMyResume}?filter=' + this.value;">
-		    <option value="ALL"      ${filter eq 'ALL' ? 'selected' : ''}>전체</option>
-		    <option value="DRAFT"    ${filter eq 'DRAFT' ? 'selected' : ''}>미완성</option>
-		    <option value="COMPLETE" ${filter eq 'COMPLETE' ? 'selected' : ''}>완성</option>
-		  </select>
-		</div>
+        <%-- 상단 유틸: 총건수 + 필터(전체/대표/미완성 등) --%>
+        <div class="topbar">
+          <div class="countText">
+            <%-- resumes가 없을 수도 있으니 기본값 처리 --%>
+            총 <strong><c:out value="${empty resumes ? 0 : fn:length(resumes)}"/></strong>건
+          </div>
 
-		<%-- 대표/최근 카드: topResume (완성 우선 + 최신 1개) --%>
-		<c:choose>
-		  <c:when test="${not empty topResume}">
-		    <div class="resumeCard">
-		      <div class="resumeHeader">
-		        <div>
-		          <div>
-		            <c:choose>
-		              <c:when test="${topResume.status eq 'COMPLETE'}">
-		                <span class="badgeComplete">완성</span>
-		              </c:when>
-		              <c:otherwise>
-		                <span class="badgeDraft">미완성</span>
-		              </c:otherwise>
-		            </c:choose>
-		
-		            <span class="resumeTitle"><c:out value="${topResume.title}"/></span>
-		          </div>
-		
-		          <div class="metaRow">
-		            <div class="metaItem">
-		              <i class="bi bi-clock"></i>
-		              <span>최종수정: <c:out value="${topResume.updatedAtStr}"/></span>
-		            </div>
-		
-		            <c:if test="${not empty topResume.memo}">
-		              <div class="metaItem">
-		                <i class="bi bi-card-text"></i>
-		                <span>메모: <c:out value="${topResume.memo}"/></span>
-		              </div>
-		            </c:if>
-		          </div>
-		        </div>
-		
-		        <div class="d-flex align-items-center gap-2">
-		          <a class="btn btn-outline-primary"
-		             href="${urlResumeEdit}?resumeMyId=${topResume.resumeMyId}" 
-		             onclick="return confirm('이력서를 수정하시겠습니까?');">
-		            이력서 수정하기
-		          </a>
-		
-		          <a class="btn btn-outline-danger"
-		             href="${urlResumeDelete}?resumeMyId=${topResume.resumeMyId}"
-		             onclick="return confirm('정말 삭제할까요? 삭제 후 복구할 수 없을 수 있어요.');">
-		            삭제
-		          </a>
-		        </div>
-		      </div>
-		
-		      <div class="memoBar">
-		        <i class="bi bi-card-text"></i>
-		        <c:choose>
-		          <c:when test="${not empty topResume.memo}">
-		            <span><c:out value="${topResume.memo}"/></span>
-		          </c:when>
-		          <c:otherwise>
-		            <span>이력서에 관련된 중요한 내용을 메모해보세요. 예) 11월 25일까지 제출</span>
-		          </c:otherwise>
-		        </c:choose>
-		      </div>
-		    </div>
-		  </c:when>
-		
-		  <c:otherwise>
-		    <div class="resumeCard">
-		      <div class="resumeHeader">
-		        <div>
-		          <span class="badgeDraft">미완성</span>
-		          <span class="resumeTitle">이력서를 아직 만들지 않았어요</span>
-		        </div>
-		        <a class="btn btn-outline-primary" href="${urlResumeCreate}">
-		          이력서 만들기
-		        </a>
-		      </div>
-		      <div class="memoBar">
-		        <i class="bi bi-card-text"></i>
-		        <span>새 이력서를 만들고 저장하면 여기에 최근 이력서가 표시돼요.</span>
-		      </div>
-		    </div>
-		  </c:otherwise>
-		</c:choose>
+          <div class="d-flex align-items-center gap-2">
+            <select class="form-select filterSelect" aria-label="filter">
+              <option selected>전체</option>
+              <option>대표</option>
+              <option>미완성</option>
+              <option>완성</option>
+            </select>
+          </div>
+        </div>
 
-		<%-- 리스트: myResumes + 필터 적용 + 대표 중복 제거 --%>
-		<div class="resumeList">
-		  <c:choose>
-		    <c:when test="${empty myResumes}">
-		      <div class="resumeCard" style="margin-top:16px;">
-		        아직 등록된 이력서가 없습니다.
-		      </div>
-		    </c:when>
-		
-		    <c:otherwise>
-		      <c:forEach var="r" items="${myResumes}">
-		        <c:set var="isComplete" value="${r.status eq 'COMPLETE'}"/>
-		        <c:set var="isTop" value="${not empty topResume && r.resumeMyId eq topResume.resumeMyId}"/>
-		
-		        <%-- 출력 조건: (1) 대표 중복 제외 (2) 필터 통과 --%>
-		        <c:if test="${not isTop
-		                      && (filter eq 'ALL'
-		                          || (filter eq 'COMPLETE' && isComplete)
-		                          || (filter eq 'DRAFT' && not isComplete))}">
-		
-		          <div class="resumeCard">
-		            <div class="resumeHeader">
-		              <div>
-		                <div>
-		                  <c:choose>
-		                    <c:when test="${isComplete}">
-		                      <span class="badgeComplete">완성</span>
-		                    </c:when>
-		                    <c:otherwise>
-		                      <span class="badgeDraft">미완성</span>
-		                    </c:otherwise>
-		                  </c:choose>
-		
-		                  <span class="resumeTitle"><c:out value="${r.title}"/></span>
-		                </div>
-		
-		                <div class="metaRow">
-		                  <div class="metaItem">최종수정: <c:out value="${r.updatedAtStr}"/></div>
-		                  <c:if test="${not empty r.memo}">
-		                    <div class="metaItem">메모: <c:out value="${r.memo}"/></div>
-		                  </c:if>
-		                </div>
-		              </div>
-		
-		              <div class="d-flex align-items-center gap-2">
-		                <a class="btn btn-outline-primary"
-		                   href="${urlResumeEdit}?resumeMyId=${r.resumeMyId}"  <%-- 수정링크 (나중에 수정해야함) --%>
-		                   onclick="return confirm('이력서를 수정하시겠습니까?');">
-		                  수정
-		                </a>
-		
-		                <a class="btn btn-outline-danger"
-		                   href="${urlResumeDelete}?resumeMyId=${r.resumeMyId}"
-		                   onclick="return confirm('정말 삭제할까요? 삭제 후 복구할 수 없을 수 있어요.');">
-		                  삭제
-		                </a>
-		              </div>
-		            </div>
-		
-		            <c:if test="${not empty r.memo}">
-		              <div class="memoBar">
-		                <i class="bi bi-card-text"></i>
-		                <span><c:out value="${r.memo}"/></span>
-		              </div>
-		            </c:if>
-		          </div>
-		
-		        </c:if>
-		      </c:forEach>
-		    </c:otherwise>
-		  </c:choose>
-		</div>
+        <%-- =========================================================
+             ✅ 대표/최근 이력서 1개 카드
+             - 지금은 샘플로 loginUser 기반 텍스트만 넣음
+             - 나중엔 대표 이력서(resume 대표=true)를 여기 꽂으면 됨
+           ========================================================= --%>
+        <div class="resumeCard">
+          <div class="resumeHeader">
+            <div>
+              <div>
+                <span class="badgeDraft">미완성</span>
+                <span class="resumeTitle"><c:out value="${loginUser.name}"/>의 이력서 입니다</span>
+              </div>
+
+              <div class="metaRow">
+                <div class="metaItem">
+                  <i class="bi bi-briefcase"></i>
+                  <span>신입</span>
+                </div>
+                <div class="metaItem">
+                  <i class="bi bi-pin-map"></i>
+                  <span>희망지역: -</span>
+                  <a class="linkSmall" href="#">희망근무조건 수정</a>
+                </div>
+                <div class="metaItem">
+                  <i class="bi bi-person-workspace"></i>
+                  <span>희망 직무: -</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+              <%-- 사람인 느낌의 오른쪽 버튼 --%>
+              <a class="btn btn-outline-primary" href="${urlResumeCreate}">
+                이력서 완성하기
+              </a>
+
+              <%-- 점3개(옵션) : 부트스트랩 dropdown 쓰고 싶으면 data-bs-toggle 사용 --%>
+              <div class="dropdown">
+                <button class="kebabBtn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="${urlResumeEdit}">수정</a></li>
+                  <li><a class="dropdown-item" href="#">대표 설정</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item text-danger" href="${urlResumeDelete}">삭제</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <%-- 메모 안내 바 --%>
+          <div class="memoBar">
+            <i class="bi bi-card-text"></i>
+            <span>이력서에 관련된 중요한 내용을 메모해보세요. 예) 11월 25일까지 제출</span>
+          </div>
+        </div>
+
+        <%-- =========================================================
+             ✅ 리스트 영역 (나중에 DB로 자동 추가되는 곳)
+             - resumes 라는 List를 model로 내려준다고 가정
+             - 지금은 샘플 2개를 fallback으로 보여줌
+           ========================================================= --%>
+
+        <div class="resumeList">
+
+          <c:choose>
+            <c:when test="${not empty resumes}">
+              <%-- ✅ DB 붙이면 여기만 살아남음 --%>
+              <c:forEach var="r" items="${resumes}">
+                <div class="resumeItem">
+                  <div>
+                    <p class="resumeItem-title">
+                      <c:out value="${r.title}"/>
+						<c:if test="${r.representative eq 'Y'}">
+							<span class="badge text-bg-warning ms-2">대표</span>
+						</c:if>
+                    </p>
+                    <div class="resumeItem-sub">
+                      최종수정: <c:out value="${r.updatedAt}"/> · 상태:
+                      <c:out value="${r.status}"/>
+                    </div>
+                  </div>
+
+                  <div class="resumeActions">
+                    <a class="btn btn-outline-secondary" href="<c:url value='/my/resume/edit'><c:param name='id' value='${r.resumeId}'/></c:url>">
+                      수정
+                    </a>
+                    <button class="btn btn-light" type="button">복사</button>
+
+                    <div class="dropdown">
+                      <button class="kebabBtn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">대표 설정</a></li>
+                        <li><a class="dropdown-item text-danger" href="#">삭제</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </c:forEach>
+            </c:when>
+
+            <c:otherwise>
+              <%-- ✅ 아직 데이터 없을 때 보이는 샘플(뼈대) --%>
+              <div class="resumeItem">
+                <div>
+                  <p class="resumeItem-title">샘플 이력서 #1</p>
+                  <div class="resumeItem-sub">최종수정: 2026-02-19 · 상태: 미완성</div>
+                </div>
+                <div class="resumeActions">
+                  <a class="btn btn-outline-secondary" href="#">수정</a>
+                  <button class="btn btn-light" type="button">복사</button>
+                  <button class="kebabBtn" type="button"><i class="bi bi-three-dots-vertical"></i></button>
+                </div>
+              </div>
+
+              <div class="resumeItem">
+                <div>
+                  <p class="resumeItem-title">샘플 이력서 #2</p>
+                  <div class="resumeItem-sub">최종수정: 2026-02-10 · 상태: 완성</div>
+                </div>
+                <div class="resumeActions">
+                  <a class="btn btn-outline-secondary" href="#">수정</a>
+                  <button class="btn btn-light" type="button">복사</button>
+                  <button class="kebabBtn" type="button"><i class="bi bi-three-dots-vertical"></i></button>
+                </div>
+              </div>
+            </c:otherwise>
+          </c:choose>
+
+        </div>
 
       </div>
     </section>
@@ -446,3 +424,12 @@
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
+<%-- (선택) footer.jspf에 bootstrap.bundle.js 없으면 아래 주석 해제 (dropdown용)
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+--%>
+
+<%-- fn:length 쓰려면 JSTL functions taglib 필요.
+     head에서 안 쓰면 아래 추가:
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+   지금은 fn:length를 썼으니, 에러나면 위 라인을 맨 위에 추가
+--%>

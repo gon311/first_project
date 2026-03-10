@@ -1,11 +1,8 @@
 package com.itwillbs.project.admin.dto;
 
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import org.springframework.format.datetime.DateFormatter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,18 +13,18 @@ import lombok.ToString;
 @ToString
 public class MemberDTO {
 	// 화면 출력 확인을 위해 임시로 만든 회원정보DTO
-	private BigInteger userId;
+	private long userId;
 	private String email;
 	private String password;
 	private String phone;
 	private String userName;
 	private String userType;
 	private String status;
-	private String joinedAt;
-	private String withdrawnAt;
+	private LocalDateTime joinedAt;
+	private LocalDateTime withdrawnAt;
 	
 	// 구직자 회원 상세 정보
-	private String birthDate;
+	private LocalDate birthDate;
 	private String gender;
 	private String country;
 	private Integer passCount;
@@ -59,21 +56,6 @@ public class MemberDTO {
 		} else if(status.equalsIgnoreCase("withdrawn")) {
 			this.status = "탈퇴";
 		}
-	}
-	
-	public void setJoinedAt(LocalDateTime joinedAt) {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm:ss");
-		this.joinedAt = joinedAt.format(dtf);
-	}
-	
-	public void setWithdrawnAt(LocalDateTime withdrawnAt) {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm:ss");
-		this.withdrawnAt = withdrawnAt.format(dtf);
-	}
-	
-	public void setBirthDate(LocalDate birthDate) {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
-		this.birthDate = birthDate.format(dtf);
 	}
 	
 	public void setGender(char gender) {

@@ -17,4 +17,14 @@ public class SearchDTO {
 	private String payStatus;
 	private String startDate;
 	private String endDate;
+	private String userId;
+	private String category;
+	private String reStatus;
+	private String sort;
+	
+	private Integer faqId;
+	private String postStatus;
+	private int offset;
+	private int limit;
+
 }

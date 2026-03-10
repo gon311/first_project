@@ -48,12 +48,21 @@
 								<dt class="col-4 text-secondary py-2">국적</dt>
 								<dd class="col-8 py-2">${user.country}</dd>
 
+								<dt class="col-4 text-secondary py-2">보유 이용권</dt>
+								<dd class="col-8 py-2">${user.productName}</dd>
+
 								<dt class="col-4 text-secondary py-2">가입일자</dt>
-								<dd class="col-8 py-2">${user.joinedAt}</dd>
+								<dd class="col-8 py-2">
+									<fmt:parseDate var="joinDate" value="${user.joinedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+                           			<fmt:formatDate value="${joinDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
+								</dd>
 								
 								<c:if test="${user.status eq '탈퇴'}">
 									<dt class="col-4 text-secondary py-2">탈퇴일자</dt>
-									<dd class="col-8 py-2">${user.withdrawnAt}</dd>
+									<dd class="col-8 py-2">
+                               			<fmt:parseDate var="withdrawDate" value="${user.withdrawnAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+                               			<fmt:formatDate value="${withdrawDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
+									</dd>
 								</c:if>
 
 								<dt class="col-4 text-secondary py-2">상태</dt>
@@ -99,25 +108,11 @@
 								        type="button" role="tab">자유게시판</button>
 							</li>
 							<li class="nav-item" role="presentation">
-								<button class="nav-link ${activeTab eq 'review' ? 'active' : ''}" 
-								        id="review-tab" 
-								        data-bs-toggle="tab" 
-								        data-bs-target="#review" 
-								        type="button" role="tab">면접 후기</button>
-							</li>
-							<li class="nav-item" role="presentation">
 								<button class="nav-link ${activeTab eq 'qna' ? 'active' : ''}" 
 								        id="qna-tab" 
 								        data-bs-toggle="tab" 
 								        data-bs-target="#qna" 
 								        type="button" role="tab">1:1 문의글</button>
-							</li>
-							<li class="nav-item" role="presentation">
-								<button class="nav-link ${activeTab eq 'comment' ? 'active' : ''}" 
-								        id="comment-tab" 
-								        data-bs-toggle="tab" 
-								        data-bs-target="#comment" 
-								        type="button" role="tab">작성한 댓글</button>
 							</li>
 						</ul>
 		
@@ -138,38 +133,23 @@
 										</thead>
 							 			<tbody>
 										<c:forEach var="free" varStatus="status" items="${freeList}">
-											<tr class="clickable-row" onclick="location.href='info?id=${free.id}'">
+											<tr class="clickable-row" onclick="location.href='<c:url value="/board/boardDetail?postId=${free.postId}"/>'">
 												<td>${status.count}</td>
 												<td>${free.title}</td>
-												<td>${free.createdAt}</td>
-												<td>${free.status}</td>
-											</tr>
-										</c:forEach>
-										</tbody>
-									</table>
-								</div>
-							</div>
-		
-							<!-- 면접 후기 -->
-							<div class="tab-pane fade ${activeTab eq 'review' ? 'show active' : ''}" 
-							     id="review" role="tabpanel" aria-labelledby="review-tab">
-								<div class="table-responsive">
-									<table class="table table-hover table-bordered align-middle text-center">
-										<thead class="table-light">
-											<tr>
-												<th>No</th>
-												<th>제목</th>
-												<th>작성일자</th>
-												<th>상태</th>
-											</tr>
-										</thead>
-							 			<tbody>
-										<c:forEach var="review" varStatus="status" items="${reviewList}">
-											<tr class="clickable-row" onclick="location.href='info?id=${review.id}'">
-												<td>${status.count}</td>
-												<td>${review.title}</td>
-												<td>${review.createdAt}</td>
-												<td>${review.status}</td>
+												<td>
+													<fmt:parseDate var="createdAt" value="${free.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+	                           						<fmt:formatDate value="${createdAt}" pattern="yyyy년 MM월 dd일"/>
+												</td>
+												<td>
+													<c:choose>
+														<c:when test="${free.status eq 'ACTIVE'}">
+															게시중
+														</c:when>
+														<c:otherwise>
+															삭제
+														</c:otherwise>
+													</c:choose>
+												</td>
 											</tr>
 										</c:forEach>
 										</tbody>
@@ -191,49 +171,30 @@
 											</tr>
 										</thead>
 							 			<tbody>
-										<c:forEach var="qna" varStatus="status" items="${qnaList}">
-											<tr class="clickable-row" onclick="location.href='info?id=${qna.id}'">
-												<td>${status.count}</td>
-												<td>${qna.title}</td>
-												<td>${qna.createdAt}</td>
-												<td>${qna.status}</td>
-											</tr>
-										</c:forEach>
+											<c:forEach var="qna" varStatus="status" items="${qnaList}">
+												<tr class="clickable-row" onclick="location.href='/admin/contents/QnADetail?qnaId=${qna.qnaId}'">
+													<td>${status.count}</td>
+													<td>${qna.qnaTitle}</td>
+													<td>
+		                           						<fmt:formatDate value="${qna.regDate}" pattern="yyyy년 MM월 dd일"/>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${qna.reStatus eq 'pending'}">
+																답변전
+															</c:when>
+															<c:otherwise>
+																답변완료
+															</c:otherwise>
+														</c:choose>
+													</td>
+												</tr>
+											</c:forEach>
 										</tbody>
 									</table>
 								</div>
 							</div>
 		
-							<!-- 작성한 댓글 -->
-							<div class="tab-pane fade ${activeTab eq 'comment' ? 'show active' : ''}" 
-							     id="comment" role="tabpanel" aria-labelledby="comment-tab">
-								<div class="table-responsive">
-									<table class="table table-hover table-bordered align-middle text-center">
-										<thead class="table-light">
-											<tr>
-												<th>No</th>
-												<th>카테고리</th>
-												<th>제목</th>
-												<th>내용</th>
-												<th>작성일자</th>
-												<th>상태</th>
-											</tr>
-										</thead>
-							 			<tbody>
-										<c:forEach var="comment" varStatus="status" items="${commentList}">
-											<tr class="clickable-row" onclick="location.href='info?id=${comment.id}'">
-												<td>${status.count}</td>
-												<td>${comment.category}</td>
-												<td>${comment.title}</td>
-												<td>${comment.content}</td>
-												<td>${comment.createdAt}</td>
-												<td>${comment.status}</td>
-											</tr>
-										</c:forEach>
-										</tbody>
-									</table>
-								</div>
-							</div>
 						</div>
 					</div>
 

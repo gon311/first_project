@@ -1,22 +1,13 @@
 package com.itwillbs.project.my.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.project.my.dto.MyDTO;
-import com.itwillbs.project.my.dto.MyResumeDTO;
-import com.itwillbs.project.my.dto.MyReviewDTO;
 import com.itwillbs.project.my.mapper.MyMapper;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-
 @Service
-@RequiredArgsConstructor
-@Log4j2
 public class MyService {
 	@Autowired
 	private MyMapper myMapper;
@@ -49,19 +40,6 @@ public class MyService {
 
 	    int updated = myMapper.updatePassword(sId, newHash);
 	    return updated > 0;
-	}
-	
-	// 이력서 내력
-	public List<MyResumeDTO> getMyResumeList(Long userId) {
-		return myMapper.selectMyResumeList(userId);
-	}
-	// 대표 설정
-	public MyResumeDTO getTopResume(Long userId) {
-		 return myMapper.selectTopResume(userId);
-	}
-
-	public List<MyReviewDTO> getmyReviewList(Long userId) {
-		return myMapper.selectMyReviewList(userId);
 	}
 
 }

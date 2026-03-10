@@ -13,19 +13,21 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class JobPostDTO {
-    // 출력 위한 임시 DTO
-    private int job_id;
-    private int comp_id;
-    private String title;
-    private String field;
-    private String task;
-    private String emp_type;
-    private char probation;
-    private String exp_type;
-    private String exp_year;
-    private String edu;
-    private String salary;
-    private Date open_date;
-    private Date close_date;
-    private int post_check;
+	// 출력 위한 임시 DTO
+	private Long jobId;
+	private Long compId;
+	private String title;
+	private String field;
+	private String task;
+	private String empType;
+	private char probation;
+	private String expType;
+	private String expYear;
+	private String edu;
+	private String salary;
+	private Date openDate;
+	private Date closeDate;
+	private Integer postStatus;
+	
+	private String keyword;
 }

@@ -4,6 +4,7 @@
 <html lang="ko">
 <head>
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
+    <title>회원가입 | My Service</title>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
         :root { --primary-color: #0046ff; --bg-color: #f4f7f6; }
@@ -88,18 +89,9 @@
 
                 <div class="form-group">
                     <label>비밀번호 *</label>
-                    <input type="password" name="password" class="form-control"
-	                   placeholder="8~30자, 영문+숫자+특수문자를 포함해야 합니다." required
-	                   minlength="8" maxlength="30"
-	                   pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,30}$"
-	                   title="8~30자, 영문+숫자+특수문자를 포함해야 합니다." />
+                    <input type="password" name="password" required placeholder="8~16자의 영문, 숫자, 특수문자">
                 </div>
 
-                <div class="form-group">
-                    <label>이름 *</label>
-                    <input type="text" name="userName">
-                </div>
-                
                 <div class="form-group">
                     <label>전화번호 *</label>
                     <div class="input-with-btn">
@@ -113,7 +105,7 @@
 				            <option value="LG_A">LG 알뜰폰</option>
 				        </select>
 				        
-                        <input type="tel" id="phone" name="phone" pattern="01[0-9]-[0-9]{3,4}-[0-9]{4}" required placeholder="010-0000-0000">
+                        <input type="tel" id="phone" name="phone" required placeholder="010-0000-0000">
                         <button type="button" class="btn-action" id="btn-phone-send" onclick="sendVerification('phone')">인증번호 전송</button>
                     </div>
 				    
@@ -129,10 +121,14 @@
                 <div id="person-fields">
                     <div class="section-title">개인 상세정보</div>
 	                
+	                <div class="form-group">
+	                    <label>이름 *</label>
+	                    <input type="text" name="userName" required>
+	                </div>
 	                
                     <div class="form-group">
                         <label>생년월일</label>
-                        <input type="date" id="birth" name="birthDate">
+                        <input type="date" name="birthDate">
                     </div>
                     <div class="form-group">
                         <label>성별</label>
@@ -167,13 +163,7 @@
                     <div class="section-title">기업 정보</div>
                     <div class="form-group">
                         <label>사업자등록번호 *</label>
-                        <div class="form-group">
-					    	<input type="text" name="bizRegNo" id="bizRegNo" 
-						           placeholder="000-00-00000" 
-						           maxlength="12"
-						           pattern="\d{3}-\d{2}-\d{5}"
-						           title="사업자등록번호 10자리를 입력해주세요.">
-						</div>
+                        <input type="text" name="bizRegNo" placeholder="'-' 제외 숫자만">
                     </div>
                     <div class="form-group">
                         <label>회사명 *</label>
@@ -237,32 +227,16 @@
             if (type === 'P') {
                 personFields.classList.remove('hidden');
                 companyFields.classList.add('hidden');
-                
-                toggleFields(personFields, false);
-                toggleFields(companyFields, true);
-                
                 // 필수 속성 제어
                 companyFields.querySelectorAll('input').forEach(el => el.required = false);
-                
             } else {
                 personFields.classList.add('hidden');
                 companyFields.classList.remove('hidden');
-                
-                toggleFields(personFields, true);
-                toggleFields(companyFields, false);
-                
                 // 필수 속성 제어
                 document.getElementsByName('bizRegNo')[0].required = true;
                 document.getElementsByName('companyName')[0].required = true;
                 document.getElementsByName('ceoName')[0].required = true;
             }
-        }
-        
-        function toggleFields(container, isDisable) {
-            const inputs = container.querySelectorAll('input, select');
-            inputs.forEach(el => {
-                el.disabled = isDisable;
-            });
         }
 
         // 인증번호 발송 (JSP EL 충돌 방지 위해 문자열 결합 사용)
@@ -329,40 +303,6 @@
             }
             return true;
         }
-        
-     // 전화번호 자동 하이픈 로직 추가
-        const phoneInput = document.querySelector('input[name="phone"]');
-        if (phoneInput) {
-            phoneInput.addEventListener('input', function(e) {
-                let val = e.target.value.replace(/[^0-9]/g, '');
-                if (val.length > 3 && val.length <= 7) {
-                    val = val.substring(0, 3) + '-' + val.substring(3);
-                } else if (val.length > 7) {
-                    val = val.substring(0, 3) + '-' + val.substring(3, 7) + '-' + val.substring(7, 11);
-                }
-                e.target.value = val;
-            });
-        }
-        
-     // 사업자등록번호 자동 하이픈 로직 추가
-        const bizInput = document.querySelector('input[name="bizRegNo"]');
-        if (bizInput) {
-            bizInput.addEventListener('input', function(e) {
-                let val = e.target.value.replace(/[^0-9]/g, ''); 
-                if (val.length > 3 && val.length <= 5) {
-                    val = val.substring(0, 3) + '-' + val.substring(3);
-                } else if (val.length > 5) {
-                    val = val.substring(0, 3) + '-' + val.substring(3, 5) + '-' + val.substring(5, 10);
-                }
-                e.target.value = val;
-            });
-        }
-        
-        // 생년월일
-        const startDateInput = document.getElementById('birth');
-        const today = new Date().toISOString().split('T')[0];
-        startDateInput.max = today;
-
     </script>
 </body>
 </html>

@@ -53,13 +53,22 @@
 
 							<dt class="col-4 text-secondary py-2">담당자명</dt>
 							<dd class="col-8 py-2">${com.userName}</dd>
+							
+							<dt class="col-4 text-secondary py-2">보유 이용권</dt>
+							<dd class="col-8 py-2">${com.productName}</dd>
 
 							<dt class="col-4 text-secondary py-2">가입일자</dt>
-							<dd class="col-8 py-2">${com.joinedAt}</dd>
+							<dd class="col-8 py-2">
+								<fmt:parseDate var="joinDate" value="${com.joinedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+                          			<fmt:formatDate value="${joinDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
+							</dd>
 							
 							<c:if test="${com.status eq '탈퇴'}">
 								<dt class="col-4 text-secondary py-2">탈퇴일자</dt>
-								<dd class="col-8 py-2">${com.withdrawnAt}</dd>
+								<dd class="col-8 py-2">
+                              			<fmt:parseDate var="withdrawDate" value="${com.withdrawnAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+                              			<fmt:formatDate value="${withdrawDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
+								</dd>
 							</c:if>
 
 							<dt class="col-4 text-secondary py-2">상태</dt>
@@ -121,30 +130,29 @@
 							     id="jobPosting" role="tabpanel">
 
 								<div class="table-responsive">
-									<table class="table table-hover align-middle text-center">
+									<table class="table table-hover table-bordered align-middle text-center">
 										<thead class="table-light">
 											<tr>
 												<th>No</th>
 												<th>제목</th>
 												<th>모집분야</th>
 												<th>접수기한</th>
-												<th>등록일자</th>
 												<th>상태</th>
 											</tr>
 										</thead>
 										<tbody>
-											<c:forEach var="job" varStatus="status" items="${jobPostList}">
-												<tr onclick="location.href='info?id=${job.id}'"
-												    style="cursor:pointer;">
+											<c:forEach var="job" varStatus="status" items="${jobPostlist}">
+												<tr class="clickable-row" onclick="location.href='<c:url value="/job/jobDetail?jobId=${job.jobId}"/>'">
 													<td>${status.count}</td>
 													<td>${job.title}</td>
 													<td>${job.field}</td>
-													<td>${job.receive}</td>
-													<td>${job.createdAt}</td>
 													<td>
-														<span class="badge bg-secondary">
-															${job.status}
-														</span>
+														<fmt:formatDate value="${job.openDate}" pattern="yyyy/MM/dd"/> 
+														~ 
+														<fmt:formatDate value="${job.closeDate}" pattern="yyyy/MM/dd"/>
+													</td>
+													<td>
+														<c:if test="${job.postStatus == 1}">모집중</c:if>
 													</td>
 												</tr>
 											</c:forEach>
@@ -159,7 +167,7 @@
 							     id="qna" role="tabpanel">
 
 								<div class="table-responsive">
-									<table class="table table-hover align-middle text-center">
+									<table class="table table-hover table-bordered align-middle text-center">
 										<thead class="table-light">
 											<tr>
 												<th>No</th>
@@ -170,15 +178,21 @@
 										</thead>
 										<tbody>
 											<c:forEach var="qna" varStatus="status" items="${qnaList}">
-												<tr onclick="location.href='info?id=${qna.id}'"
-												    style="cursor:pointer;">
+												<tr class="clickable-row" onclick="location.href='/admin/contents/QnADetail?qnaId=${qna.qnaId}'">
 													<td>${status.count}</td>
-													<td>${qna.title}</td>
-													<td>${qna.createdAt}</td>
+													<td>${qna.qnaTitle}</td>
 													<td>
-														<span class="badge bg-secondary">
-															${qna.status}
-														</span>
+		                           						<fmt:formatDate value="${qna.regDate}" pattern="yyyy년 MM월 dd일"/>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${qna.reStatus eq 'pending'}">
+																답변전
+															</c:when>
+															<c:otherwise>
+																답변완료
+															</c:otherwise>
+														</c:choose>
 													</td>
 												</tr>
 											</c:forEach>

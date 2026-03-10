@@ -49,8 +49,6 @@ public class StoreController {
 		// 회원 아이디 조회
 		MemberDTO userInfo = storeService.getUserInfo(userEmail);
 		
-//		model.addAttribute("userId", userInfo.getUserId());
-		
 		session.setAttribute("userInfo", userInfo);
 		
 		return "store/userStore";
@@ -63,7 +61,6 @@ public class StoreController {
 
 		// 회원 아이디 조회
 		MemberDTO comInfo = storeService.getUserInfo(userEmail);
-//		model.addAttribute("userId", comInfo.getUserId());
 
 		session.setAttribute("comInfo", comInfo);
 		
@@ -304,7 +301,6 @@ public class StoreController {
 	public String paymentSuccess() {
 		return "store/paySuccess";
 	}
-	
 	
 	
 	// 결제에 실패한 경우

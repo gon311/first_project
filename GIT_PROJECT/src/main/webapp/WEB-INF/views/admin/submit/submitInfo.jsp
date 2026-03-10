@@ -98,7 +98,7 @@
 						    <h4 class="fw-bold mb-1">${submit.title}</h4>
 						    <small class="text-muted position-absolute bottom-0 end-0">
 						    	<fmt:parseDate var="regDate" value="${submit.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-								제출일 : <fmt:formatDate value="${regDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+								등록일 : <fmt:formatDate value="${regDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
 						    </small>
 						</div>
 
@@ -106,7 +106,7 @@
 
 							<dl class="row mb-0">
 
-								<dt class="col-sm-3 text-secondary">게재기간</dt>
+								<dt class="col-sm-3 text-secondary">접수기간</dt>
 								<dd class="col-sm-9">
 									<fmt:formatDate value="${submit.openDate}" pattern="yyyy년 MM월 dd일"/> 
 									~ 
@@ -160,7 +160,32 @@
 								</dd>
 								
 								<dt class="col-sm-3 text-secondary">첨부파일</dt>
-								<dd class="col-sm-9">-</dd>	
+								<dd class="col-sm-9">
+								    <c:choose>
+								        <c:when test="${not empty fileDTO.originalName}">
+								            <div class="d-flex align-items-center p-2 border rounded bg-white" style="max-width: 400px;">
+								                <i class="bi bi-file-earmark-arrow-down fs-4 text-primary me-2"></i>
+								                
+								                <div class="flex-grow-1 overflow-hidden">
+								                    <div class="text-truncate small fw-bold" title="${fileDTO.originalName}">
+								                        ${fileDTO.originalName}
+								                    </div>
+								                </div>
+								
+								                <div class="ms-3 d-flex gap-1">
+								                    <a href="<c:url value="/file/${fileDTO.fileId}" />" class="btn btn-sm btn-light border" title="다운로드">
+								                        <i class="bi bi-download"></i>
+								                    </a>
+								                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteFile(${fileDTO.fileId})" title="삭제">
+								                        <i class="bi bi-trash"></i></button>
+								                </div>
+								            </div>
+								        </c:when>
+								        <c:otherwise>
+								            <span class="text-muted small">첨부된 파일이 없습니다.</span>
+								        </c:otherwise>
+								    </c:choose>
+								</dd>
 								
 							</dl>
 

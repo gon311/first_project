@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
 		// 공통 에러 메세지 출력에 필요한 /common/alert.jsp 페이지로 포워딩
 		return "/common/alert";
 	}
-	
+	 
 	// 요청 처리 중 오류 발생 => 이전페이지로 돌아가기
 	@ExceptionHandler(BackwardException.class)
 	public String handleBackward(BackwardException e, Model model) {
@@ -40,13 +40,13 @@ public class GlobalExceptionHandler {
 	
 	//--------------------------------------------------------------------------------------
 	// 옵션) 그 외의 모든 예외 공통 처리
-//	@ExceptionHandler(Exception.class)
-//	public String handleEtc(Exception e) {
-//		e.printStackTrace();
-//		//------------------------------------------------------------------
-//		// 나머지 모든 에러 메세지 출력에 필요한 /common/error.jsp 페이지로 포워딩
-//		return "/common/error";
-//	}
+	@ExceptionHandler(Exception.class)
+	public String handleEtc(Exception e) {
+		e.printStackTrace();
+		//------------------------------------------------------------------
+		// 나머지 모든 에러 메세지 출력에 필요한 /common/error.jsp 페이지로 포워딩
+		return "/common/error";
+	}
 	
 	
 	

@@ -10,6 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class FreeDTO {
+	// 자유게시판 DTO
 	private long postId;
 	private String boardType;
 	private long authorMemberId;

@@ -12,9 +12,9 @@
 <body>
 	<%@ include file="/WEB-INF/views/admin/common/header.jsp" %>
 
-	<main class="container mt-4">
-		<h2 class="mb-5">제출 공고 관리</h2>
-		<div class="container w-50 my-4 mx-3">
+	<main class="container-fluid px-5 mt-4">
+		<h2 class="mb-5 fw-bold">제출 공고 관리</h2>
+		<div class="container w-50 my-4 mx-3 mt-5">
 		    <h5 class="card-title mb-3">검색</h5>
 		    <div class="card">
 		        <div class="card-body">
@@ -33,12 +33,12 @@
 		                                <!-- 시작일자 -->
 		                                <div class="d-flex flex-column ms-2">
 		                                    <label class="form-label small mb-1 text-secondary">시작일자</label>
-		                                    <input type="date" class="form-control form-control-sm" name="startDate">
+		                                    <input type="date" class="form-control form-control-sm" name="startDate" value="${param.startDate}">
 		                                </div>
 		                                <!-- 종료일자 -->
 		                                <div class="d-flex flex-column ms-2">
 		                                    <label class="form-label small mb-1 text-secondary">종료일자</label>
-		                                    <input type="date" class="form-control form-control-sm" name="endDate">
+		                                    <input type="date" class="form-control form-control-sm" name="endDate" value="${param.endDate}">
 		                                </div>
 		                            </div>
 		                        </div>
@@ -47,17 +47,17 @@
 		                    <!-- 기업명 -->
 		                    <div class="col-md-4">
 		                        <label class="form-label fw-bold mb-2">기업명</label>
-		                        <input type="text" class="form-control form-control-sm" name="keyword" placeholder="기업명을 입력하세요">
+		                        <input type="text" class="form-control form-control-sm" name="keyword" placeholder="기업명을 입력하세요" value="${param.keyword}">
 		                    </div>
 		
 		                    <!-- 상태 -->
 		                    <div class="col-md-3">
 		                        <label class="form-label fw-bold mb-2">상태</label>
 		                        <select class="form-select form-select-sm" name="submitStatus">
-		                            <option value="" selected>전체</option>
-		                            <option value="1">검토전</option>
-		                            <option value="2">승인</option>
-		                            <option value="3">보류</option>
+		                            <option value="" <c:if test="${param.submitStatus eq ''}">selected</c:if>>전체</option>
+		                            <option value="1" <c:if test="${param.submitStatus eq '1'}">selected</c:if>>검토전</option>
+		                            <option value="2" <c:if test="${param.submitStatus eq '2'}">selected</c:if>>승인</option>
+		                            <option value="3" <c:if test="${param.submitStatus eq '3'}">selected</c:if>>보류</option>
 		                        </select>
 		                    </div>
 		                </div>
@@ -143,30 +143,38 @@
 			
 			<!-- 페이징 -->
 	        <c:if test="${not empty pageInfo and not empty pageInfo.maxPage and pageInfo.maxPage > 0}">
-		        <div class="d-flex flex-column align-items-center mt-5">
-		            <nav aria-label="Page navigation">
-		                <ul class="pagination pagination-sm m-0">
-		                    <li class="page-item <c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>">
-		                    	<a class="page-link" href="<c:url value="/admin/submits?pageNum=${pageInfo.pageNum - 1}&activeTab=${activeTab}" />">&lt;</a>
-		                    </li>
-		                    
-		                    <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
-								<c:choose>
-									<c:when test="${i eq pageInfo.pageNum}">
-										<a class="page-link">${i}</a>
-									</c:when>
-									<c:otherwise>
-										<a class="page-link" href="<c:url value="/admin/submits?pageNum=${i}&activeTab=${activeTab}" />">${i}</a>
-									</c:otherwise>
-								</c:choose>
-		                    </c:forEach>
-		                    
-		                    <li class="page-item <c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>">
-		                    	<a class="page-link" href="<c:url value="/admin/submits?pageNum=${pageInfo.pageNum + 1}&activeTab=${activeTab}" />">&gt;</a>
-		                    </li>
-		                </ul>
-		            </nav>
-				</div>
+			    <div class="d-flex justify-content-center mt-5 mb-4">
+			        <nav aria-label="Page navigation">
+			            <ul class="pagination pagination-sm mb-0">
+			                
+			                <li class="page-item ${pageInfo.pageNum eq 1 ? 'disabled' : ''}">
+			                    <a class="page-link" href="<c:url value='/admin/submits?pageNum=${pageInfo.pageNum - 1}&activeTab=${activeTab}' />" aria-label="Previous">
+			                        <span aria-hidden="true">&laquo;</span>
+			                    </a>
+			                </li>
+			
+			                <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+			                    <li class="page-item ${i eq pageInfo.pageNum ? 'active' : ''}">
+			                        <c:choose>
+			                            <c:when test="${i eq pageInfo.pageNum}">
+			                                <span class="page-link">${i}</span>
+			                            </c:when>
+			                            <c:otherwise>
+			                                <a class="page-link" href="<c:url value='/admin/submits?pageNum=${i}&activeTab=${activeTab}' />">${i}</a>
+			                            </c:otherwise>
+			                        </c:choose>
+			                    </li>
+			                </c:forEach>
+			
+			                <li class="page-item ${pageInfo.pageNum eq pageInfo.maxPage ? 'disabled' : ''}">
+			                    <a class="page-link" href="<c:url value='/admin/submits?pageNum=${pageInfo.pageNum + 1}&activeTab=${activeTab}' />" aria-label="Next">
+			                        <span aria-hidden="true">&raquo;</span>
+			                    </a>
+			                </li>
+			                
+			            </ul>
+			        </nav>
+			    </div>
 			</c:if>
 			
 		</div>

@@ -73,17 +73,5 @@ public class SubmitDTO {
 	private LocalDateTime regDate;
 	private Integer postCheck;
 	
-//	public void setPostCheck(Integer postCheck) {
-//		if(postCheck == 1) {
-//			this.postCheck = "검토전";
-//		} else if(postCheck == 2) {
-//			this.postCheck = "승인";
-//		} else if(postCheck == 3) {
-//			this.postCheck = "보류";
-//		} else if(postCheck == 4) {
-//			this.postCheck = "삭제";
-//		}
-//	}
-	
 	
 }

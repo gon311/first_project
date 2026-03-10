@@ -12,9 +12,9 @@
 <body>
 	<%@ include file="/WEB-INF/views/admin/common/header.jsp" %>
 
-	<main class="container mt-4">
-		<h2 class="mb-5">결제 관리</h2>
-		<div class="container w-75 my-4 mx-3">
+	<main class="container-fluid px-5 mt-4">
+		<h2 class="mb-5 fw-bold">결제 관리</h2>
+		<div class="container w-75 my-4 mx-3 mt-5">
 		    <h5 class="card-title mb-3">검색</h5>
 		    <div class="card">
 		        <div class="card-body">
@@ -32,12 +32,12 @@
 		                                <!-- 시작일자 -->
 		                                <div class="d-flex flex-column ms-2">
 		                                    <label class="form-label small mb-1 text-secondary">시작일자</label>
-		                                    <input type="date" class="form-control form-control-sm" name="startDate">
+		                                    <input type="date" class="form-control form-control-sm" name="startDate" value="${param.startDate}">
 		                                </div>
 		                                <!-- 종료일자 -->
 		                                <div class="d-flex flex-column ms-2">
 		                                    <label class="form-label small mb-1 text-secondary">종료일자</label>
-		                                    <input type="date" class="form-control form-control-sm" name="endDate">
+		                                    <input type="date" class="form-control form-control-sm" name="endDate" value="${param.endDate}">
 		                                </div>
 		                            </div>
 		                        </div>
@@ -46,16 +46,16 @@
 		                    <!-- 결제명 -->
 		                    <div class="col-md-3">
 		                        <label class="form-label fw-bold mb-2">결제명</label>
-		                        <input type="text" class="form-control form-control-sm" name="keyword" placeholder="결제명을 입력하세요">
+		                        <input type="text" class="form-control form-control-sm" name="keyword" placeholder="결제명을 입력하세요" value="${param.keyword}">
 		                    </div>
 		
 		                    <!-- 구분 -->
 		                    <div class="col-md-2">
 		                        <label class="form-label fw-bold mb-2">구분</label>
 		                        <select class="form-select form-select-sm" name="userType">
-		                            <option value="" selected>전체</option>
-		                            <option value="P">구직자</option>
-		                            <option value="C">기업</option>
+		                            <option value="" <c:if test="${param.userType eq ''}">selected</c:if>>전체</option>
+		                            <option value="P" <c:if test="${param.userType eq 'P'}">selected</c:if>>구직자</option>
+		                            <option value="C" <c:if test="${param.userType eq 'C'}">selected</c:if>>기업</option>
 		                        </select>
 		                    </div>
 		                    
@@ -63,10 +63,10 @@
 		                    <div class="col-md-2">
 		                        <label class="form-label fw-bold mb-2">상태</label>
 		                        <select class="form-select form-select-sm" name="payStatus">
-		                            <option value="" selected>전체</option>
-		                            <option value="paid">결제완료</option>
-		                            <option value="ready">입금대기</option>
-		                            <option value="cancelled">결제취소</option>
+		                            <option value="" <c:if test="${param.payStatus eq ''}">selected</c:if>>전체</option>
+		                            <option value="paid" <c:if test="${param.payStatus eq 'paid'}">selected</c:if>>결제완료</option>
+		                            <option value="ready" <c:if test="${param.payStatus eq 'ready'}">selected</c:if>>입금대기</option>
+		                            <option value="cancelled" <c:if test="${param.payStatus eq 'cancelled'}">selected</c:if>>결제취소</option>
 		                        </select>
 		                    </div>
 		
@@ -167,30 +167,38 @@
 			
 			<!-- 페이징 -->
 	        <c:if test="${not empty pageInfo and not empty pageInfo.maxPage and pageInfo.maxPage > 0}">
-		        <div class="d-flex flex-column align-items-center mt-5">
-		            <nav aria-label="Page navigation">
-		                <ul class="pagination pagination-sm m-0">
-		                    <li class="page-item <c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>">
-		                    	<a class="page-link" href="<c:url value="/admin/payments?pageNum=${pageInfo.pageNum - 1}&activeTab=${activeTab}" />">&lt;</a>
-		                    </li>
-		                    
-		                    <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
-								<c:choose>
-									<c:when test="${i eq pageInfo.pageNum}">
-										<a class="page-link">${i}</a>
-									</c:when>
-									<c:otherwise>
-										<a class="page-link" href="<c:url value="/admin/payments?pageNum=${i}&activeTab=${activeTab}" />">${i}</a>
-									</c:otherwise>
-								</c:choose>
-		                    </c:forEach>
-		                    
-		                    <li class="page-item <c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>">
-		                    	<a class="page-link" href="<c:url value="/admin/payments?pageNum=${pageInfo.pageNum + 1}&activeTab=${activeTab}" />">&gt;</a>
-		                    </li>
-		                </ul>
-		            </nav>
-				</div>
+			    <div class="d-flex justify-content-center mt-5 mb-4">
+			        <nav aria-label="Payments Page navigation">
+			            <ul class="pagination pagination-sm mb-0">
+			                
+			                <li class="page-item ${pageInfo.pageNum eq 1 ? 'disabled' : ''}">
+			                    <a class="page-link" href="<c:url value='/admin/payments?pageNum=${pageInfo.pageNum - 1}&activeTab=${activeTab}' />" aria-label="Previous">
+			                        <span aria-hidden="true">&laquo;</span>
+			                    </a>
+			                </li>
+			
+			                <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+			                    <li class="page-item ${i eq pageInfo.pageNum ? 'active' : ''}">
+			                        <c:choose>
+			                            <c:when test="${i eq pageInfo.pageNum}">
+			                                <span class="page-link fw-bold">${i}</span>
+			                            </c:when>
+			                            <c:otherwise>
+			                                <a class="page-link" href="<c:url value='/admin/payments?pageNum=${i}&activeTab=${activeTab}' />">${i}</a>
+			                            </c:otherwise>
+			                        </c:choose>
+			                    </li>
+			                </c:forEach>
+			
+			                <li class="page-item ${pageInfo.pageNum eq pageInfo.maxPage ? 'disabled' : ''}">
+			                    <a class="page-link" href="<c:url value='/admin/payments?pageNum=${pageInfo.pageNum + 1}&activeTab=${activeTab}' />" aria-label="Next">
+			                        <span aria-hidden="true">&raquo;</span>
+			                    </a>
+			                </li>
+			                
+			            </ul>
+			        </nav>
+			    </div>
 			</c:if>
 			
 		</div>

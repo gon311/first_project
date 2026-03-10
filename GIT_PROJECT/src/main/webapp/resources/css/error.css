@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+/* 추가적인 중앙 정렬을 위한 스타일 */
+.error-container {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.error-icon {
+    font-size: 5rem;
+    color: #dc3545; /* Bootstrap danger 색상 */
+}

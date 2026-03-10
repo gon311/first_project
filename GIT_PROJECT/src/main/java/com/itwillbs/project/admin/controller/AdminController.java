@@ -248,6 +248,10 @@ public class AdminController {
 		// 공고를 제출한 기업 정보
 		MemberDTO comDTO = adminService.getComInfo(memberDTO.getUserId());
 		
+		if(comDTO.getProductName() == null) {
+			comDTO.setProductName("보유 이용권 없음");
+		}
+		
 		model.addAttribute("com", comDTO);
 		
 		return "admin/submit/submitInfo";
@@ -261,7 +265,7 @@ public class AdminController {
 		// 공고 상태 변경
 		SubmitDTO submitDTO = adminService.getSubmitInfo(jobId);
 		adminService.changeSubmitStatus(submitDTO.getJobId(), postCheck);
-		
+		 
 		// 공고 승인 시 등록일자를 승인 시점으로 변경
 		if(postCheck == 2) {
 			adminService.changeRegDate(submitDTO.getJobId());

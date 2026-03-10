@@ -142,7 +142,7 @@
 										</thead>
 										<tbody>
 											<c:forEach var="job" varStatus="status" items="${jobPostlist}">
-												<tr class="clickable-row" onclick="">
+												<tr class="clickable-row" onclick="location.href='<c:url value="/job/jobDetail?jobId=${job.jobId}"/>'">
 													<td>${status.count}</td>
 													<td>${job.title}</td>
 													<td>${job.field}</td>
@@ -178,7 +178,7 @@
 										</thead>
 										<tbody>
 											<c:forEach var="qna" varStatus="status" items="${qnaList}">
-												<tr class="clickable-row" onclick="">
+												<tr class="clickable-row" onclick="location.href='/admin/contents/QnADetail?qnaId=${qna.qnaId}'">
 													<td>${status.count}</td>
 													<td>${qna.qnaTitle}</td>
 													<td>

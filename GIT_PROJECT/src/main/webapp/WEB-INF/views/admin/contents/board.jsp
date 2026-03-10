@@ -132,7 +132,7 @@
 				                    </c:forEach>
 				                    
 				                    <li class="page-item <c:if test="${pageInfoDTO.pageNum eq pageInfoDTO.maxPage}">disabled</c:if>">
-				                    	<a class="page-link" href="<c:url value="/admin/contents/Board?pageNum=${pageInfoDTO.pageNum + 1}}" />">&gt;</a>
+				                    	<a class="page-link" href="<c:url value="/admin/contents/Board?pageNum=${pageInfoDTO.pageNum + 1}" />">&gt;</a>
 				                    </li>
 				                </ul>
 				            </nav>

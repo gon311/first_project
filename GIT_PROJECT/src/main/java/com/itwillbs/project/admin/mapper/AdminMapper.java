@@ -105,7 +105,10 @@ public interface AdminMapper {
 	
 	//========================================================================
 	// 공지사항 리스트 조회
-	List<NoticeDTO> getNoticeList(NoticeDTO noticeDTO);
+	
+	int getNoticeTotalCount(SearchDTO searchDTO);
+	
+	List<NoticeDTO> getNoticeList(SearchDTO searchDTO);
 
 	// 공지사항 상세 조회
 	NoticeDTO getNoticeById(int noticeId);
@@ -122,8 +125,12 @@ public interface AdminMapper {
 
 	
 	//========================================================================
+//	[ 채용공고 관리]
+//	채용공고 리스트 개수 조회
+	int getJobPostTotalCount(SearchDTO searchDTO);
+	
 //	채용공고 리스트 조회
-	List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO);
+	List<JobPostDTO> getJobPostList(SearchDTO searchDTO);
 	
 //	채용공고 상세 조회
 	JobPostDTO getJobPostById(int jobId);
@@ -187,8 +194,9 @@ public interface AdminMapper {
 	
 	// ======================================================================
 	// 1:1 문의글 관리
+	int getQnaTotalCount(SearchDTO searchDTO);
 
-	List<QnaDTO> getQnaList(QnaDTO qnaDTO);
+	List<QnaDTO> getQnaList(SearchDTO searchDTO);
 	
 	QnaDTO getQnaById(int qnaId);
 
@@ -277,6 +285,7 @@ public interface AdminMapper {
 
 //	자유게시판 댓글 삭제
 	void deleteComment(long commentId);
+
 
 
 	

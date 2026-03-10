@@ -262,8 +262,13 @@ public class AdminService{
 	
 	//======================================================================================
 	// 공지사항 리스트 조회 (DTO 파라미터로 사용)
-	public List<NoticeDTO> getNoticeList(NoticeDTO noticeDTO){
-		return adminMapper.getNoticeList(noticeDTO);
+	public int getNoitceTotalCount(SearchDTO searchDTO) {
+		return adminMapper.getNoticeTotalCount(searchDTO);
+	}
+	
+	
+	public List<NoticeDTO> getNoticeList(SearchDTO searchDTO){
+		return adminMapper.getNoticeList(searchDTO);
 	}
 	
 	// 공지사항 상세 조회(DTO 리턴)
@@ -288,10 +293,17 @@ public class AdminService{
 	}
 	//========================================================================================
 	// 채용공고 리스트 조회
-	public List<JobPostDTO> getJobPostList(JobPostDTO jobPostDTO) {
+	public List<JobPostDTO> getJobPostList(SearchDTO searchDTO) {
 		
-		return adminMapper.getJobPostList(jobPostDTO);
+		return adminMapper.getJobPostList(searchDTO);
 	}
+	
+	public int getJobPostTotalCount(SearchDTO searchDTO) {
+
+		return adminMapper.getJobPostTotalCount(searchDTO);
+	}
+
+
 	// 채용공고 상세 조회
 	public JobPostDTO getJobPostDetail(int jobId) {
 		return adminMapper.getJobPostById(jobId);
@@ -461,10 +473,14 @@ public class AdminService{
 	
 	// =======================================================================================
 	// 1:1문의글관리 
+	
+	public int getQnaTotalCount(SearchDTO searchDTO) {
+		return adminMapper.getQnaTotalCount(searchDTO);
+	}
 
-	public List<QnaDTO> getQnaList(QnaDTO qnaDTO) {
+	public List<QnaDTO> getQnaList(SearchDTO searchDTO) {
 
-		return adminMapper.getQnaList(qnaDTO);
+		return adminMapper.getQnaList(searchDTO);
 	}
 
 	public QnaDTO getQnADetail(int qnaId) {

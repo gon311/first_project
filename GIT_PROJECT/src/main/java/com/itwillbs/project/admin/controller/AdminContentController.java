@@ -1,10 +1,8 @@
 package com.itwillbs.project.admin.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,13 +29,33 @@ public class AdminContentController {
 	private AdminService adminService;
 	
 	@GetMapping("/notice")
-	public String noticeList(@RequestParam(value="page", defaultValue="1") int page,
-			NoticeDTO noticeDTO,
+	public String noticeList(@RequestParam(value="pageNum", defaultValue="1") int pageNum,
+			SearchDTO searchDTO,
 			Model model) {
 		
-		List<NoticeDTO> list = adminService.getNoticeList(noticeDTO);
-		model.addAttribute("noticeList", list);
-		model.addAttribute("noticeDTO", noticeDTO); 
+		int listLimit = 10;
+		int pageListLimit = 5; 
+		
+		int listCount = adminService.getNoitceTotalCount(searchDTO);
+		
+		int maxPage = (int)Math.ceil((double)listCount/listLimit);
+		int startPage = ((pageNum -1 )/ pageListLimit) * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage,startPage, endPage, pageNum);
+		
+		searchDTO.setOffset((pageNum - 1) * listLimit);
+		searchDTO.setLimit(listLimit);
+		
+		
+		List<NoticeDTO> noticeList = adminService.getNoticeList(searchDTO);
+		
+		model.addAttribute("noticeList", noticeList);
+		model.addAttribute("searchDTO", searchDTO); 
+		model.addAttribute("pageInfoDTO", pageInfoDTO); 
 		
 		
 		
@@ -96,16 +114,35 @@ public class AdminContentController {
 //	== [ 채용 공고 관리 ] ==
 //	채용공고목록조회
 	@GetMapping("/JobPost")
-	public String jobPostList(@RequestParam(value="page", defaultValue="1") int page,
-			JobPostDTO jobPostDTO
+	public String jobPostList(@RequestParam(value="pageNum", defaultValue="1") int pageNum
+			, SearchDTO searchDTO
 			, Model model) {
 		
 		
-		List<JobPostDTO> jobPostList = adminService.getJobPostList(jobPostDTO);
+		int listLimit = 10;
+		int pageListLimit = 5; 
+		
+		int listCount = adminService.getJobPostTotalCount(searchDTO);
+		
+		int maxPage = (int)Math.ceil((double)listCount/listLimit);
+		int startPage = ((pageNum -1 )/ pageListLimit) * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage,startPage, endPage, pageNum);
+		
+		searchDTO.setOffset((pageNum - 1) * listLimit);
+		searchDTO.setLimit(listLimit);
+		
+		
+		List<JobPostDTO> jobPostList = adminService.getJobPostList(searchDTO);
 //		System.out.println("postStatus: " + jobPostDTO.getPostStatus());
 		
 		model.addAttribute("jobPostList", jobPostList);
-		model.addAttribute("jobPostDTO", jobPostDTO);
+		model.addAttribute("searchDTO", searchDTO);
+		model.addAttribute("pageInfoDTO", pageInfoDTO);
 		return "admin/contents/jobPost";
 	}
 //	채용공고 상세조회
@@ -228,9 +265,6 @@ public class AdminContentController {
 	    
 //	    faqDTO.getKeyword().trim();
 	    
-	    
-	    
-	    
 	    model.addAttribute("faqList", faqList);
 	    model.addAttribute("userType", userType); // 탭 활성화 유지용
 	    model.addAttribute("keyword", faqDTO.getKeyword());   // 검색어 유지용
@@ -290,16 +324,38 @@ public class AdminContentController {
 //	== [ 1:1 문의글 관리 ] ==
 	@GetMapping("/QnA")
 	public String qnaList(@RequestParam(value="reStatus", defaultValue="all") String reStatus, 
-			@RequestParam(value="page", defaultValue="1") int page,
+			@RequestParam(value="pageNum", defaultValue="1") int pageNum,
 			@RequestParam(value="sort", defaultValue="all") String sort,
-			Model model, QnaDTO qnaDTO) {
+			Model model,
+			SearchDTO searchDTO) {
 	    
 		
-		List<QnaDTO> list = adminService.getQnaList(qnaDTO);
+		int listLimit = 10;
+		int pageListLimit = 5; 
+		
+		int listCount = adminService.getQnaTotalCount(searchDTO);
+		
+		int maxPage = (int)Math.ceil((double)listCount/listLimit);
+		int startPage = ((pageNum -1 )/ pageListLimit) * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage,startPage, endPage, pageNum);
+		
+		searchDTO.setOffset((pageNum - 1) * listLimit);
+		searchDTO.setLimit(listLimit);
+		
+		List<QnaDTO> qnaList = adminService.getQnaList(searchDTO);
 //		System.out.println("정렬 확인 : " +sort.toString());
-	    model.addAttribute("qnaList", list);
+	    model.addAttribute("qnaList", qnaList);
 	    model.addAttribute("reStatus", reStatus); // 현재 탭 활성화를 위해 전달
 	    model.addAttribute("sort", sort);
+	    model.addAttribute("searchDTO", searchDTO);
+	    model.addAttribute("pageInfoDTO", pageInfoDTO);
+	    
+	    
 	return "admin/contents/qna";
 	}
 //	1:1 문의글 상세 조회

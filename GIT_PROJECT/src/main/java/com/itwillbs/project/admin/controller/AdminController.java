@@ -270,7 +270,7 @@ public class AdminController {
 			BannerDTO bannerDTO = new BannerDTO();
 			bannerDTO.setJobId(jobId);
 			bannerDTO.setCompId(submitDTO.getCompId());
-			System.out.println(bannerDTO.getJobId());
+//			System.out.println(bannerDTO.getJobId());
 			adminService.insertBanner(bannerDTO);
 		}
 		

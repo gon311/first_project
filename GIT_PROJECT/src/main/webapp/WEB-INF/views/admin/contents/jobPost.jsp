@@ -23,12 +23,12 @@
 				        <div class="row my-3">
 					        <!-- 키워드 검색 -->
 					        <div class="col-md-4">
-					          <label for="title" class="form-label">공고제목</label>
-					          <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요">
+					          <label for="keyword" class="form-label">공고제목</label>
+					          <input type="text" class="form-control" name="keyword" placeholder="제목을 입력하세요">
 					        </div>
 							<div class="col-md-4">
-					    		<label for="compId" class="form-label">기업Id</label>
-					    		<input type="text" class="form-control" name="compId" placeholder="아이디를 입력하세요">
+					    		<label for="userId" class="form-label">기업Id</label>
+					    		<input type="text" class="form-control" name="userId" placeholder="아이디를 입력하세요">
 					    	</div>  
 					        <!-- 구분 -->
 					        <div class="col-md-4">
@@ -121,7 +121,7 @@
 			                    </c:forEach>
 			                    
 			                    <li class="page-item <c:if test="${pageInfoDTO.pageNum eq pageInfoDTO.maxPage}">disabled</c:if>">
-			                    	<a class="page-link" href="<c:url value="/admin/contents/JobPost?pageNum=${pageInfoDTO.pageNum + 1}}" />">&gt;</a>
+			                    	<a class="page-link" href="<c:url value="/admin/contents/JobPost?pageNum=${pageInfoDTO.pageNum + 1}" />">&gt;</a>
 			                    </li>
 			                </ul>
 			            </nav>

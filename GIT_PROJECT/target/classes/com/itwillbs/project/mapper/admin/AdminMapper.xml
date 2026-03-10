@@ -499,6 +499,39 @@
 	</select>
 	
 	<!-- ==================================================================== -->
+	<!-- [공지사항 게시판] -->
+	<!-- 공지사항 게시글 수 조회 -->
+	<select id="getNoticeTotalCount" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			notice
+		 <where>
+		 	<if test = 'keyword != null and keyword != "" '>
+		 		<choose>
+		 			<when test = 'type == "all"'>
+		 				AND 
+		 				(notice_title LIKE CONCAT ('%', #{keyword}, '%')
+		 				OR status LIKE CONCAT ('%', #{keyword}, '%')
+		 				OR user_type LIKE CONCAT ('%', #{keyword}, '%')
+		 				)
+		 			</when>
+		 			<when test ='type == "title"'>
+		 				AND notice_title LIKE CONCAT('%', #{keyword}, '%')
+		 			</when>
+		 			
+		 			<when test = 'type == "status"'>
+		 				AND status = #{keyword}
+		 			</when>
+		 			<when test = 'type == "userType"'>
+		 				AND user_type = #{keyword}
+		 			</when>
+		 		</choose>
+			</if>
+		 </where>
+	
+	</select>
+	
 	<!-- 공지사항 리스트 조회 -->
 	<select id="getNoticeList" resultType="notice">
 		SELECT
@@ -512,28 +545,29 @@
 		 	, status
 		 FROM notice
 		 <where>
-		 	<if test = 'searchKeyword != null and searchKeyword != "" '>
+		 	<if test = 'keyword != null and keyword != "" '>
 		 		<choose>
-		 			<when test = 'searchType == "all"'>
+		 			<when test = 'type == "all"'>
 		 				AND 
-		 				(notice_title LIKE CONCAT ('%', #{searchKeyword}, '%')
-		 				OR status LIKE CONCAT ('%', #{searchKeyword}, '%')
-		 				OR user_type LIKE CONCAT ('%', #{searchKeyword}, '%')
+		 				(notice_title LIKE CONCAT ('%', #{keyword}, '%')
+		 				OR status LIKE CONCAT ('%', #{keyword}, '%')
+		 				OR user_type LIKE CONCAT ('%', #{keyword}, '%')
 		 				)
 		 			</when>
-		 			<when test ='searchType == "noticeTitle"'>
-		 				AND notice_title LIKE CONCAT('%', #{searchKeyword}, '%')
+		 			<when test ='type == "noticeTitle"'>
+		 				AND notice_title LIKE CONCAT('%', #{keyword}, '%')
 		 			</when>
 		 			
-		 			<when test = 'searchType == "status"'>
-		 				AND status = #{searchKeyword}
+		 			<when test = 'type == "status"'>
+		 				AND status = #{keyword}
 		 			</when>
-		 			<when test = 'searchType == "userType"'>
-		 				AND user_type = #{searchKeyword}
+		 			<when test = 'type == "userType"'>
+		 				AND user_type = #{keyword}
 		 			</when>
 		 		</choose>
 			</if>
 		 </where>
+		 LIMIT ${offset}, ${limit}
 	</select>
 	<!-- 공지사항 작성 -->
 	<insert id ="insertNotice" parameterType="notice">
@@ -596,6 +630,25 @@
 	</update>
 	<!-- ================================================================================== -->
 	<!--  [ 채용공고 관리 게시판 ]  -->
+	<!--  채용공고 리스트 개수 조회 -->
+	<select id = "getJobPostTotalCount" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM
+			job_posting
+		WHERE
+			post_check = 2
+			<if test="keyword !=null and keyword !=''">
+				AND title LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="userId != null and userId != 0">
+				AND comp_id LIKE CONCAT('%', #{userId}, '%')
+			</if>
+			<if test="postStatus != null and postStatus !=0 and postStatus != ''">
+				AND post_status = #{postStatus}
+			</if>
+	</select>
+	
 	
 	<!--  채용공고 목록 조회 -->
 	<select id="getJobPostList" resultType="jobPost">
@@ -611,17 +664,18 @@
 		<!-- 검색 기능 -->
 		WHERE
 			post_check = 2
-			<if test="title !=null and title !=''">
-				AND title LIKE CONCAT('%', #{title}, '%')
+			<if test="keyword !=null and keyword !=''">
+				AND title LIKE CONCAT('%', #{keyword}, '%')
 			</if>
-			<if test="compId != null and compId != 0">
-				AND comp_id LIKE CONCAT('%', #{compId}, '%')
+			<if test="userId != null and userId != 0">
+				AND comp_id LIKE CONCAT('%', #{userId}, '%')
 			</if>
 			<if test="postStatus != null and postStatus !=0 and postStatus != ''">
 				AND post_status = #{postStatus}
 			</if>
-
+		LIMIT #{offset}, #{limit}
 	</select>
+	
 	<!--  채용공고 상세 조회 -->
 	<select id="getJobPostById" resultType ="jobPost">
 		SELECT *
@@ -908,6 +962,32 @@
 	
 	<!--  ========================================================================= -->
 	<!-- 1:1 문의글  -->
+	<select id = "getQnaTotalCount" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM
+			qna
+		<where>
+			<if test="reStatus != null and reStatus != '' and reStatus != 'all'">
+				AND re_status = #{reStatus}
+			</if>
+		</where>
+		ORDER BY 
+			<choose>
+				<when test ='sort != null and sort.equals("old")'>
+					reg_date ASC
+				</when>
+				<when test ='sort != null and sort.equals("new")'>
+					reg_date DESC
+				</when>
+				<otherwise>
+					qna_id DESC
+				</otherwise>
+			</choose>
+	</select>
+	
+	
+	
 	<select id="getQnaList" resultType="qna">
 		select 
 			qna_id
@@ -934,6 +1014,7 @@
 					qna_id DESC
 				</otherwise>
 			</choose>
+		LIMIT #{offset}, #{limit}
 	</select>
 	
 	<select id = "getQnaById" resultType="qna">
@@ -986,6 +1067,8 @@
 		SET
 			re_date = NOW()
 			, re_content = #{reContent}
+		WHERE
+			qna_id = #{qnaId}
 		
 	</update>
 	
@@ -1475,4 +1558,4 @@
 	
 	</update>
 	
-	</mapper>
+</mapper>

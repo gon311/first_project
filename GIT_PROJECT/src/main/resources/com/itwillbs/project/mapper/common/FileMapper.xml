@@ -5,7 +5,7 @@
 <mapper namespace="com.itwillbs.project.common.mapper.FileMapper">
 	
 	<!--  파일 상세 정보 조회 - SELECT   -->
-	<select id="selectFile" resultType="com.itwillbs.project.common.dto.FileDTO">
+	<select id="selectFile" resultType="fileDTO">
 		SELECT 	* 
 		FROM 	file 
 		WHERE 	file_id = #{fileId}

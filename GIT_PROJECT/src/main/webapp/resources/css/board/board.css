@@ -18,7 +18,7 @@ body {
 	border-radius: 16px;
 	box-shadow: 0 10px 30px rgba(15, 23, 42, .04);
 	padding: 22px;
-	min-height: calc(100vh - 80px);
+	min-height: calc(100vh - 80px);	
 }
 
 .page-title {

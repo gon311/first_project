@@ -3,10 +3,75 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.project.resume.mapper.ResumeMapper">
+	
+	<!-- 	이력서 저장 - 학력정보. -->
+	<!-- 	insertResumeEdu(ResumeEducationDTO eduDTO) -->
+	<insert id="insertResumeEdu" useGeneratedKeys="true" keyProperty="resumeId">
+		insert into resume_education(
+				resume_id,     
+			education_level,
+			school_name,   
+			department,     
+			                            
+			major,         
+			minor_major,		
+			major_sub,
+			                            
+			hakjum,        
+			hakjum_scale,   
+			edu_start_day,         
+			edu_end_day           	
+		
+		) values (
+			#{resumeId},
+			#{educationLevel},
+			#{schoolName},
+			#{department},
+			
+			#{major},
+			#{minorMajor},
+			#{majorSub},
+				
+			#{hakjum},
+			#{hakjumScale},
+			#{eduStartDay},
+			#{eduEndDay}
+		
+		)
+	</insert>
+
+<!-- 	이력서 저장 - 경력정보. -->
+<!-- 	insertResumeExp(ResumeEducationDTO expDTO) -->	
+		<insert id="insertResumeExp" useGeneratedKeys="true" keyProperty="resumeId">
+		insert into resume_experience(
+				resume_id,     
+			company_name,
+			depatment_name,   
+			                            
+			job_position,         
+			job_description,
+			
+			employtype_name,		
+			start_date,		
+			end_date		
+
+		) values (
+			#{resumeId},
+			#{companyName},
+			#{depatmentName},
+			
+			#{jobPosition},
+			#{jobDescription},
+			
+			#{employTypeName},
+			#{startDate},
+			#{endDate}
+		)
+	</insert>
 
 <!-- 	void insertResume(ResumeDTO resumeDTO) -->
-
-	<insert id="insertResume">
+<!-- 	이력서 저장 - 기본정보. -->
+	<insert id="insertResume" useGeneratedKeys="true" keyProperty="resumeId">
 	    INSERT INTO resume (
 	        user_id,            <!-- 소유자 유저 ID (FK) --> 
 	        title,				<!-- 제목 -->  
@@ -19,40 +84,178 @@
 	       	phone_number,       <!-- 전화번호 -->  
 	       	email,              <!-- 이메일 --> 
 	       	address1,			<!-- 주소1 --> 	
-	       	address2,			<!-- 주소상세2 --> 
+	       	address2,			<!-- 주소상세2 -->
+
+			<!-- 1단계 작성값 -->
+			industry_code,       <!-- 업종 -->
+			job_code,            <!-- 직종 -->
+			role_code,            <!-- 세부직종 -->
+			company_code,       <!-- 기업형태 -->
+			applied_field,     <!-- 지원분야(지원직무) -->
+			company_name,      <!-- 기업명(지원한) -->
+			career_code,       <!-- 경력사항(신입/경력/인턴) -->
+	       	<!-- 히든의 파라미터 -->
+	       	hidden_industry,		<!-- 업종명칭 -->
+    		hidden_job,			<!-- 직종명칭 -->
+    		hidden_role,			<!-- 세부직종명 -->
+    		hidden_company_type,	<!-- 기업형태명칭 -->
 	       	
-	       	military_service,
-			military_branch,	
-			military_rank,		
-			discharge_reason,
-			enlist_date,		
-			discharge_date,		
-			exemption_reason	
+	       	
+	       	<!-- 사회적 우대사항 -->
+	       	veteran_status,		<!-- 보훈대상 여부 --> 
+			veteran_number,		<!-- 보훈번호 -->   
+			disability_status,		<!-- 장애 여부 --> 
+			disability_grade,   <!-- 장애 등급 : 추가 -->  
+			multicultural_status,		<!-- 다문화가정 여부 --> 	
+			north_defector,		<!-- 북한이탈주민 여부 -->
+			low_income_status,	<!-- 기초생활수급자/차상위계층 여부 --> 
+	       	
+	       	<!-- 병역 사항 -->
+	       	military_service,	<!-- 군필 여부 --> 
+			military_branch,	<!-- 군별 -->   
+			military_rank,		<!-- 계급 --> 
+			discharge_reason,   <!-- 전역사유 -->  
+			enlist_date,		<!-- 입대일 --> 	
+			discharge_date,		<!-- 전역일 -->
+			exemption_reason	<!-- 면제사유 -->
 	       	
 	    ) VALUES (
-	        #{user_id},       
-	        #{title},       
-	        #{name_kor}, 
-	        #{name_eng}, 
-	        #{name_han}, 
-	        
-	        #{birth_date},       
-	        #{gender},       
-	        #{phone_number}, 
-	        #{email}, 
-	        #{address1}, 
+	        #{userId},       
+	        #{title},       	   
+	        #{nameKor},
+	        #{nameEng},
+	        #{nameHan},
+	
+	        #{birthDate},
+	        #{gender},
+	        #{phoneNumber},
+	        #{email},
+	        #{address1},
 	        #{address2},
 	        
-	        #{military_service}, 
-	        #{military_branch}, 
-	        #{military_rank}, 
-	        #{discharge_reason}, 
-	        #{enlist_date}, 
-	        #{discharge_date}, 
-	        #{exemption_reason} 
+	       	#{industryCode},
+	        #{jobCode},
+	        #{roleCode},
+	        #{companyCode},
+	        #{appliedField},
+	        #{companyName},
+	        #{careerCode},
+	        
+	        #{hiddenIndustry},
+	        #{hiddenJob},
+	        #{hiddenRole},
+	        #{hiddenCompanyType},
+	        
+	        #{veteranStatus},
+	        #{veteranNumber},
+	        #{disabilityStatus},
+	        #{disabilityGrade},
+	        #{multiculturalStatus},
+	        #{northDefector},
+	        #{lowIncomeStatus},
+	        
+	        #{militaryService},
+	        #{militaryBranch},
+	        #{militaryRank},
+	        #{dischargeReason},
+	        #{enlistDate},
+	        #{dischargeDate},
+	        #{exemptionReason}
 	    );   
 	</insert>	
 	
+
+	<!-- 이력서의 상세정보 : selectResume -->
+	<select id="selectResume" resultType="resume">
+		SELECT *
+        FROM resume
+        WHERE resume_id = #{resumeId}		
+	</select>
+	
+	 <!-- Education -->
+    <select id="selectEducationList" resultType="resumeEducation">
+        SELECT *
+        FROM resume_education
+        WHERE resume_id = #{resumeId}
+    </select>
+
+    <!-- Experience -->
+    <select id="selectExperienceList" resultType="resumeExperience">
+        SELECT *
+        FROM resume_experience
+        WHERE resume_id = #{resumeId}
+    </select>
+	
+	<!-- selectResumeList -->
+	<select id="selectResumeList" resultType="resume">
+		select 
+			 resume_id AS resumeId,
+	         user_id AS userId,
+	        title,
+	        created_at AS createdAt,
+	        
+        	hidden_industry,
+       		hidden_job,
+       		hidden_company_type,
+	        company_name
+		
+		from 
+			resume
+		where
+			user_id = #{userId}	        
+	
+	</select>
+	
+<!-- 	updateResume -->
+	<update id="updateResume">
+		update 
+			resume
+		set 
+			title = #{title},
+			name_kor = #{nameKor},
+			name_eng = #{nameEng},
+			name_han = #{nameHan},
+
+			birth_date = #{birthDate},
+			gender = #{gender},
+			phone_number = #{phoneNumber},
+			email = #{email},
+			address1 = #{address1},
+			address2 = #{address2},
+			
+			veteran_status = #{veteranStatus},
+			veteran_number = #{veteranNumber},
+			disability_status = #{disabilityStatus},
+			disability_grade = #{disabilityGrade},
+			multicultural_status = #{multiculturalStatus},
+			north_defector = #{northDefector},
+			low_income_status = #{lowIncomeStatus},
+			
+			military_service = #{militaryService},
+			military_branch = #{militaryBranch},
+			military_rank = #{militaryRank},
+			discharge_reason = #{dischargeReason},
+			enlist_date = #{enlistDate},
+			discharge_date = #{dischargeDate},
+			exemption_reason = #{exemptionReason}
+									
+		where 
+			resume_id = #{resumeId}
+			 and user_id  = #{userId} 
+	</update>
+		 	
+	<!-- 학력정보 삭제 : deleteResumeEdu 1 ~ n	 -->
+	<delete id="deleteResumeEdu" parameterType="int">
+		DELETE FROM resume_education
+    	WHERE resume_id = #{resumeId}
+	</delete>
+	
+	<!-- 경력정보 삭제 : deleteResumeEdu 1 ~ n -->
+	<delete id="deleteResumeExp" parameterType="int">
+		DELETE FROM resume_experience
+    	WHERE resume_id = #{resumeId}
+	</delete>
+		 	
 </mapper>
 
 

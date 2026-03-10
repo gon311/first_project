@@ -1,0 +1,183 @@
+@charset "UTF-8";
+
+/* resumeList.css */
+
+/* 전체 배경 */
+.resumeList-body {
+    background-color: #f8f9fa;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 컨테이너 */
+.resumeList-container {
+    padding: 20px;
+}
+
+/* 사이드바 */
+.resumeList-sidebar {
+    background-color: #ffffff;
+    border-right: 1px solid #dee2e6;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* 프로필 카드 */
+.resumeList-profileCard {
+    text-align: center;
+}
+
+.resumeList-profileImageArea {
+    position: relative;
+}
+
+.resumeList-profileImage {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.resumeList-profileEditBtn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    padding: 5px 8px;
+    cursor: pointer;
+}
+
+/* 이름 */
+.resumeList-profileName {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* 메뉴 */
+.resumeList-menu {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.resumeList-menuItem {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.resumeList-menuItem:hover {
+    background-color: #f1f3f5;
+}
+
+.resumeList-menuItem.active {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+/* 콘텐츠 영역 */
+.resumeList-content {
+    padding: 20px;
+}
+
+/* 카드 그리드 */
+.resumeList-cardGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* 카드 기본 */
+.resumeList-card {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.resumeList-card:hover {
+    transform: translateY(-3px);
+}
+
+/* 새 이력서 카드 */
+.resumeList-createCard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: #0d6efd;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* 카드 헤더 */
+.resumeList-cardHeader {
+    padding: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.resumeList-cardTitle {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.resumeList-cardDate {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* 카드 본문 */
+.resumeList-cardBody {
+    padding: 15px;
+    font-size: 0.95rem;
+    color: #495057;
+}
+
+/* 카드 푸터 */
+.resumeList-cardFooter {
+    padding: 10px 15px;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resumeList-mainLabel {
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+/* 버튼 */
+.resumeList-setMainBtn,
+.resumeList-moreBtn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #0d6efd;
+    font-size: 0.9rem;
+}
+
+.resumeList-setMainBtn:hover,
+.resumeList-moreBtn:hover {
+    text-decoration: underline;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .resumeList-sidebar {
+        min-height: auto;
+        border-right: none;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .resumeList-cardGrid {
+        flex-direction: column;
+    }
+}

@@ -2,14 +2,16 @@
 body {
     /* 가로 최소 폭: 요소들이 겹치지 않는 최소 지점 */
     min-width: 1200px; 
-    /* 세로 최소 높이: 화면이 꽉 차지 않아도 스크롤바가 생기지 않도록 설정 */
-    min-height: 100vh;
+    min-height: 100vh; /* 화면 높이를 가득 채움 */
+    margin: 0;
     /* 내용이 넘칠 경우 스크롤 허용 */
     overflow-x: auto;
+    /* 폰트 고정 */
+    font-family: 'Pretendard', sans-serif;
 }
 
 main{
-	min-height: 800px;
+	min-height: 900px;
 }
 
 

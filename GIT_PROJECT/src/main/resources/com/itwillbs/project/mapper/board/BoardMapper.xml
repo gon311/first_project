@@ -167,7 +167,7 @@
 	
 	
 	<!-- 파일 다운 -->
-	<select id="selectBoardFiles" resultType="com.itwillbs.project.common.dto.FileDTO">
+	<select id="selectBoardFiles" resultType="fileDTO">
 	    SELECT
 	        file_id      AS fileId,
 	        category_idx AS categoryIdx,
@@ -182,7 +182,7 @@
 	    ORDER BY file_id ASC
 	</select>
 
-	<select id="selectFileById" resultType="com.itwillbs.project.common.dto.FileDTO">
+	<select id="selectFileById" resultType="fileDTO">
 	    SELECT
 	        file_id      AS fileId,
 	        category_idx AS categoryIdx,

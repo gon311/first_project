@@ -31,21 +31,6 @@
 	
 						<!-- 우측: 위/아래 스택 -->
 						<div class="col-12 col-lg-6">
-<<<<<<< HEAD
-							<!-- (위) 수정 결과물 출력창 -->
-							<div class="pane mb-3">
-								<label for="outputText" class="form-label">수정 결과물</label>
-								<textarea id="outputText" class="form-control"
-									placeholder="표절 검사 후 수정/개선된 결과가 표시됩니다."></textarea>
-							</div>
-	
-							<!-- (아래) 수정 내역 세부 설명창 -->
-							<div class="pane">
-								<label for="diffText" class="form-label">수정 내역 세부 설명</label>
-								<textarea id="diffText" class="form-control"
-									placeholder="어떤 부분이 어떻게 변경되었는지 상세 설명이 표시됩니다."></textarea>
-							</div>
-=======
 						    <div class="pane mb-3">
 						        <label for="correctedResult" class="form-label">수정 결과물</label>
 						        <div id="correctedResult" class="form-control"></div>
@@ -55,7 +40,6 @@
 						        <label for="analysisDetail" class="form-label">수정 내역 세부 설명</label>
 						        <div id="analysisDetail" class="form-control"></div>
 						    </div>
->>>>>>> refs/heads/reviewText
 						</div>
 					</div>
 	
@@ -63,10 +47,21 @@
 					<div class="d-flex justify-content-end gap-2 mt-4">
 						<button type="button" id="runCheck" class="btn btn-primary">
 							검사하기</button>
-						<button type="button" id="copyOutput"
+						<button type="button" id="copyBtn" name="copyBtn"
 							class="btn btn-outline-secondary">복사 하기</button>
 					</div>
 	
+				</div>
+			</div>
+			<%--ChatGPT 교정 요청 시 응답 돌아올 때 까지 작업 중 오버레이 화면 --%>
+			<div id="loadingOverlay" 
+				class="position-fixed top-0 start-0 w-100 h-100 d-none"
+				style="background: rgba(0,0,0,0.4); z-index: 9999">
+				<div class="d-flex justify-content-center align-items-center h-100">
+					<div class="text-center text-white">
+						<div class="spinner-border" role="status"></div>
+						<div class="mt-3">표절 검사하는 중...</div>
+					</div>
 				</div>
 			</div>
 		</main>
@@ -76,15 +71,84 @@
 	
 		<%-- 개별 페이지 자바스크립트 영역 --%>
 		<script type="text/javascript">
-
+			// 1) 입력창 포커싱 
 			document.addEventListener("DOMContentLoaded", () => {
 			    const input = document.getElementById("inputText");
 			    if (input) input.focus();
 			});
-
 		
-			// 1) chatGPT로 표절 검사 
-			// 2) 클립보드에 복사
+			// 2) 표절검사 버튼
+			document.getElementById("runCheck").addEventListener('click', () => {
+				document.getElementById("loadingOverlay").classList.remove("d-none");
+				
+				// 입력받은 내용 가져오기 
+				const inputContent = document.getElementById("inputText").value;
+				
+				async function requestGenerate() {
+					try {
+						// chatGPT에 전달하기 
+						const response = await fetch("<c:url value="/gpt/copyCheck" />", {
+							method: "POST", 
+							headers: { 
+								"Content-type": "application/json"
+							}, 
+							body: JSON.stringify({
+								inputText : inputContent
+							})
+						});
+						
+						if(!response.ok) {
+							throw new Error("오류 발생!");
+						}
+						
+						// 생성된 값 화면에 출력 
+						const result = await response.json();
+						const correctedResultArea = document.getElementById("correctedResult");
+						const analysisDetailArea = document.getElementById("analysisDetail");
+						
+						correctedResultArea.innerHTML = result.corrected;
+						analysisDetailArea.innerHTML = result.description;
+						
+					} catch(error) {
+						console.error("Error:", error);
+						alert("표절 검사 중 문제가 발생했습니다.");
+					} finally {
+						document.getElementById("loadingOverlay").classList.add("d-none");
+					}
+				}
+				requestGenerate();
+			});
+			
+			// 3) 복사하기 버튼 
+			document.addEventListener("DOMContentLoaded", () => {
+				const copyBtn = document.getElementById("copyBtn");
+				const correctedResult = document.getElementById("correctedResult");
+			
+				if (copyBtn && correctedResult) {
+					copyBtn.addEventListener("click", async () => {
+						try {
+							const text = correctedResult.innerText;
+							if (!text) {
+								alert("복사할 내용이 없습니다.");
+								return;
+							}
+							await navigator.clipboard.writeText(text);
+							alert("클립보드에 복사되었습니다. Ctrl+V로 붙여넣기 해주세요.");
+						} catch (err) {
+							try {
+								output.select();
+								document.execCommand("copy");
+								alert("클립보드에 복사되었습니다. Ctrl+V로 붙여넣기 해주세요.");
+								window.getSelection().removeAllRanges();
+							} catch (e) {
+								console.error("복사 실패:", err, e);
+								alert("복사에 실패했습니다. 직접 선택 후 Ctrl+C를 눌러 복사해 주세요.");
+							}
+						}
+					});
+				}
+			});
+			
 		</script>
 	</body>
 </html>

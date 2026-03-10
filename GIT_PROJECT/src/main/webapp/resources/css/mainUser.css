@@ -1,24 +1,27 @@
 @charset "UTF-8";
-/* header 영역 */
 
+@charset "UTF-8";
 
-/* main 영역 */
-.adMain, .btAi {
-	width: fit-content;
-	margin: 0 auto;
-	text-align: center;
+/* 1. 카드 탭 영역 (오늘의 기업, 인기 기업 등) */
+.ad-menu {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 30px 0;
 }
 
-
-/* footer 영역 */
-.footer-link {
-  color: #333;
-  text-decoration: none;
-  margin: 0 4px;
+.ad-menu .nav-pills .nav-link {
+    color: #4A5568;
+    font-weight: 600;
+    padding: 10px 25px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
 }
 
-.footer-link:hover {
-  text-decoration: underline;
+.ad-menu .nav-pills .nav-link.active {
+    background-color: #0047AB !important; /* 포인트 블루 */
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 12px rgba(0, 71, 171, 0.2);
 }
 
 /* 2. 기업 공고 카드 영역 */

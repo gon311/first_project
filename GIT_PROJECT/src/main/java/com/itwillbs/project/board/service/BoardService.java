@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.project.board.dto.BoardCond;
 import com.itwillbs.project.board.dto.BoardDTO;
 import com.itwillbs.project.board.mapper.BoardMapper;
 import com.itwillbs.project.common.dto.FileDTO;
@@ -42,9 +43,64 @@ public class BoardService {
 			fileMapper.insertFiles(fileList, boardDTO.getPostId(), "FREE");   //파일리스트, 게시판 파일 번호, 카테고리코드
 		}
 	}
+
 	
 	// 게시물 상세정보 조회
-	
+	public BoardDTO getBoard(Long postId) {
+	    return boardMapper.selectBoard(postId);
+	}
+
+	public void increaseReadcount(Long postId) {
+	    boardMapper.updateReadcount(postId);
+	}
+	// 파일 다운
+	public List<FileDTO> getBoardFiles(Long postId) {
+	    return boardMapper.selectBoardFiles(postId);
+	}
+
+	public FileDTO getFileById(Integer fileId) {
+	    return boardMapper.selectFileById(fileId);
+	}
+
+
+
 	// 게시물 목록 조회
+	public List<BoardDTO> getBoardList(BoardCond cond) {
+	    return boardMapper.selectBoardList(cond);
+	}
+
+	public int getBoardCount(BoardCond cond) {
+	    return boardMapper.selectBoardCount(cond);
+	}
+
+	
+	// 게시글 수정
+	public boolean updateBoard(BoardDTO boardDTO, Long userId) {
+
+	    BoardDTO post = boardMapper.selectBoard(boardDTO.getPostId());
+
+	    if (post == null) return false;
+
+	    if (!userId.equals(post.getAuthorMemberId())) {
+	        return false;
+	    }
+
+	    return boardMapper.updateBoard(boardDTO) > 0;
+	}
+	
+	// 게시글 삭제
+	public boolean deleteBoard(Long postId, Long userId) {
+
+	    BoardDTO post = boardMapper.selectBoard(postId);
+
+	    if (post == null) return false;
+
+	    if (!userId.equals(post.getAuthorMemberId())) {
+	        return false;
+	    }
+
+	    return boardMapper.deleteBoard(postId) > 0;
+	}
+	
 
 }

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.project.board.mapper.BoardMapper">
+	
+	<insert id="insertBoard" useGeneratedKeys="true" keyProperty="postId">
+		INSERT INTO BOARD_POST (
+			board_type
+			, author_member_id
+			, title
+			, content
+			, created_at
+		)
+		VALUES ( 
+			"FREE"
+			, #{authorMemberId}
+			, #{title}
+			, #{content}
+			, NOW()
+		)
+	</insert>
+	
+	
+	<!-- 게시물 상세 -->
+	<select id="selectBoard" resultType="com.itwillbs.project.board.dto.BoardDTO">
+		SELECT
+		post_id AS postId,
+		board_type AS boardType,
+		author_member_id AS authorMemberId,
+		title,
+		content,
+		readcount,
+		status,
+		created_at AS createdAt,
+		updated_at AS updatedAt
+		FROM BOARD_POST
+		WHERE post_id = #{postId}
+		AND status = 'ACTIVE'
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateReadcount">
+		UPDATE BOARD_POST
+		SET readcount = readcount + 1
+		WHERE post_id = #{postId}
+	</update>
+	
+	<!-- 게시물 수정 -->
+	<update id="updateBoard">
+		UPDATE BOARD_POST
+		SET
+		title = #{title},
+		content = #{content},
+		updated_at = NOW()
+		WHERE post_id = #{postId}
+	</update>
+	
+	<!-- 게시물 삭제 -->
+	<update id="deleteBoard">
+		UPDATE BOARD_POST
+		SET status = 'DELETED'
+		WHERE post_id = #{postId}
+	</update>		
+	
+	<!-- 게시글 목록 -->
+	<select id="selectBoardList"
+	        parameterType="com.itwillbs.project.board.dto.BoardCond"
+	        resultType="com.itwillbs.project.board.dto.BoardDTO">
+	
+	SELECT
+	    p.post_id       AS postId,
+	    p.board_type    AS categoryName,
+	    p.title,
+	    p.content,
+	    p.readcount     AS viewCount,
+	    p.created_at,
+	    u.user_name     AS writerNickname,
+	
+	    LEFT(p.content, 120) AS excerpt,
+	
+	    (
+	        SELECT COUNT(*)
+	        FROM BOARD_COMMENT c
+	        WHERE c.post_id = p.post_id
+	        AND c.status = 'ACTIVE'
+	    ) AS commentCount,
+	
+	    0 AS likeCount
+	
+	FROM BOARD_POST p
+	JOIN USER u
+	ON p.author_member_id = u.user_id
+	
+	WHERE p.status = 'ACTIVE'
+	
+	<if test="category != null and category != 'ALL'">
+	    AND p.board_type = #{category}
+	</if>
+	
+	<if test="q != null and q != ''">
+	  <choose>
+	    <when test="searchType == 'title'">
+	      AND p.title LIKE CONCAT('%', #{q}, '%')
+	    </when>
+	    <when test="searchType == 'content'">
+	      AND p.content LIKE CONCAT('%', #{q}, '%')
+	    </when>
+	    <otherwise>
+	      AND (
+	        p.title LIKE CONCAT('%', #{q}, '%')
+	        OR p.content LIKE CONCAT('%', #{q}, '%')
+	      )
+	    </otherwise>
+	  </choose>
+	</if>
+	
+	ORDER BY
+	
+	<choose>
+	
+	    <when test="sort == 'view'">
+	        p.readcount DESC
+	    </when>
+	
+	    <when test="sort == 'comment'">
+	        (
+	            SELECT COUNT(*)
+	            FROM BOARD_COMMENT c
+	            WHERE c.post_id = p.post_id
+	            AND c.status = 'ACTIVE'
+	        ) DESC
+	    </when>
+	
+	    <otherwise>
+	        p.created_at DESC
+	    </otherwise>
+	
+	</choose>
+	
+	LIMIT #{page.offset}, #{page.safeSize}
+	
+	</select>
+	
+	<!-- 게시글 총 갯수 -->
+	<select id="selectBoardCount"
+	        parameterType="com.itwillbs.project.board.dto.BoardCond"
+	        resultType="int">
+	
+	SELECT COUNT(*)
+	FROM BOARD_POST p
+	
+	WHERE p.status = 'ACTIVE'
+	
+	<if test="category != null and category != 'ALL'">
+	    AND p.board_type = #{category}
+	</if>
+	
+	<if test="q != null and q != ''">
+	    AND (
+	        p.title LIKE CONCAT('%', #{q}, '%')
+	        OR p.content LIKE CONCAT('%', #{q}, '%')
+	    )
+	</if>
+	
+	</select>
+	
+	
+	<!-- 파일 다운 -->
+	<select id="selectBoardFiles" resultType="com.itwillbs.project.common.dto.FileDTO">
+	    SELECT
+	        file_id      AS fileId,
+	        category_idx AS categoryIdx,
+	        origin_name  AS originName,
+	        stored_name  AS storedName,
+	        file_path    AS filePath,
+	        file_size    AS fileSize,
+	        file_ext     AS fileExt,
+	        reg_date     AS createdAt
+	    FROM uploaded_file
+	    WHERE post_id = #{postId}
+	    ORDER BY file_id ASC
+	</select>
+
+	<select id="selectFileById" resultType="com.itwillbs.project.common.dto.FileDTO">
+	    SELECT
+	        file_id      AS fileId,
+	        category_idx AS categoryIdx,
+	        origin_name  AS originName,
+	        stored_name  AS storedName,
+	        file_path    AS filePath,
+	        file_size    AS fileSize,
+	        file_ext     AS fileExt,
+	        reg_date     AS createdAt
+	    FROM uploaded_file
+	    WHERE file_id = #{fileId}
+	</select>
+
+	
+	
+</mapper>
+

@@ -28,6 +28,8 @@ public class FileUtils {
 	// 업로드에 사용될 기본 경로들을 필드에 저장
 	private static final String uploadBaseLocation = "/upload";
 	private static final String boardFileLocation = "/board";
+	
+	
 //	private static final String noticeFileLocation = "/notice";
 	
 	// 파일 업로드 처리

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.itwillbs.project.help.dto.FaqDTO;
 import com.itwillbs.project.help.dto.NoticeDTO;
 
 @Mapper
@@ -18,6 +19,8 @@ public interface HelpMapper {
 	
 	// 조회수 증가
 	void updateReadCount(int noticeId);
+
+	List<FaqDTO> getFaqList(FaqDTO faqDTO);
 	
 
 	

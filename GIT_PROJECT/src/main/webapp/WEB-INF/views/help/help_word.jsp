@@ -67,7 +67,7 @@
     </section>
 
     <section class="faq-section">
-        <h3>자주 묻는 질문 TOP 5 <small style="font-size:14px; color:#4485ff; cursor:pointer;">전체보기 ></small></h3>
+        <h3>자주 묻는 질문 TOP 5 <small style="font-size:14px; color:#4485ff; cursor:pointer;" onclick="location.href='<c:url value="/help/FaQ" />'">전체보기 ></small></h3>
         <div class="faq-list">
             <div class="faq-item">
                 <div class="faq-q">비밀번호를 재설정하고 싶어요. <i class="fa-solid fa-chevron-down"></i></div>

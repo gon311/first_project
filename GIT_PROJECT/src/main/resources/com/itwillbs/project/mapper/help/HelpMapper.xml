@@ -66,4 +66,41 @@
 	
 	<!--  ========================================================================= -->
 	
+	<!-- FaQ 리스트 -->
+	<select id ="getFaqList" resultType="faq">
+		SELECT 
+			faq_id
+			, faq_title
+			, faq_content
+			, category
+			, user_type
+		FROM
+			faq
+		<where>
+			<if test="userType != null and userType != '' and userType != 'all'">
+				AND user_type=#{userType}
+			</if>
+<!-- 			<if test="keyword != null and keyword != ''"> -->
+<!-- 				<when test = "category == 'account"> -->
+<!-- 				AND faq_title LIKE CONCAT ('%', #{keyword), '%') -->
+				
+<!-- 				</when> -->
+<!-- 				<otherwise> -->
+<!-- 				</otherwise> -->
+<!-- 				AND faq_title LIKE CONCAT('%', #{keyword}, '%') -->
+<!-- 			</if> -->
+			
+			<if test="category !=null and category != '' and userType != 'all'">
+				AND category = #{category}
+			</if>
+<!-- 				account -->
+<!-- 				service -->
+<!-- 				error -->
+<!-- 				ect -->
+			
+		</where>
+		ORDER BY faq_id DESC
+			
+	</select>
+	
 	</mapper>

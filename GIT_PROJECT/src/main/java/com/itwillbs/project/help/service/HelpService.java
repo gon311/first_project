@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.project.help.dto.FaqDTO;
 import com.itwillbs.project.help.dto.NoticeDTO;
 import com.itwillbs.project.help.mapper.HelpMapper;
 
@@ -27,6 +28,10 @@ public class HelpService{
 	public NoticeDTO getNoticeDetail(int notice_id) {
 		helpMapper.updateReadCount(notice_id);
 		return helpMapper.getNoticeById(notice_id);
+	}
+
+	public List<FaqDTO> getFaqList(FaqDTO faqDTO) {
+		return helpMapper.getFaqList(faqDTO);
 	}
 	
 

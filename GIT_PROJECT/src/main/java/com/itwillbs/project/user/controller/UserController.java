@@ -231,7 +231,7 @@ public class UserController {
 				throw new BackwardException("일치하는 정보가 없습니다");
 			}
 		} else if(userDTO.getUserType().equals("C")) {
-			if(userdb == null || !userDTO.getUserType().equals(userdb.getUserType()) || userDTO.getBizRegNo().equals(userdb.getBizRegNo()) || userDTO.getCeoName().equals(userdb.getCeoName())) {
+			if(userdb == null || !userDTO.getUserType().equals(userdb.getUserType()) || !userDTO.getBizRegNo().equals(userdb.getBizRegNo()) || !userDTO.getCeoName().equals(userdb.getCeoName())) {
 				throw new BackwardException("일치하는 정보가 없습니다");
 			}
 		} 

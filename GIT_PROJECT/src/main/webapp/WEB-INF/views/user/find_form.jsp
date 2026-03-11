@@ -47,8 +47,8 @@
 	                                <label class="form-label">휴대폰 번호</label>
 	                                <div class="form-input-group">
 	                                    <select style="width: 25%;" id="id-phone-1"><option>010</option></select> - 
-	                                    <input type="text" style="width: 25%;" id="id-phone-2" name="phoneInput" maxlength="4" pattern="^d{4}$"> - 
-	                                    <input type="text" style="width: 25%;" id="id-phone-3" name="phoneInput" maxlength="4" pattern="^d{4}$">
+	                                    <input type="text" style="width: 25%;" id="id-phone-2" name="phoneInput" maxlength="4"> - 
+	                                    <input type="text" style="width: 25%;" id="id-phone-3" name="phoneInput" maxlength="4">
 	                                    <button type="button" class="btn-auth" id="btn-id-send" onclick="sendVerification('id')">인증번호 전송</button>
 	                                    <div id="id-feedback" class="invalid-feedback"></div> 
 	                                </div>

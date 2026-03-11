@@ -54,13 +54,13 @@ public class ReviewService{
 	
 	
 	public void saveTotal(CoverLetterDTO coverLetterDTO) {
-		reviewMapper.updateContent(coverLetterDTO);
 		
+		reviewMapper.updateContent(coverLetterDTO);
 	}
 
 	public void deleteData(Long coverLetterIdx) {
-		reviewMapper.deleteData(coverLetterIdx);
 		
+		reviewMapper.deleteData(coverLetterIdx);
 	}
 
 	public CoverLetterDTO getCoverLetter(Long coverLetterIdx) {

@@ -44,7 +44,7 @@ public class ReviewController {
 		Long userId = (Long)session.getAttribute("userIdx");
 		coverLetterDTO.setUserId(userId);
 		coverLetterDTO.setSaveStatus(2);
-		
+		 
 		return reviewService.draftSave(coverLetterDTO); 
 	}
 	

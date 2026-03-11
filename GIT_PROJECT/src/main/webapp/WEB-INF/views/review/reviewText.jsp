@@ -14,12 +14,6 @@
 	
 		<%-- main area --%>
 		<main class="container my-4">
-		
-		<%-- 서버에서 넘어온 전체 객체 상태 확인용 (임시) --%>
-			<div style="display:none;">
-			    조회된 제목: ${coverLetterDTO.title} <br>
-			    조회된 본문: ${coverLetterDTO.content}
-			</div>
 			
 			<form action="<c:url value="/review/save" />" name="registText"
 				id="registText" method="post" novalidate>

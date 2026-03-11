@@ -131,4 +131,17 @@ public class FileUtils {
 		
 		return subDir;
 	}
+	
+	// 파일 삭제
+	public static void deleteBoardFile(FileDTO fileDTO) {
+	    try {
+	        Path uploadPath = Paths.get(uploadBaseLocation, boardFileLocation, fileDTO.getFilePath(), fileDTO.getStoredName())
+	                .toAbsolutePath()
+	                .normalize();
+
+	        Files.deleteIfExists(uploadPath);
+	    } catch (IOException e) {
+	        log.error("파일 삭제 실패: {}", fileDTO.getStoredName(), e);
+	    }
+	}
 }

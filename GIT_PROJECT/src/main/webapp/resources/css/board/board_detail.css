@@ -121,16 +121,61 @@ body {
 	background: #fff5f5;
 }
 
+/* 게시글 본문 */
 .body {
-	margin-top: 18px;
-	padding-top: 18px;
+	margin-top: 16px;
+	padding-top: 16px;
 	border-top: 1px solid #eef2f7;
 	color: #111827;
-	line-height: 1.8;
+	line-height: 1.7;
 	font-size: 1rem;
-	white-space: pre-wrap; /* 줄바꿈 유지 */
+	white-space: pre-wrap;
+	word-break: break-word;
 }
 
+/* 첨부파일 */
+.file-wrap {
+	margin-top: 20px;
+	padding-top: 16px;
+	border-top: 1px solid #eef2f7;
+}
+
+.file-title {
+	font-size: .95rem;
+	font-weight: 900;
+	color: #111827;
+	margin-bottom: 10px;
+}
+
+.file-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.file-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.file-link {
+	color: #2563eb;
+	text-decoration: none;
+	font-weight: 700;
+}
+
+.file-link:hover {
+	text-decoration: underline;
+}
+
+.file-meta {
+	color: #6b7280;
+	font-size: .88rem;
+}
+
+/* 하단 버튼 */
 .bottom-actions {
 	margin-top: 18px;
 	display: flex;
@@ -157,7 +202,9 @@ body {
 
 /* 댓글 섹션 */
 .comment-wrap {
-	margin-top: 16px;
+	margin-top: 22px;
+	padding-top: 16px;
+	border-top: 1px solid #eef2f7;
 }
 
 .comment-title {
@@ -170,7 +217,7 @@ body {
 .comment-box {
 	border: 1px solid #eef2f7;
 	border-radius: 14px;
-	padding: 14px;
+	padding: 12px 14px;
 	background: #fbfcff;
 }
 
@@ -188,15 +235,19 @@ body {
 	font-size: .9rem;
 }
 
-textarea {
+/* 댓글 입력창만 별도 지정 */
+.comment-box textarea {
 	width: 100%;
 	border: 1px solid #dbe2ee;
 	border-radius: 12px;
 	padding: 12px;
 	outline: none;
 	resize: vertical;
-	min-height: 90px;
+	min-height: 80px;
 	background: #fff;
+	box-sizing: border-box;
+	font: inherit;
+	line-height: 1.5;
 }
 
 .comment-actions {
@@ -241,7 +292,7 @@ textarea {
 .comment-item {
 	border: 1px solid #eef2f7;
 	border-radius: 14px;
-	padding: 14px;
+	padding: 12px 14px;
 	background: #fff;
 }
 
@@ -258,8 +309,9 @@ textarea {
 
 .comment-body {
 	color: #111827;
-	line-height: 1.7;
+	line-height: 1.6;
 	white-space: pre-wrap;
+	word-break: break-word;
 }
 
 .comment-footer {
@@ -270,6 +322,10 @@ textarea {
 	color: #6b7280;
 	font-weight: 900;
 	font-size: .88rem;
+}
+
+.comment-footer form {
+	margin: 0;
 }
 
 .more-wrap {

@@ -3,6 +3,7 @@ package com.itwillbs.project.board.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.project.board.dto.BoardCond;
 import com.itwillbs.project.board.dto.BoardDTO;
@@ -21,11 +22,14 @@ public interface BoardMapper {
 	
 	int updateBoard(BoardDTO boardDTO);
 	int deleteBoard(Long postId);
-	
+	int insertBoardFile(@Param("postId") Long postId, @Param("fileDTO") FileDTO fileDTO);
+	int deleteBoardFile(Integer fileId);
 	
 	// 게시물 리스트
 	List<BoardDTO> selectBoardList(BoardCond cond);
 	int selectBoardCount(BoardCond cond);
+
+	
 
 
 }

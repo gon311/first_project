@@ -13,8 +13,7 @@
 
 <!-- URL주소 -->
 <c:url var="urlBoardList"  value="/board"/>
-<c:url var="urlBoardWrite" value="/board/write"/>   <%-- GET: 글쓰기 페이지, POST: 글 등록 처리로 같이 쓰면 OK --%>
-
+<c:url var="urlBoardWrite" value="/board/write"/>
 
 <main class="container wrap">
   <div class="cardx">
@@ -23,11 +22,8 @@
       <h2 class="page-title">글쓰기</h2>
       <div class="page-desc">게시글 유형을 선택하고, 제목/내용을 작성해 등록하세요.</div>
 
-      <form action="${urlBoardWrite}" method="post" id="writeForm">
+      <form action="${urlBoardWrite}" method="post" id="writeForm" enctype="multipart/form-data">
 
-        <%-- =========================
-             카테고리
-           ========================= --%>
         <div class="section" style="border-top:0; padding-top:0;">
           <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
             <div class="label m-0">
@@ -36,7 +32,6 @@
 
             <div style="min-width:260px; max-width:320px;">
               <select class="select" name="category" id="category">
-                <%-- ✅ value는 DB 코드/enum에 맞게 바꾸면 됨 --%>
                 <option value="JOB">취준/이직</option>
                 <option value="CAREER">회사생활/커리어</option>
                 <option value="FREE">자유주제</option>
@@ -45,19 +40,12 @@
           </div>
         </div>
 
-        <%-- =========================
-             제목
-           ========================= --%>
         <div class="section">
           <div class="label">제목</div>
           <input class="input" type="text" name="title" id="title"
                  placeholder="질문 제목을 입력해주세요(최대 50자)" maxlength="50" required>
         </div>
 
-        <%-- =========================
-             내용 (에디터 느낌)
-             - 실제로는 textarea로 서버에 content 값 전송
-           ========================= --%>
         <div class="section">
           <div class="label">
             내용 <span class="hint">내용을 작성해봐요!</span>
@@ -65,7 +53,6 @@
 
           <div class="editor">
             <div class="editor-toolbar">
-              <%-- 아이콘 대신 텍스트 버튼 (수정 쉬움) --%>
               <button type="button" class="tool-btn" data-tool="bold">B</button>
               <button type="button" class="tool-btn" data-tool="italic">I</button>
               <button type="button" class="tool-btn" data-tool="underline">U</button>
@@ -82,19 +69,16 @@
           <div class="counter"><span id="contentCount">0</span>/5000자</div>
         </div>
 
-        <%-- =========================
-             썸네일 등록: ❌ 제거됨
-           ========================= --%>
+        <!-- 첨부파일 -->
+        <div class="section">
+          <div class="label">첨부파일 <span class="hint">여러 파일 업로드 가능</span></div>
+          <input type="file" class="input" name="files" multiple>
+        </div>
 
-        <%-- =========================
-             해시태그 (최대 5개)
-             - name="tags"로 여러개 전송됨
-           ========================= --%>
         <div class="section">
           <div class="label">해시태그 <span class="hint">최대 5개까지 선택가능합니다</span></div>
 
           <div class="tag-wrap" id="tagWrap">
-            <%-- ✅ value는 서버에서 받을 값으로 바꾸면 됨 --%>
             <label class="tag"><input type="checkbox" name="tags" value="신입">#신입</label>
             <label class="tag"><input type="checkbox" name="tags" value="취업">#취업</label>
             <label class="tag"><input type="checkbox" name="tags" value="이직">#이직</label>
@@ -109,9 +93,6 @@
           </div>
         </div>
 
-        <%-- =========================
-             하단 버튼
-           ========================= --%>
         <div class="bottom">
           <a class="btn-ghost" href="${urlBoardList}">취소</a>
           <button type="submit" class="btn-primaryish" id="submitBtn">
@@ -128,9 +109,6 @@
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
 <script>
-  // =========================
-  // 글자수 카운트
-  // =========================
   document.addEventListener("DOMContentLoaded", function () {
     const content = document.getElementById("content");
     const countEl = document.getElementById("contentCount");
@@ -141,9 +119,6 @@
     content.addEventListener("input", updateCount);
     updateCount();
 
-    // =========================
-    // 해시태그 최대 5개 제한 + 선택 시 스타일
-    // =========================
     const tagWrap = document.getElementById("tagWrap");
     const tags = tagWrap.querySelectorAll(".tag");
 
@@ -154,11 +129,9 @@
     tags.forEach(tag => {
       const chk = tag.querySelector("input[type='checkbox']");
 
-      // 초기 상태 반영
       if (chk.checked) tag.classList.add("active");
 
-      tag.addEventListener("click", function (e) {
-        // label 클릭 시 기본 토글이 되는데, 클릭 직후 상태를 기준으로 처리해야 해서 약간 지연
+      tag.addEventListener("click", function () {
         setTimeout(() => {
           const cnt = selectedCount();
 

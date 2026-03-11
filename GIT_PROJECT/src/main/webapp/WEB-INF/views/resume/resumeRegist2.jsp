@@ -15,7 +15,7 @@
     <%-- 현재 페이지(main.jsp) 전용 CSS 영역--%>
 		<link href="<c:url value="/resources/css/resume.css" />" 
 			rel="stylesheet" type="text/css">
-			
+	<script src="<c:url value="/resources/js/resumeRegist2.js" />"></script>		
 </head>
 
 <body class="resume-body">

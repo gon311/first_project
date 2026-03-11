@@ -3,6 +3,13 @@ window.onload = function() {
     el.setAttribute("readonly", true);
     el.disabled = true; // select 같은 경우 disabled로 처리
   });
+  
+  // 버튼 display 조정
+  document.getElementById("addEducation").style.display = "none";
+  document.getElementById("addEducation").style.display = "none";
+  document.getElementById("addEducation").style.display = "none";
+  document.getElementById("addEducation").style.display = "none";
+    
     
 };
 

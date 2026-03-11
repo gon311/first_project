@@ -229,7 +229,7 @@
 	<update id="deleteUser" parameterType="com.itwillbs.project.my.dto.MyDTO">
 		 UPDATE user
 		 SET withdrawn_at = now(),
-		     status = #{WITHDRAWN}
+		     status = 'WITHDRAWN'
 		 WHERE email = #{sId}
 	</update>
 

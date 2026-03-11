@@ -36,7 +36,7 @@
           <div class="top-actions d-flex gap-2">
             <a class="btn btn-outline-secondary" href="${urlPassword}">비밀번호 변경</a>
             <a class="btn btn-primary" href="${urlUpdateInfo}">내 정보 수정</a>
-            <a class="btn btn-danger" href="${urlDelete}">회원 탈퇴</a>
+            <button type="button" class="btn btn-danger" onclick="userDelete()">회원 탈퇴</button>
           </div>
         </div>
         
@@ -82,5 +82,13 @@
 </main>
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+
+<script>
+	function userDelete() {
+		if(confirm("정말 탈퇴하시겠습니까?")) {
+			location.href="${urlUserDelete}"
+		}
+	}
+</script>
 </body>
 </html>

@@ -69,6 +69,18 @@ public class MyController {
 	}
 	
 
+	// 회원 탈퇴
+	@GetMapping("/user/delete")
+	public String userㅇelete(HttpSession session) {
+		
+		String sId = (String) session.getAttribute("sId");
+		if (sId == null) return "redirect:/user/login_form";
+		
+		myService.deleteUser(sId);
+		
+		return "redirect:/";
+	}
+	
 	// 내정보 수정
 	@GetMapping("/updateInfo")
 	public String updateInfoForm(HttpSession session, Model model) {

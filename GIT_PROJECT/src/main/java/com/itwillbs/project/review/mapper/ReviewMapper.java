@@ -13,5 +13,7 @@ public interface ReviewMapper {
 
 	void deleteData(Long coverLetterIdx);
 
+	CoverLetterDTO selectCoverLetter(Long coverLetterIdx);
+
  
 }

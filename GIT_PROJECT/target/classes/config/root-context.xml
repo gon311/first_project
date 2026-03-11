@@ -3,9 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	
 	<!--  웹과 관련없는 객체(@Service, @Component)들의 스프링 빈 등록을 위한 스캔 대상 패키지 지정 -->
 	<context:component-scan base-package="com.itwillbs.project">
@@ -33,7 +35,14 @@
 		<property name="mapperLocations" value="classpath:/com/itwillbs/project/mapper/**/*Mapper.xml"/>
 	</bean>
 	
+	<!-- 4. MyBatis 연동에 사용될 객체(클래스)들의 패키지 위치 지정(기본 루트 패키지 지정) -->
 	<mybatis-spring:scan base-package="com.itwillbs.project"/>
+	
+	<!-- 5. 트랜잭션 설정(마이바티스가 commit, rollback 여부를 직접 결정하여 내부적으로 수행하도록 함 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	 	<property name="dataSource" ref="dataSource"></property>
+	 </bean>
+	 <tx:annotation-driven transaction-manager="transactionManager"/>
 	
 	<!-- 패스워드 암호화 -->
 	<bean id="passwordEncoder"

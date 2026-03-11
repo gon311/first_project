@@ -53,4 +53,22 @@
 		DELETE FROM cover_letter
 		WHERE cover_letter_idx = #{coverLetterIdx}
 	</delete>
+	
+	<select id="selectCoverLetter" resultType="com.itwillbs.project.review.dto.CoverLetterDTO">
+		SELECT 
+			cover_letter_idx
+			, user_id
+			, title
+			, content
+			, industry_idx
+			, job_idx
+			, role_idx
+			, applied_field
+			, company_name
+			, company_idx
+			, career_idx
+			, save_status
+		FROM cover_letter
+		WHERE cover_letter_idx = #{coverLetterIdx}
+	</select>
 </mapper>

@@ -421,11 +421,12 @@
 							param.append("title", document.getElementById('title').value);
 							param.append("industryCode", document.querySelector('input[name="industryCode"]:checked')?.value);
 							param.append("jobCode", document.querySelector('input[name="jobCode"]:checked')?.value);
-							param.append("roleCode", document.querySelector('input[name="roleCode"]:checked')?.value);
+							param.append("roleCode", document.getElementById('roleCode').value);
 							param.append("companyCode", document.querySelector('input[name="companyCode"]:checked')?.value);
 							param.append("appliedField", document.getElementById('appliedField').value);
 							param.append("companyName", document.getElementById('companyName').value);
 							param.append("careerCode", document.querySelector('input[name="careerCode"]:checked')?.value);
+							param.append("saveStatus", document.getElementById('saveStatus').value);
 							const response = await fetch("<c:url value="/review/draftSave" />", {
 								method: "POST",
 								headers: {"Content-type": "application/x-www-form-urlencoded"}, 

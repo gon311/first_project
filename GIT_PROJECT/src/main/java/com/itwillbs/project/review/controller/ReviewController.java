@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.review.dto.CoverLetterDTO;
+import com.itwillbs.project.review.mapper.ReviewMapper;
 import com.itwillbs.project.review.service.ReviewService;
 
 import lombok.extern.log4j.Log4j2;
@@ -67,14 +68,16 @@ public class ReviewController {
 	
 	// 2) 2단계 작성 
 	@GetMapping("/{coverLetterIdx}/registText")
-	public String registText(@PathVariable Long coverLetterIdx,
-							 @RequestParam String title,
-							 Model model) {
+	public String registText(@PathVariable Long coverLetterIdx, Model model) {
+		CoverLetterDTO coverLetterDTO = reviewService.getCoverLetter(coverLetterIdx);
+	
+		log.info("조회된 내용: " + coverLetterDTO.getContent()); // 로그로 본문이 있는지 확인해보세요.
 		
-		model.addAttribute("title", title); // 2단계 페이지의 제목 창에 1단계에서 작성한 제목 그대로 반영 
+		model.addAttribute("coverLetterDTO", coverLetterDTO); // 2단계 페이지의 제목 창에 1단계에서 작성한 제목 그대로 반영 
 		
 		return "/review/reviewText";
 	}
+	
 		
 	// 3) 3단계 저장
 	@PostMapping("/save")

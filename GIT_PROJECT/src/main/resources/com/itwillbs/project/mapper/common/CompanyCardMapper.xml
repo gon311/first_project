@@ -14,15 +14,15 @@
 		   	, reg_date
 		FROM JOB_POSTING j JOIN USER_COMPANY u
 		ON 	j.comp_id = u.user_id
-		WHERE j.post_status = 1                                    -- 구인중인 공고 
+		WHERE j.post_check = 2                                   -- 구인중인 공고 
 		AND	j.close_date >= NOW()								   -- 마감일이 남은 공고  
 		AND	j.reg_date = (SELECT MAX(j1.reg_date)                  -- 기업별 가장 최근 공고
 						  FROM 	job_posting j1 JOIN user_company u1
 		                  ON 	j1.comp_id = u1.user_id
 		                  WHERE u1.company_name = u.company_name)
-		AND j.comp_id in (SELECT	p.user_id                      -- 상품 구매 status = active 
+		AND j.comp_id in (SELECT	p.user_id                      -- 상품 구매 product_id - P-C2
 						  FROM		com_product p
-                   		  WHERE		p.use_status = 'active')
+                   		  WHERE		p.product_id = 'P-C2')
 		ORDER BY RAND()
 		LIMIT 6
 	</select>
@@ -62,5 +62,18 @@
 					ORDER BY RAND()
 					LIMIT 6) AS bookmark)
 	</select>
-
+	
+	<update id="updateAllDisplayOff">
+		UPDATE banner
+		SET is_display = 2
+	</update>
+	
+	<update id="updateSelectedDisplayOn">
+		UPDATE banner
+		SET is_display = 1
+		WHERE job_id IN
+		<foreach collection="jobIds" item="jobId" open="(" separator="," close=")">
+			#{jobId}
+		</foreach>
+	</update>
 </mapper>

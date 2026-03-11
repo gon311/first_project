@@ -28,5 +28,10 @@ public class ReviewService{
 		
 	}
 
+	public CoverLetterDTO getCoverLetter(Long coverLetterIdx) {
+				
+		return reviewMapper.selectCoverLetter(coverLetterIdx);
+	}
+
 
 }

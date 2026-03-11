@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.project.help.dto.FaqDTO;
 import com.itwillbs.project.help.dto.NoticeDTO;
+import com.itwillbs.project.help.dto.NoticePageDTO;
 import com.itwillbs.project.help.service.HelpService;
 
 import lombok.RequiredArgsConstructor;
@@ -39,13 +40,13 @@ public class HelpController {
 			Model model) {
 		
 		searchKeyword = searchKeyword.trim();
-//		NoticePageDTO noticePageDTO = helpService.getNoticeList(page, searchType, searchKeyword);
-//		model.addAttribute("noticeList", noticePageDTO.getNoticeList());
-//		model.addAttribute("pageInfoDTO", noticePageDTO.getPageInfoDTO());
+		NoticePageDTO noticePageDTO = helpService.getNoticeList(page, searchType, searchKeyword);
+		model.addAttribute("noticeList", noticePageDTO.getNoticeList());
+		model.addAttribute("pageInfoDTO", noticePageDTO.getPageInfoDTO());
 		
-		List<NoticeDTO> list = helpService.getNoticeList(noticeDTO);
-		model.addAttribute("noticeList", list);
-		model.addAttribute("noticeDTO", noticeDTO); 
+//		List<NoticeDTO> list = helpService.getNoticeList(noticeDTO);
+//		model.addAttribute("noticeList", list);
+//		model.addAttribute("noticeDTO", noticeDTO); 
 		
 		return "/help/notice";
 	}

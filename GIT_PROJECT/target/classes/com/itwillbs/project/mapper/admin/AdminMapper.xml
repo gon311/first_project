@@ -1554,7 +1554,15 @@
 			status = 'DELETED'
 		WHERE 
 			comment_id = #{commentId}
+	</update>
 	
+	<update id="deleteBoard">
+		UPDATE
+			board_post
+		SET
+			status = 'DELETED'
+		WHERE
+			post_id = #{postId}
 	</update>
 	
 </mapper>

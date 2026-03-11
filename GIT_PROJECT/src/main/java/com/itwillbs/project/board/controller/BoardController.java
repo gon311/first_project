@@ -23,8 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.project.board.dto.BoardCommentDTO;
 import com.itwillbs.project.board.dto.BoardCond;
 import com.itwillbs.project.board.dto.BoardDTO;
+import com.itwillbs.project.board.service.BoardCommentService;
 import com.itwillbs.project.board.service.BoardService;
 import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.common.dto.FileResourceDTO;
@@ -48,6 +50,9 @@ public class BoardController {
 	
 	@Autowired
 	private MyService myService;
+	
+	@Autowired
+	private BoardCommentService boardCommentService;
 	
 	
 	// 게시글 목록 조회
@@ -139,18 +144,27 @@ public class BoardController {
 	    List<FileDTO> fileList = boardService.getBoardFiles(postId);
 
 	    boolean isOwner = false;
+	    Long loginUserId = null;
 
 	    String sId = (String) session.getAttribute("sId");
 	    if (sId != null) {
 	        MyDTO user = myService.getUser(sId);
-	        if (user != null && user.getUserId() == post.getAuthorMemberId()) {
-	            isOwner = true;
+
+	        if (user != null) {
+	            loginUserId = user.getUserId();
+	            model.addAttribute("loginUser", user);
+
+	            if (user.getUserId().equals(post.getAuthorMemberId())) {
+	                isOwner = true;
+	            }
 	        }
-	        model.addAttribute("loginUser", user);
 	    }
+
+	    List<BoardCommentDTO> comments = boardCommentService.getCommentList(postId, loginUserId);
 
 	    model.addAttribute("post", post);
 	    model.addAttribute("fileList", fileList);
+	    model.addAttribute("comments", comments);
 	    model.addAttribute("isOwner", isOwner);
 
 	    return "/board/board_detail";
@@ -185,30 +199,34 @@ public class BoardController {
 	    if (sId == null) return "redirect:/user/login";
 
 	    MyDTO user = myService.getUser(sId);
-
 	    BoardDTO post = boardService.getBoard(postId);
 
-	    if (!(user.getUserId() == (post.getAuthorMemberId()))) {
+	    if (post == null || !user.getUserId().equals(post.getAuthorMemberId())) {
 	        ra.addFlashAttribute("msg", "본인이 작성한 글만 수정할 수 있습니다.");
 	        return "redirect:/board/detail?postId=" + postId;
 	    }
 
+	    List<FileDTO> fileList = boardService.getBoardFiles(postId);
+
 	    model.addAttribute("post", post);
+	    model.addAttribute("fileList", fileList);
 
 	    return "/board/board_edit";
 	}
 	
 	@PostMapping("/edit")
 	public String editBoard(BoardDTO boardDTO,
+	                        @RequestParam(value = "deleteFileIds", required = false) List<Integer> deleteFileIds,
+	                        List<MultipartFile> files,
 	                        HttpSession session,
-	                        RedirectAttributes ra) {
+	                        RedirectAttributes ra) throws IOException {
 
 	    String sId = (String) session.getAttribute("sId");
 	    if (sId == null) return "redirect:/user/login";
 
 	    MyDTO user = myService.getUser(sId);
 
-	    boolean result = boardService.updateBoard(boardDTO, user.getUserId());
+	    boolean result = boardService.updateBoard(boardDTO, deleteFileIds, files, user.getUserId());
 
 	    if (!result) {
 	        ra.addFlashAttribute("msg", "본인이 작성한 글만 수정할 수 있습니다.");
@@ -216,7 +234,6 @@ public class BoardController {
 	    }
 
 	    ra.addFlashAttribute("msg", "게시글이 수정되었습니다.");
-
 	    return "redirect:/board/detail?postId=" + boardDTO.getPostId();
 	}
 	

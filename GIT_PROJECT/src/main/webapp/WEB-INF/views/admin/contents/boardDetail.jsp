@@ -72,7 +72,7 @@
 	                    </div>
 	
 	                    <div class="btn-group">
-   							<a href="<c:url value='/admin/member/users/info?userId=${comment.authorMemberId}' />" class="btn btn-sm btn-outline-warning">
+   							<a href="<c:url value='/admin/users/info?userId=${comment.authorMemberId}' />" class="btn btn-sm btn-outline-warning">
  	                            신고연동
                   			 </a>
                      			 
@@ -95,7 +95,9 @@
 	</div>
 	
 	<div class="text-center mt-5 pt-4 border-top">
-	    <a href="<c:url value='/admin/contents/Board' />" class="btn btn-secondary px-5">목록으로</a>
+	    <a href="<c:url value='/admin/users/info?userId=${freeDTO.authorMemberId }' />" class="btn btn-warning px-4">회원정보</a>
+	    <a href="<c:url value='/admin/contents/Board' />" class="btn btn-secondary px-4">목록으로</a>
+	    <button type="button" class="btn btn-danger px-4" onclick="postDelete(${freeDTO.postId })">삭제하기</button>
 	</div>
 	</div>
     </div>
@@ -103,10 +105,16 @@
 	<script type="text/javascript">
 	function confirmDelete(commentId, postId) {
 		console.log("삭제할 id : " + commentId);
-	    if (confirm("정말로 이 공지사항을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.")) {
+	    if (confirm("정말로 이 댓글을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.")) {
 	        // 확인을 누르면 삭제 요청 페이지로 이동
-	        location.href = "commentDelete?commentId=" + commentId + "&postId= " + postId;
+	        location.href = "commentDelete?commentId=" + commentId + "&postId=" + postId;
 	    }
+	}
+	
+	function postDelete(postId){
+		if(confirm("정말로 이 게시글을 삭제하시겠습니까?")){
+			location.href = "boardDelete?postId=" + postId;
+		}
 	}
 	</script>
 </body>

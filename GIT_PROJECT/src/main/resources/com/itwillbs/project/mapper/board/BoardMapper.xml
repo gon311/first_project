@@ -50,6 +50,7 @@
 	<update id="updateBoard">
 		UPDATE BOARD_POST
 		SET
+		board_type = #{boardType},
 		title = #{title},
 		content = #{content},
 		updated_at = NOW()
@@ -61,8 +62,30 @@
 		UPDATE BOARD_POST
 		SET status = 'DELETED'
 		WHERE post_id = #{postId}
-	</update>		
+	</update>
 	
+	
+	<!-- 파일 추가 -->
+	<insert id="insertBoardFile">
+	    INSERT INTO uploaded_file (
+	        post_id,
+	        category_idx,
+	        origin_name,
+	        stored_name,
+	        file_path,
+	        file_size,
+	        file_ext
+	    ) VALUES (
+	        #{postId},
+	        5,
+	        #{fileDTO.originName},
+	        #{fileDTO.storedName},
+	        #{fileDTO.filePath},
+	        #{fileDTO.fileSize},
+	        #{fileDTO.fileExt}
+	    )
+	</insert>
+
 	<!-- 게시글 목록 -->
 	<select id="selectBoardList"
 	        parameterType="com.itwillbs.project.board.dto.BoardCond"
@@ -167,7 +190,7 @@
 	
 	
 	<!-- 파일 다운 -->
-	<select id="selectBoardFiles" resultType="fileDTO">
+	<select id="selectBoardFiles" resultType="com.itwillbs.project.common.dto.FileDTO">
 	    SELECT
 	        file_id      AS fileId,
 	        category_idx AS categoryIdx,
@@ -182,7 +205,7 @@
 	    ORDER BY file_id ASC
 	</select>
 
-	<select id="selectFileById" resultType="fileDTO">
+	<select id="selectFileById" resultType="com.itwillbs.project.common.dto.FileDTO">
 	    SELECT
 	        file_id      AS fileId,
 	        category_idx AS categoryIdx,
@@ -195,7 +218,13 @@
 	    FROM uploaded_file
 	    WHERE file_id = #{fileId}
 	</select>
-
+		
+	
+	<!-- 파일삭제 -->
+	<delete id="deleteBoardFile">
+	    DELETE FROM uploaded_file
+	    WHERE file_id = #{fileId}
+	</delete>
 	
 	
 </mapper>

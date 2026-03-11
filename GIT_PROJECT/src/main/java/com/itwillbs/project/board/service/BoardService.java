@@ -75,18 +75,49 @@ public class BoardService {
 
 	
 	// 게시글 수정
-	public boolean updateBoard(BoardDTO boardDTO, Long userId) {
+	public boolean updateBoard(BoardDTO boardDTO, List<Integer> deleteFileIds, List<MultipartFile> files, Long userId)
+			throws IOException {
 
-	    BoardDTO post = boardMapper.selectBoard(boardDTO.getPostId());
+		BoardDTO post = boardMapper.selectBoard(boardDTO.getPostId());
 
-	    if (post == null) return false;
+		if (post == null)
+			return false;
+		if (!userId.equals(post.getAuthorMemberId()))
+			return false;
 
-	    if (!userId.equals(post.getAuthorMemberId())) {
-	        return false;
-	    }
+		int updateCount = boardMapper.updateBoard(boardDTO);
 
-	    return boardMapper.updateBoard(boardDTO) > 0;
+		if (updateCount <= 0) {
+			return false;
+		}
+
+		// 기존 파일 삭제
+		if (deleteFileIds != null && !deleteFileIds.isEmpty()) {
+			for (Integer fileId : deleteFileIds) {
+				FileDTO fileDTO = boardMapper.selectFileById(fileId);
+
+				if (fileDTO != null) {
+					FileUtils.deleteBoardFile(fileDTO);
+					boardMapper.deleteBoardFile(fileId);
+				}
+			}
+		}
+
+		// 새 파일 추가
+		if (files != null && !files.isEmpty()) {
+			List<FileDTO> fileList = FileUtils.uploadBoardFile(files);
+
+			for (FileDTO fileDTO : fileList) {
+				boardMapper.insertBoardFile(boardDTO.getPostId(), fileDTO);
+			}
+		}
+
+		return true;
 	}
+	
+
+
+
 	
 	// 게시글 삭제
 	public boolean deleteBoard(Long postId, Long userId) {

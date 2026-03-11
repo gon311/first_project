@@ -53,19 +53,6 @@
 			use_status = 'active'
 	</select>
 	
-	<!-- 가상계좌 입금전으로 인해 ready 상태에 있는 경우 -->
-	<select id="selectProductSave" resultType="order">
-		select
-			*
-		from 
-			pay
-		where
-			user_id = #{id}
-		and
-			pay_status = 'ready'
-	</select>
-	
-	
 	<!-- 기업)회원이 이용권을 보유하고 있는지 여부 조회 -->
 	<select id="selectComRemain" resultType="memberProduct">
 		select
@@ -133,14 +120,9 @@
 			, pay_method
 			, card_name
 			, card_num
-			, bank_name
-			, deposit_account
-			, deposit_name
 			, pay_price
 			, pay_date
 			, pay_status
-			, issued_at
-			, expired_at
 		)
 		values (
 			#{payId}
@@ -149,14 +131,9 @@
 			, #{payMethod}
 			, #{cardName}
 			, #{cardNum}
-			, #{bankName}
-			, #{depositAccount}
-			, #{depositName}
 			, #{payPrice}
 			, #{payDate}
 			, #{payStatus}
-			, #{issuedAt}
-			, #{expiredAt}
 		)
 		
 	</insert>
@@ -208,6 +185,8 @@
 		select	*
 		from	com_product
 		where
+			user_id = #{userId}
+		and
 			product_id = 'P-C1'
 		and 
 			use_status = 'active'
@@ -221,20 +200,6 @@
 			use_status = 'expired'
 		where
 			pay_id = #{payId}
-	</update>
-	
-	<!-- 가상계좌 입금 시 결제 정보 변경 -->
-	<update id="updateVirtualAccountInfo">
-		update
-			pay
-		set
-			deposit_name = #{depositName}
-		and
-			pay_date = #{payDate}
-		and
-			pay_status = #{payStatus}
-		where
-			user_id = #{userId}
 	</update>
 	
 </mapper>

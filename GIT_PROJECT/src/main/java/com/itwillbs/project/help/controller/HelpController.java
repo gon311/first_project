@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.itwillbs.project.help.dto.NoticeDTO;
-import com.itwillbs.project.help.service.HelpService;
+import com.itwillbs.project.admin.dto.NoticeDTO;
+import com.itwillbs.project.admin.dto.PageInfoDTO;
+import com.itwillbs.project.admin.dto.SearchDTO;
+import com.itwillbs.project.admin.service.AdminService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,7 +23,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class HelpController {
 	@Autowired
-	private HelpService helpService;
+	private AdminService adminService;
 	
 	@GetMapping("/helpWord")
 	public String posting() {
@@ -30,22 +32,40 @@ public class HelpController {
 	}
 	
 	@GetMapping("/notice")
-	public String noticeList(@RequestParam(value="page", defaultValue="1") int page,
-			NoticeDTO noticeDTO,
+	public String noticeList(@RequestParam(value="pageNum", defaultValue="1") int pageNum,
+			SearchDTO searchDTO,
 			Model model) {
 		
-		List<NoticeDTO> list = helpService.getNoticeList(noticeDTO);
-		model.addAttribute("noticeList", list);
-		model.addAttribute("noticeDTO", noticeDTO); 
+		int listLimit = 10;
+		int pageListLimit = 5; 
+		
+		int listCount = adminService.getNoitceTotalCount(searchDTO);
+		
+		int maxPage = (int)Math.ceil((double)listCount/listLimit);
+		int startPage = ((pageNum -1 )/ pageListLimit) * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage,startPage, endPage, pageNum);
+		
+		searchDTO.setOffset((pageNum - 1) * listLimit);
+		searchDTO.setLimit(listLimit);
+		
+		List<NoticeDTO> noticeList = adminService.getNoticeList(searchDTO);
+		
+		model.addAttribute("noticeList", noticeList);
+		model.addAttribute("searchDTO", searchDTO); 
+		model.addAttribute("pageInfoDTO", pageInfoDTO); 
 		
 		return "/help/notice";
 	}
 	
 	@GetMapping("/noticeDetail")
 	public String noticeDetail(@RequestParam("noticeId") int noticeId, Model model) {
-		NoticeDTO noticeDTO = helpService.getNoticeDetail(noticeId);
+		NoticeDTO noticeDTO = adminService.getNoticeDetail(noticeId);
 		model.addAttribute("noticeDTO", noticeDTO); 
-		System.out.println("데이터 결과값: " + noticeDTO.toString());
 		return "help/noticeDetail";
 	}
 	

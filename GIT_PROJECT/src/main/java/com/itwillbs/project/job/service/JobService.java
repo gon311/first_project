@@ -183,6 +183,12 @@ public class JobService {
 	    return new JobPageDTO(null, jobList, pageInfo);
 	}
 
+	public List<JobDTO> getJobListPaging2(String expType, String eduType, Long userIdx, List<String> selectedItems, int page, int size) {
+	    int offset = (page - 1) * size;
+	    return jobMapper.getJobListPaging2(expType, eduType, userIdx, selectedItems, offset, size);
+	}
+	
+
 		
 
 

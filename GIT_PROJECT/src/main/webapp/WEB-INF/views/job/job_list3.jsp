@@ -14,7 +14,7 @@
 
 <div class="main-wrapper">
     <form id="searchForm" action="JobList" method="get">
-    	<input type="hidden" name="page" id="pageNum" value="${pager.page}">
+    	<input type="hidden" name="pageNum" id="pageNum" value="${pageInfo.pageNum != null ? pageInfo.pageNum : 1}">
         <div class="filter-dropdown-row">
             <select class="filter-select" id="expFilter" name="expType" onchange="changeFilter()">
                 <option value="" ${empty param.expType ? 'selected' : ''}>경력 전체</option>
@@ -29,12 +29,6 @@
                 <option value="대학교(2,3년) 졸업" ${param.eduType == '대학교(2,3년) 졸업' ? 'selected' : ''}>대학교(2,3년) 졸업</option>
                 <option value="대학교(4년) 졸업" ${param.eduType == '대학교(4년) 졸업' ? 'selected' : ''}>대학교(4년) 졸업</option>
             </select>
-            
-		    <select class="filter-select" name="size" onchange="changeFilter()">
-			    <option value="5"  ${pager.size == 5  ? 'selected' : ''}>5개씩 보기</option>
-			    <option value="10" ${pager.size == 10 ? 'selected' : ''}>10개씩 보기</option>
-			    <option value="15" ${pager.size == 15 ? 'selected' : ''}>15개씩 보기</option>
-			</select>
         </div>
 
         <div class="search-section">
@@ -110,27 +104,32 @@
 	    </c:forEach>
 	</div>
 	
-	<%-- ✅ 페이저 --%>
-	<div class="pager">
-		<c:if test="${pager.hasPrev}">
-			<a href="?period=${period}&status=${status}&q=${q}&page=${pager.page-1}&size=${pager.size}">이전</a>
-		</c:if>
-		
-		<c:forEach var="i" begin="${pager.startPage}" end="${pager.endPage}">
-			<a href="?period=${period}&status=${status}&q=${q}&page=${i}&size=${pager.size}"
-			class="${i == pager.page ? 'active' : ''}">
-			${i}
-			</a>
-		</c:forEach>
-		
-		<c:if test="${pager.hasNext}">
-			<a href="?period=${period}&status=${status}&q=${q}&page=${pager.page+1}&size=${pager.size}">다음</a>
-		</c:if>
+	<div class="pagination-container">
+	    <%-- 이전 페이지 버튼 --%>
+	    <c:if test="${pageInfo.pageNum > 1}">
+	        <a href="javascript:void(0);" onclick="changePage(${pageInfo.pageNum - 1})" class="page-link">
+	            <i class="fa-solid fa-chevron-left"></i>
+	        </a>
+	    </c:if>
+	
+	    <%-- 페이지 번호 목록 --%>
+	    <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+	        <a href="javascript:void(0);" onclick="changePage(${i})" 
+	           class="page-link ${pageInfo.pageNum == i ? 'active' : ''}">
+	            ${i}
+	        </a>
+	    </c:forEach>
+	
+	    <%-- 다음 페이지 버튼 --%>
+	    <c:if test="${pageInfo.pageNum < pageInfo.maxPage}">
+	        <a href="javascript:void(0);" onclick="changePage(${pageInfo.pageNum + 1})" class="page-link">
+	            <i class="fa-solid fa-chevron-right"></i>
+	        </a>
+	    </c:if>
 	</div>
+	
 </div>
-
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
-
 <script>
 	const regionData = {};
 	
@@ -252,8 +251,7 @@
     }
 
     function changeFilter() {
-        // 필터(경력, 학력, 개수)를 바꾸면 무조건 1페이지부터 다시 보여줘야 합니다.
-        document.getElementById('pageNum').value = 1; 
+        document.getElementById('pageNum').value = 1; // 필터 변경 시 다시 1페이지부터 조회
         syncHiddenFields();
         document.getElementById("searchForm").submit();
     }
@@ -293,9 +291,11 @@
     }
     
     function changePage(num) {
-        // 하단 번호를 클릭했을 때만 해당 페이지 번호를 넣습니다.
+        // 1. 히든 필드에 클릭한 페이지 번호 세팅
         document.getElementById('pageNum').value = num;
+        // 2. 지역/직무 선택 항목 동기화
         syncHiddenFields();
+        // 3. 폼 전송
         document.getElementById("searchForm").submit();
     }
     

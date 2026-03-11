@@ -23,6 +23,15 @@ public interface JobMapper {
 			@Param("selectedItems") List<String> selectedItems
 			);
 
+	List<JobDTO> getJobListPaging2(
+	        @Param("expType") String expType, 
+	        @Param("eduType") String eduType,
+	        @Param("userIdx") Long userIdx,
+	        @Param("selectedItems") List<String> selectedItems,
+	        @Param("offset") int offset,
+	        @Param("size") int size      
+	        );
+	
 	List<Map<String, String>> getExistingRegions();
 
 	JobDTO getJobListDetail(Long jobId);
@@ -90,5 +99,6 @@ public interface JobMapper {
 	    @Param("startRow") int startRow, 
 	    @Param("listLimit") int listLimit
 	);
+
 	
 }

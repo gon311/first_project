@@ -16,7 +16,9 @@
 			<h1> Main Area</h1>
 			<h3><a href="<c:url value="/job/JobPosting" />">JobPosting</a></h3>
 			<h3><a href="<c:url value="/job/JobList" />">JobLIst</a></h3>
+			<h3><a href="<c:url value="/job/JobList2" />">JobLIst2</a></h3>
 			<h3><a href="<c:url value="/job/JobManagement" />">JobManagement</a></h3>
+			<h3><a href="<c:url value="/job/comApplicants2" />">comApplicants2</a></h3>
 			<h3><a href="<c:url value="/help/helpWord" />">Help</a></h3>
 			<h3><a href="<c:url value="/board" />">커뮤니티</a></h3>
 		</main>

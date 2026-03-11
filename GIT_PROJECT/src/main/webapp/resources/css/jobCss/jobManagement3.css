@@ -181,6 +181,28 @@ body {
     color: #ffc107; 
 }
 
+/* 5. 페이지네이션 */
+.pagination { 
+    display: flex; 
+    justify-content: center; 
+    gap: 8px; 
+    margin-top: 40px; 
+}
+
+.page-link { 
+    color: #888; 
+    text-decoration: none; 
+    padding: 8px 14px; 
+    border: 1px solid #eee; 
+    background: #fff; 
+    border-radius: 4px; 
+}
+
+.page-link.active { 
+    background: #4485ff; 
+    color: #fff; 
+    border-color: #4485ff; 
+}
 
 /* 별표 아이콘 스타일 */
 .scrap-icon {
@@ -194,28 +216,4 @@ body {
 
 .scrap-icon.active {
     color: #ffc107; /* 노란색 (활성) */
-}
-
-.pager{
-  margin-top:18px;
-  display:flex;
-  justify-content:center;
-  gap:8px;
-}
-.pager a{
-  display:inline-block;
-  min-width:34px;
-  text-align:center;
-  padding:8px 10px;
-  border:1px solid #e5e7eb;
-  border-radius:10px;
-  text-decoration:none;
-  color:#374151;
-  font-weight:900;
-  background:#fff;
-}
-.pager a.active{
-  background:#2563eb;
-  border-color:#2563eb;
-  color:#fff;
 }

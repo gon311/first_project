@@ -19,15 +19,15 @@
 	            <div class="col-md-8 text-end">
 	                <form class="d-inline-flex gap-2" action = "<c:url value = '/admin/contents/notice'/>" >
 	                    <select class="form-select form-select-sm" style="width: 150px;" name = "searchType">
-	                        <option value="all" ${noticeDTO.searchType=='all' ? 'selected' : '' }>전체</option>
-	                        <option value="noticeTitle" ${noticeDTO.searchType=='noticeTitle' ?  'selected' : ''}>제목</option>
-	                        <option value="status" ${noticeDTO.searchType == 'status' ? 'selected' : '' }>게시 상태</option>
+	                        <option value="all" ${param.searchType=='all' ? 'selected' : '' }>전체</option>
+	                        <option value="noticeTitle" ${param.searchType=='noticeTitle' ?  'selected' : ''}>제목</option>
+	                        <option value="status" ${param.searchType == 'status' ? 'selected' : '' }>게시 상태</option>
 	                    </select>
 	                    <div class="input-group input-group-sm" style="width: 300px;">
 	                        <span class="input-group-text">
 	                        	검색명 <span class="text-danger ms-1">*</span>
 	                        </span>
-	                        <input type="text" name = "searchKeyword" value ="${noticeDTO.searchKeyword }" 
+	                        <input type="text" name = "searchKeyword" value ="${param.searchKeyword }" 
 	                        	class="form-control" placeholder="검색어를 입력해 주세요.">
 	                        <button class="btn btn-primary" type="submit">검색</button>
 	                    </div>
@@ -88,21 +88,27 @@
 	                </tbody>
 	            </table>
 	        </div>
-	
-	        <div class="d-flex flex-column align-items-center mt-3">
-	            <nav aria-label="Page navigation">
-	                <ul class="pagination pagination-sm m-0">
-	                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
-	                    <c:forEach begin="1" end="5" var="i">
-	                        <li class="page-item ${i == 12 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
-	                    </c:forEach>
-	                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-	                </ul>
-	            </nav>
-	            
-	            <div class="w-100 text-end mt-2">
-	            </div>
-	        </div>
+	        
+			<c:if test="${not empty param.searchKeyword}">
+				<c:set var="searchParams" 
+						value="searchType=${param.searchType}&searchKeyword=${param.searchKeyword}" />
+			</c:if>
+			<c:if test="${not empty pageInfoDTO and not empty pageInfoDTO.maxPage and pageInfoDTO.maxPage > 0}">
+		        <div class="d-flex flex-column align-items-center mt-3">
+		            <nav aria-label="Page navigation">
+		                <ul class="pagination pagination-sm m-0">
+		                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+		                    <c:forEach begin="1" end="5" var="i">
+		                        <li class="page-item ${i == 12 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
+		                    </c:forEach>
+		                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
+		                </ul>
+		            </nav>
+		            
+		            <div class="w-100 text-end mt-2">
+		            </div>
+		        </div>
+	        </c:if>
 	    </div>
 	</main>
 </body>

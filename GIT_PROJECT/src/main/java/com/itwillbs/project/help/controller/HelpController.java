@@ -31,9 +31,17 @@ public class HelpController {
 	}
 	
 	@GetMapping("/notice")
-	public String noticeList(@RequestParam(value="page", defaultValue="1") int page,
+	public String noticeList(
+			@RequestParam(defaultValue = "1") Integer page,
+			@RequestParam(defaultValue = "") String searchType,
+			@RequestParam(defaultValue = "") String searchKeyword,
 			NoticeDTO noticeDTO,
 			Model model) {
+		
+		searchKeyword = searchKeyword.trim();
+//		NoticePageDTO noticePageDTO = helpService.getNoticeList(page, searchType, searchKeyword);
+//		model.addAttribute("noticeList", noticePageDTO.getNoticeList());
+//		model.addAttribute("pageInfoDTO", noticePageDTO.getPageInfoDTO());
 		
 		List<NoticeDTO> list = helpService.getNoticeList(noticeDTO);
 		model.addAttribute("noticeList", list);

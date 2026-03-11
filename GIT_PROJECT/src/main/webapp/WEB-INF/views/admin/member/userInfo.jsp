@@ -133,7 +133,7 @@
 										</thead>
 							 			<tbody>
 										<c:forEach var="free" varStatus="status" items="${freeList}">
-											<tr class="clickable-row" onclick="location.href='<c:url value="/board/boardDetail?postId=${free.postId}"/>'">
+											<tr class="clickable-row" onclick="location.href='/project/admin/contents/boardDetail?postId=${free.postId}'">
 												<td>${status.count}</td>
 												<td>${free.title}</td>
 												<td>
@@ -172,7 +172,7 @@
 										</thead>
 							 			<tbody>
 											<c:forEach var="qna" varStatus="status" items="${qnaList}">
-												<tr class="clickable-row" onclick="location.href='/admin/contents/QnADetail?qnaId=${qna.qnaId}'">
+												<tr class="clickable-row" onclick="location.href='/project/admin/contents/QnADetail?qnaId=${qna.qnaId}'">
 													<td>${status.count}</td>
 													<td>${qna.qnaTitle}</td>
 													<td>

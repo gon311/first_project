@@ -105,34 +105,6 @@
                             </div>
                         </div>
 
-                        <div class="form-check mb-2">
-                            <input id="bank" class="form-check-input" type="radio" name="payMethod" value="bank" onclick="checkMethod()">
-                            <label class="form-check-label" for="bank">무통장 입금</label>
-                        </div>
-                        
-                        <!-- 무통장 입금을 선택한 경우 -->
-                        <div id="selectBank" class="row mx-3" style="display:none;">
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">은행 선택 <span style="color:red">*</span></label>
-                                <select id="bankName" class="form-select" name="bankName">
-                                    <option value="">선택하세요.</option>
-                                    <option value="KOOKMIN">국민은행</option>
-                                    <option value="WOORI">우리은행</option>
-                                    <option value="SHINHAN">신한은행</option>
-                                    <option value="IBK">기업은행</option>
-                                    <option value="NONGHYUP">NH농협은행</option>
-                                    <option value="BUSAN">부산은행</option>
-                                    <option value="HANA">하나은행</option>
-                                    <option value="KWANGJU">광주은행</option>
-                                    <option value="POST">우체국</option>
-                                    <option value="DAEGU">iM뱅크</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">입금자명 <span style="color:red">*</span></label>
-                                <input type="text" id="depositName" class="form-control" name="depositName" required>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -232,11 +204,7 @@
 		function checkMethod() {
 			if(document.getElementById("credit").checked) {
     			document.getElementById("selectCredit").style.display = "block";
-    			document.getElementById("selectBank").style.display = "none";
-    		} else if(document.getElementById("bank").checked) {
-    			document.getElementById("selectCredit").style.display = "none";
-    			document.getElementById("selectBank").style.display = "block";
-    		}
+    		} 
     	}
     	
     	// 유료 서비스 약관에 동의했을 경우에만 구매 버튼 활성화
@@ -250,49 +218,27 @@
     	
     	// 결제
     	async function requestPay() {
-    		if(!document.payForm.payMethod[0].checked && !document.payForm.payMethod[1].checked) {
-    			document.payForm.payMethod[0].focus();
+    		if(!document.payForm.payMethod.checked) {
+    			document.payForm.payMethod.focus();
     			return false;
-    		} else if(document.payForm.payMethod[0].checked && document.payForm.cardCompany.value == "") {
+    		} else if(document.payForm.payMethod.checked && document.payForm.cardCompany.value == "") {
     			document.payForm.cardCompany.focus();
     			return false;
-    		} else if(document.payForm.payMethod[0].checked && document.payForm.installment.value == "") {
+    		} else if(document.payForm.payMethod.checked && document.payForm.installment.value == "") {
     			document.payForm.installment.focus();
     			return false;
-    		} else if(document.payForm.payMethod[1].checked && document.payForm.bankName.value == "") {
-    			document.payForm.bankName.focus();
-    			return false;
-    		} else if(document.payForm.payMethod[1].checked && document.payForm.depositName.value == "") {
-    			document.payForm.depositName.focus();
-    			return false;
-    		}
+    		} 
     		
     		
     		// 결제 진행
-    		let selectedPayMethod = "";
-    		
-    	    if(document.getElementById("credit").checked) {
-    	        selectedPayMethod = "CARD";
-    	    } else if(document.getElementById("bank").checked) {
-    	        selectedPayMethod = "VIRTUAL_ACCOUNT";
-    	    }
-    		
     		const userName = "${orderInfo.userName}";
     		const userPhone = "${orderInfo.phone}";
     		const userEmail = "${orderInfo.email}";
     		const productPrice = "${storeInfo.productPrice}";
     		const productName = "${storeInfo.productName}";
     		const orderId = "${orderInfo.orderId}";
-    		const bankVal = document.getElementById("bankName").value;
-    		const depositVal = document.getElementById("depositName").value;
     		const failUrl = "<c:url value="/store/payFailed" />";
     		
-    		// 가상계좌를 선택한 경우 모레 자정에 입금마감
-			const today = new Date();
-		    const endDate = new Date(today);
-		    endDate.setDate(today.getDate() + 1);
-		    endDate.setHours(23, 59, 59, 0);
-			const dueDateStr = getKSTISOString(endDate);
     		
     		try {
     			let paymentParam = {
@@ -302,7 +248,7 @@
    					orderName: productName,
    					totalAmount: Number(productPrice),
    					currency: "KRW",
-   					payMethod: selectedPayMethod,
+   					payMethod: "CARD",
    					customer: {
    						fullName: userName,
    						email: userEmail,  
@@ -310,18 +256,6 @@
    					},
    					
     			};
-    			
-    			
-    			if(selectedPayMethod === "VIRTUAL_ACCOUNT") {
-				 	// 기존 method 객체를 유지하면서 virtualAccount 추가
-				    paymentParam.virtualAccount = {
-						accountExpiry: {
-							dueDate: dueDateStr
-					    }
- 
-				    };
-				 	
-    			}
     			
     			
     			// 결제 결과

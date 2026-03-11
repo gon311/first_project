@@ -142,15 +142,10 @@
 			const result = await response.json();
 
 			
-			if(result.isSaved) {
-				if(result.exists) { // 구매가능
-					location.href = "pay?productId=" + productId;
-				} else {
-					alert("이미 이용권을 보유중입니다.");
-					return;
-				}
+			if(result.exists) { // 구매가능
+				location.href = "pay?productId=" + productId;
 			} else {
-				alert("결제 대기 중인 이용권을 보유중입니다.");
+				alert("이미 이용권을 보유중입니다.");
 				return;
 			}
 			

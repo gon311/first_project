@@ -89,7 +89,7 @@ public class UserController {
 				response.addCookie(cookie2);
 			}
 			
-			return "redirect:/";
+			return "redirect:/admin/users";
 		}
 		
 		if(dbUser == null || !dbUser.getUserType().equals(type) || !passwordEncoder.matches(userDTO.getPassword(), dbUser.getPassword())) {

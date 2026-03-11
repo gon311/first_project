@@ -30,9 +30,6 @@ public interface StoreMapper {
 	// 구직자회원이 이용권을 보유하고 있고, 만료되지 않았는지 여부
 	MemberProductDTO selectUserRemain(long id);
 	
-	// 구매자가 이용권을 가상계좌로 결제하고 아직 입금하지 않은 경우
-	OrderDTO selectProductSave(long id);
-	
 	// 기업회원이 이용권을 보유하고 있고, 만료되지 않았는지 여부
 	MemberProductDTO selectComRemain(long id);
  
@@ -64,11 +61,6 @@ public interface StoreMapper {
 	// 이용권 테이블의 use_status 를 'expired' 로 변경
 	void updateUseStatus(String payId);
 
-	// 가상계좌 입금 시 입금 정보 업데이트
-	void updateVirtualAccountInfo(@Param("depositName") String depositName
-								, @Param("payDate") LocalDateTime payDate
-								, @Param("payStatus") String payStatus
-								, @Param("userId") long userId);
 
 	
 

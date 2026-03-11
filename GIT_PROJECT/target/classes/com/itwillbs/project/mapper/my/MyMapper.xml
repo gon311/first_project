@@ -221,6 +221,17 @@
 		WHERE email = #{sId}
 	</select>
 
+<!-- ==============================
+     회원탈퇴
+     parameter: sId
+     result: 
+============================== -->
+	<update id="deleteUser" parameterType="com.itwillbs.project.my.dto.MyDTO">
+		 UPDATE user
+		 SET withdrawn_at = now(),
+		     status = #{WITHDRAWN}
+		 WHERE email = #{sId}
+	</update>
 
 <!-- ==============================
      내정보 수정 저장

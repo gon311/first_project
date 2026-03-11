@@ -19,15 +19,15 @@
 	            <div class="col-md-8 text-end">
 	                <form class="d-inline-flex gap-2" action = "<c:url value = '/admin/contents/notice'/>" >
 	                    <select class="form-select form-select-sm" style="width: 150px;" name = "searchType">
-	                        <option value="all" ${noticeDTO.searchType=='all' ? 'selected' : '' }>전체</option>
-	                        <option value="noticeTitle" ${noticeDTO.searchType=='noticeTitle' ?  'selected' : ''}>제목</option>
-	                        <option value="status" ${noticeDTO.searchType == 'status' ? 'selected' : '' }>게시 상태</option>
+	                        <option value="noticeTitle" ${param.searchType=='noticeTitle' ? 'selected' : '' }>제목</option>
+	                        <option value="content" ${param.searchType=='content' ?  'selected' : ''}>내용</option>
+	                        <option value="subject_content" ${param.searchType=='subject_content' ?  'selected' : ''}>제목 + 내용</option>
 	                    </select>
 	                    <div class="input-group input-group-sm" style="width: 300px;">
 	                        <span class="input-group-text">
 	                        	검색명 <span class="text-danger ms-1">*</span>
 	                        </span>
-	                        <input type="text" name = "searchKeyword" value ="${noticeDTO.searchKeyword }" 
+	                        <input type="text" name = "searchKeyword" value ="${param.searchKeyword }" 
 	                        	class="form-control" placeholder="검색어를 입력해 주세요.">
 	                        <button class="btn btn-primary" type="submit">검색</button>
 	                    </div>
@@ -88,21 +88,42 @@
 	                </tbody>
 	            </table>
 	        </div>
-	
-	        <div class="d-flex flex-column align-items-center mt-3">
-	            <nav aria-label="Page navigation">
-	                <ul class="pagination pagination-sm m-0">
-	                    <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
-	                    <c:forEach begin="1" end="5" var="i">
-	                        <li class="page-item ${i == 12 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
-	                    </c:forEach>
-	                    <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-	                </ul>
-	            </nav>
-	            
-	            <div class="w-100 text-end mt-2">
-	            </div>
-	        </div>
+	        
+			<c:if test="${not empty param.searchKeyword}">
+				<c:set var="searchParams" 
+						value="searchType=${param.searchType}&searchKeyword=${param.searchKeyword}" />
+			</c:if>
+			<%-- 최대페이지번호가 존재하고, 0보다 클 경우에만 페이지 목록 표시 --%>
+			<c:if test="${not empty pageInfoDTO and not empty pageInfoDTO.maxPage and pageInfoDTO.maxPage > 0}">
+				<nav>
+					<ul class="pagination justify-content-center">
+						<%-- 이전 버튼은 현재 페이지 번호가 1보다 클 경우에만 동작하고, 1일 경우에는 비활성화(또는 1보다 작거나 같을 때) --%>
+						<li class="page-item <c:if test="${pageInfoDTO.pageNum eq 1}">disabled</c:if>">
+							<a class="page-link" href="<c:url value="/board/list?pageNum=${pageInfoDTO.pageNum - 1}&${searchParams}" />">이전</a>
+						</li>
+						
+						<%-- startPage 부터 endPage 까지 1씩 증가하면서 페이지번호 출력 --%>
+						<c:forEach var="i" begin="${pageInfoDTO.startPage}" end="${pageInfoDTO.endPage}">
+							<%-- 페이지번호가 현재페이지와 같은 항목은 active 클래스 추가 --%>
+							<li class="page-item <c:if test="${i eq pageInfoDTO.pageNum}">active</c:if>">
+								<c:choose>
+									<c:when test="${i eq pageInfoDTO.pageNum}">
+										<a class="page-link">${i}</a>
+									</c:when>
+									<c:otherwise>
+										<a class="page-link" href="<c:url value="/board/list?pageNum=${i}&${searchParams}" />">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</li>
+						</c:forEach>
+						
+						<%-- 다음 버튼은 현재 페이지 번호가 최대 페이지 번호보다 작을 경우에만 동작하고, 같을 경우에는 비활성화(또는 이상일 경우) --%>
+						<li class="page-item <c:if test="${pageInfoDTO.pageNum eq pageInfoDTO.maxPage}">disabled</c:if>">
+							<a class="page-link" href="<c:url value="/board/list?pageNum=${pageInfoDTO.pageNum + 1}&${searchParams}" />">다음</a>
+						</li>
+					</ul>
+				</nav>
+			</c:if>
 	    </div>
 	</main>
 </body>

@@ -42,6 +42,90 @@
 		 </where>
 	</select>
 	
+	<select id="selectNoticeListCount" resultType="int">
+		SELECT	COUNT(*)
+		FROM	notice
+		<!-- 
+		1. 검색어(searchKeyword)가 존재할 경우 검색어를 추가하기 위해 WHERE 추가
+		   => 자바 문법과 동일한 isEmpty() 메서드를 통해 문자열 비교 수행 가능
+		-->
+<!-- 	<if test="searchKeyword != null and !searchKeyword != ''"> -->
+		<if test="searchKeyword != null and !searchKeyword.isEmpty()">
+			WHERE
+			<!-- 
+			2. 검색타입(searchType)에 따른 WHERE 조건의 변화(대상 컬럼명을 변경하여 각각 다른 조건 설정)
+			   => searchType 변수값 목록("subject", "content", "subject_content", "writer")
+			   => 경우의 수가 2가지 이상이므로 <choose><when><otherwise> 사용
+			-->
+			<choose>
+				<!-- 1) 제목으로 검색했을 경우(= "subject") -->
+				<when test="searchType.equals('subject')">
+<!-- 					subject LIKE '%#{searchKeyword}%' -->
+					<!-- 
+					주의! '%#{searchKeyword}%' 형태로 지정 시 오류 발생
+					=> #{} 형태에서 문자열이 올 경우 자동으로 '' 기호가 추가됨
+					   즉, '%검색어' 가 아닌 '%'검색어'%' 형태가 되어 문법 오류 발생함
+					-->
+					<!-- 해결책1) #{} 대신 ${} 사용하면 데이터타입 감지하지 않으므로 그대로 사용 가능 -->
+<!-- 					subject LIKE '%${searchKeyword}%' -->
+
+					<!-- 해결책2) CONCAT() 함수 사용하여 문자열 결합(추천!!!) -->
+					subject LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<!-- 2) 내용으로 검색했을 경우(= "content") -->
+				<when test="searchType.equals('content')">
+					content LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<!-- 3) 제목&내용으로 검색했을 경우(= "subject_content") -->
+				<when test="searchType.equals('subject_content')">
+					subject LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR content LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<!-- 4) 작성자로 검색했을 경우(= "writer") -->
+				<when test="searchType.equals('writer')">
+					writer LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+			</choose> 
+		</if>
+	</select>
+
+	<select id="selectNoticeList" resultType="notice">
+		SELECT
+		 	notice_id
+		 	, notice_title
+		 	, notice_content
+		 	, reg_date
+		 	, readcount
+		 	, user_type
+		 	, update_date
+		 	, status
+		 	, readcount
+		FROM 
+			notice
+		<if test="searchKeyword != null and !searchKeyword.isEmpty()">
+		WHERE
+			<choose>
+				<when test="searchType.equals('noticeTitle')">
+					notice_title LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType.equals('content')">
+					notice_content LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType.equals('subject_content')">
+					notice_title LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR notice_content LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+			</choose> 
+		</if>	
+		ORDER BY	
+			notice_id DESC
+		LIMIT
+			-- 조회 시작 레코드(row) 번호
+			#{startRow}
+			-- 조회할 게시물 목록 갯수
+			, #{listLimit}
+	</select>
+	
 	<!-- 공지사항 상세 조회 -->
 	<select id="getNoticeById" resultType = "notice">
 		SELECT 

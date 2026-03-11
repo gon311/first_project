@@ -105,13 +105,5 @@
         </div>
     </div></div></div>
     
-    <script>
-    function deleteFaq(faqId) {
-    	console.log("삭제요청 id :" + faqId);
-        if (confirm("이 FAQ를 정말 삭제하시겠습니까?")) {
-            location.href = "<c:url value='/admin/contents/faqDelete'/>?faqId=" + faqId;
-        }
-    }
-    </script>
 </body>
 </html>

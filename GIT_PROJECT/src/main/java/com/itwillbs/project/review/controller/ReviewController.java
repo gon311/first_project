@@ -43,35 +43,28 @@ public class ReviewController {
 	public Map<String, Object> draftSave(@ModelAttribute CoverLetterDTO coverLetterDTO, HttpSession session) {
 		Long userId = (Long)session.getAttribute("userIdx");
 		coverLetterDTO.setUserId(userId);
-		reviewService.registForm(coverLetterDTO); 
+		coverLetterDTO.setSaveStatus(2);
 		
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("success", true);
-		result.put("message", "임시저장이 완료되었습니다.");
-		return result;
+		return reviewService.draftSave(coverLetterDTO); 
 	}
 	
 	// 1-2) 1단계 저장 후 coverLetterIdx를 주소에 넣어서 redirect
 	@PostMapping("/registText")
-	public String registText(CoverLetterDTO coverLetterDTO, HttpSession session, RedirectAttributes ra) {
+	public String registText(CoverLetterDTO coverLetterDTO, HttpSession session) {
 		Long userId = (Long)session.getAttribute("userIdx"); //  coverLetterIdx를 조회하기 위한 userId 저장 
 		coverLetterDTO.setUserId(userId);
+		coverLetterDTO.setSaveStatus(1); // 정식저장
 		reviewService.registForm(coverLetterDTO);  
-		Long coverLetterIdx = coverLetterDTO.getCoverLetterIdx(); 
 		
-		// 2단계 페이지에서 타이틀을 보여주기 위해 title 저장 
-		ra.addAttribute("title", coverLetterDTO.getTitle());
-		
-		// coverLetterIdx를 url에 추가해서 reirect 
-	    return "redirect:/review/" + coverLetterIdx + "/registText";
+	    return "redirect:/review/" + coverLetterDTO.getCoverLetterIdx() + "/registText";
 	}
 	
 	// 2) 2단계 작성 
 	@GetMapping("/{coverLetterIdx}/registText")
 	public String registText(@PathVariable Long coverLetterIdx, Model model) {
+		
+		// idx로 DB에서 다시 조회
 		CoverLetterDTO coverLetterDTO = reviewService.getCoverLetter(coverLetterIdx);
-	
-		log.info("조회된 내용: " + coverLetterDTO.getContent()); // 로그로 본문이 있는지 확인해보세요.
 		
 		model.addAttribute("coverLetterDTO", coverLetterDTO); // 2단계 페이지의 제목 창에 1단계에서 작성한 제목 그대로 반영 
 		

@@ -500,6 +500,7 @@ public class AdminService{
 	}
 
 	public void modifyAnswer(QnaDTO qnaDTO) {
+		
 		adminMapper.modifyAnswer(qnaDTO);
 		
 	}

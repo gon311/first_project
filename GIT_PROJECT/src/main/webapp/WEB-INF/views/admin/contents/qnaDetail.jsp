@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +16,10 @@ pageEncoding="UTF-8"%>
 			 <div class= "title">
 			 	<h3>${qnaDTO.qnaTitle}</h3>
 			 </div>
-			 글 번호 : ${qnaDTO.qnaId} | 작성자 아이디 : ${qnaDTO.writerId} | 작성일자 : ${qnaDTO.regDate } | ${qnaDTO.reStatus }
+			 글 번호 : ${qnaDTO.qnaId} | 작성자 아이디 : ${qnaDTO.writerId} | 작성일자 : <fmt:formatDate value="${qnaDTO.regDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" /> 
+			 | 
+			 	<c:if test='${qnaDTO.reStatus eq "pending"}'> 답변전 </c:if>
+			 	<c:if test= '${qnaDTO.reStatus eq "completed"}'> 답변 완료 </c:if>
 			 <hr>
 			<div class="contents">
 				${qnaDTO.qnaContent}
@@ -43,7 +48,7 @@ pageEncoding="UTF-8"%>
 		            	<div id = "displayAnswer">
 			                <div class="d-flex justify-content-between align-items-center mb-3">
 			                    <h5 class="fw-bold m-0 text-primary"><i class="bi bi-check-circle-fill me-2"></i>등록된 답변</h5>
-			                    <small class="text-muted">답변일: ${qnaDTO.reDate}</small>
+			                    <small class="text-muted">답변일: <fmt:formatDate value="${qnaDTO.reDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" /></small>
 			                </div>
 			                <div class="p-3 bg-white border rounded mb-3" style="white-space: pre-wrap;">${qnaDTO.reContent}</div>
 			                <div class="text-end">

@@ -81,7 +81,6 @@ public class StoreController {
 		MemberDTO memberInfo = storeService.getUserType(id);
 		
 		boolean exists = false;  	// 구직자 이용권 확인
-		boolean isSaved = false;  	// 구직자 이용권 확인
 		String posibillity = null;	// 기업회원 이용권 확인
 		
 		if(memberInfo.getUserType().equals("구직자 회원")) { // 구직자 회원
@@ -107,12 +106,8 @@ public class StoreController {
 			}
 		}
 		
-		// 구매자가 가상계좌 결제 후 입금하지 않아 이용권 테이블에 저장되지 않은 경우
-		isSaved = storeService.getProductSave(id);
-		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("exists", exists);
-		result.put("isSaved", isSaved);
 		result.put("posibillity", posibillity);
 		
 		return result;
@@ -194,7 +189,7 @@ public class StoreController {
 	    System.out.println("계좌 : " + paymentInfo.getMethod().getBank());
 	    
 	    // 카드 결제 시
-	    if(paymentInfo.getMethod().getType().equals("PaymentMethodCard")) {
+//	    if(paymentInfo.getMethod().getType().equals("PaymentMethodCard")) {
 	    	if(paymentInfo.getStatus().equals("PAID")) {
 	    		// 결제 성공 상태(PAID)인 경우
 		    	orderInfo.setStatus("PAID");       			// 주문 상태를 PAID로 업데이트
@@ -229,64 +224,64 @@ public class StoreController {
 	    		return "fail";	// 결제 실패 페이지 반환
 	    	}
 
-	    } else if(paymentInfo.getMethod().getType().equals("PaymentMethodVirtualAccount")) { // 가상계좌 선택시
-	    	
-	    	 if(paymentInfo.getStatus().equals("VIRTUAL_ACCOUNT_ISSUED")) {
-	    		// 입금계좌가 발급된 경우(입금대기)
-				orderInfo.setStatus("READY");       			// 주문 상태를 PAID로 업데이트
-				storeService.setOrderStatus(orderInfo); 
-	    		
-	    		paymentDTO.setPayMethod("가상계좌");
-		    	paymentDTO.setBankName(paymentInfo.getMethod().getBank());
-		    	paymentDTO.setDepositAccount(paymentInfo.getMethod().getAccountNumber());
-			    paymentDTO.setIssuedAt(paymentInfo.getMethod().getIssuedAt());
-			    paymentDTO.setExpiredAt(paymentInfo.getMethod().getExpiredAt());
-			    paymentDTO.setPayPrice(paymentInfo.getAmount().getTotal());
-			    paymentDTO.setPayStatus("READY");
-			    
-			    // 결제 테이블에 주문 정보 저장
-			    storeService.setPaymentInfo(paymentDTO);
-			    
-			    return "success";
-			    
-	    	} else if(paymentInfo.getStatus().equals("PAID")) {
-	    		// 결제 성공 상태(PAID)인 경우
-		    	orderInfo.setStatus("PAID");       			// 주문 상태를 PAID로 업데이트
-		        storeService.setOrderStatus(orderInfo);     // DB 반영
-		        
-		        // 결제 내역에 저장
-		    	paymentDTO.setDepositName(paymentInfo.getMethod().getRemitterName());
-			    paymentDTO.setPayDate(paymentInfo.getPaidAt());
-			    paymentDTO.setPayStatus("PAID");
-
-			    // 결제 내역에 반영
-			    storeService.changeVirtualAccountInfo(paymentDTO.getDepositName()
-			    									, paymentDTO.getPayDate()
-			    									, paymentDTO.getPayStatus()
-			    									, paymentDTO.getUserId());
-			    
-			    // 이용권 테이블에 구매자의 이용권 정보 저장
-			    if(orderInfo.getUserType() == 'P') {
-			    	storeService.setUserProduct(paymentDTO);
-			    } else if(orderInfo.getUserType() == 'C') {
-			    	storeService.setComProduct(paymentDTO);
-			    }
-			    
-			    // 만약, 일반 이용권을 보유중인 기업회원이 프리미엄 이용권을 구매한 경우 일반 이용권은 소멸됨
-			    if(paymentDTO.getProductId().equals("P-C2") && memberProductDTO.getUserId() == paymentDTO.getUserId()) {
-			    	storeService.changeUseStatus(memberProductDTO.getPayId());
-			    }
-		     
-		    	return "success";     // 결제 성공 페이지 반환
-		    	
-	    	} else {
-	    		
-	    		return "fail";
-	    	}
-	    }
+//	    } else if(paymentInfo.getMethod().getType().equals("PaymentMethodVirtualAccount")) { // 가상계좌 선택시
+//	    	
+//	    	 if(paymentInfo.getStatus().equals("VIRTUAL_ACCOUNT_ISSUED")) {
+//	    		// 입금계좌가 발급된 경우(입금대기)
+//				orderInfo.setStatus("READY");       			// 주문 상태를 PAID로 업데이트
+//				storeService.setOrderStatus(orderInfo); 
+//	    		
+//	    		paymentDTO.setPayMethod("가상계좌");
+//		    	paymentDTO.setBankName(paymentInfo.getMethod().getBank());
+//		    	paymentDTO.setDepositAccount(paymentInfo.getMethod().getAccountNumber());
+//			    paymentDTO.setIssuedAt(paymentInfo.getMethod().getIssuedAt());
+//			    paymentDTO.setExpiredAt(paymentInfo.getMethod().getExpiredAt());
+//			    paymentDTO.setPayPrice(paymentInfo.getAmount().getTotal());
+//			    paymentDTO.setPayStatus("READY");
+//			    
+//			    // 결제 테이블에 주문 정보 저장
+//			    storeService.setPaymentInfo(paymentDTO);
+//			    
+//			    return "success";
+//			    
+//	    	} else if(paymentInfo.getStatus().equals("PAID")) {
+//	    		// 결제 성공 상태(PAID)인 경우
+//		    	orderInfo.setStatus("PAID");       			// 주문 상태를 PAID로 업데이트
+//		        storeService.setOrderStatus(orderInfo);     // DB 반영
+//		        
+//		        // 결제 내역에 저장
+//		    	paymentDTO.setDepositName(paymentInfo.getMethod().getRemitterName());
+//			    paymentDTO.setPayDate(paymentInfo.getPaidAt());
+//			    paymentDTO.setPayStatus("PAID");
+//
+//			    // 결제 내역에 반영
+//			    storeService.changeVirtualAccountInfo(paymentDTO.getDepositName()
+//			    									, paymentDTO.getPayDate()
+//			    									, paymentDTO.getPayStatus()
+//			    									, paymentDTO.getUserId());
+//			    
+//			    // 이용권 테이블에 구매자의 이용권 정보 저장
+//			    if(orderInfo.getUserType() == 'P') {
+//			    	storeService.setUserProduct(paymentDTO);
+//			    } else if(orderInfo.getUserType() == 'C') {
+//			    	storeService.setComProduct(paymentDTO);
+//			    }
+//			    
+//			    // 만약, 일반 이용권을 보유중인 기업회원이 프리미엄 이용권을 구매한 경우 일반 이용권은 소멸됨
+//			    if(paymentDTO.getProductId().equals("P-C2") && memberProductDTO.getUserId() == paymentDTO.getUserId()) {
+//			    	storeService.changeUseStatus(memberProductDTO.getPayId());
+//			    }
+//		     
+//		    	return "success";     // 결제 성공 페이지 반환
+//		    	
+//	    	} else {
+//	    		
+//	    		return "fail";
+//	    	}
+//	    }
 	     
 	    // 위의 경우 외 실패 처리
-	    return "fail";
+//	    return "fail";
 	}
 
 	

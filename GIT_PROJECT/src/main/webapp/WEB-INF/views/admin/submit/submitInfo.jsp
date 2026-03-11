@@ -176,8 +176,6 @@
 								                    <a href="<c:url value="/file/${fileDTO.fileId}" />" class="btn btn-sm btn-light border" title="다운로드">
 								                        <i class="bi bi-download"></i>
 								                    </a>
-								                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteFile(${fileDTO.fileId})" title="삭제">
-								                        <i class="bi bi-trash"></i></button>
 								                </div>
 								            </div>
 								        </c:when>

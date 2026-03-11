@@ -26,13 +26,16 @@ public class CompanyCardService {
 		switch(type){
 			case "today":
 				cardList = companyCardMapper.selectTodayCompanies();
+				break;
 			case "popular": 
 				cardList = companyCardMapper.selectPopularCompanies();
+				break;
 			case "bookmark":
 				if(userIdx == null) {
 					return Collections.emptyList();
 				}
 				cardList = companyCardMapper.selectBookmarkCompanies(userIdx);
+				break;
 			default : 
 				cardList = companyCardMapper.selectTodayCompanies();
 		}

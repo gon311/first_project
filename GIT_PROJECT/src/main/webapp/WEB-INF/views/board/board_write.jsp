@@ -9,15 +9,7 @@
 </head>
 
 <body>
-<c:choose>
-    <c:when test="${sessionScope.memberType == 'company'}">
-        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
-    </c:when>
-
-    <c:otherwise>
-        <%@ include file="/WEB-INF/views/inc/header.jspf" %>
-    </c:otherwise>
-</c:choose>
+<%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
 <!-- URL주소 -->
 <c:url var="urlBoardList"  value="/board"/>
@@ -39,7 +31,7 @@
             </div>
 
             <div style="min-width:260px; max-width:320px;">
-              <select class="select" name="category" id="category">
+              <select class="select" name="boardType" id="category">
                 <option value="JOB">취준/이직</option>
                 <option value="CAREER">회사생활/커리어</option>
                 <option value="FREE">자유주제</option>

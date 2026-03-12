@@ -15,6 +15,7 @@
 <%-- 수정 URL들 --%>
 <c:url var="urlPassword" value="/my/password"/>
 <c:url var="urlUpdateInfo" value="/my/updateInfo"/>
+<c:url var="urlUserDelete" value="/my/user/delete"/>
 
 
 <main class="container-fluid px-0 mypage-wrap">
@@ -35,6 +36,7 @@
           <div class="top-actions d-flex gap-2">
             <a class="btn btn-outline-secondary" href="${urlPassword}">비밀번호 변경</a>
             <a class="btn btn-primary" href="${urlUpdateInfo}">내 정보 수정</a>
+            <button type="button" class="btn btn-danger" onclick="userDelete()">회원 탈퇴</button>
           </div>
         </div>
         
@@ -66,6 +68,7 @@
               <c:choose>
                 <c:when test="${loginUser.userType == 'P'}">개인</c:when>
                 <c:when test="${loginUser.userType == 'C'}">기업</c:when>
+                <c:when test="${loginUser.userType == 'A'}">관리자</c:when>
                 <c:otherwise>-</c:otherwise>
               </c:choose>
             </div>
@@ -79,5 +82,13 @@
 </main>
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+
+<script>
+	function userDelete() {
+		if(confirm("정말 탈퇴하시겠습니까?")) {
+			location.href="${urlUserDelete}"
+		}
+	}
+</script>
 </body>
 </html>

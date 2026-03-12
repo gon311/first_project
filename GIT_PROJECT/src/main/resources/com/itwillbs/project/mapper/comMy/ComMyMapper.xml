@@ -201,6 +201,22 @@
 	  <include refid="jobWhere"/>
 	</select>
 	
+	<select id="getJopPostingCount"
+	        parameterType="com.itwillbs.project.comMy.dto.JobCond"
+	        resultType="int">
+	  SELECT COUNT(*)
+	  FROM JOB_POSTING jp
+	
+	</select>
+	
+	<select id="getJopManagementCount"
+	        parameterType="com.itwillbs.project.comMy.dto.JobCond"
+	        resultType="int">
+	  SELECT COUNT(*)
+	  FROM JOB_POSTING jp
+	
+	  <include refid="jobWhere"/>
+	</select>
 	  <!-- =========================
        삭제
        ========================= -->
@@ -210,7 +226,6 @@
 	    AND job_id = #{jobId}
 	</delete>	
 		
-	
 <!-- ==============================
     결제내역
      parameter:PaymentCond.java

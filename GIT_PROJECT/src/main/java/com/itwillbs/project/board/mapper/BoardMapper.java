@@ -12,7 +12,7 @@ import com.itwillbs.project.common.dto.FileDTO;
 @Mapper
 public interface BoardMapper {
 
-	void insertBoard(BoardDTO boardDTO);
+	int insertBoard(BoardDTO boardDTO);
 	
 	// 게시물 상세
 	BoardDTO selectBoard(Long postId);

@@ -8,15 +8,7 @@
     <link href="<c:url value="/resources/css/user/userRegist.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <c:choose>
-	    <c:when test="${sessionScope.memberType == 'company'}">
-	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
-	    </c:when>
-	
-	    <c:otherwise>
-	        <%@ include file="/WEB-INF/views/inc/header.jspf" %>
-	    </c:otherwise>
-	</c:choose>
+    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
     <main>
 		<div class="container">

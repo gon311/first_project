@@ -7,12 +7,14 @@
 <head>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link href="<c:url value="/resources/css/jobCss/jobList.css" />" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <meta charset="UTF-8">
 </head>
 <body>
 
 <div class="main-wrapper">
     <form id="searchForm" action="JobList" method="get">
+    	<input type="hidden" name="page" id="pageNum" value="${pager.page}">
         <div class="filter-dropdown-row">
             <select class="filter-select" id="expFilter" name="expType" onchange="changeFilter()">
                 <option value="" ${empty param.expType ? 'selected' : ''}>경력 전체</option>
@@ -27,6 +29,12 @@
                 <option value="대학교(2,3년) 졸업" ${param.eduType == '대학교(2,3년) 졸업' ? 'selected' : ''}>대학교(2,3년) 졸업</option>
                 <option value="대학교(4년) 졸업" ${param.eduType == '대학교(4년) 졸업' ? 'selected' : ''}>대학교(4년) 졸업</option>
             </select>
+            
+		    <select class="filter-select" name="size" onchange="changeFilter()">
+			    <option value="5"  ${pager.size == 5  ? 'selected' : ''}>5개씩 보기</option>
+			    <option value="10" ${pager.size == 10 ? 'selected' : ''}>10개씩 보기</option>
+			    <option value="15" ${pager.size == 15 ? 'selected' : ''}>15개씩 보기</option>
+			</select>
         </div>
 
         <div class="search-section">
@@ -34,7 +42,7 @@
                 <div class="tab-item active" id="tabRegion" onclick="toggleTab('region')">📍 지역별</div>
                 <div class="tab-item" id="tabJob" onclick="toggleTab('job')">💼 직무별</div>
                 <div class="search-input-area">
-                    <input type="text" name="keyword" value="${param.keyword}" placeholder="회사명 또는 공고 제목을 검색하세요.">
+					<input type="text" name="q" value="${q}" placeholder="회사명 또는 공고 제목을 검색하세요.">
                     <button type="submit" class="btn-main-search" onclick="syncHiddenFields()">검색하기</button>
                 </div>
             </div>
@@ -101,16 +109,44 @@
 			</div>
 	    </c:forEach>
 	</div>
+	
+	<%-- ✅ 페이저 --%>
+	<div class="pager">
+	    <c:if test="${pager.hasPrev}">
+	        <a href="javascript:void(0);" onclick="changePage(${pager.page - 1})">이전</a>
+	    </c:if>
+	    
+	    <c:forEach var="i" begin="${pager.startPage}" end="${pager.endPage}">
+	        <a href="javascript:void(0);" onclick="changePage(${i})" class="${i == pager.page ? 'active' : ''}">
+	            ${i}
+	        </a>
+	    </c:forEach>
+	    
+	    <c:if test="${pager.hasNext}">
+	        <a href="javascript:void(0);" onclick="changePage(${pager.page + 1})">다음</a>
+	    </c:if>
+	</div>
 </div>
+
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+
 <script>
 	const regionData = {};
 	
 	<c:forEach var="reg" items="${existRegions}">
-	    if(!regionData['${reg.city}']) {
-	        regionData['${reg.city}'] = [];
-	    }
-	    regionData['${reg.city}'].push('${reg.district}');
+	    (function() {
+	        var city = "<c:out value='${reg.city}' />";
+	        var district = "<c:out value='${reg.district}' />";
+	        
+	        if(city && city !== "" && city !== "null") {
+	            if(!regionData[city]) {
+	                regionData[city] = [];
+	            }
+	            if(district && district !== "" && district !== "null") {
+	                regionData[city].push(district);
+	            }
+	        }
+	    })();
 	</c:forEach>
 	
 
@@ -132,12 +168,31 @@
 
     function renderMainCategory() {
         const mainUl = document.getElementById('mainCategory');
+        const subDiv = document.getElementById('subCategory'); // 서브 카테고리 영역 추가
         const data = (currentTab === 'region') ? regionData : jobData;
+        
         mainUl.innerHTML = '';
-        Object.keys(data).forEach((cat, index) => {
+        subDiv.innerHTML = ''; // 탭 전환 시 오른쪽 상세 항목 영역을 먼저 비웁니다.
+
+        const keys = Object.keys(data);
+        
+        // 만약 데이터가 없으면 (지역별 공고가 0건인 경우 등)
+        if (keys.length === 0) {
+            const li = document.createElement('li');
+            li.textContent = "해당 조건의 지역이 없습니다.";
+            li.style.color = "#999";
+            li.style.fontSize = "13px";
+            mainUl.appendChild(li);
+            return; // 데이터가 없으므로 여기서 종료
+        }
+
+        keys.forEach((cat, index) => {
             const li = document.createElement('li');
             li.textContent = cat;
-            if(index === 0) { li.classList.add('active'); renderSubCategory(cat); }
+            if(index === 0) { 
+                li.classList.add('active'); 
+                renderSubCategory(cat); 
+            }
             li.onclick = function() {
                 document.querySelectorAll('#mainCategory li').forEach(el => el.classList.remove('active'));
                 this.classList.add('active');
@@ -196,10 +251,17 @@
     }
 
     function changeFilter() {
+        document.getElementById('pageNum').value = 1; 
+        syncHiddenFields(); 
+        document.getElementById("searchForm").submit();
+    }
+    
+    function changePage(num) {
+        document.getElementById('pageNum').value = num;
         syncHiddenFields();
         document.getElementById("searchForm").submit();
     }
-
+    
     function resetAll() {
         location.href = "JobList";
     }

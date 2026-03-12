@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.project.comMy.dto.JobCond;
 import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.job.dto.JobApplicationDTO;
 import com.itwillbs.project.job.dto.JobDTO;
@@ -23,6 +24,24 @@ public interface JobMapper {
 			@Param("selectedItems") List<String> selectedItems
 			);
 
+	List<JobDTO> getJobListPaging(
+		    @Param("expType") String expType, 
+		    @Param("eduType") String eduType,
+		    @Param("userIdx") Long userIdx,
+		    @Param("selectedItems") List<String> selectedItems,
+		    @Param("q") String q,  // 검색어 추가
+		    @Param("offset") int offset,
+		    @Param("size") int size      
+		);
+	
+	int getJobListCount(
+		    @Param("expType") String expType, 
+		    @Param("eduType") String eduType,
+		    @Param("userIdx") Long userIdx,
+		    @Param("selectedItems") List<String> selectedItems,
+		    @Param("q") String q   // 검색어 추가
+		);
+	
 	List<Map<String, String>> getExistingRegions();
 
 	JobDTO getJobListDetail(Long jobId);
@@ -60,4 +79,24 @@ public interface JobMapper {
 	String getPostingTitle(Long jobId);
 	
 	// ===================================================
+	
+	// JobMapper.java 인터페이스 하단에 추가
+	int getApplicantCount(@Param("jobId") Long jobId, @Param("compId") Long compId);
+
+	List<JobApplicationDTO> getApplicantListPaging(
+	    @Param("jobId") Long jobId, 
+	    @Param("compId") Long compId, 
+	    @Param("startRow") int startRow, 
+	    @Param("listLimit") int listLimit
+	);
+	
+	// 지원자 목록 조회 (JobCond 객체 하나로 모든 필터 전달)
+    List<JobApplicationDTO> getApplicantListPaging(JobCond cond);
+
+    // 검색 조건에 맞는 총 지원자 수
+    int getApplicantCount(JobCond cond);
+
+    // 전형 단계별 카운트 (GROUP BY 결과)
+    List<Map<String, Object>> getApplicantStatusCounts(JobCond cond);
+    
 }

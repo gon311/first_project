@@ -10,15 +10,7 @@
 </head>
 
 <body>
-	<c:choose>
-		<c:when test="${sessionScope.memberType == 'company'}">
-			<%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
-		</c:when>
-		
-		<c:otherwise>
-			<%@ include file="/WEB-INF/views/inc/header.jspf" %>
-		</c:otherwise>
-	</c:choose>
+<%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
 <c:url var="urlBoardList" value="/board"/>
 <c:url var="urlBoardEdit" value="/board/edit"/>
@@ -38,7 +30,7 @@
                 <div>
                     <!-- 카테고리 -->
                     <span class="badge-cat">
-                        ${post.boardType}
+                        ${post.categoryName}
                     </span>
 
                     <!-- 제목 -->
@@ -48,7 +40,7 @@
 
                     <!-- 메타정보 -->
                     <div class="meta">
-                        <span>${post.createdAtText}</span>
+                        <span>${post.displayDateText}</span>
                         <span class="dot">·</span>
                         <span>조회 ${post.readcount}</span>
                     </div>

@@ -1,0 +1,219 @@
+@charset "UTF-8";
+body { 
+    background-color: #f8f9fa; 
+    color: #333; 
+/*         font-family: 'Pretendard', sans-serif;  */
+    margin: 0 !important;   /* 부트스트랩 간섭 방지 */
+    padding: 0 !important;    
+}
+
+.manage-container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 40px 20px; 
+}
+
+/* 2. 전형 단계별 현황 (White Card 스타일) */
+.status-tabs { 
+    display: flex; 
+    background: #fff; 
+    border-radius: 12px; 
+    margin-bottom: 30px; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+    border: 1px solid #eee; 
+}
+
+.status-tab { 
+    flex: 1; 
+    padding: 25px; 
+    text-align: center; 
+    border-right: 1px solid #f0f0f0; 
+    cursor: pointer; 
+    transition: 0.2s; 
+}
+
+.status-tab:last-child { 
+    border-right: none; 
+}
+
+.status-tab.active { 
+    background: #fdfdfd; 
+    border-bottom: 4px solid #4485ff; 
+}
+
+.status-tab .count { 
+    display: block; 
+    font-size: 26px; 
+    font-weight: 800; 
+    margin-top: 5px; 
+    color: #4485ff; 
+}
+
+.status-tab .label { 
+    font-size: 15px; 
+    color: #666; 
+    font-weight: 500; 
+}
+
+/* 3. 검색 및 필터 바 (밝은 톤) */
+.filter-bar { 
+    background: #fff; 
+    padding: 25px; 
+    border-radius: 12px; 
+    margin-bottom: 20px; 
+    border: 1px solid #eee; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+}
+
+.filter-row { 
+    display: flex; 
+    gap: 12px; 
+    margin-bottom: 15px; 
+    flex-wrap: wrap; 
+}
+
+.filter-bar input, 
+.filter-bar select { 
+    background: #fff; 
+    border: 1px solid #ddd; 
+    color: #333; 
+    padding: 10px 15px; 
+    border-radius: 6px; 
+}
+
+.btn-action { 
+    background: #4485ff; 
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-weight: 600; 
+}
+
+.btn-secondary { 
+    background: #fff; 
+    color: #666; 
+    border: 1px solid #ccc; 
+    padding: 10px 20px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+}
+
+.btn-secondary:hover { 
+    background: #f5f5f5; 
+}
+
+/* 4. 지원자 목록 테이블 (깔끔한 화이트) */
+.applicant-table-wrap { 
+    background: #fff; 
+    border-radius: 12px; 
+    border: 1px solid #eee; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+    overflow: hidden; 
+}
+
+.applicant-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+}
+
+.applicant-table th { 
+    background: #fcfcfc; 
+    padding: 18px 15px; 
+    text-align: left; 
+    font-size: 14px; 
+    color: #888; 
+    border-bottom: 1px solid #eee; 
+}
+
+.applicant-table td { 
+    padding: 20px 15px; 
+    border-bottom: 1px solid #eee; 
+    vertical-align: middle; 
+    background: #fff; 
+}
+
+.applicant-table tr:hover td { 
+    background: #f9fbff; 
+}
+
+.name-tag { 
+    font-weight: 700; 
+    font-size: 16px; 
+    color: #222; 
+    margin-bottom: 6px; 
+    display: block; 
+}
+
+.doc-links { 
+    display: flex; 
+    gap: 6px; 
+}
+
+.doc-btn { 
+    font-size: 11px; 
+    color: #4485ff; 
+    text-decoration: none; 
+    border: 1px solid #e1e9ff; 
+    background: #f0f4ff; 
+    padding: 3px 8px; 
+    border-radius: 4px; 
+    font-weight: 600; 
+}
+
+.status-select { 
+    background: #fff; 
+    color: #333; 
+    border: 1px solid #ddd; 
+    padding: 6px 10px; 
+    border-radius: 4px; 
+    font-size: 13px; 
+}
+
+.star-icon { 
+    color: #ddd; 
+    cursor: pointer; 
+    font-size: 18px; 
+}
+
+.star-icon.active { 
+    color: #ffc107; 
+}
+
+/* 5. 페이지네이션 */
+.pagination { 
+    display: flex; 
+    justify-content: center; 
+    gap: 8px; 
+    margin-top: 40px; 
+}
+
+.page-link { 
+    color: #888; 
+    text-decoration: none; 
+    padding: 8px 14px; 
+    border: 1px solid #eee; 
+    background: #fff; 
+    border-radius: 4px; 
+}
+
+.page-link.active { 
+    background: #4485ff; 
+    color: #fff; 
+    border-color: #4485ff; 
+}
+
+/* 별표 아이콘 스타일 */
+.scrap-icon {
+    font-size: 22px;
+    cursor: pointer;
+    color: #ccc; /* 기본 회색 (비활성) */
+ transition: color 0.2s;
+ margin-right: 15px;
+ z-index: 10; /* 카드 클릭 이벤트와 겹치지 않게 조절 */
+}
+
+.scrap-icon.active {
+    color: #ffc107; /* 노란색 (활성) */
+}

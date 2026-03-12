@@ -11,11 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.project.comMy.dto.JobCond;
 import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.common.mapper.FileMapper;
 import com.itwillbs.project.common.util.FileUtils;
 import com.itwillbs.project.job.dto.JobApplicationDTO;
 import com.itwillbs.project.job.dto.JobDTO;
+import com.itwillbs.project.job.dto.JobPageDTO;
+import com.itwillbs.project.job.dto.PageInfoDTO;
 import com.itwillbs.project.job.mapper.JobMapper;
 import com.itwillbs.project.resume.dto.ResumeDTO;
 
@@ -36,8 +39,7 @@ public class JobService {
 		
 		List<FileDTO> fileList = FileUtils.uploadBoardFile(files);
 		if(!fileList.isEmpty()) {
-			// 파일 정보 등록
-			fileMapper.insertFiles(fileList, jobDTO.getJobId(), "JOB_POSTING");
+			fileMapper.insertJobFiles(fileList, jobDTO.getJobId(), "JOB_POSTING");
 		}
 		
 	}
@@ -82,10 +84,8 @@ public class JobService {
 	        	System.out.println(fileId);
 	            FileDTO fileDTO = jobMapper.selectFile(fileId);
 	            if (fileDTO != null) {
-	                // [필요시 추가] 실제 물리적 경로의 파일 삭제 로직 (FileUtils 등에 구현)
 //	                 FileUtils.deleteFile(fileDTO, sId); 
 	                
-	                // DB에서 파일 레코드 삭제
 	                jobMapper.deleteFile(fileId);
 	            }
 	        }
@@ -129,13 +129,65 @@ public class JobService {
 	    jobMapper.updateApplicationFavorite(appId, isFavorite);
 	}
 
-	public String getPostingTitle(Long jobId) {
-		return jobMapper.getPostingTitle(jobId);
+	// 1. 공고 리스트 조회 (q 파라미터 추가)
+	public List<JobDTO> getJobListPaging(String expType, String eduType, Long userIdx, List<String> selectedItems, String q, int page, int size) {
+	    int offset = (page - 1) * size;
+	    return jobMapper.getJobListPaging(expType, eduType, userIdx, selectedItems, q, offset, size);
 	}
 
-	// ===================================================
-		
+	// 2. 검색 결과에 따른 전체 공고 수 조회 (페이징 계산용)
+	public int getJobListCount(String expType, String eduType, Long userIdx, List<String> selectedItems, String q) {
+	    return jobMapper.getJobListCount(expType, eduType, userIdx, selectedItems, q);
+	}
+	
+    // 1. 지원자 목록 조회 (페이징 및 필터 적용)
+    public List<JobApplicationDTO> getApplicantListPaging(JobCond cond) {
+        // JobCond 내의 PageReq가 offset 계산을 자동으로 수행합니다.
+        // LIMIT #{page.offset}, #{page.size} 처럼 사용될 예정입니다.
+        return jobMapper.getApplicantListPaging(cond);
+    }
 
+    // 2. 필터링된 지원자 전체 수 조회 (페이징용)
+    public int getApplicantCount(JobCond cond) {
+        return jobMapper.getApplicantCount(cond);
+    }
+
+    // 3. 전형 단계별 카운트 조회 (상단 탭용)
+    // 필터와 상관없이 해당 공고의 현재 전체 현황을 보여줍니다.
+    public Map<String, Integer> getApplicantStatusCounts(JobCond cond) {
+        // 1. 매퍼 호출 (이제 jobId, q, careerType 등이 담긴 cond를 보냅니다)
+        List<Map<String, Object>> counts = jobMapper.getApplicantStatusCounts(cond);
+        // 2. 결과 맵 초기화 (데이터가 없어도 화면에 0으로 나오게 하기 위함)
+        Map<String, Integer> resultMap = new HashMap<>();
+        resultMap.put("waitCount", 0);
+        resultMap.put("passCount", 0);
+        resultMap.put("interviewCount", 0);
+        resultMap.put("finalCount", 0);
+        resultMap.put("failCount", 0);
+
+        // 3. 루프를 돌며 DB에서 가져온 값 매핑
+        if (counts != null) {
+            for (Map<String, Object> map : counts) {
+                String step = (String) map.get("app_step");
+                // DB 컬럼명 'cnt' 혹은 'COUNT(*)'에 맞춰 가져오기
+                int count = ((Number) map.get("cnt")).intValue();
+
+                switch (step) {
+                    case "서류대기": resultMap.put("waitCount", count); break;
+                    case "서류통과": resultMap.put("passCount", count); break;
+                    case "면접진행": resultMap.put("interviewCount", count); break;
+                    case "최종합격": resultMap.put("finalCount", count); break;
+                    case "불합격": resultMap.put("failCount", count); break;
+                }
+            }
+        }
+        return resultMap;
+    }
+
+    // 4. 공고 제목 가져오기 (기존 유지)
+    public String getPostingTitle(Long jobId) {
+        return jobMapper.getPostingTitle(jobId);
+    }
 		
 
 

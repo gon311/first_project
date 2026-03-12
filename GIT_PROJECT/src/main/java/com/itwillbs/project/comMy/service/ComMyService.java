@@ -146,9 +146,17 @@ public class ComMyService {
 	public int deleteJob(Long userId, Long jobId) {
 		return comMyMapper.deleteJob(userId, jobId);
 	}
-	
-}
 
+	
+	public int getJopPostingCount(JobCond cond) {
+		return comMyMapper.getJopPostingCount(cond);
+	}
+	
+	
+	public int getJopManagementCount(JobCond cond) {
+		return comMyMapper.getJopManagementCount(cond);
+	}
+}
 
 
 

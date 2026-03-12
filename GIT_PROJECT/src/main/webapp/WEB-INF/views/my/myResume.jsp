@@ -17,9 +17,9 @@
 <!-- 수정 URL들 -->
 <c:url var="urlMyResume" value="/my/myResume"/>
 <c:url var="urlResumeCreate" value="/resume/regist"/>   <%-- 새 이력서 작성 --%>
-<c:url var="urlResumeEdit" value="/my/resume/edit"/>       <%-- 수정 --%>
+<c:url var="urlResumeEdit" value="/mresume/resumeModify"/>       <%-- 수정 --%>
 <c:url var="urlResumeDelete" value="/my/resume/delete"/>   <%-- 삭제(나중에 POST) --%>
-<c:url var="urlResumeDetail" value="/my/resume/detail"/>   <%-- 디테일 --%>
+<c:url var="urlResumeDetail" value="/resume/resumeView"/>   <%-- 디테일 --%>
 
 
 <main class="container-fluid px-0 mypage-wrap">

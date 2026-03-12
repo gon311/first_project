@@ -12,7 +12,15 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-	<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+		<c:choose>
+	    <c:when test="${sessionScope.memberType == 'company'}">
+	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+	    </c:when>
+	
+	    <c:otherwise>
+	        <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	    </c:otherwise>
+	</c:choose>
 
     <main class="flex-grow-1 d-flex justify-content-center align-items-center py-5">
         

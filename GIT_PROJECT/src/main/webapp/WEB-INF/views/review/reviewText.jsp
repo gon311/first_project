@@ -14,6 +14,7 @@
 	
 		<%-- main area --%>
 		<main class="container my-4">
+			
 			<form action="<c:url value="/review/save" />" name="registText"
 				id="registText" method="post" novalidate>
 				<div class="card shadow-sm review-card">
@@ -24,7 +25,7 @@
 							<label for="title" class="form-label fw-semibold">자소서 제목<span
 								class="text-danger">*</span></label> <input type="text"
 								class="form-control" id="title" name="title"
-								value="${param.title}" placeholder="제목을 입력해 주세요." required>
+								value="${coverLetterDTO.title}" placeholder="제목을 입력해 주세요." required>
 						</div>
 						
 						<!-- 질문 선택 -->
@@ -67,7 +68,7 @@
 							<div class="col-12 col-lg-6">
 								<label for="inputText" class="form-label">입력</label>
 								<textarea id="content" name="content" class="form-control"
-									rows="18" placeholder="키워드 또는 문장을 입력해주세요."></textarea>
+									rows="18" placeholder="키워드 또는 문장을 입력해주세요.">${coverLetterDTO.content}</textarea>
 							</div>
 							<div class="col-12 col-lg-6">
 								<label for="outputText" class="form-label">출력</label>
@@ -89,7 +90,7 @@
 				</div>
 				
 				<%-- select문에서 사용할 coverLetterIdx --%>
-				<input type="hidden" id="coverLetterIdx" name="coverLetterIdx" value="${coverLetterIdx}">
+				<input type="hidden" id="coverLetterIdx" name="coverLetterIdx" value="${coverLetterDTO.coverLetterIdx}">
 				<%-- ai 생성 여부  --%>
 				<input type="hidden" id="aiGenerated" name="aiGenerated" value="1">
 				<%-- 최종저장 status --%>
@@ -214,6 +215,16 @@
 						return false;
 					}
 				}
+				
+					// 사용자가 페이지를 한 번이라도 클릭하면 뒤로가기 방지 활성화
+					window.addEventListener('click', () => {
+					    history.pushState(null, null, location.href);
+					}, { once: true }); 
+
+					window.onpopstate = function () {
+					    history.pushState(null, null, location.href);
+					    alert("변경사항이 저장되지 않을 수 있습니다.");
+					};
 			</script>
 	</body>
 </html>

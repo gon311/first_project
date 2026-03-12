@@ -16,5 +16,7 @@ public interface FileMapper {
 					 @Param("postId")Long postId, 
 					 @Param("categoryCode") String categoryCode);
 
+	void insertJobFiles(List<FileDTO> fileList, Long jobId, String string);
+
 
 }

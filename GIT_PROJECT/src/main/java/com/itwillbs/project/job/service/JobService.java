@@ -38,7 +38,7 @@ public class JobService {
 		
 		List<FileDTO> fileList = FileUtils.uploadBoardFile(files);
 		if(!fileList.isEmpty()) {
-			fileMapper.insertFiles(fileList, jobDTO.getJobId(), "JOB_POSTING");
+			fileMapper.insertJobFiles(fileList, jobDTO.getJobId(), "JOB_POSTING");
 		}
 		
 	}

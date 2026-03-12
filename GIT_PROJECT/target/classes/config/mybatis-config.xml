@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+<configuration>
+	
+	<!-- DB 컬럼명과 DTO 클래스 필드명의 불일치 해결을 위한 자동 변환 설정-->
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="com.itwillbs.project.common.dto.FileDTO" alias="fileDTO"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.MemberDTO" alias="member"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.NoticeDTO" alias="notice"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.FaqDTO" alias="faq"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.JobPostDTO" alias="jobPost"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.ProductDTO" alias="product"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.PayDTO" alias="pay"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.SubmitDTO" alias="submit"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.QnaDTO" alias="qna"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.BannerDTO" alias="dto"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.FreeDTO" alias="free"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.CommentDTO" alias="comment"/>
+		<typeAlias type="com.itwillbs.project.admin.dto.SearchDTO" alias="search"/>
+		<typeAlias type="com.itwillbs.project.user.dto.UserDTO" alias="user"/>
+		<typeAlias type="com.itwillbs.project.job.dto.JobDTO" alias="job"/>
+		<typeAlias type="com.itwillbs.project.job.dto.JobApplicationDTO" alias="application"/>
+		<typeAlias type="com.itwillbs.project.store.dto.PaymentDTO" alias="payment"/>
+		<typeAlias type="com.itwillbs.project.store.dto.StoreDTO" alias="store"/>
+		<typeAlias type="com.itwillbs.project.store.dto.OrderDTO" alias="order"/>
+		<typeAlias type="com.itwillbs.project.store.dto.MemberProductDTO" alias="memberProduct"/>
+		<typeAlias type="com.itwillbs.project.resume.dto.ResumeDTO" alias="resume"/>
+		<typeAlias type="com.itwillbs.project.resume.dto.ResumeEducationDTO" alias="resumeEducation"/>
+		<typeAlias type="com.itwillbs.project.resume.dto.ResumeExperienceDTO" alias="resumeExperience"/>
+	</typeAliases>
+	
+</configuration>

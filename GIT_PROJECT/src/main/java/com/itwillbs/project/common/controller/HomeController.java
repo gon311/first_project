@@ -1,7 +1,5 @@
 package com.itwillbs.project.common.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -10,14 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 	
 	@GetMapping("/")
-	public String main(HttpSession session) {
-		session.setAttribute("memberType", "user");
+	public String main() {
+	    
 	    return "/mainUser";
 	}
 	
 	@GetMapping("/mainCom")
-	public String mainCom(HttpSession session) {
-		session.setAttribute("memberType", "company");
+	public String mainCom() {
+		
 		return "/mainCom";
 	}
 	

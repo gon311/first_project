@@ -9,15 +9,7 @@
 </head>
 
 <body>
-  <c:choose>
-	    <c:when test="${sessionScope.memberType == 'company'}">
-	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
-	    </c:when>
-	
-	    <c:otherwise>
-	        <%@ include file="/WEB-INF/views/inc/header.jspf" %>
-	    </c:otherwise>
-	</c:choose>
+  <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
   <c:url var="urlBoardList" value="/board"/>
   <c:url var="urlBoardDetail" value="/board/detail"/>
@@ -124,7 +116,7 @@
                   <div class="row-mid">
                     <div class="meta-top">
                       <span class="badge-cat">${p.categoryName}</span>
-                      <span>${p.writerNickname} · ${p.createdAtText}</span>
+                      <span>${p.writerNickname} · ${p.displayDateText}</span>
                     </div>
 
                     <a class="title-link"

@@ -40,7 +40,7 @@
 
                     <!-- 메타정보 -->
                     <div class="meta">
-                        <span>${post.createdAtText}</span>
+                        <span>${post.displayDateText}</span>
                         <span class="dot">·</span>
                         <span>조회 ${post.readcount}</span>
                     </div>

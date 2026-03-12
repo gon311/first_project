@@ -116,7 +116,7 @@
                   <div class="row-mid">
                     <div class="meta-top">
                       <span class="badge-cat">${p.categoryName}</span>
-                      <span>${p.writerNickname} · ${p.createdAtText}</span>
+                      <span>${p.writerNickname} · ${p.displayDateText}</span>
                     </div>
 
                     <a class="title-link"

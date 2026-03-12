@@ -235,6 +235,10 @@ public class MyService {
 	    }
 	}
 
+	public void deleteUser(String sId) {
+		myMapper.deleteUser(sId);
+	}
+
 
 	
 	

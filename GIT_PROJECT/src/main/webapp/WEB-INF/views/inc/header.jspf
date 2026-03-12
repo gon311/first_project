@@ -139,7 +139,7 @@
 		        <div class="menu-group">
 		            <h6 class="fw-bold" style="color: #483D8B;">커뮤니티</h6>
 		            <ul class="list-unstyled">
-		                <li><a href="<c:url value='/board/board' />">자유게시판</a></li>
+		                <li><a href="<c:url value='/board' />">자유게시판</a></li>
 		                <li><a href="<c:url value='#' />">면접후기</a></li>
 		            </ul>
 		        </div>

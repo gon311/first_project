@@ -9,6 +9,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<link href="<c:url value="/resources/css/user/userLogin.css" />" rel="stylesheet" type="text/css">
+	<link href="<c:url value="/resources/css/common.css" />" rel="stylesheet" type="text/css">	
 </head>
 
 <body class="d-flex flex-column min-vh-100">

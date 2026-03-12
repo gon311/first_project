@@ -6,6 +6,7 @@
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <link href="<c:url value="/resources/css/user/userRegist.css" />" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/resources/css/common.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
        <c:choose>

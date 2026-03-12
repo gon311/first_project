@@ -286,6 +286,9 @@ public interface AdminMapper {
 //	자유게시판 댓글 삭제
 	void deleteComment(long commentId);
 
+//	자유게시판 게시글 삭제	
+	void deleteBoard(long postId);
+
 
 
 	

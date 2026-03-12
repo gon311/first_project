@@ -453,6 +453,14 @@ public class AdminService{
 		
 		return adminMapper.getBoardDetail(postId);
 	}
+	
+	// 자유게시판 게시글 삭제
+	public void deleteBoard(long postId) {
+		
+		adminMapper.deleteBoard(postId);
+	}
+
+	
 
 	// 자유게시판 댓글 조회
 	public List<CommentDTO> getCommentByPostId(long postId) {
@@ -594,6 +602,7 @@ public class AdminService{
 	    return result;
 		
 	}
+
 
 
 

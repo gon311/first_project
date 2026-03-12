@@ -216,6 +216,15 @@ public class AdminContentController {
 		
 		return "admin/contents/boardDetail";
 	}
+// 자유게시판 게시글 삭제
+	@GetMapping("/boardDelete")
+	public String boardDelete(@RequestParam("postId") long postId) {
+		adminService.deleteBoard(postId);
+		
+		return "redirect:/admin/contents/Board";
+	}
+	
+	
 	
 //	자유게시판 게시글 댓글 삭제
 	@GetMapping("/commentDelete")

@@ -32,9 +32,6 @@ public class ApiService {
 	@Value("${biz.api_key}")
     private String bizApiKey;
 	
-	@Value("${mail.api_key}")
-	private String mailApiKey;
-	
 	// 사업자등록 진위확인
 	public String correction(String content) throws IOException {
 		// 1. 발급받은 일반 인증키(Encoding 또는 Decoding 둘 중 하나 시도)
@@ -96,32 +93,5 @@ public class ApiService {
             }
             return objectMapper.writeValueAsString(resultDTO);
 	} // --------------------------------------------------------------- correction 메서드 끝
-	
-	// 이메일 전송 api
-	public String sendWelcomeEmail(String toEmail, String authCode) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        // 1. 헤더 설정 (API 키와 컨텐츠 타입)
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + mailApiKey);
-
-        // 2. 요청 바디(JSON) 데이터 구성
-        Map<String, Object> body = new HashMap<>();
-        body.put("from", "onboarding@resend.dev"); // 도메인 인증 전 고정값
-        body.put("to", toEmail);
-        body.put("subject", "firstPoriject인증메일");
-        body.put("html", "인증코드 : " + authCode);
-
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
-
-        // 3. API 호출
-        try {
-            ResponseEntity<String> response = restTemplate.postForEntity(RESEND_API_URL, entity, String.class);
-            return "성공: " + response.getBody();
-        } catch (Exception e) {
-            return "실패: " + e.getMessage();
-        }
-    }
 	
 }

@@ -153,8 +153,10 @@ public class ComMyService {
 		return 0;
 	}
 	
+	public int getJopManagementCount(JobCond cond) {
+		return comMyMapper.getJopManagementCount(cond);
+	}
 }
-
 
 
 

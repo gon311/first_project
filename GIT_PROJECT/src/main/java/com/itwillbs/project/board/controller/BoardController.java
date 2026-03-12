@@ -89,6 +89,8 @@ public class BoardController {
 	    model.addAttribute("category", category);
 	    model.addAttribute("sort", sort);
 	    model.addAttribute("searchType", searchType);
+	    model.addAttribute("size", cond.getPage().getSafeSize());
+	    
 
 	    return "/board/board";
 	}
@@ -98,38 +100,43 @@ public class BoardController {
 	// 게시글 작성 페이지
 	@GetMapping("/write")
 	public String boardWrite(HttpSession session) {
-		String sId = (String) session.getAttribute("sId");
+	    String sId = (String) session.getAttribute("sId");
 
-		if (sId == null) {
-			throw new LoginRequiredException("로그인이 필요한 서비스입니다.\\n로그인 페이지로 이동합니다.");
-		}
+	    if (sId == null) {
+	        throw new LoginRequiredException("로그인이 필요한 서비스입니다.\\n로그인 페이지로 이동합니다.");
+	    }
 
-		return "/board/board_write";
+	    return "/board/board_write";
 	}
 
 	// 게시글 등록 처리
 	@PostMapping("/write")
 	public String boardWrite(BoardDTO boardDTO,
-							 List<MultipartFile> files,
-							 HttpServletRequest request,
-							 HttpSession session,
-							 Model model,
-							 RedirectAttributes ra) throws IOException {
+	                         List<MultipartFile> files,
+	                         HttpServletRequest request,
+	                         HttpSession session,
+	                         Model model,
+	                         RedirectAttributes ra) throws IOException {
 
-		Long userIdx = (Long) session.getAttribute("userIdx");
+	    String sId = (String) session.getAttribute("sId");
 
-		if (userIdx == null) {
-			throw new LoginRequiredException("로그인이 필요한 서비스입니다.\\n로그인 페이지로 이동합니다.");
-		}
+	    if (sId == null) {
+	        throw new LoginRequiredException("로그인이 필요한 서비스입니다.\\n로그인 페이지로 이동합니다.");
+	    }
 
-		boardDTO.setAuthorMemberId(userIdx);
+	    MyDTO user = myService.getUser(sId);
 
-		boardService.registBoard(boardDTO, files);
+	    if (user == null) {
+	        throw new LoginRequiredException("로그인 사용자 정보를 확인할 수 없습니다.\\n다시 로그인해주세요.");
+	    }
 
-		// 등록 후 상세 페이지로 이동할 게시글 번호 전달
-		ra.addAttribute("postId", boardDTO.getPostId());
+	    boardDTO.setAuthorMemberId(user.getUserId());
 
-		return "redirect:/board/detail";
+	    boardService.registBoard(boardDTO, files);
+
+	    ra.addAttribute("postId", boardDTO.getPostId());
+
+	    return "redirect:/board/detail";
 	}
 	
 	// 게시글 상세

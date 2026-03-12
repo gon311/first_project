@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+<c:set var="realTotal" value="${statusCounts.waitCount + statusCounts.passCount + statusCounts.interviewCount + statusCounts.finalCount + statusCounts.failCount}" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +23,7 @@
     <section class="status-tabs">
         <div class="status-tab ${cond.status == 'all' || empty cond.status ? 'active' : ''}" onclick="changeAppStep('all')">
             <span class="label">전체</span>
-            <span class="count">${pager.total}</span> 
+            <span class="count">${realTotal}</span> 
         </div>
         <div class="status-tab ${param.appStep == '서류대기' ? 'active' : ''}" onclick="changeAppStep('서류대기')">
             <span class="label">서류대기</span>

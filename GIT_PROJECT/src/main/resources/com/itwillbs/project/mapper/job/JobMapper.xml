@@ -518,9 +518,9 @@
 	            a.is_favorite as isFavorite,
 	            a.resume_id as resumeId
 	        FROM job_application a
-	        JOIN resume r ON a.resume_id = r.resume_id
-	        JOIN user u ON r.user_id = u.user_id
-	        JOIN job_posting p ON a.job_id = p.job_id
+	        LEFT JOIN resume r ON a.resume_id = r.resume_id
+	        LEFT JOIN user u ON r.user_id = u.user_id
+	        LEFT JOIN job_posting p ON a.job_id = p.job_id
 	        <where>
 	            AND a.job_id = #{jobId}
 	            
@@ -574,10 +574,35 @@
 	    </where>
 	</select>
 	
+<!-- 	<select id="getApplicantStatusCounts" resultType="map"> -->
+<!-- 	    SELECT app_step, COUNT(*) as cnt -->
+<!-- 	    FROM job_application a -->
+<!-- 	    JOIN resume r ON a.resume_id = r.resume_id -->
+<!-- 	    JOIN user u ON r.user_id = u.user_id -->
+<!-- 	    <where> -->
+<!-- 		    AND a.job_id = #{jobId} -->
+<!-- 		    <if test="q != null and q != ''"> -->
+<!-- 		        AND u.user_name LIKE CONCAT('%', #{q}, '%') -->
+<!-- 		    </if> -->
+<!-- 		    <if test="careerType != null and careerType != ''"> -->
+<!-- 		        <choose> -->
+<!-- 		            <when test='careerType == "신입"'> -->
+<!-- 		                AND (r.career_code = 'ENTRY' OR r.career_code = 'INTERN') -->
+<!-- 		            </when> -->
+<!-- 		            <when test='careerType == "경력"'> -->
+<!-- 		                AND r.career_code = 'EXPERIENCED' -->
+<!-- 		            </when> -->
+<!-- 		        </choose> -->
+<!-- 		    </if> -->
+<!-- 		</where> -->
+<!-- 	    GROUP BY app_step -->
+<!-- 	</select> -->
 	<select id="getApplicantStatusCounts" resultType="map">
-	    SELECT app_step, COUNT(*) as cnt
-	    FROM job_application a
-	    WHERE a.job_id = #{jobId}
+	    SELECT 
+	        app_step, 
+	        COUNT(*) as cnt
+	    FROM job_application
+	    WHERE job_id = #{jobId}
 	    GROUP BY app_step
 	</select>
 	

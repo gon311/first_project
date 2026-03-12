@@ -114,6 +114,13 @@
 								        data-bs-target="#qna" 
 								        type="button" role="tab">1:1 문의글</button>
 							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link ${activeTab eq 'comment' ? 'active' : ''}" 
+								        id="comment-tab" 
+								        data-bs-toggle="tab" 
+								        data-bs-target="#comment" 
+								        type="button" role="tab">작성한 댓글</button>
+							</li>
 						</ul>
 		
 						<div class="tab-content mt-3" id="memberDetailTabContent">
@@ -181,6 +188,45 @@
 													<td>
 														<c:choose>
 															<c:when test="${qna.reStatus eq 'pending'}">
+																답변전
+															</c:when>
+															<c:otherwise>
+																답변완료
+															</c:otherwise>
+														</c:choose>
+													</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+							<!-- 작성한 댓글 -->
+							<div class="tab-pane fade ${activeTab eq 'comment' ? 'show active' : ''}" 
+							     id="comment" role="tabpanel" aria-labelledby="qna-tab">
+								<div class="table-responsive">
+									<table class="table table-hover table-bordered align-middle text-center">
+										<thead class="table-light">
+											<tr>
+												<th>No</th>
+												<th>글제목</th>
+												<th>댓글내용</th>
+												<th>작성일자</th>
+											</tr>
+										</thead>
+							 			<tbody>
+											<c:forEach var="comment" varStatus="status" items="${commentList}">
+												<tr class="clickable-row" onclick="location.href='/admin/contents/QnADetail?commentId=${comment.qnaId}'">
+													<td>${status.count}</td>
+													<td>${comment.title}</td>
+													<td>${comment.content}</td>
+													<td>
+		                           						<fmt:formatDate value="${comment.regDate}" pattern="yyyy년 MM월 dd일"/>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${comment.reStatus eq 'pending'}">
 																답변전
 															</c:when>
 															<c:otherwise>

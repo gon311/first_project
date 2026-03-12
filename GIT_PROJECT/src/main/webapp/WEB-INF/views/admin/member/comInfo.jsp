@@ -142,7 +142,7 @@
 										</thead>
 										<tbody>
 											<c:forEach var="job" varStatus="status" items="${jobPostlist}">
-												<tr class="clickable-row" onclick="location.href='<c:url value="/job/jobDetail?jobId=${job.jobId}"/>'">
+												<tr class="clickable-row" onclick="location.href='<c:url value="/job/JobDetail?jobId=${job.jobId}"/>'">
 													<td>${status.count}</td>
 													<td>${job.title}</td>
 													<td>${job.field}</td>

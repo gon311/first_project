@@ -147,12 +147,10 @@ public class ComMyService {
 		return comMyMapper.deleteJob(userId, jobId);
 	}
 
-
-	public int getJopPostingCount(JobCond cond) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
+	public int getJopPostingCount(JobCond cond) {
+		return comMyMapper.getJopPostingCount(cond);
+	}
 	
 	
 	public int getJopManagementCount(JobCond cond) {

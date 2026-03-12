@@ -77,7 +77,7 @@ public class JobController {
 //		System.out.println(jobDTO.getAddress());
 		jobService.jobInsert(jobDTO, files, sId);
 //		System.out.println(jobDTO);
-		return "redirect:/job/JobList";
+		return "redirect:/comMy/info";
 	}
 	
 	@GetMapping("/edit")

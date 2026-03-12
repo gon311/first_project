@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.project.comMy.dto.JobCond;
 import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.job.dto.JobApplicationDTO;
 import com.itwillbs.project.job.dto.JobDTO;
@@ -23,14 +24,23 @@ public interface JobMapper {
 			@Param("selectedItems") List<String> selectedItems
 			);
 
-	List<JobDTO> getJobListPaging2(
-	        @Param("expType") String expType, 
-	        @Param("eduType") String eduType,
-	        @Param("userIdx") Long userIdx,
-	        @Param("selectedItems") List<String> selectedItems,
-	        @Param("offset") int offset,
-	        @Param("size") int size      
-	        );
+	List<JobDTO> getJobListPaging(
+		    @Param("expType") String expType, 
+		    @Param("eduType") String eduType,
+		    @Param("userIdx") Long userIdx,
+		    @Param("selectedItems") List<String> selectedItems,
+		    @Param("q") String q,  // 검색어 추가
+		    @Param("offset") int offset,
+		    @Param("size") int size      
+		);
+	
+	int getJobListCount(
+		    @Param("expType") String expType, 
+		    @Param("eduType") String eduType,
+		    @Param("userIdx") Long userIdx,
+		    @Param("selectedItems") List<String> selectedItems,
+		    @Param("q") String q   // 검색어 추가
+		);
 	
 	List<Map<String, String>> getExistingRegions();
 
@@ -80,25 +90,13 @@ public interface JobMapper {
 	    @Param("listLimit") int listLimit
 	);
 	
-	// ===================================================
-	// 채용 목록(JobList) 페이징 처리 추가
-	// 1. 필터링 조건에 맞는 전체 공고 개수 조회
-	int getJobListCount(
-	    @Param("expType") String expType, 
-	    @Param("eduType") String eduType,
-	    @Param("userIdx") Long userIdx,
-	    @Param("selectedItems") List<String> selectedItems
-	);
+	// 지원자 목록 조회 (JobCond 객체 하나로 모든 필터 전달)
+    List<JobApplicationDTO> getApplicantListPaging(JobCond cond);
 
-	// 2. LIMIT 조건이 포함된 페이징 목록 조회
-	List<JobDTO> getJobListPaging(
-	    @Param("expType") String expType, 
-	    @Param("eduType") String eduType,
-	    @Param("userIdx") Long userIdx,
-	    @Param("selectedItems") List<String> selectedItems,
-	    @Param("startRow") int startRow, 
-	    @Param("listLimit") int listLimit
-	);
+    // 검색 조건에 맞는 총 지원자 수
+    int getApplicantCount(JobCond cond);
 
-	
+    // 전형 단계별 카운트 (GROUP BY 결과)
+    List<Map<String, Object>> getApplicantStatusCounts(JobCond cond);
+    
 }

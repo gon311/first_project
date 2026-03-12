@@ -42,7 +42,7 @@
                 <div class="tab-item active" id="tabRegion" onclick="toggleTab('region')">📍 지역별</div>
                 <div class="tab-item" id="tabJob" onclick="toggleTab('job')">💼 직무별</div>
                 <div class="search-input-area">
-                    <input type="text" name="keyword" value="${param.keyword}" placeholder="회사명 또는 공고 제목을 검색하세요.">
+					<input type="text" name="q" value="${q}" placeholder="회사명 또는 공고 제목을 검색하세요.">
                     <button type="submit" class="btn-main-search" onclick="syncHiddenFields()">검색하기</button>
                 </div>
             </div>
@@ -112,20 +112,19 @@
 	
 	<%-- ✅ 페이저 --%>
 	<div class="pager">
-		<c:if test="${pager.hasPrev}">
-			<a href="?period=${period}&status=${status}&q=${q}&page=${pager.page-1}&size=${pager.size}">이전</a>
-		</c:if>
-		
-		<c:forEach var="i" begin="${pager.startPage}" end="${pager.endPage}">
-			<a href="?period=${period}&status=${status}&q=${q}&page=${i}&size=${pager.size}"
-			class="${i == pager.page ? 'active' : ''}">
-			${i}
-			</a>
-		</c:forEach>
-		
-		<c:if test="${pager.hasNext}">
-			<a href="?period=${period}&status=${status}&q=${q}&page=${pager.page+1}&size=${pager.size}">다음</a>
-		</c:if>
+	    <c:if test="${pager.hasPrev}">
+	        <a href="javascript:void(0);" onclick="changePage(${pager.page - 1})">이전</a>
+	    </c:if>
+	    
+	    <c:forEach var="i" begin="${pager.startPage}" end="${pager.endPage}">
+	        <a href="javascript:void(0);" onclick="changePage(${i})" class="${i == pager.page ? 'active' : ''}">
+	            ${i}
+	        </a>
+	    </c:forEach>
+	    
+	    <c:if test="${pager.hasNext}">
+	        <a href="javascript:void(0);" onclick="changePage(${pager.page + 1})">다음</a>
+	    </c:if>
 	</div>
 </div>
 
@@ -252,12 +251,17 @@
     }
 
     function changeFilter() {
-        // 필터(경력, 학력, 개수)를 바꾸면 무조건 1페이지부터 다시 보여줘야 합니다.
         document.getElementById('pageNum').value = 1; 
+        syncHiddenFields(); 
+        document.getElementById("searchForm").submit();
+    }
+    
+    function changePage(num) {
+        document.getElementById('pageNum').value = num;
         syncHiddenFields();
         document.getElementById("searchForm").submit();
     }
-
+    
     function resetAll() {
         location.href = "JobList";
     }
@@ -290,13 +294,6 @@
                 alert("서버 통신 중 오류가 발생했습니다.");
             }
         });
-    }
-    
-    function changePage(num) {
-        // 하단 번호를 클릭했을 때만 해당 페이지 번호를 넣습니다.
-        document.getElementById('pageNum').value = num;
-        syncHiddenFields();
-        document.getElementById("searchForm").submit();
     }
     
     document.addEventListener('DOMContentLoaded', renderMainCategory);

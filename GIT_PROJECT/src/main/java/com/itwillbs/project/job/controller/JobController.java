@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,7 @@ import com.itwillbs.project.comMy.service.ComMyService;
 import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.common.util.FileUtils;
 import com.itwillbs.project.common.exception.BackwardException;
+import com.itwillbs.project.common.paging.PageReq;
 import com.itwillbs.project.common.paging.PageRes;
 import com.itwillbs.project.job.dto.JobApplicationDTO;
 import com.itwillbs.project.job.dto.JobDTO;
@@ -74,9 +76,7 @@ public class JobController {
 			List<MultipartFile> files) throws IOException {
 		String sId = "/" + session.getAttribute("userIdx");
 		
-//		System.out.println(jobDTO.getAddress());
 		jobService.jobInsert(jobDTO, files, sId);
-//		System.out.println(jobDTO);
 		return "redirect:/comMy/info";
 	}
 	
@@ -126,49 +126,19 @@ public class JobController {
 	    return "redirect:/job/JobList"; 
 	}
 	
-//	@GetMapping("/JobList")
-//	public String list(Model model, HttpSession session,
-//	                   @RequestParam(value="pageNum", defaultValue="1") int pageNum, // 페이지 번호 추가
-//	                   @RequestParam(value="expType", required=false) String expType,
-//	                   @RequestParam(value="eduType", required=false) String eduType, 
-//	                   @RequestParam(value="selected_items", required=false) List<String> selectedItems) { 
-//	    
-//	    Long userIdx = (Long) session.getAttribute("userIdx");
-//	    // 서비스 호출 (페이징 처리가 포함된 메서드)
-//	    JobPageDTO jobPage = jobService.getJobListPaging(expType, eduType, userIdx, selectedItems, pageNum);
-//	    
-//	    List<Map<String, String>> existRegions = jobService.getExistingRegions();
-//	    
-//	    // 기존 jobList 대신 jobPage 안의 리스트와 페이징 정보를 보냄
-//	    model.addAttribute("jobList", jobPage.getJobList()); 
-//	    model.addAttribute("pageInfo", jobPage.getPageInfoDTO());
-//	    model.addAttribute("existRegions", existRegions);
-//	    
-//	    return "/job/job_list";
-//	}
-	
 	@GetMapping("/JobDetail")
 	public String jobDetail(@RequestParam("jobId") Long jobId, Model model,
 			HttpSession session, ResumeDTO resume) {
 		
-//		System.out.println(userId);
 		JobDTO post = jobService.getJobListDetail(jobId);
 		Long userIdx = (Long)session.getAttribute("userIdx");
-//		System.out.println(userIdx);
 		
 		List<ResumeDTO> resumeList = jobService.getMyResume(userIdx);
 		List<FileDTO> detailFile = jobService.getFileList(jobId);
-//		System.out.println("! = " + post.getCompanyName());
-//		System.out.println(post.getExpYear());
-//		for (FileDTO file : detailFile) {
-//		    System.out.println("파일명: " + file.getOriginName());
-//		    System.out.println("확장자: " + file.getFileExt());
-//		}
 		
 		model.addAttribute("post", post);
 		model.addAttribute("resumeList", resumeList);
 		model.addAttribute("detailFile", detailFile);
-//		System.out.println(resumeList);
 		
 		return "/job/job_detail";
 	}
@@ -196,9 +166,6 @@ public class JobController {
 		if(applyCount > 0) {
 	        throw new BackwardException("이미 이 공고에 지원하신 내역이 존재합니다.");
 	    }
-//	    System.out.println("ResumeId : "+applicationDTO.getResumeId());
-//	    System.out.println("JobId : "+applicationDTO.getJobId());
-//	    System.out.println("UserId : "+userId);
 	    
 	    jobService.insertApplication(applicationDTO);
 	    
@@ -228,29 +195,6 @@ public class JobController {
 	    }
 	}
 	
-//	@GetMapping("/comApplicants")
-//	public String management(HttpSession session, Model model, 
-//	                         @RequestParam(value = "jobId", required = false) Long jobId,
-//	                         @RequestParam(value = "pageNum", defaultValue = "1") int pageNum) { // pageNum 파라미터 추가
-//
-//	    String userType = (String) session.getAttribute("userType");
-//	    Long compId = (Long) session.getAttribute("userIdx");
-//
-//	    if (compId == null || !"C".equals(userType)) return "redirect:/user/login";
-//
-//	    // 페이징 처리를 위해 JobService의 메서드 호출 (JobPageDTO 반환)
-//	    JobPageDTO jobPage = jobService.getApplicantListPaging(jobId, compId, pageNum);
-//	    String postingTitle = jobService.getPostingTitle(jobId);
-//	    
-//	    // JSP에서 사용할 수 있게 데이터 바인딩
-//	    model.addAttribute("applicantList", jobPage.getApplicantList()); // 목록
-//	    model.addAttribute("pageInfo", jobPage.getPageInfoDTO());       // 페이징 정보 객체
-//	    model.addAttribute("selectedJobId", jobId);
-//	    model.addAttribute("postingTitle", postingTitle);
-//	    
-//	    return "/job/job_management";
-//	}
-	
 	// 지원자 전형 상태 업데이트 (서류대기 -> 면접진행 등)
 	@ResponseBody
 	@PostMapping("/updateAppStatus")
@@ -279,98 +223,81 @@ public class JobController {
 	
 	@GetMapping("/JobList")
 	public String list(Model model, HttpSession session,
-	                    @RequestParam(value="keyword", required = false) String q, // keyword로 매칭
+	                    @RequestParam(value = "q", required = false) String q,           // 검색어: 'q'로 통일
 	                    @RequestParam(defaultValue = "all") String status,
-	                    @RequestParam(value="page", defaultValue = "1") int page, // page로 통일
-	                    @RequestParam(defaultValue = "5") int size,
+	                    @RequestParam(value="page", defaultValue = "1") int page,       
+	                    @RequestParam(defaultValue = "10") int size,                     // 공고 목록은 보통 12개씩(4배수) 많이 봅니다
 	                    @RequestParam(value="expType", required=false) String expType,
 	                    @RequestParam(value="eduType", required=false) String eduType, 
-	                    @RequestParam(value="selected_items", required=false) List<String> selectedItems) { 
-
+	                    @RequestParam(value="selected_items", required=false) List<String> selectedItems) {
+	    
 	    Long userIdx = (Long) session.getAttribute("userIdx");
 	    String sId = (String) session.getAttribute("sId"); 
-	    // 1. 전체 공고 리스트 조회
-	    List<JobDTO> jobList = jobService.getJobListPaging2(expType, eduType, userIdx, selectedItems, page, size);
+
+	    // ✅ 핵심 수정 1: jobService에 검색어 'q'를 반드시 같이 보내야 합니다.
+	    // 기존 코드에는 q가 빠져 있어서 검색어를 입력해도 로직에 반영되지 않았습니다.
+	    List<JobDTO> jobList = jobService.getJobListPaging(expType, eduType, userIdx, selectedItems, q, page, size);
 	    
-	    System.out.println(sId);
-	    // 2. 지역 정보 및 유저 정보 조회
-	    List<Map<String, String>> existRegions = jobService.getExistingRegions();
-	    ComMyDTO user = comMyService.getUser(sId);
-	    System.out.println(user);
-	    //페이징
-	    JobCond cond = new JobCond();
-	    cond.setUserId(user.getUserId());
-	    cond.setStatus(status);
-	    cond.setQ(q);
+	    // ✅ 핵심 수정 2: 전체 공고 개수(total)도 검색어와 필터가 적용된 결과로 가져와야 페이징이 정확합니다.
+	    // (현재는 comMyService의 관리자용 카운트를 쓰고 있는데, 이를 jobService용으로 분리 권장)
+	    int total = jobService.getJobListCount(expType, eduType, userIdx, selectedItems, q);
 	    
+	    // 페이징 객체 생성 (PageReq 대신 직접 전달하거나 PageReq 활용)
+	    PageReq pageReq = new PageReq();
+	    pageReq.setPage(page);
+	    pageReq.setSize(size);
+	    PageRes pager = PageRes.of(pageReq, total);
 	    
-	    cond.getPage().setPage(page);
-	    cond.getPage().setSize(size);
-	    
-	    List<ComJobRowDTO> list = comMyService.getJopList(cond);
-	    int total = comMyService.getJopPostingCount(cond);
-	    PageRes pager = PageRes.of(cond.getPage(), total);
-	    
-	    System.out.println("cond : " + cond);
-	    System.out.println("페이저 : " + pager);
-	    System.out.println("토탈 : " + total);
-	    
-	    model.addAttribute("jobList", jobList); 
-	    model.addAttribute("jobs", list);
+	    // 데이터 바인딩
+	    model.addAttribute("jobList", jobList);  
 	    model.addAttribute("pager", pager);
-	    model.addAttribute("existRegions", existRegions);
-	    model.addAttribute("q", q);
-	    model.addAttribute("status", status);
+	    model.addAttribute("q", q);             // 검색어 유지
+	    model.addAttribute("expType", expType);
+	    model.addAttribute("eduType", eduType);
 	    model.addAttribute("selectedItems", selectedItems);
 	    
+	    // 기타 정보
+	    List<Map<String, String>> existRegions = jobService.getExistingRegions();
+	    model.addAttribute("existRegions", existRegions);
 	    
 	    return "/job/job_list";
 	}
 	
-	@GetMapping("/comApplicants")
-	public String management(HttpSession session, Model model, 
-						     @RequestParam(value="keyword", required = false) String q, // keyword로 매칭
-				             @RequestParam(defaultValue = "all") String status,
-				             @RequestParam(value="page", defaultValue = "1") int page, // page로 통일
-				             @RequestParam(defaultValue = "5") int size,
-	                         @RequestParam(value = "jobId", required = false) Long jobId,
-	                         @RequestParam(value = "pageNum", defaultValue = "1") int pageNum) { // pageNum 파라미터 추가
+	@GetMapping("/ApplicantManage")
+	public String applicantManage(
+	        @ModelAttribute("cond") JobCond cond, 
+	        BindingResult bindingResult, 
+	        @RequestParam(value = "page", defaultValue = "1") int pageVal, 
+	        @RequestParam(value = "size", defaultValue = "10") int sizeVal, 
+	        HttpSession session, Model model) {
 
-	    String userType = (String) session.getAttribute("userType");
+	    // 세션 체크
 	    Long compId = (Long) session.getAttribute("userIdx");
-	    String sId = (String) session.getAttribute("sId"); 
-
+	    String userType = (String) session.getAttribute("userType");
 	    if (compId == null || !"C".equals(userType)) return "redirect:/user/login";
 
-	    // 페이징 처리를 위해 JobService의 메서드 호출 (JobPageDTO 반환)
-	    JobPageDTO jobPage = jobService.getApplicantListPaging(jobId, compId, pageNum);
-	    String postingTitle = jobService.getPostingTitle(jobId);
-	    System.out.println(sId);
-	    System.out.println(compId);
-	    ComMyDTO user = comMyService.getUser(sId);
-	    //페이징
-	    JobCond cond = new JobCond();
-	    cond.setUserId(user.getUserId());
-	    cond.setStatus(status);
-	    cond.setQ(q);
+	    // [핵심 로직]
+	    // 스프링이 'page'라는 파라미터를 cond.page(객체)에 담으려다 실패했더라도,
+	    // 우리가 @RequestParam으로 가로챈 숫자(pageVal)를 수동으로 꽂아넣습니다.
+	    cond.setUserId(compId);
+	    cond.getPage().setPage(pageVal);
+	    cond.getPage().setSize(sizeVal);
+
+	    // 서비스 호출
+	    List<JobApplicationDTO> applicantList = jobService.getApplicantListPaging(cond);
+	    int totalCount = jobService.getApplicantCount(cond);
+	    Map<String, Integer> statusCounts = jobService.getApplicantStatusCounts(cond);
 	    
-	    cond.getPage().setPage(page);
-	    cond.getPage().setSize(size);
+	    // 페이징 결과 생성
+	    PageRes pager = PageRes.of(cond.getPage(), totalCount);
 	    
-	    List<ComJobRowDTO> list = comMyService.getJopList(cond);
-	    int total = comMyService.getJopManagementCount(cond);
-	    
-	    PageRes pager = PageRes.of(cond.getPage(), total);
-	    
-	    // JSP에서 사용할 수 있게 데이터 바인딩
-	    model.addAttribute("applicantList", jobPage.getApplicantList()); // 목록
-	    model.addAttribute("pageInfo", jobPage.getPageInfoDTO());       // 페이징 정보 객체
-	    model.addAttribute("selectedJobId", jobId);
-	    model.addAttribute("postingTitle", postingTitle);
-	    model.addAttribute("jobs", list);
+	    // 모델 전송
+	    model.addAttribute("applicantList", applicantList);
 	    model.addAttribute("pager", pager);
-	    
-	    return "/job/job_management";
+	    model.addAttribute("statusCounts", statusCounts);
+	    model.addAttribute("postingTitle", jobService.getPostingTitle(cond.getJobId()));
+
+	    return "job/job_management";
 	}
 	
 }

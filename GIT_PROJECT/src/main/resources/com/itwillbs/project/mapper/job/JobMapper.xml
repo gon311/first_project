@@ -154,67 +154,6 @@
 	    ORDER BY j.job_id DESC
 	</select>
 	
-	<select id="getJobListPaging2" resultMap="JobResultMap">
-	    SELECT 
-	        j.job_id
-	        , j.comp_id
-	        , u.company_name
-	        , j.title
-	        , j.field
-	        , CASE 
-	            WHEN j.exp_year IS NULL THEN '경력 무관'
-	            WHEN j.exp_type = 'new' THEN '신입'
-	            WHEN j.exp_type = 'newCareer' THEN '신입·경력'
-	            WHEN j.exp_type = 'career' THEN '경력'
-	            ELSE '정보 없음'
-	        END as exp_year
-	        , j.edu
-	        , j.address
-	        , j.close_date
-	        , j.post_status
-	        , j.post_check
-	        , IF(b.bookmark_id IS NULL, 'N', 'Y') AS isScrapped
-	    FROM JOB_POSTING j 
-	    JOIN USER_COMPANY u ON j.comp_id = u.user_id
-	    LEFT OUTER JOIN job_bookmark b 
-	        ON j.job_id = b.job_id 
-	        AND b.user_id = #{userIdx}
-	    <where>
-<!-- 	    	AND j.post_check = 2 -->
-	        <if test="expType != null and expType != ''">
-	            <choose>
-	                <when test="expType == 'new'">
-	                    AND (j.exp_type = 'new' OR j.exp_type = 'newCareer')
-	                </when>
-	                <when test="expType == 'career'">
-	                    AND (j.exp_type = 'career' OR j.exp_type = 'newCareer' OR j.exp_year IS NULL)
-	                </when>
-	            </choose>
-	        </if>
-	        
-	        <if test="selectedItems != null and selectedItems.size > 0">
-	            AND (
-	                <foreach item="item" collection="selectedItems" separator=" OR ">
-	                    j.address LIKE CONCAT('%', #{item}, '%')  OR j.field LIKE CONCAT('%', #{item}, '%') 
-	                 </foreach>
-	            )
-	        </if>
-	            
-	        <if test="eduType != null and eduType != ''">
-	            <choose>
-	                <when test='eduType == "학력무관"'>
-	                    AND j.edu = '학력무관'
-	                </when>
-	                <otherwise>
-	                    AND (j.edu = #{eduType} OR j.edu = '학력무관')
-	                </otherwise>
-	            </choose>
-	        </if>
-	    </where>
-	    ORDER BY j.job_id DESC
-	    LIMIT #{offset}, #{size}
-	</select>
-	
 	<select id="getExistingRegions" resultType="map">
 	    SELECT DISTINCT 
 	        SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 1) as city
@@ -459,47 +398,17 @@
 	      AND use_status = 'active'
 	</select>
 	
-	<select id="getApplicantCount" resultType="int">
-	    SELECT COUNT(*)
-	    FROM job_application a
-	    JOIN job_posting j ON a.job_id = j.job_id
-	    WHERE j.comp_id = #{compId}
-	    <if test="jobId != null">
-	        AND a.job_id = #{jobId}
-	    </if>
-	</select>
-	
-	<select id="getApplicantListPaging" resultType="application">
-	    SELECT 
-	        a.app_id as appId,
-	        a.job_id as jobId,
-	        a.user_id as userId,
-	        a.resume_id as resumeId,
-	        a.app_step as appStep,
-	        a.is_favorite as isFavorite,
-	        a.apply_date as applyDate,
-	        r.career_code as careerCode,
-	        DATE_FORMAT(a.apply_date, '%Y-%m-%d') as formattedApplyDate,
-	        u.user_name as userName,
-	        j.title as postingTitle
-	    FROM job_application a
-	    JOIN job_posting j ON a.job_id = j.job_id
-	    JOIN user u ON a.user_id = u.user_id
-	    LEFT JOIN resume r ON a.resume_id = r.resume_id
-	    WHERE j.comp_id = #{compId}
-	    <if test="jobId != null">
-	        AND a.job_id = #{jobId}
-	    </if>
-	    ORDER BY a.is_favorite DESC, a.apply_date DESC
-	    LIMIT #{startRow}, #{listLimit}
-	</select>
-	
 	<select id="getJobListCount" resultType="int">
 	    SELECT COUNT(*)
 	    FROM JOB_POSTING j 
 	    JOIN USER_COMPANY u ON j.comp_id = u.user_id
 	    <where>
-<!-- 	        AND j.post_check = 2 -->
+	        <if test="q != null and q != ''">
+	            AND (j.title LIKE CONCAT('%', #{q}, '%') 
+	                 OR u.company_name LIKE CONCAT('%', #{q}, '%')
+	                 OR j.field LIKE CONCAT('%', #{q}, '%'))
+	        </if>
+	
 	        <if test="expType != null and expType != ''">
 	            <choose>
 	                <when test="expType == 'new'">
@@ -510,6 +419,7 @@
 	                </when>
 	            </choose>
 	        </if>
+	
 	        <if test="selectedItems != null and selectedItems.size > 0">
 	            AND (
 	                <foreach item="item" collection="selectedItems" separator=" OR ">
@@ -517,6 +427,7 @@
 	                </foreach>
 	            )
 	        </if>
+	
 	        <if test="eduType != null and eduType != ''">
 	            <choose>
 	                <when test='eduType == "학력무관"'>
@@ -532,7 +443,11 @@
 	
 	<select id="getJobListPaging" resultMap="JobResultMap">
 	    SELECT 
-	        j.job_id, j.comp_id, u.company_name, j.title, j.field,
+	        j.job_id, 
+	        j.comp_id,
+	        u.company_name, 
+	        j.title, 
+	        j.field,
 	        CASE 
 	            WHEN j.exp_year IS NULL THEN '경력 무관'
 	            WHEN j.exp_type = 'new' THEN '신입'
@@ -540,14 +455,23 @@
 	            WHEN j.exp_type = 'career' THEN '경력'
 	            ELSE '정보 없음'
 	        END as exp_year,
-	        j.edu, j.address, j.close_date, j.post_status, j.post_check,
+	        j.edu, 
+	        j.address, 
+	        j.close_date, 
+	        j.post_status, 
+	        j.post_check,
 	        IF(b.bookmark_id IS NULL, 'N', 'Y') AS isScrapped
 	    FROM JOB_POSTING j 
 	    JOIN USER_COMPANY u ON j.comp_id = u.user_id
 	    LEFT OUTER JOIN job_bookmark b 
 	        ON j.job_id = b.job_id AND b.user_id = #{userIdx}
 	    <where>
-<!-- 	        AND j.post_check = 2 -->
+	        <if test="q != null and q != ''">
+	            AND (j.title LIKE CONCAT('%', #{q}, '%') 
+	                 OR u.company_name LIKE CONCAT('%', #{q}, '%')
+	                 OR j.field LIKE CONCAT('%', #{q}, '%'))
+	        </if>
+	
 	        <if test="expType != null and expType != ''">
 	            <choose>
 	                <when test="expType == 'new'">
@@ -558,6 +482,7 @@
 	                </when>
 	            </choose>
 	        </if>
+	
 	        <if test="selectedItems != null and selectedItems.size > 0">
 	            AND (
 	                <foreach item="item" collection="selectedItems" separator=" OR ">
@@ -565,6 +490,7 @@
 	                </foreach>
 	            )
 	        </if>
+	
 	        <if test="eduType != null and eduType != ''">
 	            <choose>
 	                <when test='eduType == "학력무관"'>
@@ -577,7 +503,82 @@
 	        </if>
 	    </where>
 	    ORDER BY j.job_id DESC
-	    LIMIT #{startRow}, #{listLimit}
+	    LIMIT #{offset}, #{size}
+	</select>
+	
+	<select id="getApplicantListPaging" resultType="map">
+	    SELECT * FROM (
+	        SELECT 
+	            a.app_id as appId,
+	            u.user_name as userName,
+	            r.career_code as careerCode,
+	            p.title as postingTitle,
+	            a.apply_date as applyDate,
+	            a.app_step as appStep,
+	            a.is_favorite as isFavorite,
+	            a.resume_id as resumeId
+	        FROM job_application a
+	        JOIN resume r ON a.resume_id = r.resume_id
+	        JOIN user u ON r.user_id = u.user_id
+	        JOIN job_posting p ON a.job_id = p.job_id
+	        <where>
+	            AND a.job_id = #{jobId}
+	            
+	            <if test="appStep != null and appStep != '' and appStep != 'all'">
+	                AND a.app_step = #{appStep}
+	            </if>
+	
+	            <if test="q != null and q != ''">
+	                AND u.user_name LIKE CONCAT('%', #{q}, '%')
+	            </if>
+	            
+	            <if test="careerType != null and careerType != ''">
+	                <choose>
+	                    <when test='careerType == "신입"'>
+	                        AND (r.career_code = 'ENTRY' OR r.career_code = 'INTERN')
+	                    </when>
+	                    <when test='careerType == "경력"'>
+	                        AND r.career_code = 'EXPERIENCED'
+	                    </when>
+	                </choose>
+	            </if>
+	        </where>
+	        ORDER BY a.app_id DESC
+	    ) t
+	    LIMIT #{offset}, #{size}
+	</select>
+	
+	<select id="getApplicantCount" resultType="int">
+	    SELECT COUNT(*)
+	    FROM JOB_APPLICATION a
+	    JOIN USER u ON a.user_id = u.user_id
+	    LEFT JOIN resume r ON a.resume_id = r.resume_id
+	    <where>
+	        AND a.job_id = #{jobId}
+	        <if test="appStep != null and appStep != '' and appStep != 'all'">
+	            AND a.app_step = #{appStep}
+	        </if>
+	        <if test="q != null and q != ''">
+	            AND u.user_name LIKE CONCAT('%', #{q}, '%')
+	        </if>
+	        <if test="careerType != null and careerType != ''">
+	            <choose>
+	                <when test='careerType == "신입"'>
+	                    AND (r.career_code = 'ENTRY' OR r.career_code = 'INTERN')
+	                </when>
+	                <when test='careerType == "경력"'>
+	                    AND r.career_code = 'EXPERIENCED'
+	                </when>
+	            </choose>
+	        </if>
+	    </where>
+	</select>
+	
+	<select id="getApplicantStatusCounts" resultType="map">
+	    SELECT app_step, COUNT(*) as cnt
+	    FROM job_application a
+	    WHERE a.job_id = #{jobId}
+	    GROUP BY app_step
 	</select>
 	
 </mapper>

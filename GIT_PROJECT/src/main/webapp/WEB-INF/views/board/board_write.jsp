@@ -31,7 +31,7 @@
             </div>
 
             <div style="min-width:260px; max-width:320px;">
-              <select class="select" name="category" id="category">
+              <select class="select" name="boardType" id="category">
                 <option value="JOB">취준/이직</option>
                 <option value="CAREER">회사생활/커리어</option>
                 <option value="FREE">자유주제</option>

@@ -30,7 +30,7 @@
                 <div>
                     <!-- 카테고리 -->
                     <span class="badge-cat">
-                        ${post.boardType}
+                        ${post.categoryName}
                     </span>
 
                     <!-- 제목 -->

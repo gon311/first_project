@@ -1,174 +1,168 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<html>
-<head>
-	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
-	<link href="<c:url value="/resources/css/jobCss/jobPosting.css" />" rel="stylesheet" type="text/css">
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-</head>
+<%@ include file="/WEB-INF/views/inc/head.jspf" %>
+<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+<link href="<c:url value="/resources/css/jobCss/jobPosting.css" />" rel="stylesheet" type="text/css">
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-<body>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>	
-<main>
-	<div class="container">
-	    <form action="<c:url value="/job/JobProcess" />" method="post" enctype="multipart/form-data">
-	        
-	        <div class="form-group">
-	        	<input type="hidden" name="compId" value="${userIdx}">
-	            <div class="label-box">공고제목 <span style="color:red">*</span></div>
-	            <div class="input-box"><input type="text" name="title" placeholder="디자이너 채용" required></div>
-	        </div>
-	
-	        <div class="form-group">
-	            <div class="label-box">모집분야명 <span style="color:red">*</span></div>
-	            <div class="input-box">
-	                <div class="job-selector-wrapper">
-	                    <ul class="main-cat-list" id="mainCatList"></ul>
-	                    <ul class="sub-cat-list" id="subCatList">
-	                        <li style="color:#999; font-size:0.9em; width:100%; text-align:center; margin-top:80px;">대분류를 선택해주세요.</li>
-	                    </ul>
-	                </div>
-	                <input type="text" name="field" id="selectedJobInput" readonly placeholder="직무를 선택하면 자동 입력됩니다." style="margin-top:10px; background:#f8f9fa;" required>
-	            </div>
-	        </div>
-	
-	        <div class="form-group">
-	            <div class="label-box">주요업무 <span style="color:red">*</span></div>
-	            <div class="input-box">
-	                <textarea name="task" rows="5" placeholder="• 사이트 웹디자인" required></textarea>
-	            </div>
-	        </div>
-	
-	        <div class="form-group">
-	            <div class="label-box">파일 첨부</div>
-	            <div class="input-box">
-	                <div class="file-upload-area">
-	                    <p>이미지 첨부파일 기능 추가</p>
-	                    <input type="file" name="files" multiple>
-	                </div>
-	            </div>
-	        </div>
-	        
-	        <div class="form-group">
-			    <div class="label-box">고용 형태 <span style="color:red">*</span></div>
-			    <div class="input-box">
-			        <select name="empType" required style="width: 200px; display:inline-block;">
-			            <option value="정규직" selected>정규직</option>
-			            <option value="계약직">계약직</option>
-			            <option value="인턴">인턴</option>
-			        </select>
-			        <label style="margin-left: 15px;">
-			            <input type="checkbox" name="probation" value="Y"> 수습기간 있음
-			        </label>
-			    </div>
-			</div>
-	
-	        <div class="form-group">
-			    <div class="label-box">경력 <span style="color:red">*</span></div>
-			    <div class="input-box">
-			        <label><input type="checkbox" name="expType" value="new" class="expCheck"> 신입</label>
-			        <label><input type="checkbox" name="expType" value="newCareer" class="expCheck"> 신입·경력</label>
-			        <label style="margin-right: 15px;"><input type="checkbox" name="expType" value="career" class="expCheck" checked> 경력</label>
-			
-			        <select name="minExp" id="minExp" style="width: 140px; display:inline-block;">
-			            <option value="0" selected>1년 미만</option>
-			            <option value="1">1년 이상</option>
-			            <option value="3">3년 이상</option>
-			            <option value="5">5년 이상</option>
-			            <option value="10">10년 이상</option>
-			        </select>
-			        <span style="margin: 0 5px;">~</span>
-			        <select name="maxExp" id="maxExp" style="width: 140px; display:inline-block;">
-			            <option value="3년" selected>3년 이하</option>
-			            <option value="5년">5년 이하</option>
-			            <option value="8년">8년 이하</option>
-			            <option value="10년">10년 이하</option>
-			            <option value="제한 없음">제한 없음</option>
-			        </select>
-			        <label style="margin-left: 15px;">
-			            <input type="checkbox" name="expNone" id="expNone"> 경력무관
-			        </label>
-			    </div>
-			</div>
-	
-	        <div class="form-group">
-	            <div class="label-box">학력 <span style="color:red">*</span></div>
-	            <div class="input-box">
-	                <select name="edu">
-	                    <option selected>학력무관</option>
-	                    <option>고등학교 졸업</option>
-	                    <option>대학교(2,3년) 졸업</option>
-	                    <option>대학교(4년) 졸업</option>
-	                </select>
-	                <input type="checkbox" name="eduPending"> 졸업 예정자 가능
-	            </div>
-	        </div>
-	
-	        <div class="form-group">
-	            <div class="label-box">급여 <span style="color:red">*</span></div>
-	            <div class="input-box">
-	                <select name="salary">
-	                    <option selected>면접 후 결정</option>
-	                    <option>회사내규에 따름</option>
-	                </select>
-	                <div class="info-box" style="margin-top:10px;">
-	                    ⓘ 2026년 기준 최저시급 10,320원<br>
-	                    당사는 최저 임금법을 준수하며, 최저임금 미만의 공고는 강제 마감될 수 있습니다.
-	                </div>
-	            </div>
-	        </div>
-	
-	        <div class="form-group">
-			    <div class="label-box">근무지 <span style="color:red">*</span></div>
-			    <div class="input-box">
-			        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-			            <input type="text" name="postCode" id="postCode" placeholder="우편번호" style="width: 120px;" readonly required>
-			            <button type="button" onclick="execDaumPostcode()" style="padding: 10px; cursor: pointer; background: #333; color: #fff; border: none; border-radius: 5px;">주소 검색</button>
-			        </div>
-			        <input type="text" name="address1" id="address1" placeholder="기본 주소" style="margin-bottom: 10px;" readonly required>
-			        <input type="text" name="address2" id="address2" placeholder="상세 주소" required>
-			        <input type="hidden" name="address" id="address">
-			        
-			        
-			        <label style="margin-top: 10px; display: block;">
-			            <input type="checkbox" name="isRemote" value="Y"> 재택근무 가능 
-			        </label>
-			    </div>
-			</div>
-			
-			<div class="form-group">
-			    <div class="label-box">담당자 정보 <span style="color:red">*</span></div>
-			    <div class="input-box">
-			        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-			            <input type="text" name="mgrName" placeholder="담당자 이름" required>
-			            <input type="text" name="mgrPhone" placeholder="연락처" pattern="01[0-9]-[0-9]{3,4}-[0-9]{4}" required>
-			        </div>
-			        <input type="email" name="mgrEmail" placeholder="이메일 주소" required>
-			        <label style="margin-top: 10px; display: block; font-size: 0.9em; color: #666;">
-			            <input type="checkbox" name="isPublic" value="Y" checked> 담당자 정보 공개
-			        </label>
-			    </div>
-			</div>
-	
-	        <div class="form-group">
-			    <div class="label-box">접수기간 <span style="color:red">*</span></div>
-			    <div class="input-box">
-			        <input type="date" name="openDate" id="startDate" required style="width: 200px; display:inline-block;"> ~ 
-			        <input type="date" name="closeDate" id="endDate" required style="width: 200px; display:inline-block;">
-			    </div>
-			</div>
-	
-	        <div class="button-group">
-			    <button type="submit" class="btn-submit">공고 등록하기</button>
-			    <button type="reset" class="btn-reset">초기화</button>
-			    <button type="button" class="btn-cancel" onclick="history.back()">취소</button>
-			</div>
-	    </form>
-	</div>
-</main>
+<div class="container">
+    <form action="<c:url value="/job/JobProcess" />" method="post" enctype="multipart/form-data">
+        
+        <div class="form-group">
+        	<input type="hidden" name="compId" value="${userIdx}">
+            <div class="label-box">공고제목 <span style="color:red">*</span></div>
+            <div class="input-box"><input type="text" name="title" placeholder="디자이너 채용" required></div>
+        </div>
+
+        <div class="form-group">
+            <div class="label-box">모집분야명 <span style="color:red">*</span></div>
+            <div class="input-box">
+                <div class="job-selector-wrapper">
+                    <ul class="main-cat-list" id="mainCatList"></ul>
+                    <ul class="sub-cat-list" id="subCatList">
+                        <li style="color:#999; font-size:0.9em; width:100%; text-align:center; margin-top:80px;">대분류를 선택해주세요.</li>
+                    </ul>
+                </div>
+                <input type="text" name="field" id="selectedJobInput" readonly placeholder="직무를 선택하면 자동 입력됩니다." style="margin-top:10px; background:#f8f9fa;" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="label-box">주요업무 <span style="color:red">*</span></div>
+            <div class="input-box">
+                <textarea name="task" rows="5" placeholder="• 사이트 웹디자인" required></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="label-box">파일 첨부</div>
+            <div class="input-box">
+                <div class="file-upload-area">
+                    <p>이미지 첨부파일 기능 추가</p>
+                    <input type="file" name="files" multiple>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+		    <div class="label-box">고용 형태 <span style="color:red">*</span></div>
+		    <div class="input-box">
+		        <select name="empType" required style="width: 200px; display:inline-block;">
+		            <option value="정규직" selected>정규직</option>
+		            <option value="계약직">계약직</option>
+		            <option value="인턴">인턴</option>
+		        </select>
+		        <label style="margin-left: 15px;">
+		            <input type="checkbox" name="probation" value="Y"> 수습기간 있음
+		        </label>
+		    </div>
+		</div>
+
+        <div class="form-group">
+		    <div class="label-box">경력 <span style="color:red">*</span></div>
+		    <div class="input-box">
+		        <label><input type="checkbox" name="expType" value="new" class="expCheck"> 신입</label>
+		        <label><input type="checkbox" name="expType" value="newCareer" class="expCheck"> 신입·경력</label>
+		        <label style="margin-right: 15px;"><input type="checkbox" name="expType" value="career" class="expCheck" checked> 경력</label>
+		
+		        <select name="minExp" id="minExp" style="width: 140px; display:inline-block;">
+		            <option value="0" selected>1년 미만</option>
+		            <option value="1">1년 이상</option>
+		            <option value="3">3년 이상</option>
+		            <option value="5">5년 이상</option>
+		            <option value="10">10년 이상</option>
+		        </select>
+		        <span style="margin: 0 5px;">~</span>
+		        <select name="maxExp" id="maxExp" style="width: 140px; display:inline-block;">
+		            <option value="3년" selected>3년 이하</option>
+		            <option value="5년">5년 이하</option>
+		            <option value="8년">8년 이하</option>
+		            <option value="10년">10년 이하</option>
+		            <option value="제한 없음">제한 없음</option>
+		        </select>
+		        <label style="margin-left: 15px;">
+		            <input type="checkbox" name="expNone" id="expNone"> 경력무관
+		        </label>
+		    </div>
+		</div>
+
+        <div class="form-group">
+            <div class="label-box">학력 <span style="color:red">*</span></div>
+            <div class="input-box">
+                <select name="edu">
+                    <option selected>학력무관</option>
+                    <option>고등학교 졸업</option>
+                    <option>대학교(2,3년) 졸업</option>
+                    <option>대학교(4년) 졸업</option>
+                </select>
+                <input type="checkbox" name="eduPending"> 졸업 예정자 가능
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="label-box">급여 <span style="color:red">*</span></div>
+            <div class="input-box">
+                <select name="salary">
+                    <option selected>면접 후 결정</option>
+                    <option>회사내규에 따름</option>
+                </select>
+                <div class="info-box" style="margin-top:10px;">
+                    ⓘ 2026년 기준 최저시급 10,320원<br>
+                    당사는 최저 임금법을 준수하며, 최저임금 미만의 공고는 강제 마감될 수 있습니다.
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+		    <div class="label-box">근무지 <span style="color:red">*</span></div>
+		    <div class="input-box">
+		        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+		            <input type="text" name="postCode" id="postCode" placeholder="우편번호" style="width: 120px;" readonly required>
+		            <button type="button" onclick="execDaumPostcode()" style="padding: 10px; cursor: pointer; background: #333; color: #fff; border: none; border-radius: 5px;">주소 검색</button>
+		        </div>
+		        <input type="text" name="address1" id="address1" placeholder="기본 주소" style="margin-bottom: 10px;" readonly required>
+		        <input type="text" name="address2" id="address2" placeholder="상세 주소" required>
+		        <input type="hidden" name="address" id="address">
+		        
+		        
+		        <label style="margin-top: 10px; display: block;">
+		            <input type="checkbox" name="isRemote" value="Y"> 재택근무 가능 
+		        </label>
+		    </div>
+		</div>
+		
+		<div class="form-group">
+		    <div class="label-box">담당자 정보 <span style="color:red">*</span></div>
+		    <div class="input-box">
+		        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+		            <input type="text" name="mgrName" placeholder="담당자 이름" required>
+		            <input type="text" name="mgrPhone" placeholder="연락처" pattern="01[0-9]-[0-9]{3,4}-[0-9]{4}" required>
+		        </div>
+		        <input type="email" name="mgrEmail" placeholder="이메일 주소" required>
+		        <label style="margin-top: 10px; display: block; font-size: 0.9em; color: #666;">
+		            <input type="checkbox" name="isPublic" value="Y" checked> 담당자 정보 공개
+		        </label>
+		    </div>
+		</div>
+
+        <div class="form-group">
+		    <div class="label-box">접수기간 <span style="color:red">*</span></div>
+		    <div class="input-box">
+		        <input type="date" name="openDate" id="startDate" required style="width: 200px; display:inline-block;"> ~ 
+		        <input type="date" name="closeDate" id="endDate" required style="width: 200px; display:inline-block;">
+		    </div>
+		</div>
+
+        <div class="button-group">
+		    <button type="submit" class="btn-submit">공고 등록하기</button>
+		    <button type="reset" class="btn-reset">초기화</button>
+		    <button type="button" class="btn-cancel" onclick="history.back()">취소</button>
+		</div>
+    </form>
+</div>
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
-</body>
+
 <script>
 // 1. 모집분야 데이터 정의
 const jobData = {
@@ -342,4 +336,3 @@ function execDaumPostcode() {
 }
 
 </script>
-</html>

@@ -23,6 +23,15 @@ public interface JobMapper {
 			@Param("selectedItems") List<String> selectedItems
 			);
 
+	List<JobDTO> getJobListPaging2(
+	        @Param("expType") String expType, 
+	        @Param("eduType") String eduType,
+	        @Param("userIdx") Long userIdx,
+	        @Param("selectedItems") List<String> selectedItems,
+	        @Param("offset") int offset,
+	        @Param("size") int size      
+	        );
+	
 	List<Map<String, String>> getExistingRegions();
 
 	JobDTO getJobListDetail(Long jobId);
@@ -60,4 +69,36 @@ public interface JobMapper {
 	String getPostingTitle(Long jobId);
 	
 	// ===================================================
+	
+	// JobMapper.java 인터페이스 하단에 추가
+	int getApplicantCount(@Param("jobId") Long jobId, @Param("compId") Long compId);
+
+	List<JobApplicationDTO> getApplicantListPaging(
+	    @Param("jobId") Long jobId, 
+	    @Param("compId") Long compId, 
+	    @Param("startRow") int startRow, 
+	    @Param("listLimit") int listLimit
+	);
+	
+	// ===================================================
+	// 채용 목록(JobList) 페이징 처리 추가
+	// 1. 필터링 조건에 맞는 전체 공고 개수 조회
+	int getJobListCount(
+	    @Param("expType") String expType, 
+	    @Param("eduType") String eduType,
+	    @Param("userIdx") Long userIdx,
+	    @Param("selectedItems") List<String> selectedItems
+	);
+
+	// 2. LIMIT 조건이 포함된 페이징 목록 조회
+	List<JobDTO> getJobListPaging(
+	    @Param("expType") String expType, 
+	    @Param("eduType") String eduType,
+	    @Param("userIdx") Long userIdx,
+	    @Param("selectedItems") List<String> selectedItems,
+	    @Param("startRow") int startRow, 
+	    @Param("listLimit") int listLimit
+	);
+
+	
 }

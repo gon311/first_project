@@ -16,4 +16,5 @@ public interface FileMapper {
 					 @Param("postId")Long postId, 
 					 @Param("categoryCode") String categoryCode);
 
+
 }

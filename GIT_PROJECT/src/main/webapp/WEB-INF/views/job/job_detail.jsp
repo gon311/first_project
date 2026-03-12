@@ -70,7 +70,7 @@
 
     <section class="detail-content-body">
 	    <div style="padding-top: 50px;">
-	        <h2>모직 직무 야 : ${post.field}</h2>
+	        <h2>모직 직무 분야 : ${post.field}</h2>
 	        <p>${post.task}</p>
 	        
 	        <div class="file-attachments" style="margin-top:25px; padding:15px; background:#f9f9f9; border-radius:8px;">

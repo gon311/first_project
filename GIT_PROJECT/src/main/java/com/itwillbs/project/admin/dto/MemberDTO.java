@@ -68,4 +68,39 @@ public class MemberDTO {
 		}
 	}
 	
+	/*
+	<option value="KR" selected>대한민국 (South Korea)</option>
+                            <option value="US">미국 (United States)</option>
+                            <option value="JP">일본 (Japan)</option>
+                            <option value="CN">중국 (China)</option>
+                            <option value="VN">베트남 (Vietnam)</option>
+                            <option value="PH">필리핀 (Philippines)</option>
+                            <option value="TH">태국 (Thailand)</option>
+                            <option value="ID">인도네시아 (Indonesia)</option>
+                            <option value="CA">캐나다 (Canada)</option>
+                            <option value="AU">호주 (Australia)</option>
+                            <option value="GB">영국 (United Kingdom)</option>
+                            <option value="DE">독일 (Germany)</option>
+                            <option value="FR">프랑스 (France)</option>
+                            <option value="ETC">기타 (Others)</option> 
+	*/
+	public void setCountry(String country) {
+		switch(country) {
+		case "KR": this.country = "대한민국 (South Korea)"; break;
+		case "US": this.country = "미국 (United States)"; break;
+		case "JP": this.country = "일본 (Japan)"; break;
+		case "CN": this.country = "중국 (China)"; break;
+		case "VN": this.country = "베트남 (Vietnam)"; break;
+		case "PH": this.country = "필리핀 (Philippines)"; break;
+		case "TH": this.country = "태국 (Thailand)"; break;
+		case "ID": this.country = "인도네시아 (Indonesia)"; break;
+		case "CA": this.country = "캐나다 (Canada)"; break;
+		case "AU": this.country = "호주 (Australia)"; break;
+		case "GB": this.country = "영국 (United Kingdom)"; break;
+		case "DE": this.country = "독일 (Germany)"; break;
+		case "FR": this.country = "프랑스 (France)"; break;
+		case "ETC": this.country = "기타 (Others)";
+		}
+	}
+	
 }

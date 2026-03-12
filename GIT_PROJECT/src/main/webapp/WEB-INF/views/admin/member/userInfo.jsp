@@ -140,7 +140,7 @@
 										</thead>
 							 			<tbody>
 										<c:forEach var="free" varStatus="status" items="${freeList}">
-											<tr class="clickable-row" onclick="location.href='/project/admin/contents/boardDetail?postId=${free.postId}'">
+											<tr class="clickable-row" onclick="location.href='<c:url value="admin/contents/boardDetail?postId=${free.postId}" />'">
 												<td>${status.count}</td>
 												<td>${free.title}</td>
 												<td>
@@ -179,7 +179,7 @@
 										</thead>
 							 			<tbody>
 											<c:forEach var="qna" varStatus="status" items="${qnaList}">
-												<tr class="clickable-row" onclick="location.href='/project/admin/contents/QnADetail?qnaId=${qna.qnaId}'">
+												<tr class="clickable-row" onclick="location.href='<c:url value="admin/contents/QnADetail?qnaId=${qna.qnaId}" />'">
 													<td>${status.count}</td>
 													<td>${qna.qnaTitle}</td>
 													<td>
@@ -213,27 +213,19 @@
 												<th>글제목</th>
 												<th>댓글내용</th>
 												<th>작성일자</th>
+												<th>상태</th>
 											</tr>
 										</thead>
 							 			<tbody>
 											<c:forEach var="comment" varStatus="status" items="${commentList}">
-												<tr class="clickable-row" onclick="location.href='/admin/contents/QnADetail?commentId=${comment.qnaId}'">
+												<tr class="clickable-row" onclick="location.href='<c:url value="admin/contents/boardDetail?postId=${comment.postId}" />'">
 													<td>${status.count}</td>
 													<td>${comment.title}</td>
 													<td>${comment.content}</td>
 													<td>
 		                           						<fmt:formatDate value="${comment.regDate}" pattern="yyyy년 MM월 dd일"/>
 													</td>
-													<td>
-														<c:choose>
-															<c:when test="${comment.reStatus eq 'pending'}">
-																답변전
-															</c:when>
-															<c:otherwise>
-																답변완료
-															</c:otherwise>
-														</c:choose>
-													</td>
+													<td>${comment.status}</td>
 												</tr>
 											</c:forEach>
 										</tbody>

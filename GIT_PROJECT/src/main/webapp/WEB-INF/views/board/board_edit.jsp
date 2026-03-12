@@ -9,15 +9,7 @@
 </head>
 
 <body>
-	<c:choose>
-		<c:when test="${sessionScope.memberType == 'company'}">
-			<%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
-		</c:when>
-		
-		<c:otherwise>
-			<%@ include file="/WEB-INF/views/inc/header.jspf" %>
-		</c:otherwise>
-	</c:choose>
+  <%@ include file="/WEB-INF/views/inc/header.jspf" %>
 
   <c:url var="urlBoardList" value="/board"/>
   <c:url var="urlBoardEdit" value="/board/edit"/>

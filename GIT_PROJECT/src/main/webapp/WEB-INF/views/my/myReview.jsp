@@ -15,7 +15,8 @@
 
 <!-- 수정 URL들 -->
 <c:url var="urlMyReview" value="/my/myReview"/>
-<c:url var="urlReviewCreate" value="/review/registForm"/>   <%-- 새 자소서 작성 --%>
+<c:url var="urlReviewCreate" value="/my/review/create"/>   <%-- 새 자소서 작성 --%>
+<c:url var="urlReviewEdit" value="/my/review/edit"/>       <%-- 수정 (id param 나중에) --%>
 <c:url var="urlReviewDelete" value="/my/review/delete"/>   <%-- 삭제 (나중에 POST 추천) --%>
 
 <main class="container-fluid px-0 mypage-wrap">
@@ -103,11 +104,11 @@
                       <!-- 액션 -->
                       <div class="d-flex align-items-center gap-2">
                         <a class="btn btn-outline-primary"
-                           href="<c:url value="/review/${rv.coverLetterIdx}/registText" />"
+                           href="${urlReviewEdit}?coverLetterIdx=${rv.coverLetterIdx}"
                            onclick="return confirm('자기소개서를 수정하시겠습니까?');">
                           수정
                         </a>
-						
+
 						<!-- 삭제 -->
 						<form action="${urlReviewDelete}" method="post" style="display:inline;"
 						      onsubmit="return confirm('정말 삭제하시겠습니까? 삭제 후 복구가 어려울 수 있어요.');">

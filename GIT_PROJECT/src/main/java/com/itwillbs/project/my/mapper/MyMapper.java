@@ -84,6 +84,8 @@ public interface MyMapper {
 
     int needRecommendRefresh(@Param("userId") long userId);
     int upsertRecommendedJobs(@Param("userId") long userId);
+
+	void deleteUser(String sId);
     
     
 

@@ -47,7 +47,7 @@
               <input type="text" class="form-control" name="userName"
                      value="${loginUser.userName}"
                      required pattern="^[가-힣a-zA-Z\s]{2,20}$"
-                     title="이름은 한글/영문 2~20자만 입력하세요." />        
+                     title="이름은 한글/영문 2~20자만 입력하세요." />         
             </div>
 
             <div class="form-row-full">

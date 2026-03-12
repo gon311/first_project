@@ -97,7 +97,8 @@
 	    p.title,
 	    p.content,
 	    p.readcount     AS viewCount,
-	    p.created_at,
+	    p.created_at    AS createdAt,
+	    p.updated_at    AS updatedAt,
 	    u.user_name     AS writerNickname,
 	
 	    LEFT(p.content, 120) AS excerpt,
@@ -106,14 +107,14 @@
 	        SELECT COUNT(*)
 	        FROM BOARD_COMMENT c
 	        WHERE c.post_id = p.post_id
-	        AND c.status = 'ACTIVE'
+	          AND c.status = 'ACTIVE'
 	    ) AS commentCount,
 	
 	    0 AS likeCount
 	
 	FROM BOARD_POST p
 	JOIN USER u
-	ON p.author_member_id = u.user_id
+	  ON p.author_member_id = u.user_id
 	
 	WHERE p.status = 'ACTIVE'
 	
@@ -122,43 +123,38 @@
 	</if>
 	
 	<if test="q != null and q != ''">
-	  <choose>
-	    <when test="searchType == 'title'">
-	      AND p.title LIKE CONCAT('%', #{q}, '%')
-	    </when>
-	    <when test="searchType == 'content'">
-	      AND p.content LIKE CONCAT('%', #{q}, '%')
-	    </when>
-	    <otherwise>
-	      AND (
-	        p.title LIKE CONCAT('%', #{q}, '%')
-	        OR p.content LIKE CONCAT('%', #{q}, '%')
-	      )
-	    </otherwise>
-	  </choose>
+	    <choose>
+	        <when test="searchType == 'title'">
+	            AND p.title LIKE CONCAT('%', #{q}, '%')
+	        </when>
+	        <when test="searchType == 'content'">
+	            AND p.content LIKE CONCAT('%', #{q}, '%')
+	        </when>
+	        <otherwise>
+	            AND (
+	                p.title LIKE CONCAT('%', #{q}, '%')
+	                OR p.content LIKE CONCAT('%', #{q}, '%')
+	            )
+	        </otherwise>
+	    </choose>
 	</if>
 	
 	ORDER BY
-	
 	<choose>
-	
 	    <when test="sort == 'view'">
 	        p.readcount DESC
 	    </when>
-	
 	    <when test="sort == 'comment'">
 	        (
 	            SELECT COUNT(*)
 	            FROM BOARD_COMMENT c
 	            WHERE c.post_id = p.post_id
-	            AND c.status = 'ACTIVE'
+	              AND c.status = 'ACTIVE'
 	        ) DESC
 	    </when>
-	
 	    <otherwise>
 	        p.created_at DESC
 	    </otherwise>
-	
 	</choose>
 	
 	LIMIT #{page.offset}, #{page.safeSize}

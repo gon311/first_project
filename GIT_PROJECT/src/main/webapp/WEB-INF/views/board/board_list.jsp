@@ -13,15 +13,7 @@
 </head>
 <body>
 	<%-- 헤더 영역 --%>
-	<c:choose>
-	    <c:when test="${sessionScope.memberType == 'company'}">
-	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
-	    </c:when>
-	
-	    <c:otherwise>
-	        <%@ include file="/WEB-INF/views/inc/header.jspf" %>
-	    </c:otherwise>
-	</c:choose>
+	<%@ include file="/WEB-INF/views/inc/header.jspf" %>
 	
 	<%-- 컨텐츠 영역 --%>
 	<main class="container mt-5">

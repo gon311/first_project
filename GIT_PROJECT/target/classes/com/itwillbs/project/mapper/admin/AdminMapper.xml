@@ -1,0 +1,1568 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.project.admin.mapper.AdminMapper">
+
+	<!-- 구직자 전체 목록 갯수 조회 -->
+	<select id="selectUserListCount" resultType="int">
+		select	count(*)
+		from 
+			user u left outer join user_product p
+		on
+			u.user_id = p.user_id
+		left outer join
+			product pd
+		on
+			p.product_id = pd.product_id
+		where
+			u.user_type = 'p'
+		<choose>
+			<when test="type != null and type.equals('basic')">
+				and
+					p.product_id is null
+			</when>
+			<when test="type != null and !type.equals('')">
+				and
+					p.product_id = #{type}
+			</when>
+		</choose>
+		<if test="status != null and !status.equals('')">
+			and
+				u.status = #{status}
+		</if>
+		<if test="keyword != null and !keyword.equals('')">
+			and
+				u.user_name like concat('%',#{keyword},'%')
+		</if>
+	</select>
+
+	<!-- 구직자 목록 조회 -->
+	<select id="selectUserList" resultType="member">
+		select 
+			u.user_id
+			, u.user_name
+			, u.email
+			, u.phone
+			, u.user_type
+			, u.status
+			, u.joined_at
+			, u.withdrawn_at
+			, p.product_id
+			, pd.product_name
+		from 
+			user u left outer join user_product p
+		on
+			u.user_id = p.user_id
+		left outer join
+			product pd
+		on
+			p.product_id = pd.product_id
+		where
+			u.user_type = 'p'
+			<choose>
+				<when test="type != null and type.equals('basic')">
+					and
+						p.product_id is null
+				</when>
+				<when test="type != null and !type.equals('')">
+					and
+						p.product_id = #{type}
+				</when>
+			</choose>
+			<if test="status != null and !status.equals('')">
+				and
+					u.status = #{status}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and
+					u.user_name like concat('%',#{keyword},'%')
+			</if>
+		order by
+			<choose>
+				<when test="sort == 'old'">
+					u.joined_at asc
+				</when>
+				<when test="sort == 'new'">
+					u.joined_at desc
+				</when>
+				<when test="sort == 'abc'">
+					u.user_name asc
+				</when>
+				<otherwise>
+					u.user_id desc
+				</otherwise>
+			</choose>
+		limit
+			#{startRow}, #{listLimit}	-- 조회 시작 레코드 번호, 조회할 게시물 목록 갯수
+	</select>
+	
+	<!-- 구직자 회원 상세정보 조회 -->
+	<select id="selectUserInfo" resultType="member">
+		select 
+			u.user_id
+			, u.user_name
+			, u.email
+			, u.phone
+			, u.user_type
+			, u.status
+			, u.joined_at
+			, u.withdrawn_at
+			, p.birth_date
+			, p.gender
+			, p.country
+			, p.pass_count
+			, p.report_received_count
+			, p.profile_url
+			, pd.product_id
+			, pdt.product_name
+		from 
+			user u join user_person p
+		on
+			u.user_id = p.user_id
+		left outer join	
+			user_product pd
+		on 
+			u.user_id = pd.user_id
+		left outer join
+			product pdt
+		on
+			pd.product_id = pdt.product_id
+		where
+			u.user_id = #{userId}
+		and
+			(pd.use_status = 'active' or pd.use_status is null)
+		
+	</select>
+	
+	<!-- 회원 게시글 정보 조회 -->
+	<select id="selectFreeInfo" resultType="free">
+		select *
+		from 
+			board_post
+		where
+			board_type = 'FREE'
+		and 
+			author_member_id = #{userId}
+	</select>
+	
+	<!-- 회원 1대1 문의글 정보 조회 -->
+	<select id = "selectQnaInfo" resultType="qna">
+		select 
+			qna_id
+			, qna_title
+			, qna_content
+			, writer_id
+			, reg_date
+			, re_status
+			, re_date
+			, re_content
+		from
+			qna
+		where
+			writer_id = #{userId}
+	</select>
+	
+	<!-- 회원 댓글 정보 조회 -->
+	<select id="selectCommentInfo" resultType="comment">
+		select 
+			c.comment_id
+			, c.post_id
+			, c.author_member_id
+			, c.content
+			, c.status
+			, c.created_at
+			, b.board_type
+			, b.title
+		from
+			board_comment c join board_post b
+		on 
+			c.post_id = b.post_id
+		where
+			c.author_member_id = #{userId}
+	</select>
+	
+	<!-- 회원 차단 -->
+	<update id="updateUserBlock">
+		update
+			user
+		set
+			status = 'suspended'
+		where
+			user_id = #{userId}
+	</update>
+	
+	<!-- 회원 차단해제 -->
+	<update id="updateUserUnblock">
+		update
+			user
+		set
+			status = 'active'
+		where
+			user_id = #{userId}
+	</update>
+	
+	<!-- 탈퇴한 회원 삭제 -->
+	<delete id="deleteUserInfo">
+		delete
+		from
+			user
+		where
+			user_id = #{userId}
+	</delete>
+	
+	<!-- 구직자 탈퇴 회원 전체 목록 갯수 조회 -->
+	<select id="selectWithdrawListCount" resultType="int">
+		select	count(*)
+		from 
+			user
+		where
+			user_type = 'p'
+		and
+			status = 'WITHDRAWN'
+		<if test="keyword != null and !keyword.equals('')">
+			and
+				user_name like concat('%',#{keyword},'%')
+		</if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+			and 
+				date(withdrawn_at) between #{startDate} and #{endDate}
+		</if>
+	</select>
+	
+	<!-- 구직자 탈퇴회원 조회 -->
+	<select id="selectUserWithdraw" resultType="member">
+		select 
+			user_id
+			, user_name
+			, email
+			, phone
+			, user_type
+			, status
+			, withdrawn_at
+		from 
+			user u
+		where
+			user_type = 'p'
+		and
+			status = 'WITHDRAWN'
+			<if test="keyword != null and !keyword.equals('')">
+				and
+					user_name like concat('%',#{keyword},'%')
+			</if>
+			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+				and 
+					date(withdrawn_at) between #{startDate} and #{endDate}
+			</if>
+		order by
+			<choose>
+				<when test="sort == 'old'">
+					u.withdrawn_at asc
+				</when>
+				<when test="sort == 'new'">
+					u.withdrawn_at desc
+				</when>
+				<when test="sort == 'abc'">
+					u.user_name asc
+				</when>
+				<otherwise>
+					u.user_id desc
+				</otherwise>
+			</choose>
+		limit
+			#{startRow}, #{listLimit}
+	</select>
+	
+	<!-- 기업회원 전체 목록 갯수 조회 -->
+	<select id="selectComListCount" resultType="int">
+		select 
+			count(*)
+		from 
+			user u join user_company c
+		on
+			u.user_id = c.user_id
+		left outer join
+			com_product p
+		on
+			u.user_id = p.user_id
+		left outer join
+			product pd
+		on
+			p.product_id = pd.product_id
+		where
+			u.user_type = 'c'
+			<choose>
+				<when test="type != null and type.equals('basic')">
+					and
+						p.product_id is null
+				</when>
+				<when test="type != null and !type.equals('')">
+					and
+						p.product_id = #{type}
+				</when>
+			</choose>
+			<if test="status != null and !status.equals('')">
+				and
+					u.status = #{status}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and
+					c.company_name like concat('%',#{keyword},'%')
+			</if>
+	</select>
+	
+	<!-- 기업회원 목록 조회 -->
+	<select id="selectComList" resultType="member">
+		select 
+			u.user_id
+			, u.user_name
+			, u.email
+			, u.phone
+			, u.user_type
+			, u.status
+			, u.joined_at
+			, u.withdrawn_at
+			, c.biz_reg_no
+			, c.company_name
+			, c.ceo_name
+			, c.company_address
+			, p.product_id
+			, pd.product_name
+		from 
+			user u join user_company c
+		on
+			u.user_id = c.user_id
+		left outer join
+			com_product p
+		on
+			u.user_id = p.user_id
+		left outer join
+			product pd
+		on
+			p.product_id = pd.product_id
+		where
+			u.user_type = 'c'
+		and 
+			(p.use_status = 'active' or p.use_status is null)
+			<choose>
+				<when test="type != null and type.equals('basic')">
+					and
+						p.product_id is null
+				</when>
+				<when test="type != null and !type.equals('')">
+					and
+						p.product_id = #{type}
+				</when>
+			</choose>
+			<if test="status != null and !status.equals('')">
+				and
+					u.status = #{status}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and
+					c.company_name like concat('%',#{keyword},'%')
+			</if>
+		order by
+			<choose>
+				<when test="sort == 'old'">
+					u.joined_at asc
+				</when>
+				<when test="sort == 'new'">
+					u.joined_at desc
+				</when>
+				<when test="sort == 'abc'">
+					c.company_name asc
+				</when>
+				<otherwise>
+					u.user_id desc
+				</otherwise>
+			</choose>
+		limit
+			#{startRow}, #{listLimit}
+	</select>
+	
+	<!-- 기업 회원 상세정보 조회 -->
+	<select id="selectComInfo" resultType="member">
+		select 
+			u.user_id
+			, u.user_name
+			, u.email
+			, u.phone
+			, u.user_type
+			, u.status
+			, u.joined_at
+			, u.withdrawn_at
+			, c.biz_reg_no
+			, c.company_name
+			, c.ceo_name
+			, c.company_address
+			, p.product_id
+			, pd.product_name
+		from 
+			user u join user_company c
+		on
+			u.user_id = c.user_id
+		left outer join	
+			com_product p
+		on 
+			u.user_id = p.user_id
+		left outer join
+			product pd
+		on
+			p.product_id = pd.product_id
+		where
+			u.user_id = #{userId}
+		and 
+			(p.use_status = 'active' or p.use_status is null)
+	</select>
+	
+	<!-- 기업 공고 목록 조회 -->
+	<select id="selectJobPostInfo" resultType="jobPost">
+		select *
+		from 
+			job_posting
+		where
+			comp_id = #{userId}
+	</select>
+	
+	<!-- 기업 탈퇴회원 전체 목록 갯수 조회 -->
+	<select id="selectComWithdrawListCount" resultType="int">
+		select 
+			count(*)
+		from 
+			user u join user_company c
+		on
+			u.user_id = c.user_id
+		where
+			u.user_type = 'c'
+		and
+			u.status = 'WITHDRAWN'
+			<if test="keyword != null and !keyword.equals('')">
+				and
+					c.company_name like concat('%',#{keyword},'%')
+			</if>
+			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+				and 
+					date(u.withdrawn_at) between #{startDate} and #{endDate}
+			</if>
+	</select>
+	
+	<!-- 기업 탈퇴회원 목록 조회 -->
+	<select id="selectComWithdraw" resultType="member">
+		select 
+			u.user_id
+			, u.user_name
+			, u.email
+			, u.phone
+			, u.user_type
+			, u.status
+			, u.joined_at
+			, u.withdrawn_at
+			, c.biz_reg_no
+			, c.company_name
+			, c.ceo_name
+			, c.company_address
+		from 
+			user u join user_company c
+		on
+			u.user_id = c.user_id
+		where
+			u.user_type = 'c'
+		and
+			u.status = 'WITHDRAWN'
+			<if test="keyword != null and !keyword.equals('')">
+				and
+					c.company_name like concat('%',#{keyword},'%')
+			</if>
+			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+				and 
+					date(u.withdrawn_at) between #{startDate} and #{endDate}
+			</if>
+		order by
+			<choose>
+				<when test="sort == 'old'">
+					u.withdrawn_at asc
+				</when>
+				<when test="sort == 'new'">
+					u.withdrawn_at desc
+				</when>
+				<when test="sort == 'abc'">
+					u.user_name asc
+				</when>
+				<otherwise>
+					u.user_id desc
+				</otherwise>
+			</choose>
+		limit
+			#{startRow}, #{listLimit}
+	</select>
+	
+	<!-- ==================================================================== -->
+	<!-- [공지사항 게시판] -->
+	<!-- 공지사항 게시글 수 조회 -->
+	<select id="getNoticeTotalCount" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			notice
+		 <where>
+		 	<if test = 'keyword != null and keyword != "" '>
+		 		<choose>
+		 			<when test = 'type == "all"'>
+		 				AND 
+		 				(notice_title LIKE CONCAT ('%', #{keyword}, '%')
+		 				OR status LIKE CONCAT ('%', #{keyword}, '%')
+		 				OR user_type LIKE CONCAT ('%', #{keyword}, '%')
+		 				)
+		 			</when>
+		 			<when test ='type == "title"'>
+		 				AND notice_title LIKE CONCAT('%', #{keyword}, '%')
+		 			</when>
+		 			
+		 			<when test = 'type == "status"'>
+		 				AND status = #{keyword}
+		 			</when>
+		 			<when test = 'type == "userType"'>
+		 				AND user_type = #{keyword}
+		 			</when>
+		 		</choose>
+			</if>
+		 </where>
+	
+	</select>
+	
+	<!-- 공지사항 리스트 조회 -->
+	<select id="getNoticeList" resultType="notice">
+		SELECT
+		 	notice_id
+		 	, notice_title
+		 	, notice_content
+		 	, reg_date
+		 	, readcount
+		 	, user_type
+		 	, update_date
+		 	, status
+		 FROM notice
+		 <where>
+		 	<if test = 'keyword != null and keyword != "" '>
+		 		<choose>
+		 			<when test = 'type == "all"'>
+		 				AND 
+		 				(notice_title LIKE CONCAT ('%', #{keyword}, '%')
+		 				OR status LIKE CONCAT ('%', #{keyword}, '%')
+		 				OR user_type LIKE CONCAT ('%', #{keyword}, '%')
+		 				)
+		 			</when>
+		 			<when test ='type == "noticeTitle"'>
+		 				AND notice_title LIKE CONCAT('%', #{keyword}, '%')
+		 			</when>
+		 			
+		 			<when test = 'type == "status"'>
+		 				AND status = #{keyword}
+		 			</when>
+		 			<when test = 'type == "userType"'>
+		 				AND user_type = #{keyword}
+		 			</when>
+		 		</choose>
+			</if>
+		 </where>
+		 LIMIT ${offset}, ${limit}
+	</select>
+	<!-- 공지사항 작성 -->
+	<insert id ="insertNotice" parameterType="notice">
+		INSERT INTO notice (
+			notice_title
+			, notice_content
+			, reg_date
+			, readcount
+			, user_type
+			, status
+		) VALUES (
+			#{noticeTitle}
+			, #{noticeContent}
+			, NOW()
+			,0
+			, #{userType}
+			, #{status}
+		)
+	</insert>
+	<!-- 공지사항 상세 조회 -->
+	<select id="getNoticeById" resultType = "notice">
+		SELECT 
+			notice_id
+			, notice_title
+			, notice_content
+			, user_type
+			, reg_date
+			, update_date
+			, readcount
+		FROM notice
+		WHERE notice_id = #{noticeId}
+	
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateReadCount">
+		UPDATE notice
+		SET readcount = readcount + 1
+		WHERE notice_id = #{noticeId}
+	</update>
+	
+	<!-- 공지사항 삭제 -->
+	<delete id="deleteNotice">
+    	DELETE FROM notice 
+    	WHERE notice_id = #{noticeId}
+	</delete>
+	
+	<!--  공지사항 수정 -->
+	<update id="updateNotice">
+		UPDATE	notice
+		SET 
+			notice_title = #{noticeTitle}
+			, notice_content = #{noticeContent}
+			, user_type = #{userType}
+			, status = #{status}
+			, update_date = NOW()
+		WHERE	
+			notice_id= #{noticeId}
+	
+	</update>
+	<!-- ================================================================================== -->
+	<!--  [ 채용공고 관리 게시판 ]  -->
+	<!--  채용공고 리스트 개수 조회 -->
+	<select id = "getJobPostTotalCount" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM
+			job_posting
+		WHERE
+			post_check = 2
+			<if test="keyword !=null and keyword !=''">
+				AND title LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="userId != null and userId != 0">
+				AND comp_id LIKE CONCAT('%', #{userId}, '%')
+			</if>
+			<if test="postStatus != null and postStatus !=0 and postStatus != ''">
+				AND post_status = #{postStatus}
+			</if>
+	</select>
+	
+	
+	<!--  채용공고 목록 조회 -->
+	<select id="getJobPostList" resultType="jobPost">
+		SELECT
+			job_id <!-- 공고 id -->
+			, comp_id
+			, title
+			, field
+			, open_date
+			, close_date
+			, post_status
+		FROM job_posting
+		<!-- 검색 기능 -->
+		WHERE
+			post_check = 2
+			<if test="keyword !=null and keyword !=''">
+				AND title LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="userId != null and userId != 0">
+				AND comp_id LIKE CONCAT('%', #{userId}, '%')
+			</if>
+			<if test="postStatus != null and postStatus !=0 and postStatus != ''">
+				AND post_status = #{postStatus}
+			</if>
+		LIMIT #{offset}, #{limit}
+	</select>
+	
+	<!--  채용공고 상세 조회 -->
+	<select id="getJobPostById" resultType ="jobPost">
+		SELECT *
+		FROM job_posting
+		WHERE job_id = #{jobId}
+	</select>
+	
+	<!-- 채용공고 삭제 -->
+	<delete id="deleteJobPost">
+		DELETE FROM job_posting
+		WHERE job_id = #{jobId}
+	</delete>
+
+	
+	<!-- ================================================================================== -->
+	<!-- 제출된 공고 전체 목록 갯수 조회 -->
+	<select id="selectSubmitListCount" resultType="int">
+		select	count(*)
+		from 
+			job_posting j join user_company c
+		on
+			j.comp_id = c.user_id
+		where
+			1=1
+			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+				and 
+					date(j.reg_date) between #{startDate} and #{endDate}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and 
+					c.company_name like concat('%',#{keyword},'%')
+			</if>
+			<if test="submitStatus != null and !submitStatus.equals('')">
+				and 
+					j.post_check = #{submitStatus}
+			</if>
+	</select>
+	
+	<!-- 제출된 공고 목록 조회 -->
+	<select id="selectSubmitList" resultType="submit">
+		select 
+			j.job_id
+			,j.comp_id
+			,c.company_name
+			,j.title
+			,j.field
+			,j.task
+			,j.emp_type
+			,j.probation
+			,j.exp_type
+			,j.exp_year
+			,j.edu
+			,j.salary
+			,j.address
+			,j.is_remote
+			,j.mgr_name
+			,j.mgr_phone
+			,j.mgr_email
+			,j.is_public
+			,j.open_date
+			,j.close_date
+			,j.post_status
+			,j.reg_date
+			,j.post_check
+		from 
+			job_posting j join user_company c
+		on
+			j.comp_id = c.user_id
+		where
+			1=1
+			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+				and 
+					date(j.reg_date) between #{startDate} and #{endDate}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and 
+					c.company_name like concat('%',#{keyword},'%')
+			</if>
+			<if test="submitStatus != null and !submitStatus.equals('')">
+				and 
+					j.post_check = #{submitStatus}
+			</if>
+		order by
+			<choose>
+				<when test="sort == 'old'">
+					j.reg_date asc
+				</when>
+				<when test="sort == 'new'">
+					j.reg_date desc
+				</when>
+				<otherwise>
+					j.job_id desc
+				</otherwise>
+			</choose>
+		limit
+			#{startRow}, #{listLimit}
+	</select>
+	
+	<!-- 제출된 공고 상세정보 조회 -->
+	<select id="selectSubmitInfo" resultType="submit">
+		select 
+			*
+		from 
+			job_posting
+		where 
+			job_id = #{jobId}
+	</select>
+	
+	<!-- 제출된 공고 상태 변경(compId = #compId 인 공고) -->
+	<update id="updateSubmitStatus">
+		update
+			job_posting
+		set
+			<choose>
+				<when test="postCheck == 2">
+					post_check = 2
+				</when>
+				<when test="postCheck == 3">
+					post_check = 3
+				</when>
+				<otherwise>
+					post_check = 4
+				</otherwise>
+			</choose>
+		where
+			job_id = #{jobId}
+	</update>
+	
+	<!-- 승인된 공고의 등록일자를 현재시점으로 변경 -->
+	<update id="updateRegDate">
+		update
+			job_posting
+		set
+			reg_date = now()
+		where
+			job_id = #{jobId}
+	</update>
+	
+	<!-- ================================================================================== -->
+	<!-- 결제 목록 전체 갯수 조회 -->
+	<select id="selectPaymentListCount" resultType="int">
+		select 
+			count(*)
+		from 
+			pay p join product pd
+		on 
+			p.product_id = pd.product_id
+		join
+			user u
+		on 
+			p.user_id = u.user_id
+		where
+			1=1
+			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+				and 
+					date(p.pay_date) between #{startDate} and #{endDate}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and 
+					pd.product_name like concat('%',#{keyword},'%')
+			</if>
+			<if test="userType != null and !userType.equals('')">
+				and 
+					u.user_type = #{userType}
+			</if>
+			<if test="payStatus != null and !payStatus.equals('')">
+				and 
+					p.pay_status = #{payStatus}
+			</if>
+	</select>
+	
+	<!-- 결제 목록 조회 -->
+	<select id="selectPaymentList" resultType="payment">
+		select 
+			p.pay_id
+			, p.user_id
+			, u.user_name
+			, u.phone
+			, u.user_type
+			, p.product_id
+			, pd.product_name
+			, p.pay_method
+			, p.card_name
+			, p.bank_name
+			, p.deposit_account
+			, p.deposit_name
+			, p.pay_price
+			, p.pay_date
+			, p.issued_at
+			, p.pay_status
+		from 
+			pay p join product pd
+		on 
+			p.product_id = pd.product_id
+		join
+			user u
+		on 
+			p.user_id = u.user_id
+		where
+			1=1
+			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+				and 
+					date(p.pay_date) between #{startDate} and #{endDate}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				and 
+					pd.product_name like concat('%',#{keyword},'%')
+			</if>
+			<if test="userType != null and !userType.equals('')">
+				and 
+					u.user_type = #{userType}
+			</if>
+			<if test="payStatus != null and !payStatus.equals('')">
+				and 
+					p.pay_status = #{payStatus}
+			</if>
+		order by
+			<choose>
+				<when test="sort == 'old'">
+					p.pay_date asc
+				</when>
+				<when test="sort == 'new'">
+					p.pay_date desc
+				</when>
+				<otherwise>
+					p.pay_id desc
+				</otherwise>
+			</choose>
+		limit
+			#{startRow}, #{listLimit}
+	</select>
+	
+	<!-- 결제 내역 상세정보 조회 -->
+	<select id="selectPayInfo" resultType="payment">
+		select 
+			p.pay_id
+			, p.user_id
+			, u.user_name
+			, u.phone
+			, u.user_type
+			, p.product_id
+			, pd.product_name
+			, p.pay_method
+			, p.card_name
+			, p.card_num
+			, p.bank_name
+			, p.deposit_account
+			, p.deposit_name
+			, p.issued_at
+			, p.pay_price
+			, p.pay_date
+			, p.pay_status
+		from 
+			pay p join product pd
+		on 
+			p.product_id = pd.product_id
+		join
+			user u
+		on 
+			p.user_id = u.user_id
+		where
+			p.pay_id = #{id}
+	</select>
+	
+	<!-- 결제 취소 -->
+	<update id="updatePayCancel">
+		update
+			pay
+		set
+			pay_status = 3
+		where
+			pay_id = #{payId}
+	</update>
+	
+	<!-- ===================================================================== -->
+	<!-- 구매할 상품 정보 조회 -->
+	<select id="selectProductInfo" resultType="product">
+		select	*
+		from
+			product
+		where
+			product_id = #{productId}
+	</select>
+	
+	<!--  ========================================================================= -->
+	<!-- 1:1 문의글  -->
+	<select id = "getQnaTotalCount" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM
+			qna
+		<where>
+			<if test="reStatus != null and reStatus != '' and reStatus != 'all'">
+				AND re_status = #{reStatus}
+			</if>
+		</where>
+		ORDER BY 
+			<choose>
+				<when test ='sort != null and sort.equals("old")'>
+					reg_date ASC
+				</when>
+				<when test ='sort != null and sort.equals("new")'>
+					reg_date DESC
+				</when>
+				<otherwise>
+					qna_id DESC
+				</otherwise>
+			</choose>
+	</select>
+	
+	
+	
+	<select id="getQnaList" resultType="qna">
+		select 
+			qna_id
+			, qna_title
+			, writer_id
+			, reg_date
+			, re_status
+		from 
+			qna
+		<where>
+			<if test="reStatus != null and reStatus != '' and reStatus != 'all'">
+				AND re_status = #{reStatus}
+			</if>
+		</where>
+		ORDER BY 
+			<choose>
+				<when test ='sort != null and sort.equals("old")'>
+					reg_date ASC
+				</when>
+				<when test ='sort != null and sort.equals("new")'>
+					reg_date DESC
+				</when>
+				<otherwise>
+					qna_id DESC
+				</otherwise>
+			</choose>
+		LIMIT #{offset}, #{limit}
+	</select>
+	
+	<select id = "getQnaById" resultType="qna">
+		SELECT 
+			qna_id
+			, qna_title
+			, qna_content
+			, writer_id
+			, reg_date
+			, re_status
+			, re_date
+			, re_content
+		FROM
+			qna
+		WHERE
+			qna_id = #{qnaId}
+	
+	</select>
+	<delete id="deleteQna">
+		DELETE FROM qna
+		WHERE
+			qna_id = #{qnaId}
+	</delete>
+	
+	<update id = "registAnswer">
+		UPDATE
+			qna
+		SET
+			re_status = 'completed'
+			, re_date = NOW()
+			, re_content = #{reContent}
+		WHERE
+			qna_id = #{qnaId}
+	</update>
+	
+	<update id ="deleteQnaAnswer">
+		UPDATE	
+			qna
+		SET	
+			re_status = 'pending'
+			, re_date = null
+			, re_content = null
+		WHERE
+			qna_id = #{qnaId}
+	</update>
+	
+	<update id = "modifyAnswer">
+		UPDATE
+			qna
+		SET
+			re_date = NOW()
+			, re_content = #{reContent}
+		WHERE
+			qna_id = #{qnaId}
+		
+	</update>
+	
+	<!-- ============================================================================ -->
+	<!-- FaQ 리스트 -->
+	<select id ="getFaqTotalCount" resultType ="int">
+		SELECT
+			COUNT(*)
+		FROM 
+			faq
+		<where>
+			<if test="userType != null and userType != '' and userType != 'all'">
+				AND user_type=#{userType}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				<choose>
+					<when test = 'category == ""'>
+						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+					<when test = 'category == "account"'>
+						AND faq_title LIKE CONCAT ('%', #{keyword}, '%')
+					</when>
+					<when test = 'category == "service"'>
+						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+					<when test = 'category == "ect"'>
+						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+				</choose>
+			</if>
+					
+			<if test="category !=null and category != '' and category != 'all'">
+				AND category = #{category}
+			</if>
+
+		</where>
+	</select>
+	
+	
+	<select id ="getFaqList" resultType="faq">
+		SELECT 
+			faq_id
+			, faq_title
+			, faq_content
+			, category
+			, user_type
+		FROM
+			faq
+		<where>
+			<if test="userType != null and userType != '' and userType != 'all'">
+				AND user_type=#{userType}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				<choose>
+					<when test = 'category == ""'>
+						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+					<when test = 'category == "account"'>
+						AND faq_title LIKE CONCAT ('%', #{keyword}, '%')
+					</when>
+					<when test = 'category == "service"'>
+						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+					<when test = 'category == "ect"'>
+						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+					</when>
+				</choose>
+			</if>
+			
+					
+			<if test="category !=null and category != '' and category != 'all'">
+				AND category = #{category}
+			</if>
+				<if test="faqId != null">
+	            AND faq_id = #{faqId}
+	        </if>
+	        
+	        <if test="faqId == null">
+	            <if test="keyword != null and keyword != ''">
+	                AND question LIKE CONCAT('%', #{keyword}, '%')
+	            </if>
+            </if>
+	    </where>
+	    	ORDER BY faq_id DESC
+	    <if test="faqId == null">
+	        LIMIT #{offset}, #{limit}
+	    </if>
+		
+			
+	</select>
+	
+	<insert id ="insertFaq" parameterType="faq">
+		INSERT INTO faq (
+			faq_title
+			, faq_content
+			, category
+			, user_type
+		) VALUES (
+			#{faqTitle}
+			, #{faqContent}
+			,#{category}
+			, #{userType}
+		)
+	</insert>
+	<delete id ="deleteFaq">
+		DELETE FROM faq
+		WHERE faq_id = #{faqId}
+	</delete>
+	<update id = "updateFaq">
+		UPDATE
+			faq
+		SET
+			faq_title = #{faqTitle}
+			, faq_content = #{faqContent}
+			, category = #{category}
+			, user_type = #{userType}
+		WHERE	
+			faq_id = #{faqId}
+	</update>
+	<!-- ===================================================================================== -->
+	<!-- 배너 관리 -->
+	
+	<select id="countBannerById" resultType = "com.itwillbs.project.admin.dto.BannerDTO">
+		SELECT 
+			IFNULL(count(*),0)
+		FROM
+			banner
+		WHERE
+			job_id = #{jobId}
+	</select>
+    
+    <insert id="insertBanner" parameterType="com.itwillbs.project.admin.dto.BannerDTO">
+    INSERT INTO banner (job_id, comp_id, is_display)
+    SELECT j.job_id, j.comp_id, 1
+    FROM job_posting j
+    JOIN com_product cp 
+    	ON j.comp_id = cp.user_id
+    WHERE 
+    	j.job_id = #{jobId}          
+    	AND 
+    		j.post_check = 2              
+   		AND 
+   			cp.product_id = 'P-C2'        
+		AND 
+			cp.use_status = 'active'      
+	</insert>
+    	
+    	
+	<select id="getBannerList" resultType="com.itwillbs.project.admin.dto.BannerDTO">
+    SELECT 
+        b.ad_id
+        , b.job_id
+        , b.comp_id
+        , j.title
+        , cp.start_date       
+        , cp.end_date  
+        , b.is_display
+    FROM 
+    	banner b
+    JOIN 
+   		JOB_POSTING j 
+    		ON b.job_id = j.job_id
+    LEFT JOIN 
+    	com_product cp 
+    		ON b.comp_id = cp.user_id
+   	WHERE 
+   		cp.product_id = 'P-C2'
+   		AND cp.use_status = 'active'
+    ORDER BY b.ad_id DESC
+    
+</select>
+	
+	<update id="updateBannerStatus">
+		UPDATE 
+			banner
+		SET
+			is_display = #{isDisplay}
+		WHERE
+			ad_id = #{adId}
+	</update>
+	
+	
+	
+	<!-- ============================================================================================= -->
+	<!-- 데이터 관리 -->	
+	<!-- 1) 구직자 유형별 통계 관리 -->
+	<select id = "getGenderStats" resultType="map">
+		SELECT
+			CASE
+				WHEN gender = 'M' THEN '남성'
+				WHEN gender = 'F' THEN '여성'
+				ELSE '미선택'
+				END AS label
+			, COUNT(*) AS value
+		FROM
+			user_person
+		GROUP BY 
+			gender
+	</select>	
+	<select id = "getAgeStats" resultType = "map">
+		SELECT 
+			CASE
+				WHEN (YEAR(CURDATE()) - YEAR(BIRTH_DATE)) BETWEEN 10 AND 19 THEN '10대'
+				WHEN (YEAR(CURDATE()) - YEAR(BIRTH_DATE)) BETWEEN 20 AND 29 THEN '20대'
+				WHEN (YEAR(CURDATE()) - YEAR(BIRTH_DATE)) BETWEEN 30 AND 39 THEN '30대'
+				WHEN (YEAR(CURDATE()) - YEAR(BIRTH_DATE)) BETWEEN 40 AND 49 THEN '40대'
+				WHEN (YEAR(CURDATE()) - YEAR(BIRTH_DATE)) BETWEEN 50 AND 59 THEN '50대'
+				ELSE '기타'
+			END AS label,
+			COUNT(*) AS value
+		FROM
+			user_person
+		GROUP BY 
+			label
+		ORDER BY
+			label
+	</select>
+	<select id = "getJobStats" resultType = "map">
+		SELECT
+			desired_role AS label
+			, count(*) AS value
+		FROM
+			personal_job_profile
+		GROUP BY
+			desired_role
+		ORDER BY
+			value DESC
+		LIMIT 5
+	</select>
+	<!-- 2. 기업회원 유형별 통계 -->
+<!-- 	채용진행 횟수, 채용공고등록 빈도, 직무 -->
+	
+	<select id = "getComPostStats" resultType="map">
+		SELECT
+			c.company_name AS label
+			, count(j.job_id) AS value
+		FROM 
+			user_company c
+		JOIN 
+			job_posting j 
+		ON 	
+			c.user_id = j.comp_id
+		GROUP BY
+			c.company_name
+		ORDER BY 
+			value DESC
+		LIMIT 5
+	</select>
+	<select id = "getJobFieldStats" resultType="map">
+		SELECT
+			field AS label
+			, COUNT(*) AS value
+		FROM
+			job_posting
+		GROUP BY
+			field		
+		ORDER BY
+			value DESC
+	</select>	
+	<select id="getEmpTypeStats" resultType="map">
+        SELECT 
+            emp_type AS label
+            , COUNT(*) AS value 
+        FROM
+        	job_posting
+        GROUP BY 
+        	emp_type
+    </select>
+    <!-- 3. 구직자 결제 통계 -->
+    <select id="getProductSalesStats" resultType="map">
+	    SELECT 
+	        pr.product_name AS label 
+	        , COUNT(*) AS value 
+	    FROM 
+			product pr
+		JOIN
+			pay p
+		ON
+			p.product_id = pr.product_id
+	    GROUP BY 
+	    	pr.product_name
+	</select>
+	
+	<select id="getPayMethodStats" resultType="map">
+	    SELECT 
+	        p.pay_method AS label 
+	        , COUNT(*) AS value 
+	    FROM 
+	    	pay p 
+	    JOIN
+	    	product pr 
+	    ON
+	    	pr.product_id = p.product_id
+	    WHERE pr.product_type = 'user'
+	    GROUP BY 
+	    	p.pay_method
+	</select>
+	
+	<select id="getDailyRevenueStats" resultType="map">
+	    SELECT 
+	        DATE_FORMAT(pay_date, '%m-%d') AS label 
+	        , SUM(P.pay_price) AS value 
+	    FROM 
+	    	pay P
+	    JOIN 
+	    	product pr
+	    ON	
+	    	p.product_id = pr.product_id
+	    WHERE 
+	    	p.pay_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+	    AND
+	    	pr.product_type = 'user'
+	    GROUP BY 
+	    	label
+	    ORDER BY 
+	    	label ASC
+	</select>
+	
+	<!-- 4. 기업회원 결제 통계 -->
+	<select id="getTopComRevenue" resultType="map">
+	    SELECT 
+	        c.company_name AS label 
+	        , SUM(p.pay_price) AS value 
+	    FROM 
+	    	pay p
+	    JOIN 
+	    	user_company c 
+    	ON p.user_id = c.user_id
+	    GROUP BY 
+	    	c.company_name
+	    ORDER BY 
+	    	value DESC
+	    LIMIT 5
+	</select>
+	
+	<select id="getComProductStats" resultType="map">
+	    SELECT 
+	        pr.product_name AS label 
+	        , COUNT(*) AS value 
+	    FROM 
+	    	pay p
+	    JOIN 
+	    	user_company c 
+    	ON 
+    		p.user_id = c.user_id
+    	JOIN
+    		product pr
+    	ON
+    		p.product_id = pr.product_id
+    	WHERE
+	    	pr.product_type = 'com'	
+	    GROUP BY 
+	    	pr.product_name
+	</select>
+	
+	<select id="getComRevenueStats" resultType="map">
+	    SELECT 
+	        DATE_FORMAT(pay_date, '%m-%d') AS label 
+	        , SUM(p.pay_price) AS value 
+	    FROM 
+	    	pay p
+	    JOIN
+	    	product pr
+	    ON 
+	    	p.product_id = pr.product_id
+	    WHERE 
+	    	p.pay_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+	    AND 
+	    	pr.product_type = 'com'
+	    GROUP BY 
+	    	label
+	    ORDER BY 
+	    	label ASC
+	</select>
+<!--  ======================================================================== -->
+<!--  [ 자유게시판 관리 ]-->
+	<select id = "getBoardTotalCount" resultType = 'int'>
+		SELECT 
+			count(*)
+		FROM
+			board_post
+    <where>
+        <if test="keyword != null and keyword != ''">
+            AND title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+
+        <if test="startDate != null and startDate != ''">
+            AND created_at &gt;= #{startDate}
+        </if>
+
+        <if test="endDate != null and endDate != ''">
+            AND created_at &lt;= CONCAT(#{endDate}, ' 23:59:59')
+        </if>
+
+        <if test="userId != null and userId != ''">
+            AND author_member_id LIKE CONCAT('%', #{userId}, '%')
+        </if>
+        
+        </where>
+	</select>	
+		
+	
+	<select id="getBoardList" parameterType = "search" resultType="free">
+	    SELECT 
+	        post_id
+	        , title
+	        , author_member_id
+	        , created_at
+	        , status
+	    FROM board_post
+	    <where>
+	        <if test="startDate != null and startDate != ''">
+	            AND created_at &gt;= #{startDate}
+	        </if>
+	        <if test="endDate != null and endDate != ''">
+	            AND created_at &lt;= CONCAT(#{endDate}, ' 23:59:59')
+	        </if>
+	        <if test="userId != null and userId != 0">
+	            AND author_member_id = #{userId}
+	        </if>
+	        <if test="status != null and status != ''">
+	            AND status = #{status}
+	        </if>
+	        <if test="keyword != null and keyword != ''">
+	            AND title LIKE CONCAT('%', #{keyword}, '%')
+	        </if>
+	    </where>
+	    ORDER BY created_at DESC
+	    LIMIT #{offset}, #{limit}
+	</select>
+	
+	<select id = "getBoardDetail" resultType = "free">
+		SELECT	
+			post_id
+			, title
+			, author_member_id
+			, content
+			, created_at
+			, updated_at
+			, readcount
+			, status
+			
+		FROM
+			board_post 
+		WHERE	
+			post_id = #{postId}
+			
+			
+	</select>
+	
+	<select id = "getCommentByPostId" resultType="comment">
+		SELECT	
+			comment_id
+			, post_id
+			, author_member_id
+			, content
+			, status
+			, created_at
+		FROM
+			board_comment
+		WHERE	
+			post_id = #{postId}
+		ORDER BY
+			created_at ASC
+	</select>
+	
+	<update id="updateBoardCount">
+		UPDATE 
+			board_post
+		SET 
+			readcount = readcount + 1
+		WHERE 
+			post_id = #{postId}
+	</update>
+	
+	<update id="deleteComment">
+		UPDATE 
+			board_comment
+		SET 
+			status = 'DELETED'
+		WHERE 
+			comment_id = #{commentId}
+	</update>
+	
+	<update id="deleteBoard">
+		UPDATE
+			board_post
+		SET
+			status = 'DELETED'
+		WHERE
+			post_id = #{postId}
+	</update>
+	
+</mapper>

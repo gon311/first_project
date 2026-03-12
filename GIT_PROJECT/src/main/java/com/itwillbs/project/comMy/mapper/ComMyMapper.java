@@ -37,6 +37,8 @@ public interface ComMyMapper {
 	int deleteJob(@Param("userId") Long userId, 
 				@Param("jobId") Long jobId);
 
+	int getJopPostingCount(JobCond cond);
+	
 	int getJopManagementCount(JobCond cond);
 	
 	

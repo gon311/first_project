@@ -63,6 +63,7 @@ ChatGPT API를 활용하여 **이력서·자기소개서를 자동 분석하고 
 - Git / GitHub 
 - Notion
 - Figma
+- Canva
 
 
 ---

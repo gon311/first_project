@@ -36,6 +36,8 @@ public interface ComMyMapper {
 	// 공고 목록 삭제
 	int deleteJob(@Param("userId") Long userId, 
 				@Param("jobId") Long jobId);
+
+	int getJopManagementCount(JobCond cond);
 	
 	
 	

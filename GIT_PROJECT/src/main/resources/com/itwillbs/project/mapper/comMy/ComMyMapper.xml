@@ -201,6 +201,14 @@
 	  <include refid="jobWhere"/>
 	</select>
 	
+	<select id="getJopPostingCount"
+	        parameterType="com.itwillbs.project.comMy.dto.JobCond"
+	        resultType="int">
+	  SELECT COUNT(*)
+	  FROM JOB_POSTING jp
+	
+	</select>
+	
 	<select id="getJopManagementCount"
 	        parameterType="com.itwillbs.project.comMy.dto.JobCond"
 	        resultType="int">

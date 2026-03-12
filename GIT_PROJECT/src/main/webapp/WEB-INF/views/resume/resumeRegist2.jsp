@@ -15,7 +15,10 @@
     <%-- 현재 페이지(main.jsp) 전용 CSS 영역--%>
 		<link href="<c:url value="/resources/css/resume.css" />" 
 			rel="stylesheet" type="text/css">
-	<script src="<c:url value="/resources/js/resumeRegist2.js" />"></script>		
+		
+	<script src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="<c:url value="/resources/js/resumeRegist2.js" />"></script>
+		
 </head>
 
 <body class="resume-body">
@@ -138,8 +141,8 @@
                         <div class="col-md-12">
 						  <label class="form-label">주소</label>
 						  <div class="d-flex gap-2 mt-1">
-						    <input type="text" value="${resume.address1}" name="address1" class="form-control address-half" placeholder="주소 입력">
-						    <input type="text" value="${resume.address2}" name="address2" class="form-control address-half" placeholder="상세주소 입력">
+						    <input type="text" value="${resume.address1}" id="address1" name="address1" onclick="findAddr()" class="form-control address-half" placeholder="주소 입력">
+						    <input type="text" value="${resume.address2}" id="address2" name="address2" class="form-control address-half" placeholder="상세주소 입력">
 						  </div>
 						</div>
 

@@ -1,4 +1,5 @@
 window.onload = function() {
+  
   document.querySelectorAll("input, select, textarea").forEach(el => {
     el.setAttribute("readonly", true);
     el.disabled = true; // select 같은 경우 disabled로 처리
@@ -9,9 +10,34 @@ window.onload = function() {
   document.getElementById("addEducation").style.display = "none";
   document.getElementById("addEducation").style.display = "none";
   document.getElementById("addEducation").style.display = "none";
-    
+  
     
 };
+
+// 주소 팝업
+function findAddr(){
+
+	new kakao.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+            // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+            var roadAddr = data.roadAddress; // 도로명 주소 변수
+            var jibunAddr = data.jibunAddress; // 지번 주소 변수
+            var extraRoadAddr = ''; // 참고 항목 변수
+
+            //document.getElementById('aaa_post').value = data.zonecode;
+            
+            if(roadAddr !== ''){
+                document.getElementById("address1").value = roadAddr;
+            }else if(jibunAddr !== ''){
+                document.getElementById("address1").value = jibunAddr;
+            }
+            
+        }
+    }).open();
+}
 
 // 수정 모드 적용.
 function fn_visible(){
@@ -29,96 +55,3 @@ function fn_visible(){
   	  	
 }
 
-// 기본 이벤트 예시
-document.addEventListener("DOMContentLoaded", function () {
-
-    const deleteBtn = document.querySelector(".btn-outline-danger");
-
-    if (deleteBtn) {
-        deleteBtn.addEventListener("click", function () {
-            if (confirm("이력서를 삭제하시겠습니까?")) {
-                // 삭제 처리
-                console.log("삭제 실행");
-            }
-        });
-    }
-
-});
-
-// 학력, 경력 추가 
-let eduIndex = 1;
-let expIndex = 1;
-
-$("#addEducation").click(function(){
-
-let html = `
-<div class="education-item border p-3 mb-3">
-
-<div class="row mb-3">
-<div class="col-md-6">
-<label>학력</label>
-<select name="educationList[`+eduIndex+`].educationLevel" class="form-control">
-<option value="고등학교">고등학교</option>
-<option value="대학교(2-3년제)">대학교(2-3년제)</option>
-<option value="대학교(4년제)">대학교(4년제)</option>
-<option value="대학원(석사)">대학원(석사)</option>
-<option value="대학원(박사)">대학원(박사)</option>
-</select>
-</div>
-
-<div class="col-md-6">
-<label>학교명</label>
-<input type="text" name="educationList[`+eduIndex+`].schoolName" class="form-control">
-</div>
-</div>
-
-<button type="button" class="btn btn-danger removeEducation">삭제</button>
-
-</div>
-`;
-
-$("#educationContainer").append(html);
-
-eduIndex++;
-
-});
-
-
-$(document).on("click",".removeEducation",function(){
-$(this).closest(".education-item").remove();
-});
-
-
-
-$("#addExperience").click(function(){
-
-let html = `
-<div class="experience-item border p-3 mb-3">
-
-<div class="row mb-3">
-<div class="col-md-6">
-<label>기업명</label>
-<input type="text" name="experienceList[`+expIndex+`].companyName" class="form-control">
-</div>
-
-<div class="col-md-6">
-<label>근무부서</label>
-<input type="text" name="experienceList[`+expIndex+`].depatmentName" class="form-control">
-</div>
-</div>
-
-<button type="button" class="btn btn-danger removeExperience">삭제</button>
-
-</div>
-`;
-
-$("#experienceContainer").append(html);
-
-expIndex++;
-
-});
-
-
-$(document).on("click",".removeExperience",function(){
-$(this).closest(".experience-item").remove();
-});

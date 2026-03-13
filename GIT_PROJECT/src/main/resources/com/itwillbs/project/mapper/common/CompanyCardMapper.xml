@@ -72,8 +72,8 @@
 		WHERE j.job_id IN (
 		    SELECT job_id
 		    FROM (SELECT job_id
-					FROM favorite_company
-					WHERE person_user_id = #{userIdx}
+					FROM job_bookmark
+					WHERE user_id = #{userIdx}
 					ORDER BY RAND()
 					LIMIT 6) AS bookmark)
 	</select>

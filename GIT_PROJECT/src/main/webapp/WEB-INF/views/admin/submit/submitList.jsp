@@ -115,8 +115,7 @@
 							<td>${submit.jobId}</td>
 							<td>${submit.title}</td>
 							<td>
-								<fmt:parseDate var="regDate" value="${submit.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-								<fmt:formatDate value="${regDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+								${submit.strRegDate}
 							</td>
 							<td>${submit.companyName}</td>
 							<td>

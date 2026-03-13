@@ -127,6 +127,7 @@
 	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 	
 	<script type="text/javascript">
+		// 일반 이용권 구매
 		async function checkRemainBasic(productId, userId) {
 			if(userId == null) {
 				alert("로그인 한 회원만 구매 가능합니다.");
@@ -151,7 +152,8 @@
 				
 		}
 		
-		async function checkRemainPremium(productId) {
+		// 프리미엄 이용권 구매
+		async function checkRemainPremium(productId, userId) {
 			console.log("productId : ", productId);
 			const checkRemainURL = "<c:url value="/store/checkRemain" />";
 			// 비동기 요청 시 아이디 입력값 파라미터로 전송

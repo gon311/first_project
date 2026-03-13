@@ -286,7 +286,7 @@
 	                                <td>${withdraw.email}</td>
 	                                <td>${withdraw.phone}</td>
 	                                <td>
-                                    	<fmt:formatDate value="${withdrawDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
+                                    	${withdraw.strWithdrawnAt}
                                     </td>
                                     <td>
                                    	  <!-- 탈퇴일로부터 3년이 지난 경우 삭제 버튼 활성화 -->

@@ -17,6 +17,7 @@ import com.itwillbs.project.admin.dto.ProductDTO;
 import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
+import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.store.dto.PaymentDTO;
 
 @Mapper
@@ -180,11 +181,11 @@ public interface AdminMapper {
 	// 제출된 공고 상세정보 조회
 	SubmitDTO selectSubmitInfo(long jobId);
 	
+	// 첨부파일
+	List<FileDTO> selectFileList(Long jobId);
+	
 	// 공고 상태 변경
 	void updateSubmitStatus(@Param("jobId") long jobId, @Param("postCheck") Integer postCheck);
-	
-	// 승인 시 공고 등록일자를 현재 시점으로 변경
-	void updateRegDate(long jobId);
 	
 	//========================================================================
 	// 구매할 상품 상세 정보 조회(구매하기 진행)

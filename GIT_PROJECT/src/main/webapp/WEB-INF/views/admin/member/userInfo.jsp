@@ -40,7 +40,16 @@
 								<dd class="col-8 py-2">${user.email}</dd>
 
 								<dt class="col-4 text-secondary py-2">생년월일</dt>
-								<dd class="col-8 py-2">${user.birthDate}</dd>
+								<dd class="col-8 py-2">
+									<c:choose>
+										<c:when test="${not empty user.birthDate}">
+											${user.birthDate}
+										</c:when>
+										<c:otherwise>
+											미입력
+										</c:otherwise>
+									</c:choose>
+								</dd>
 
 								<dt class="col-4 text-secondary py-2">성별</dt>
 								<dd class="col-8 py-2">${user.gender}</dd>
@@ -53,15 +62,13 @@
 
 								<dt class="col-4 text-secondary py-2">가입일자</dt>
 								<dd class="col-8 py-2">
-									<fmt:parseDate var="joinDate" value="${user.joinedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-                           			<fmt:formatDate value="${joinDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
+									${user.strJoinedAt}
 								</dd>
 								
 								<c:if test="${user.status eq '탈퇴'}">
 									<dt class="col-4 text-secondary py-2">탈퇴일자</dt>
 									<dd class="col-8 py-2">
-                               			<fmt:parseDate var="withdrawDate" value="${user.withdrawnAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-                               			<fmt:formatDate value="${withdrawDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
+										${user.strWithdrawnAt}
 									</dd>
 								</c:if>
 
@@ -105,7 +112,14 @@
 								        id="free-tab" 
 								        data-bs-toggle="tab" 
 								        data-bs-target="#free" 
-								        type="button" role="tab">자유게시판</button>
+								        type="button" role="tab">작성한 글</button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link ${activeTab eq 'comment' ? 'active' : ''}" 
+								        id="comment-tab" 
+								        data-bs-toggle="tab" 
+								        data-bs-target="#comment" 
+								        type="button" role="tab">작성한 댓글</button>
 							</li>
 							<li class="nav-item" role="presentation">
 								<button class="nav-link ${activeTab eq 'qna' ? 'active' : ''}" 
@@ -118,7 +132,7 @@
 		
 						<div class="tab-content mt-3" id="memberDetailTabContent">
 		
-							<!-- 자유게시판 -->
+							<!-- 작성한 글 -->
 							<div class="tab-pane fade ${activeTab eq 'free' ? 'show active' : ''}" 
 							     id="free" role="tabpanel" aria-labelledby="free-tab">
 								<div class="table-responsive">
@@ -126,6 +140,7 @@
 										<thead class="table-light">
 											<tr>
 												<th>No</th>
+												<th>카테고리</th>
 												<th>제목</th>
 												<th>작성일자</th>
 												<th>상태</th>
@@ -133,12 +148,19 @@
 										</thead>
 							 			<tbody>
 										<c:forEach var="free" varStatus="status" items="${freeList}">
-											<tr class="clickable-row" onclick="location.href='/project/admin/contents/boardDetail?postId=${free.postId}'">
+											<tr class="clickable-row" onclick="location.href='<c:url value="admin/contents/boardDetail?postId=${free.postId}" />'">
 												<td>${status.count}</td>
+												<td>${free.boardType}</td> 
 												<td>${free.title}</td>
 												<td>
-													<fmt:parseDate var="createdAt" value="${free.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-	                           						<fmt:formatDate value="${createdAt}" pattern="yyyy년 MM월 dd일"/>
+													<c:choose>
+														<c:when test="${not empty free.strUpdatedAt}">
+															${free.strUpdatedAt}
+														</c:when>
+														<c:otherwise>
+															${free.strCreatedAt}
+														</c:otherwise>
+													</c:choose>
 												</td>
 												<td>
 													<c:choose>
@@ -172,7 +194,7 @@
 										</thead>
 							 			<tbody>
 											<c:forEach var="qna" varStatus="status" items="${qnaList}">
-												<tr class="clickable-row" onclick="location.href='/project/admin/contents/QnADetail?qnaId=${qna.qnaId}'">
+												<tr class="clickable-row" onclick="location.href='<c:url value="admin/contents/QnADetail?qnaId=${qna.qnaId}" />'">
 													<td>${status.count}</td>
 													<td>${qna.qnaTitle}</td>
 													<td>
@@ -194,7 +216,38 @@
 									</table>
 								</div>
 							</div>
-		
+							
+							<!-- 작성한 댓글 -->
+							<div class="tab-pane fade ${activeTab eq 'comment' ? 'show active' : ''}" 
+							     id="comment" role="tabpanel" aria-labelledby="qna-tab">
+								<div class="table-responsive">
+									<table class="table table-hover table-bordered align-middle text-center">
+										<thead class="table-light">
+											<tr>
+												<th>No</th>
+												<th>글제목</th>
+												<th>댓글내용</th>
+												<th>작성일자</th>
+												<th>상태</th>
+											</tr>
+										</thead>
+							 			<tbody>
+											<c:forEach var="comment" varStatus="status" items="${commentList}">
+												<tr class="clickable-row" onclick="location.href='<c:url value="admin/contents/boardDetail?postId=${comment.postId}" />'">
+													<td>${status.count}</td>
+													<td>${comment.title}</td>
+													<td>${comment.content}</td>
+													<td>
+		                           						${comment.strCreatedAt}
+													</td>
+													<td>${comment.status}</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
 						</div>
 					</div>
 

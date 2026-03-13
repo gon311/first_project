@@ -19,4 +19,6 @@ public interface QnaMapper {
     List<SupportQnaDTO> selectQnaList(Long writerId);
 
 	SupportQnaDTO selectQnaDetail(int qnaId);
+	
+	void deleteQna(int qnaId);
 }

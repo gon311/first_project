@@ -27,7 +27,12 @@ public class QnaController {
 
     // 1. 문의 작성 페이지 이동
     @GetMapping("/QnAWrite")
-    public String qnaWrite() {
+    public String qnaWrite(HttpSession session) {
+    	Long sId = (Long) session.getAttribute("userIdx");
+        
+        if (sId == null) {
+        	return "redirect:/user/login";
+        }
         return "/help/qna_write"; // 아까 만든 JSP 경로
     }
 
@@ -64,7 +69,6 @@ public class QnaController {
     public String qnaList(HttpSession session, Model model) {
     	Long sId = (Long) session.getAttribute("userIdx");
         
-        // 로그인 체크 (인터셉터가 있다면 생략 가능)
         if (sId == null) {
         	return "redirect:/user/login";
         }
@@ -72,11 +76,17 @@ public class QnaController {
         List<SupportQnaDTO> list = qnaService.getQnaList(sId);
         model.addAttribute("qnaList", list);
         
-        return "/help/qna_list"; // views/help/qna_list.jsp
+        return "/help/qna_list";
     }
     
     @GetMapping("/detail")
-    public String qnaDetail(@RequestParam("qnaId") int qnaId, Model model) {
+    public String qnaDetail(@RequestParam("qnaId") int qnaId, Model model, HttpSession session) {
+    	Long sId = (Long) session.getAttribute("userIdx");
+        
+        if (sId == null) {
+        	return "redirect:/user/login";
+        }
+        
         // 1. qnaId로 DB에서 게시글 정보 가져오기
         SupportQnaDTO qna = qnaService.getQnaDetail(qnaId);
         
@@ -84,6 +94,29 @@ public class QnaController {
         model.addAttribute("qna", qna); 
         
         return "/help/qna_detail";
+    }
+    
+    @GetMapping("/delete")
+    public String deleteQna(@RequestParam("qnaId") int qnaId, RedirectAttributes rttr, HttpSession session) {
+    	Long sId = (Long) session.getAttribute("userIdx");
+        
+        if (sId == null) {
+        	return "redirect:/user/login";
+        }
+        try {
+            boolean isDeleted = qnaService.removeQna(qnaId, sId);
+            
+            if (isDeleted) {
+                rttr.addFlashAttribute("message", "문의가 정상적으로 삭제되었습니다.");
+            } else {
+                rttr.addFlashAttribute("error", "답변이 완료된 문의글은 삭제할 수 없습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            rttr.addFlashAttribute("error", "삭제 중 오류가 발생했습니다.");
+        }
+        
+        return "redirect:/help/list"; // 삭제 후 목록으로 이동
     }
     
 }

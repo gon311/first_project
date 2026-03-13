@@ -40,5 +40,29 @@ public class QnaService {
 	public SupportQnaDTO getQnaDetail(int qnaId) {
 		return qnaMapper.selectQnaDetail(qnaId);
 	}
+	
+	public boolean removeQna(int qnaId, Long sId) throws Exception {
+	    // 1. 먼저 해당 글 정보를 가져와서 상태 확인
+	    SupportQnaDTO qna = qnaMapper.selectQnaDetail(qnaId);
+	    // Service 예시
+	    // qna가 없는 경우 예외 처리 추가 (보안)
+	    if (qna == null) {
+	        throw new Exception("존재하지 않는 게시글입니다.");
+	    }
+
+	    // 객체 비교는 equals가 안전합니다.
+	    if (!sId.equals(qna.getWriterId())) { 
+	        throw new Exception("본인의 글만 삭제할 수 있습니다.");
+	    }
+	    
+	    // 2. 답변 완료(completed) 상태라면 삭제 거부
+	    if ("completed".equals(qna.getReStatus())) {
+	        return false; // 삭제 실패
+	    }
+	    
+	    // 3. 답변 전(pending) 상태라면 삭제 진행
+	    qnaMapper.deleteQna(qnaId);
+	    return true; // 삭제 성공
+	}
     
 }

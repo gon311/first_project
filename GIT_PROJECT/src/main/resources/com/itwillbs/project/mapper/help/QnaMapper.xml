@@ -46,5 +46,11 @@
 	    WHERE qna_id = #{qnaId} 
 	      AND is_deleted = 'N'
 	</select>
+	
+	<update id="deleteQna" parameterType="int">
+	    UPDATE qna 
+	    SET is_deleted = 'Y' 
+	    WHERE qna_id = #{qnaId}
+	</update>
 
 </mapper>

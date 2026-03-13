@@ -23,7 +23,13 @@
             <%-- 질문 헤더 --%>
             <div class="card-header qna-header p-4">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="badge bg-secondary">${qna.qnaCategory}</span>
+                    <c:choose>
+				        <c:when test="${qna.qnaCategory eq 'job'}">입사지원 관련</c:when>
+				        <c:when test="${qna.qnaCategory eq 'account'}">계정/인증 관련</c:when>
+				        <c:when test="${qna.qnaCategory eq 'error'}">오류 신고</c:when>
+				        <c:when test="${qna.qnaCategory eq 'etc'}">기타 문의</c:when>
+				        <c:otherwise>${qna.qnaCategory}</c:otherwise> <%-- 혹시 모를 예외 대비 --%>
+				    </c:choose>
                     <span class="text-muted small">문의 번호: ${qna.qnaId}</span>
                 </div>
                 <h3 class="fw-bold">${qna.qnaTitle}</h3>
@@ -77,12 +83,13 @@
 
     <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
-    <script type="text/javascript">
-    function confirmDelete(qnaId) {
-        if (confirm("정말로 이 문의를 취소(삭제)하시겠습니까?")) {
-            location.href = "<c:url value='/help/delete?qnaId=' />" + qnaId;
-        }
-    }
-    </script>
+	<script type="text/javascript">
+	function confirmDelete(qnaId) {
+	    if (confirm("정말로 이 문의를 취소(삭제)하시겠습니까?")) {
+	        // 컨트롤러의 /help/delete 주소로 이동
+	        location.href = "<c:url value='/help/delete' />?qnaId=" + qnaId;
+	    }
+	}
+	</script>
 </body>
 </html>

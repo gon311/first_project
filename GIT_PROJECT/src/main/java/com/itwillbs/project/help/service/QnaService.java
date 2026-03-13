@@ -36,5 +36,9 @@ public class QnaService {
     public List<SupportQnaDTO> getQnaList(Long writerId) {
         return qnaMapper.selectQnaList(writerId);
     }
+
+	public SupportQnaDTO getQnaDetail(int qnaId) {
+		return qnaMapper.selectQnaDetail(qnaId);
+	}
     
 }

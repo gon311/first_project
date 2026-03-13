@@ -30,4 +30,21 @@
 	    ORDER BY reg_date DESC
 	</select>
 
+	<select id="selectQnaDetail" parameterType="int" resultType="com.itwillbs.project.help.dto.SupportQnaDTO">
+	    SELECT 
+	        qna_id, 
+	        qna_category, 
+	        qna_title, 
+	        qna_content, 
+	        writer_id, 
+	        reg_date, 
+	        re_status, 
+	        re_date, 
+	        re_content, 
+	        is_deleted
+	    FROM qna
+	    WHERE qna_id = #{qnaId} 
+	      AND is_deleted = 'N'
+	</select>
+
 </mapper>

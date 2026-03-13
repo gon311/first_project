@@ -17,4 +17,6 @@ public interface QnaMapper {
     
  // 특정 사용자의 QNA 리스트 가져오기
     List<SupportQnaDTO> selectQnaList(Long writerId);
+
+	SupportQnaDTO selectQnaDetail(int qnaId);
 }

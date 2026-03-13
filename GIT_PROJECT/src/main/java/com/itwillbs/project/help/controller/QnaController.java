@@ -75,5 +75,15 @@ public class QnaController {
         return "/help/qna_list"; // views/help/qna_list.jsp
     }
     
+    @GetMapping("/detail")
+    public String qnaDetail(@RequestParam("qnaId") int qnaId, Model model) {
+        // 1. qnaId로 DB에서 게시글 정보 가져오기
+        SupportQnaDTO qna = qnaService.getQnaDetail(qnaId);
+        
+        // 2. JSP로 전달
+        model.addAttribute("qna", qna); 
+        
+        return "/help/qna_detail";
+    }
     
 }

@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itwillbs.project.gpt.dto.GptGenerateDTO;
 import com.itwillbs.project.gpt.dto.PassCheckDTO;
 import com.itwillbs.project.gpt.service.GptGenerateService;
+import com.itwillbs.project.review.dto.CoverLetterDTO;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -27,6 +28,7 @@ public class GptGenerateController {
 	@Autowired
 	private GptGenerateService generateService;
 	
+	// 자소서 첨삭 
 	@ResponseBody
 	@PostMapping(value = "/generateContent", produces = "application/json; charset=UTF-8")
 	public String generateContent(@RequestBody GptGenerateDTO gptGenerateDTO) throws JsonProcessingException {
@@ -36,6 +38,7 @@ public class GptGenerateController {
 		return response;
 	}
 	
+	// 패스권 확인 및 차감 
 	@ResponseBody
 	@PostMapping(value = "/checkAndDeductPass", produces = "application/json; charset=UTF-8")
 	public Map<String, Object> checkAndDeductPass(HttpSession session) {
@@ -43,7 +46,7 @@ public class GptGenerateController {
 		
 		// 로그인 정보 가져오기 
 		Long userId = (Long)session.getAttribute("userIdx");
-		
+				
 		// 패스권 체크 및 차감 
 		Boolean isDeducted = generateService.deductUserPass(userId);
 		
@@ -57,9 +60,7 @@ public class GptGenerateController {
 		return response;
 	}
 	
-	
-	
-	
+	// 맞춤법 검사 
 	@ResponseBody
 	@PostMapping(value = "/spellCheck", produces = "application/json; charset=UTF-8")
 	public String spellCheck(@RequestBody Map<String, String> requests) throws JsonProcessingException {
@@ -69,6 +70,7 @@ public class GptGenerateController {
 		return response;
 	}
 	
+	// 표절 검사 
 	@ResponseBody
 	@PostMapping(value = "/copyCheck", produces = "application/json; charset=UTF-8")
 	public String copyCheck(@RequestBody Map<String, String> requests) throws JsonProcessingException {

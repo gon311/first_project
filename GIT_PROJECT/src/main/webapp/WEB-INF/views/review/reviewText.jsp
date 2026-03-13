@@ -92,7 +92,7 @@
 				<%-- select문에서 사용할 coverLetterIdx --%>
 				<input type="hidden" id="coverLetterIdx" name="coverLetterIdx" value="${coverLetterDTO.coverLetterIdx}">
 				<%-- ai 생성 여부  --%>
-				<input type="hidden" id="aiGenerated" name="aiGenerated" value="1">
+				<input type="hidden" id="aiGenerated" name="aiGenerated" value="0">
 				<%-- 최종저장 status --%>
 				<input type="hidden" id="saveStatus" name="saveStatus" value="0">
 			
@@ -170,6 +170,12 @@
 				        const result = await response.json();
 				        const outputArea = document.getElementById("outputText");
 				        outputArea.textContent = result.title + "\n\n" + result.content;
+				        
+				        // 생성하기에 성공했을 때만 aiGenerated.value 1로 바뀜
+				        const aiGenerated = document.getElementById("aiGenerated");
+				        if(aiGenerated){
+					        aiGenerated.value = "1";
+				        }
 				        
 				    } catch(error) {
 				        console.error("Error:", error);

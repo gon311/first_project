@@ -20,6 +20,11 @@ public interface BoardMapper {
 	List<FileDTO> selectBoardFiles(Long postId);
 	FileDTO selectFileById(Integer fileId);
 	
+	// 태그
+	int insertBoardTag(@Param("postId") Long postId, @Param("tagName") String tagName);
+	List<String> selectBoardTags(Long postId);
+	int deleteBoardTags(Long postId);
+	
 	int updateBoard(BoardDTO boardDTO);
 	int deleteBoard(Long postId);
 	int insertBoardFile(@Param("postId") Long postId, @Param("fileDTO") FileDTO fileDTO);
@@ -28,7 +33,10 @@ public interface BoardMapper {
 	// 게시물 리스트
 	List<BoardDTO> selectBoardList(BoardCond cond);
 	int selectBoardCount(BoardCond cond);
-
+	
+	//신고
+	Long selectAuthorMemberIdByPostId(Long postId);
+	int increaseReportReceivedCount(Long userId);
 	
 
 

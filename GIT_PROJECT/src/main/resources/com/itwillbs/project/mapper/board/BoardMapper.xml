@@ -33,6 +33,7 @@
 	            WHEN board_type = 'JOB' THEN '취준/이직'
 	            WHEN board_type = 'CAREER' THEN '회사생활/커리어'
 	            WHEN board_type = 'FREE' THEN '자유주제'
+	            WHEN board_type = 'INTERVIEW_REVIEW' THEN '면접후기'
 	        END AS categoryName,
 	        author_member_id AS authorMemberId,
 	        title,
@@ -45,6 +46,47 @@
 	    WHERE post_id = #{postId}
 	      AND status = 'ACTIVE'
 	</select>
+	
+	<!-- 게시글 작성자 조회 -->
+	<select id="selectAuthorMemberIdByPostId" resultType="long">
+	    SELECT author_member_id
+	    FROM BOARD_POST
+	    WHERE post_id = #{postId}
+	      AND status = 'ACTIVE'
+	</select>
+
+	<!-- 신고 누적 횟수 증가 -->
+	<update id="increaseReportReceivedCount">
+	    UPDATE USER_PERSON
+	    SET report_received_count = report_received_count + 1
+	    WHERE user_id = #{userId}
+	</update>	
+	
+	
+	<!-- 태그 저장 -->
+	<insert id="insertBoardTag">
+	    INSERT INTO BOARD_TAG (
+	        post_id,
+	        tag_name
+	    ) VALUES (
+	        #{postId},
+	        #{tagName}
+	    )
+	</insert>
+	
+	<!-- 게시글 태그 조회 -->
+	<select id="selectBoardTags" resultType="string">
+	    SELECT tag_name
+	    FROM BOARD_TAG
+	    WHERE post_id = #{postId}
+	    ORDER BY tag_id ASC
+	</select>
+	
+	<!-- 태그 삭제 -->
+	<delete id="deleteBoardTags">
+	    DELETE FROM BOARD_TAG
+	    WHERE post_id = #{postId}
+	</delete>		
 	
 	<!-- 조회수 증가 -->
 	<update id="updateReadcount">
@@ -105,6 +147,7 @@
 	        WHEN p.board_type = 'JOB' THEN '취준/이직'
 	        WHEN p.board_type = 'CAREER' THEN '회사생활/커리어'
 	        WHEN p.board_type = 'FREE' THEN '자유주제'
+	        WHEN p.board_type = 'INTERVIEW_REVIEW' THEN '면접후기'
 	    END AS categoryName,
 	    p.title,
 	    p.content,

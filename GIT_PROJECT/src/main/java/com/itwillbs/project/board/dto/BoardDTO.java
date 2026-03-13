@@ -2,6 +2,7 @@ package com.itwillbs.project.board.dto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +30,9 @@ public class BoardDTO {
 	private int commentCount;
 	private int viewCount;
 	private String excerpt;
+	
+	
+	private List<String> tagList;
 
 	// 표시용 날짜
 	public String getDisplayDateText() {

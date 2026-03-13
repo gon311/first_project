@@ -59,6 +59,11 @@
              href="${urlBoardList}?category=FREE&sort=${sort}&searchType=${searchType}&q=${q}&size=${size}">
             자유주제
           </a>
+          
+          <a class="chip ${category eq 'INTERVIEW_REVIEW' ? 'active' : ''}"
+             href="${urlBoardList}?category=INTERVIEW_REVIEW&sort=${sort}&searchType=${searchType}&q=${q}&size=${size}">
+            면접후기
+          </a>
         </div>
 
         <!-- 정렬 + 페이지 크기 -->

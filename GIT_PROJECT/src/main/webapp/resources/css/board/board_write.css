@@ -54,7 +54,8 @@ body {
 	margin-left: 8px;
 }
 
-.select, .input {
+.select,
+.input {
 	width: 100%;
 	border: 1px solid #dbe2ee;
 	border-radius: 12px;
@@ -69,47 +70,65 @@ body {
 	font-weight: 800;
 }
 
-/* 에디터 */
+/* Summernote wrapper */
 .editor {
-	border: 1px solid #dbe2ee;
-	border-radius: 12px;
+	background: #fff;
+}
+
+.note-editor.note-frame,
+.note-editor.note-airframe {
+	border: 1px solid #dbe2ee !important;
+	border-radius: 12px !important;
 	overflow: hidden;
 	background: #fff;
 }
 
-.editor-toolbar {
+.note-toolbar {
 	display: flex;
 	gap: 6px;
-	padding: 10px 12px;
-	border-bottom: 1px solid #eef2f7;
-	background: #fbfcff;
+	padding: 10px 12px !important;
+	border-bottom: 1px solid #eef2f7 !important;
+	background: #fbfcff !important;
 	align-items: center;
 	flex-wrap: wrap;
 }
 
-.tool-btn {
-	border: 1px solid #e5e7eb;
+.note-btn {
+	border: 1px solid #e5e7eb !important;
+	background: #fff !important;
+	border-radius: 10px !important;
+	padding: 6px 10px !important;
+	font-weight: 900 !important;
+	color: #334155 !important;
+	cursor: pointer !important;
+	font-size: .9rem !important;
+}
+
+.note-btn:hover {
+	background: #f7f9fc !important;
+}
+
+.note-editing-area {
 	background: #fff;
-	border-radius: 10px;
-	padding: 6px 10px;
-	font-weight: 900;
-	color: #334155;
-	cursor: pointer;
-	font-size: .9rem;
 }
 
-.tool-btn:hover {
-	background: #f7f9fc;
-}
-
-.editor-area {
-	width: 100%;
-	border: 0;
-	outline: none;
-	resize: vertical;
+.note-editable {
 	min-height: 260px;
-	padding: 14px;
+	padding: 14px !important;
 	line-height: 1.7;
+	font-size: 14px;
+	color: #111827;
+	word-break: break-word;
+}
+
+.note-placeholder {
+	color: #9ca3af !important;
+	font-weight: 700;
+}
+
+.note-statusbar {
+	border-top: 1px solid #eef2f7 !important;
+	background: #fff !important;
 }
 
 .counter {
@@ -209,62 +228,54 @@ body {
 	line-height: 1.7;
 }
 
-
 /* 파일수정 */
-
 .edit-file-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 10px;
 }
 
 .edit-file-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  border: 1px solid #dbe2ee;
-  border-radius: 12px;
-  background: #fff;
-  cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 14px;
+	border: 1px solid #dbe2ee;
+	border-radius: 12px;
+	background: #fff;
+	cursor: pointer;
 }
 
 .edit-file-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-  min-width: 0;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex: 1;
+	min-width: 0;
 }
 
 .edit-file-left input[type="checkbox"] {
-  margin: 0;
-  width: 16px;
-  height: 16px;
-  accent-color: #111827;
-  flex-shrink: 0;
+	margin: 0;
+	width: 16px;
+	height: 16px;
+	accent-color: #111827;
+	flex-shrink: 0;
 }
 
 .file-link {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 700;
-  word-break: break-all;
+	color: #2563eb;
+	text-decoration: none;
+	font-weight: 700;
+	word-break: break-all;
 }
 
 .file-link:hover {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 
 .file-meta {
-  color: #6b7280;
-  font-size: 0.88rem;
-  flex-shrink: 0;
+	color: #6b7280;
+	font-size: 0.88rem;
+	flex-shrink: 0;
 }
-
-
-
-
-
-

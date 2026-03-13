@@ -102,7 +102,7 @@
 								<td>${board.postId}</td>
 								<td>${board.title}</td>
 								<td>${board.authorMemberId}</td>
-								<td>${board.strCreatedAt}</td>
+								<td>${board.displayDateText}</td>
 								<td>${board.readcount}</td>
 							</tr>
 						</c:forEach>

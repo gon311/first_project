@@ -57,5 +57,13 @@
         SET status = 'DELETED'
         WHERE comment_id = #{commentId}
     </update>
+    
+	<!-- 게시글 삭제 시 해당 게시글의 댓글 전체 soft delete -->
+	<update id="deleteCommentsByPostId">
+	    UPDATE BOARD_COMMENT
+	    SET status = 'DELETED'
+	    WHERE post_id = #{postId}
+	      AND status = 'ACTIVE'
+	</update>    
 
 </mapper>

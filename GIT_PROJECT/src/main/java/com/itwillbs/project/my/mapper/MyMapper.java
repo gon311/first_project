@@ -24,7 +24,9 @@ public interface MyMapper {
 	MyDTO selectUser(String sId);
 	
 	// 계정 정보 변경
-	int updateUser(MyDTO myDTO);
+    int updateUserBasic(MyDTO myDTO);     // USER
+    int updateUserPerson(MyDTO myDTO);    // USER_PERSON
+
 	
 	// 비밀번호 변경
 	String selectPassword(@Param("sId") String sId);

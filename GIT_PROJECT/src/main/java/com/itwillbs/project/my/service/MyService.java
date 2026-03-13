@@ -56,9 +56,11 @@ public class MyService {
 	}
 	
 	// 정보 수정
-	public int updateUser(MyDTO dto) {
-	    return myMapper.updateUser(dto);
-	}
+    public int updateUser(MyDTO dto) {
+        int cnt1 = myMapper.updateUserBasic(dto);
+        int cnt2 = myMapper.updateUserPerson(dto);
+        return cnt1 + cnt2;
+    }
 	
 	
 	// 비밀번호 변경

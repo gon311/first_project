@@ -97,8 +97,7 @@
 						<div class="mb-4 position-relative">
 						    <h4 class="fw-bold mb-1">${submit.title}</h4>
 						    <small class="text-muted position-absolute bottom-0 end-0">
-						    	<fmt:parseDate var="regDate" value="${submit.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-								등록일 : <fmt:formatDate value="${regDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+								등록일 : ${submit.setRegDate}
 						    </small>
 						</div>
 

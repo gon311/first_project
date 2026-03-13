@@ -2,6 +2,7 @@ package com.itwillbs.project.store.dto;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.itwillbs.project.user.dto.UserDTO;
 
@@ -39,13 +40,9 @@ public class PaymentDTO {
 	private String payMethod;
 	private String cardName;
 	private String cardNum;
-	private String bankName;
-	private String depositAccount;
-	private String depositName;
 	private int payPrice;
 	private LocalDateTime payDate;
-	private LocalDateTime issuedAt;		// 계좌발급 시점
-	private LocalDateTime expiredAt;	// 입금 유효기간
+	private String strPayDate;
 	private String payStatus; 
 	
 	public void setUserType(String userType) {
@@ -54,6 +51,14 @@ public class PaymentDTO {
 		} else {
 			this.userType = "구직자 회원";
 		}
+	}
+	
+	public void setPayDate(LocalDateTime payDate) {
+		this.payDate = payDate;
+		
+		if(payDate != null) { 
+			this.strPayDate = payDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		} 
 	}
 	
 	

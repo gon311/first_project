@@ -59,15 +59,17 @@
 
 							<dt class="col-4 text-secondary py-2">가입일자</dt>
 							<dd class="col-8 py-2">
-								<fmt:parseDate var="joinDate" value="${com.joinedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-                          			<fmt:formatDate value="${joinDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
+<%-- 								<fmt:parseDate var="joinDate" value="${com.joinedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" /> --%>
+<%--                           			<fmt:formatDate value="${joinDate}" pattern="yyyy년 MM월 dd일 HH:mm"/> --%>
+								${com.strJoinedAt}
 							</dd>
 							
 							<c:if test="${com.status eq '탈퇴'}">
 								<dt class="col-4 text-secondary py-2">탈퇴일자</dt>
 								<dd class="col-8 py-2">
-                              			<fmt:parseDate var="withdrawDate" value="${com.withdrawnAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-                              			<fmt:formatDate value="${withdrawDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
+<%--                               			<fmt:parseDate var="withdrawDate" value="${com.withdrawnAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" /> --%>
+<%--                               			<fmt:formatDate value="${withdrawDate}" pattern="yyyy년 MM월 dd일 HH:mm"/> --%>
+									${com.strWithDrawnAt}
 								</dd>
 							</c:if>
 

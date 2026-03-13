@@ -71,7 +71,15 @@ public class SubmitDTO {
 	private Date closeDate;
 	private int postStatus;
 	private LocalDateTime regDate;
+	private String strRegDate;
 	private Integer postCheck;
 	
+	public void setRegDate(LocalDateTime regDate) {
+		this.regDate = regDate;
+		
+		if(regDate != null) { 
+			this.strRegDate = regDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		}
+	}
 	
 }

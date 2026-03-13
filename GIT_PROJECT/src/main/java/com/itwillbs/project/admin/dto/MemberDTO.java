@@ -22,6 +22,8 @@ public class MemberDTO {
 	private String status;
 	private LocalDateTime joinedAt;
 	private LocalDateTime withdrawnAt;
+	private String strJoinedAt;
+	private String strWithDrawnAt; 
 	
 	// 구직자 회원 상세 정보
 	private LocalDate birthDate;
@@ -68,22 +70,6 @@ public class MemberDTO {
 		}
 	}
 	
-	/*
-	<option value="KR" selected>대한민국 (South Korea)</option>
-                            <option value="US">미국 (United States)</option>
-                            <option value="JP">일본 (Japan)</option>
-                            <option value="CN">중국 (China)</option>
-                            <option value="VN">베트남 (Vietnam)</option>
-                            <option value="PH">필리핀 (Philippines)</option>
-                            <option value="TH">태국 (Thailand)</option>
-                            <option value="ID">인도네시아 (Indonesia)</option>
-                            <option value="CA">캐나다 (Canada)</option>
-                            <option value="AU">호주 (Australia)</option>
-                            <option value="GB">영국 (United Kingdom)</option>
-                            <option value="DE">독일 (Germany)</option>
-                            <option value="FR">프랑스 (France)</option>
-                            <option value="ETC">기타 (Others)</option> 
-	*/
 	public void setCountry(String country) {
 		switch(country) {
 		case "KR": this.country = "대한민국 (South Korea)"; break;
@@ -101,6 +87,22 @@ public class MemberDTO {
 		case "FR": this.country = "프랑스 (France)"; break;
 		case "ETC": this.country = "기타 (Others)";
 		}
+	}
+	
+	public void setJoinedAt(LocalDateTime joinedAt) {
+		this.joinedAt = joinedAt;
+		
+		if(joinedAt != null) { 
+			this.strJoinedAt = joinedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		} 
+	}
+	
+	public void setWithdrawnAt(LocalDateTime withdrawnAt) {
+		this.withdrawnAt = withdrawnAt;
+		
+		if(withdrawnAt != null) { 
+			this.strWithDrawnAt = withdrawnAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		} 
 	}
 	
 }

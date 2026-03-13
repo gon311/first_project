@@ -72,30 +72,13 @@
                         <dl class="row mb-0">
                             <dt class="col-5 text-dark py-2 ps-3 small text-uppercase">결제수단</dt>
                             <dd class="col-7 py-2">
-                                <c:choose>
-                                    <c:when test="${pay.payMethod eq '신용카드'}">
-                                        <i class="bi bi-credit-card me-1">${pay.payMethod} / ${pay.cardName}</i> 
-                                        <div class="text-secondary small mt-1">(${pay.cardNum})</div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <i class="bi bi-bank me-1">${pay.payMethod} / ${pay.bankName}</i> 
-                                        <div class="text-secondary small mt-1">입금계좌: ${pay.depositAccount}</div>
-                                    </c:otherwise>
-                                </c:choose>
+	                            <i class="bi bi-credit-card me-1">${pay.payMethod} / ${pay.cardName}</i> 
+	                            <div class="text-secondary small mt-1">(${pay.cardNum})</div>
                             </dd>
 
                             <dt class="col-5 text-dark py-2 ps-3 small text-uppercase">결제일시</dt>
                             <dd class="col-7 py-2 text-secondary">
-                                <c:choose>
-                                    <c:when test="${not empty pay.issuedAt}">
-                                        <fmt:parseDate var="issuedAt" value="${pay.issuedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-                                        <fmt:formatDate value="${issuedAt}" pattern="yyyy-MM-dd HH:mm:ss" />
-                                    </c:when>
-                                    <c:otherwise>
-                                        <fmt:parseDate var="payDate" value="${pay.payDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-                                        <fmt:formatDate value="${payDate}" pattern="yyyy-MM-dd HH:mm:ss" />
-                                    </c:otherwise>
-                                </c:choose>
+								${pay.strPayDate}
                             </dd>
                         </dl>
 

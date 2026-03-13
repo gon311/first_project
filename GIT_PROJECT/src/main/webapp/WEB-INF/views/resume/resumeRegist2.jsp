@@ -4,13 +4,13 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<%-- 	<%@ include file="/WEB-INF/views/inc/head.jspf"%> --%>
+	<%@ include file="/WEB-INF/views/inc/head.jspf"%>
     <meta charset="UTF-8">
     <title>이력서 작성</title>
 
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
+	
     <!-- Resume CSS -->
     <%-- 현재 페이지(main.jsp) 전용 CSS 영역--%>
 		<link href="<c:url value="/resources/css/resume.css" />" 

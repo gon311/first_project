@@ -26,7 +26,8 @@
         <a href="<c:url value="/help/helpWord" />" class="footer-link">고객센터</a> |
         <a href="<c:url value="/help/noticeDetail?noticeId=2" />" class="footer-link">개인정보처리방침</a> |
         <a href="<c:url value="/help/noticeDetail?noticeId=1" />" class="footer-link">이용 약관</a> |
-        <a href="<c:url value="/help/helpWord" />" class="footer-link">자주하는질문</a>
+        <a href="<c:url value="/help/helpWord" />" class="footer-link">자주하는질문</a> |
+        <a href="<c:url value="/help/QnAWrite" />" class="footer-link">1:1 문의하기</a>
       </div>
 
     </div>

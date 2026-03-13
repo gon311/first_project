@@ -47,9 +47,9 @@ public class JobController {
 	
 	@Autowired
 	private JobService jobService;
-	@Autowired
-	private ComMyService comMyService;
 	
+	// ===================================================
+	// 공고 이용권 확인
 	@GetMapping("/JobPosting")
 	public String jobInsert(HttpSession session, Model model, RedirectAttributes rt) {
 	    Long userIdx = (Long) session.getAttribute("userIdx");
@@ -71,6 +71,8 @@ public class JobController {
 	    return "job/job_posting";
 	}
 	
+	// ===================================================
+	// 공고 등록
 	@PostMapping("/JobProcess")
 	public String posting(JobDTO jobDTO, HttpSession session,
 			List<MultipartFile> files) throws IOException {
@@ -84,9 +86,9 @@ public class JobController {
 	public String edit(HttpSession session, Model model,
 			@RequestParam("jobId") Long jobId) {
 		String sId = (String) session.getAttribute("userType");
-//		System.out.println(sId);
-	    if (sId == null || "P".equals(sId)) return "redirect:/user/login";
-		
+	    if (sId == null || !"C".equals(sId)) {
+	        return "redirect:/user/login";
+	    }
 	    JobDTO jobDTO = jobService.getJobListDetail(jobId);
 	    List<FileDTO> fileList = jobService.getFileList(jobId);
 	    model.addAttribute("job", jobDTO);
@@ -106,8 +108,9 @@ public class JobController {
 	    Long userIdx = (Long) session.getAttribute("userIdx");
 	    String userType = (String) session.getAttribute("userType");
 	    String sId = "/" + session.getAttribute("userIdx");
-	    
-	    if (userIdx == null || "P".equals(userType)) return "redirect:/user/login";
+	    if (userIdx == null || !"C".equals(userType)) {
+	        return "redirect:/user/login";
+	    }
 
 	    // 2. DTO에 필요한 정보 세팅 (누락 방지)
 	    jobDTO.setJobId(jobId);
@@ -154,8 +157,7 @@ public class JobController {
 		String sId = (String) session.getAttribute("userType");
 		Long userId = (Long)session.getAttribute("userIdx");
 		applicationDTO.setUserId(userId);
-//		System.out.println(sId);
-		if (sId == null || "C".equals(sId)) return "redirect:/user/login";
+		if (sId == null || !"C".equals(sId)) return "redirect:/user/login";
 		
 		if(resumeId == null) {
 			throw new BackwardException("잘못된 접근입니다!");

@@ -28,7 +28,7 @@ public class FileUtils {
 	// 업로드에 사용될 기본 경로들을 필드에 저장
 	private static final String uploadBaseLocation = "/upload";
 	private static final String boardFileLocation = "/board";
-	
+	private static final String qnaFileLocation = "/qna"; 
 	
 //	private static final String noticeFileLocation = "/notice";
 	
@@ -144,4 +144,56 @@ public class FileUtils {
 	        log.error("파일 삭제 실패: {}", fileDTO.getStoredName(), e);
 	    }
 	}
+	
+	// [추가] 1:1 문의 파일 업로드 처리 메서드
+    public static List<FileDTO> uploadQnaFile(List<MultipartFile> files) throws IOException {
+        // QNA 전용 디렉토리 생성 호출
+        String filePath = createQnaDirectories();
+        
+        List<FileDTO> fileList = new ArrayList<FileDTO>();
+        
+        for(MultipartFile mFile : files ) {
+            if(mFile.isEmpty()) continue;
+            
+            String originName = mFile.getOriginalFilename();
+            String fileExt = originName.substring(originName.lastIndexOf(".") + 1);
+            String storedName = UUID.randomUUID().toString().substring(24) + "_" + originName;
+            
+            // [중요] qnaFileLocation(/qna)을 사용하도록 경로 설정
+            Path uploadDirectory = Paths.get(uploadBaseLocation, qnaFileLocation, filePath).toAbsolutePath().normalize();
+            
+            // 디렉토리가 없으면 생성 (안전장치)
+            if(!Files.exists(uploadDirectory)) {
+                Files.createDirectories(uploadDirectory);
+            }
+            
+            Path uploadPath = uploadDirectory.resolve(storedName);
+            mFile.transferTo(uploadPath);
+            
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setOriginName(originName); 
+            fileDTO.setStoredName(storedName);     
+            fileDTO.setFilePath(filePath);         
+            fileDTO.setFileSize(mFile.getSize());   
+            fileDTO.setFileExt(fileExt);         
+            
+            fileList.add(fileDTO);
+        }
+        return fileList;
+    }
+
+    // [추가] QNA 전용 디렉토리 생성 로직
+    private static String createQnaDirectories() throws IOException {
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String subDir = today.format(dtf);
+        
+        // board 대신 qna 경로를 넣음
+        Path uploadPath = Paths.get(uploadBaseLocation, qnaFileLocation, subDir).toAbsolutePath().normalize();
+        
+        if(!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+        return subDir;
+    }
 }

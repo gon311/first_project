@@ -31,11 +31,13 @@
         <p style="color: #666; font-size: 0.9em;">궁금하신 사항을 남겨주시면 담당자가 확인 후 답변해 드립니다.</p>
     </div>
 
-    <form action="<c:url value='/qna/insert' />" method="post" enctype="multipart/form-data">
-        <%-- 카테고리 선택 --%>
+    <%-- 1. action 주소를 /help/insert로 수정 --%>
+    <form action="<c:url value='/help/insert' />" method="post" enctype="multipart/form-data">
+        
+        <%-- 2. 문의 유형: name을 qnaCategory로 수정 --%>
         <div class="form-group">
             <label for="category">문의 유형</label>
-            <select name="category" id="category" required>
+            <select name="qnaCategory" id="category" required>
                 <option value="">유형을 선택해주세요</option>
                 <option value="job">입사지원 관련</option>
                 <option value="account">계정/인증 관련</option>
@@ -44,19 +46,19 @@
             </select>
         </div>
 
-        <%-- 제목 --%>
+        <%-- 3. 제목: name을 qnaTitle로 수정 --%>
         <div class="form-group">
             <label for="title">제목</label>
-            <input type="text" id="title" name="title" placeholder="제목을 입력해주세요" required>
+            <input type="text" id="title" name="qnaTitle" placeholder="제목을 입력해주세요" required>
         </div>
 
-        <%-- 내용 --%>
+        <%-- 4. 내용: name을 qnaContent로 수정 --%>
         <div class="form-group">
             <label for="content">문의 내용</label>
-            <textarea id="content" name="content" placeholder="내용을 상세히 적어주시면 빠른 답변이 가능합니다." required></textarea>
+            <textarea id="content" name="qnaContent" placeholder="내용을 상세히 적어주시면 빠른 답변이 가능합니다." required></textarea>
         </div>
 
-        <%-- 파일 첨부 (앞서 했던 로직 활용 가능) --%>
+        <%-- 5. 파일 첨부: name은 컨트롤러의 @RequestParam 이름과 맞춤 --%>
         <div class="form-group">
             <label><i class="fa-solid fa-paperclip"></i> 첨부 파일</label>
             <div class="file-upload-section">
@@ -66,7 +68,8 @@
         </div>
 
         <div class="btn-area">
-            <a href="<c:url value='/qna/list' />" class="btn btn-cancel">취소</a>
+            <%-- 취소 버튼도 help 경로에 맞춰 수정하거나 메인으로 보냄 --%>
+            <a href="<c:url value='/' />" class="btn btn-cancel">취소</a>
             <button type="submit" class="btn btn-submit">문의 등록하기</button>
         </div>
     </form>

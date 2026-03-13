@@ -13,6 +13,10 @@ import lombok.ToString;
 public class FileDTO {
 	private Integer fileId;
 	private Integer categoryIdx;
+	private Long postId; 
+    private Long jobId;
+    private Integer resumeId; 
+    private Integer qnaId;
 	private String originName;
 	private String storedName;
 	private String filePath;

@@ -13,7 +13,7 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-		<c:choose>
+	<c:choose>
 	    <c:when test="${sessionScope.memberType == 'company'}">
 	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
 	    </c:when>

@@ -27,10 +27,17 @@
 				        </li>	
 					</c:when>
 					<c:otherwise>
-						<li class="nav-item"><a class="nav-link"
-							href="<c:url value='/my' />">${sessionScope.userName} 님</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="javascript:void(0)" onclick="requestLogout()">로그아웃</a></li>
+						<li class="nav-item">
+							<a class="nav-link"
+							href="<c:url value='/my' />">${sessionScope.userName} 님</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link"
+							href="javascript:void(0)" onclick="requestLogout()">로그아웃</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<c:url value='/' />">개인홈</a>	
+						</li>
 					</c:otherwise>
 				</c:choose>
 			</ul>

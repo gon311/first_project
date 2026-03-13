@@ -48,6 +48,8 @@ public class JobController {
 	@Autowired
 	private JobService jobService;
 	
+	// ===================================================
+	// 공고 이용권 확인
 	@GetMapping("/JobPosting")
 	public String jobInsert(HttpSession session, Model model, RedirectAttributes rt) {
 	    Long userIdx = (Long) session.getAttribute("userIdx");
@@ -69,6 +71,8 @@ public class JobController {
 	    return "job/job_posting";
 	}
 	
+	// ===================================================
+	// 공고 등록
 	@PostMapping("/JobProcess")
 	public String posting(JobDTO jobDTO, HttpSession session,
 			List<MultipartFile> files) throws IOException {

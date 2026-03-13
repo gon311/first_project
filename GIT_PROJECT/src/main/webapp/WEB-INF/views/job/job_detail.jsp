@@ -3,13 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
-	<meta charset="UTF-8">
-	<script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
-	<link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<link href="<c:url value="/resources/css/jobCss/jobDetail.css" />" rel="stylesheet" type="text/css">
+<%@ include file="/WEB-INF/views/inc/head.jspf" %>
+<meta charset="UTF-8">
+<script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<link href="<c:url value="/resources/css/jobCss/jobDetail.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/inc/header.jspf" %>

@@ -1,133 +1,133 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ include file="/WEB-INF/views/inc/head.jspf" %>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<link href="<c:url value="/resources/css/jobCss/jobList.css" />" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<meta charset="UTF-8">
+	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<link href="<c:url value="/resources/css/jobCss/jobList.css" />" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<meta charset="UTF-8">
 </head>
 <body>
-
-<div class="main-wrapper">
-    <form id="searchForm" action="JobList" method="get">
-    	<input type="hidden" name="page" id="pageNum" value="${pager.page}">
-        <div class="filter-dropdown-row">
-            <select class="filter-select" id="expFilter" name="expType" onchange="changeFilter()">
-                <option value="" ${empty param.expType ? 'selected' : ''}>경력 전체</option>
-                <option value="new" ${param.expType == 'new' ? 'selected' : ''}>신입</option>
-                <option value="career" ${param.expType == 'career' ? 'selected' : ''}>경력</option>
-            </select>
-            
-            <select class="filter-select" id="eduFilter" name="eduType" onchange="changeFilter()">
-                <option value="" ${empty param.eduType ? 'selected' : ''}>학력 전체</option>
-                <option value="학력무관" ${param.eduType == '학력무관' ? 'selected' : ''}>학력무관</option>
-                <option value="고등학교 졸업" ${param.eduType == '고등학교 졸업' ? 'selected' : ''}>고졸</option>
-                <option value="대학교(2,3년) 졸업" ${param.eduType == '대학교(2,3년) 졸업' ? 'selected' : ''}>대학교(2,3년) 졸업</option>
-                <option value="대학교(4년) 졸업" ${param.eduType == '대학교(4년) 졸업' ? 'selected' : ''}>대학교(4년) 졸업</option>
-            </select>
-            
-		    <select class="filter-select" name="size" onchange="changeFilter()">
-			    <option value="5"  ${pager.size == 5  ? 'selected' : ''}>5개씩 보기</option>
-			    <option value="10" ${pager.size == 10 ? 'selected' : ''}>10개씩 보기</option>
-			    <option value="15" ${pager.size == 15 ? 'selected' : ''}>15개씩 보기</option>
-			</select>
-        </div>
-
-        <div class="search-section">
-            <div class="search-tab-bar">
-                <div class="tab-item active" id="tabRegion" onclick="toggleTab('region')">📍 지역별</div>
-                <div class="tab-item" id="tabJob" onclick="toggleTab('job')">💼 직무별</div>
-                <div class="search-input-area">
-					<input type="text" name="q" value="${q}" placeholder="회사명 또는 공고 제목을 검색하세요.">
-                    <button type="submit" class="btn-main-search" onclick="syncHiddenFields()">검색하기</button>
-                </div>
-            </div>
-            
-            <div class="selection-detail-panel">
-                <ul class="category-column" id="mainCategory"></ul>
-                <div class="sub-item-column" id="subCategory"></div>
-            </div>
-
-            <div class="selection-footer">
-                <div class="selected-status">선택된 조건: <strong id="selectedCount">0</strong>건</div>
-                <button type="button" class="btn-reset" onclick="resetAll()">
-                    <i>⟳</i> 조건 초기화
-                </button>
-            </div>
-        </div>
-        
-        <div id="hiddenCheckboxes">
-            <c:forEach var="val" items="${paramValues.selected_items}">
-                <input type="hidden" name="selected_items" value="${val}" class="preserved-val">
-            </c:forEach>
-        </div>
-    </form>
-
-    <div class="list-title-area">
-        <h2>채용정보</h2>
-        <div class="total-count">총 <span>${jobList != null ? jobList.size() : 0}</span>건의 공고</div>
-    </div>
-
-    <div class="job-list-container">
-	    <c:forEach var="job" items="${jobList}">
-	        <div class="job-card" onclick="location.href='<c:url value="/job/JobDetail?jobId=${job.jobId}" />'">
-		        <div class="status-tag">
-			        <c:choose>
-			            <c:when test="${job.postStatus == 1}">
-			                <span style="background: #28a745; color: white;">모집중</span>
-			            </c:when>
-			            <c:when test="${job.postStatus == 2}">
-			                <span style="background: #dc3545; color: white;">마감</span>
-			            </c:when>
-			            <c:otherwise>
-			                <span style="background: #ffc107; color: black;">보류</span>
-			            </c:otherwise>
-			        </c:choose>
-		        </div>
-	        	
-			    <div class="company-name">${job.companyName}</div>
-			    <div class="job-title">${job.title}</div>
-			    <div class="job-tags">
-			        <span class="tag">${job.field}</span>
-			        <span class="tag">${job.expYear}</span>
-			        <span class="tag">${job.edu}</span>
-			    </div>
-			    
-			    <div class="job-location" style="margin-left: 20px; font-size: 14px; color: #666; min-width: 120px;">
-			        ${job.displayAddress}
-			    </div>
-			    
-			    <div class="job-deadline">~ ${job.closeDate}</div>
-	        	<div class="scrap-icon ${job.isScrapped == 'Y' ? 'active' : ''}" 
-		             onclick="toggleScrap(event, '${job.jobId}', this)">
-		            ${job.isScrapped == 'Y' ? '★' : '☆'}
-		        </div>
-			</div>
-	    </c:forEach>
-	</div>
+	<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+<main>
+	<div class="main-wrapper">
+	    <form id="searchForm" action="JobList" method="get">
+	    	<input type="hidden" name="page" id="pageNum" value="${pager.page}">
+	        <div class="filter-dropdown-row">
+	            <select class="filter-select" id="expFilter" name="expType" onchange="changeFilter()">
+	                <option value="" ${empty param.expType ? 'selected' : ''}>경력 전체</option>
+	                <option value="new" ${param.expType == 'new' ? 'selected' : ''}>신입</option>
+	                <option value="career" ${param.expType == 'career' ? 'selected' : ''}>경력</option>
+	            </select>
+	            
+	            <select class="filter-select" id="eduFilter" name="eduType" onchange="changeFilter()">
+	                <option value="" ${empty param.eduType ? 'selected' : ''}>학력 전체</option>
+	                <option value="학력무관" ${param.eduType == '학력무관' ? 'selected' : ''}>학력무관</option>
+	                <option value="고등학교 졸업" ${param.eduType == '고등학교 졸업' ? 'selected' : ''}>고졸</option>
+	                <option value="대학교(2,3년) 졸업" ${param.eduType == '대학교(2,3년) 졸업' ? 'selected' : ''}>대학교(2,3년) 졸업</option>
+	                <option value="대학교(4년) 졸업" ${param.eduType == '대학교(4년) 졸업' ? 'selected' : ''}>대학교(4년) 졸업</option>
+	            </select>
+	            
+			    <select class="filter-select" name="size" onchange="changeFilter()">
+				    <option value="5"  ${pager.size == 5  ? 'selected' : ''}>5개씩 보기</option>
+				    <option value="10" ${pager.size == 10 ? 'selected' : ''}>10개씩 보기</option>
+				    <option value="15" ${pager.size == 15 ? 'selected' : ''}>15개씩 보기</option>
+				</select>
+	        </div>
 	
-	<%-- ✅ 페이저 --%>
-	<div class="pager">
-	    <c:if test="${pager.hasPrev}">
-	        <a href="javascript:void(0);" onclick="changePage(${pager.page - 1})">이전</a>
-	    </c:if>
-	    
-	    <c:forEach var="i" begin="${pager.startPage}" end="${pager.endPage}">
-	        <a href="javascript:void(0);" onclick="changePage(${i})" class="${i == pager.page ? 'active' : ''}">
-	            ${i}
-	        </a>
-	    </c:forEach>
-	    
-	    <c:if test="${pager.hasNext}">
-	        <a href="javascript:void(0);" onclick="changePage(${pager.page + 1})">다음</a>
-	    </c:if>
+	        <div class="search-section">
+	            <div class="search-tab-bar">
+	                <div class="tab-item active" id="tabRegion" onclick="toggleTab('region')">📍 지역별</div>
+	                <div class="tab-item" id="tabJob" onclick="toggleTab('job')">💼 직무별</div>
+	                <div class="search-input-area">
+						<input type="text" name="q" value="${q}" placeholder="회사명 또는 공고 제목을 검색하세요.">
+	                    <button type="submit" class="btn-main-search" onclick="syncHiddenFields()">검색하기</button>
+	                </div>
+	            </div>
+	            
+	            <div class="selection-detail-panel">
+	                <ul class="category-column" id="mainCategory"></ul>
+	                <div class="sub-item-column" id="subCategory"></div>
+	            </div>
+	
+	            <div class="selection-footer">
+	                <div class="selected-status">선택된 조건: <strong id="selectedCount">0</strong>건</div>
+	                <button type="button" class="btn-reset" onclick="resetAll()">
+	                    <i>⟳</i> 조건 초기화
+	                </button>
+	            </div>
+	        </div>
+	        
+	        <div id="hiddenCheckboxes">
+	            <c:forEach var="val" items="${paramValues.selected_items}">
+	                <input type="hidden" name="selected_items" value="${val}" class="preserved-val">
+	            </c:forEach>
+	        </div>
+	    </form>
+	
+	    <div class="list-title-area">
+	        <h2>채용정보</h2>
+	        <div class="total-count">총 <span>${jobList != null ? jobList.size() : 0}</span>건의 공고</div>
+	    </div>
+	
+	    <div class="job-list-container">
+		    <c:forEach var="job" items="${jobList}">
+		        <div class="job-card" onclick="location.href='<c:url value="/job/JobDetail?jobId=${job.jobId}" />'">
+			        <div class="status-tag">
+				        <c:choose>
+				            <c:when test="${job.postStatus == 1}">
+				                <span style="background: #28a745; color: white;">모집중</span>
+				            </c:when>
+				            <c:when test="${job.postStatus == 2}">
+				                <span style="background: #dc3545; color: white;">마감</span>
+				            </c:when>
+				            <c:otherwise>
+				                <span style="background: #ffc107; color: black;">보류</span>
+				            </c:otherwise>
+				        </c:choose>
+			        </div>
+		        	
+				    <div class="company-name">${job.companyName}</div>
+				    <div class="job-title">${job.title}</div>
+				    <div class="job-tags">
+				        <span class="tag">${job.field}</span>
+				        <span class="tag">${job.expYear}</span>
+				        <span class="tag">${job.edu}</span>
+				    </div>
+				    
+				    <div class="job-location" style="margin-left: 20px; font-size: 14px; color: #666; min-width: 120px;">
+				        ${job.displayAddress}
+				    </div>
+				    
+				    <div class="job-deadline">~ ${job.closeDate}</div>
+		        	<div class="scrap-icon ${job.isScrapped == 'Y' ? 'active' : ''}" 
+			             onclick="toggleScrap(event, '${job.jobId}', this)">
+			            ${job.isScrapped == 'Y' ? '★' : '☆'}
+			        </div>
+				</div>
+		    </c:forEach>
+		</div>
+		
+		<%-- ✅ 페이저 --%>
+		<div class="pager">
+		    <c:if test="${pager.hasPrev}">
+		        <a href="javascript:void(0);" onclick="changePage(${pager.page - 1})">이전</a>
+		    </c:if>
+		    
+		    <c:forEach var="i" begin="${pager.startPage}" end="${pager.endPage}">
+		        <a href="javascript:void(0);" onclick="changePage(${i})" class="${i == pager.page ? 'active' : ''}">
+		            ${i}
+		        </a>
+		    </c:forEach>
+		    
+		    <c:if test="${pager.hasNext}">
+		        <a href="javascript:void(0);" onclick="changePage(${pager.page + 1})">다음</a>
+		    </c:if>
+		</div>
 	</div>
-</div>
-
+</main>
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
 <script>

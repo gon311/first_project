@@ -1,204 +1,209 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<%@ include file="/WEB-INF/views/inc/head.jspf" %>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<link href="<c:url value="/resources/css/jobCss/jobCorrection.css" />" rel="stylesheet" type="text/css">
-<div class="container">
-    <form action="<c:url value="/job/jobCorrection" />" method="post" enctype="multipart/form-data">
-        
-        <div class="form-group">
-       		<input type="hidden" name="jobId" value="${job.jobId}">
-        	<input type="hidden" name="compId" value="${userIdx}">
-            <div class="label-box">공고제목 <span style="color:red">*</span></div>
-            <div class="input-box"><input type="text" name="title" placeholder="디자이너 채용" value="${job.title}" required></div>
-        </div>
-
-        <div class="form-group">
-            <div class="label-box">모집분야명 <span style="color:red">*</span></div>
-            <div class="input-box">
-                <div class="job-selector-wrapper">
-                    <ul class="main-cat-list" id="mainCatList"></ul>
-                    <ul class="sub-cat-list" id="subCatList">
-                        <li style="color:#999; font-size:0.9em; width:100%; text-align:center; margin-top:80px;">대분류를 선택해주세요.</li>
-                    </ul>
-                </div>
-                <input type="text" name="field" id="selectedJobInput" disabled placeholder="직무를 선택하면 자동 입력됩니다." value="${job.field}" style="margin-top:10px; background:#f8f9fa;" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="label-box">주요업무 <span style="color:red">*</span></div>
-            <div class="input-box">
-                <textarea name="task" rows="5" placeholder="• 사이트 웹디자인" disabled>${job.task}</textarea>
-            </div>
-        </div>
-
-        <div class="form-group">
-		    <div class="label-box">파일 관리</div>
-		    <div class="input-box">
-		        <div class="file-management-box">
-		            
-		            <c:if test="${not empty fileList}">
-		                <span class="file-section-title">기존 첨부 파일 (삭제 시 체크)</span>
-		                <div class="existing-file-list">
-		                    <c:forEach var="file" items="${fileList}">
-		                        <div class="existing-file-item">
-		                            <span class="file-info">
-		                                <i class="fas fa-file-alt"></i> ${file.originName}
-		                            </span>
-		                            <label class="delete-label">
-		                                <input type="checkbox" name="deleteFiles" value="${file.fileId}"> 삭제
-		                            </label>
-		                        </div>
-		                    </c:forEach>
+<html>
+<head>
+	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<link href="<c:url value="/resources/css/jobCss/jobCorrection.css" />" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+	<main>
+		<div class="container">
+		    <form action="<c:url value="/job/jobCorrection" />" method="post" enctype="multipart/form-data">
+		        
+		        <div class="form-group">
+		       		<input type="hidden" name="jobId" value="${job.jobId}">
+		        	<input type="hidden" name="compId" value="${userIdx}">
+		            <div class="label-box">공고제목 <span style="color:red">*</span></div>
+		            <div class="input-box"><input type="text" name="title" placeholder="디자이너 채용" value="${job.title}" required></div>
+		        </div>
+		
+		        <div class="form-group">
+		            <div class="label-box">모집분야명 <span style="color:red">*</span></div>
+		            <div class="input-box">
+		                <div class="job-selector-wrapper">
+		                    <ul class="main-cat-list" id="mainCatList"></ul>
+		                    <ul class="sub-cat-list" id="subCatList">
+		                        <li style="color:#999; font-size:0.9em; width:100%; text-align:center; margin-top:80px;">대분류를 선택해주세요.</li>
+		                    </ul>
 		                </div>
-		                <hr class="file-divider">
-		            </c:if>
-		            
-		            <span class="file-section-title">새 파일 추가</span>
-		            <input type="file" name="files" multiple class="form-control-file">
+		                <input type="text" name="field" id="selectedJobInput" disabled placeholder="직무를 선택하면 자동 입력됩니다." value="${job.field}" style="margin-top:10px; background:#f8f9fa;" required>
+		            </div>
 		        </div>
-		    </div>
-		</div>
-        
-        <div class="form-group">
-		    <div class="label-box">고용 형태 <span style="color:red">*</span></div>
-		    <div class="input-box">
-		        <select name="empType" required style="width: 200px; display:inline-block;">
-		            <option value="정규직" ${job.empType == '정규직' ? 'selected' : ''}>정규직</option>
-		            <option value="계약직" ${job.empType == '계약직' ? 'selected' : ''}>계약직</option>
-		            <option value="인턴" ${job.empType == '인턴' ? 'selected' : ''}>인턴</option>
-		        </select>
-		        
-		        <label style="margin-left: 15px;">
-		            <input type="checkbox" name="probation" value="Y" ${job.probation == 'Y' ? 'checked' : ''}> 수습기간 있음
-		        </label>
-		    </div>
-		</div>
-
-        <div class="form-group">
-		    <div class="label-box">경력 <span style="color:red">*</span></div>
-		    <div class="input-box">
-		        <label><input type="checkbox" name="expType" value="new" class="expCheck" ${job.expType == 'new' ? 'checked' : ''}> 신입</label>
-				<label><input type="checkbox" name="expType" value="newCareer" class="expCheck" ${job.expType == 'newCareer' ? 'checked' : ''}> 신입·경력</label>
-				<label><input type="checkbox" name="expType" value="career" class="expCheck" ${job.expType == 'career' ? 'checked' : ''}> 경력</label>
 		
-		        <select name="minExp" id="minExp" style="width: 140px; display:inline-block;">
-				    <option value="0" ${job.minExp == '0' ? 'selected' : ''}>1년 미만</option>
-				    <option value="1" ${job.minExp == '1' ? 'selected' : ''}>1년 이상</option>
-				    <option value="3" ${job.minExp == '3' ? 'selected' : ''}>3년 이상</option>
-				    <option value="5" ${job.minExp == '5' ? 'selected' : ''}>5년 이상</option>
-				    <option value="10" ${job.minExp == '10' ? 'selected' : ''}>10년 이상</option>
-				</select>
-				<span style="margin: 0 5px;">~</span>
-				<select name="maxExp" id="maxExp" style="width: 140px; display:inline-block;">
-				    <option value="3년" ${job.maxExp == '3년' ? 'selected' : ''}>3년 이하</option>
-				    <option value="5년" ${job.maxExp == '5년' ? 'selected' : ''}>5년 이하</option>
-				    <option value="8년" ${job.maxExp == '8년' ? 'selected' : ''}>8년 이하</option>
-				    <option value="10년" ${job.maxExp == '10년' ? 'selected' : ''}>10년 이하</option>
-				    <option value="제한 없음" ${job.maxExp == '제한 없음' ? 'selected' : ''}>제한 없음</option>
-				</select>
-		        <label style="margin-left: 15px;">
-		            <input type="checkbox" name="expNone" id="expNone"> 경력무관
-		        </label>
-		    </div>
-		</div>
-
-        <div class="form-group">
-		    <div class="label-box">학력 <span style="color:red">*</span></div>
-		    <div class="input-box">
-		        <select name="edu" id="eduSelect">
-		            <option ${job.edu == '학력무관' ? 'selected' : ''}>학력무관</option>
-		            <option ${job.edu == '고등학교 졸업' ? 'selected' : ''}>고등학교 졸업</option>
-		            <option ${job.edu == '대학교(2,3년) 졸업' ? 'selected' : ''}>대학교(2,3년) 졸업</option>
-		            <option ${job.edu == '대학교(4년) 졸업' ? 'selected' : ''}>대학교(4년) 졸업</option>
-		        </select>
-		        <input type="checkbox" name="eduPending"> 졸업 예정자 가능
-		    </div>
-		</div>
-
-        <div class="form-group">
-            <div class="label-box">급여 <span style="color:red">*</span></div>
-            <div class="input-box">
-                <select name="salary">
-				    <option ${job.salary == '면접 후 결정' ? 'selected' : ''}>면접 후 결정</option>
-				    <option ${job.salary == '회사내규에 따름' ? 'selected' : ''}>회사내규에 따름</option>
-				</select>
-                <div class="info-box" style="margin-top:10px;">
-                    ⓘ 2026년 기준 최저시급 10,320원<br>
-                    당사는 최저 임금법을 준수하며, 최저임금 미만의 공고는 강제 마감될 수 있습니다.
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-		    <div class="label-box">근무지 <span style="color:red">*</span></div>
-		    <div class="input-box">
-		        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-		            <input type="text" name="postCode" id="postCode" placeholder="우편번호" style="width: 120px;" readonly required>
-		            <button type="button" onclick="execDaumPostcode()" style="padding: 10px; cursor: pointer; background: #333; color: #fff; border: none; border-radius: 5px;">주소 검색</button>
+		        <div class="form-group">
+		            <div class="label-box">주요업무 <span style="color:red">*</span></div>
+		            <div class="input-box">
+		                <textarea name="task" rows="5" placeholder="• 사이트 웹디자인" disabled>${job.task}</textarea>
+		            </div>
 		        </div>
-		        <input type="text" name="address1" id="address1" placeholder="기본 주소" style="margin-bottom: 10px;" readonly required>
-		        <input type="text" name="address2" id="address2" placeholder="상세 주소" required>
-		        <input type="hidden" name="address" id="address">
-		        
-		        
-		        <label style="margin-top: 10px; display: block;">
-					<input type="checkbox" name="isRemote" value="Y" ${job.isRemote == 'Y' ? 'checked' : ''}> 재택근무 가능
-				</label>
-		    </div>
-		</div>
 		
-		<div class="form-group">
-		    <div class="label-box">담당자 정보 <span style="color:red">*</span></div>
-		    <div class="input-box">
-		        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-		            <input type="text" name="mgrName" value="${job.mgrName}" placeholder="담당자 이름" required>
-		            
-		            <input type="text" name="mgrPhone" id="mgrPhone" value="${job.mgrPhone}" 
-		                   placeholder="연락처" pattern="01[0-9]-[0-9]{3,4}-[0-9]{4}" required>
+		        <div class="form-group">
+				    <div class="label-box">파일 관리</div>
+				    <div class="input-box">
+				        <div class="file-management-box">
+				            
+				            <c:if test="${not empty fileList}">
+				                <span class="file-section-title">기존 첨부 파일 (삭제 시 체크)</span>
+				                <div class="existing-file-list">
+				                    <c:forEach var="file" items="${fileList}">
+				                        <div class="existing-file-item">
+				                            <span class="file-info">
+				                                <i class="fas fa-file-alt"></i> ${file.originName}
+				                            </span>
+				                            <label class="delete-label">
+				                                <input type="checkbox" name="deleteFiles" value="${file.fileId}"> 삭제
+				                            </label>
+				                        </div>
+				                    </c:forEach>
+				                </div>
+				                <hr class="file-divider">
+				            </c:if>
+				            
+				            <span class="file-section-title">새 파일 추가</span>
+				            <input type="file" name="files" multiple class="form-control-file">
+				        </div>
+				    </div>
+				</div>
+		        
+		        <div class="form-group">
+				    <div class="label-box">고용 형태 <span style="color:red">*</span></div>
+				    <div class="input-box">
+				        <select name="empType" required style="width: 200px; display:inline-block;">
+				            <option value="정규직" ${job.empType == '정규직' ? 'selected' : ''}>정규직</option>
+				            <option value="계약직" ${job.empType == '계약직' ? 'selected' : ''}>계약직</option>
+				            <option value="인턴" ${job.empType == '인턴' ? 'selected' : ''}>인턴</option>
+				        </select>
+				        
+				        <label style="margin-left: 15px;">
+				            <input type="checkbox" name="probation" value="Y" ${job.probation == 'Y' ? 'checked' : ''}> 수습기간 있음
+				        </label>
+				    </div>
+				</div>
+		
+		        <div class="form-group">
+				    <div class="label-box">경력 <span style="color:red">*</span></div>
+				    <div class="input-box">
+				        <label><input type="checkbox" name="expType" value="new" class="expCheck" ${job.expType == 'new' ? 'checked' : ''}> 신입</label>
+						<label><input type="checkbox" name="expType" value="newCareer" class="expCheck" ${job.expType == 'newCareer' ? 'checked' : ''}> 신입·경력</label>
+						<label><input type="checkbox" name="expType" value="career" class="expCheck" ${job.expType == 'career' ? 'checked' : ''}> 경력</label>
+				
+				        <select name="minExp" id="minExp" style="width: 140px; display:inline-block;">
+						    <option value="0" ${job.minExp == '0' ? 'selected' : ''}>1년 미만</option>
+						    <option value="1" ${job.minExp == '1' ? 'selected' : ''}>1년 이상</option>
+						    <option value="3" ${job.minExp == '3' ? 'selected' : ''}>3년 이상</option>
+						    <option value="5" ${job.minExp == '5' ? 'selected' : ''}>5년 이상</option>
+						    <option value="10" ${job.minExp == '10' ? 'selected' : ''}>10년 이상</option>
+						</select>
+						<span style="margin: 0 5px;">~</span>
+						<select name="maxExp" id="maxExp" style="width: 140px; display:inline-block;">
+						    <option value="3년" ${job.maxExp == '3년' ? 'selected' : ''}>3년 이하</option>
+						    <option value="5년" ${job.maxExp == '5년' ? 'selected' : ''}>5년 이하</option>
+						    <option value="8년" ${job.maxExp == '8년' ? 'selected' : ''}>8년 이하</option>
+						    <option value="10년" ${job.maxExp == '10년' ? 'selected' : ''}>10년 이하</option>
+						    <option value="제한 없음" ${job.maxExp == '제한 없음' ? 'selected' : ''}>제한 없음</option>
+						</select>
+				        <label style="margin-left: 15px;">
+				            <input type="checkbox" name="expNone" id="expNone"> 경력무관
+				        </label>
+				    </div>
+				</div>
+		
+		        <div class="form-group">
+				    <div class="label-box">학력 <span style="color:red">*</span></div>
+				    <div class="input-box">
+				        <select name="edu" id="eduSelect">
+				            <option ${job.edu == '학력무관' ? 'selected' : ''}>학력무관</option>
+				            <option ${job.edu == '고등학교 졸업' ? 'selected' : ''}>고등학교 졸업</option>
+				            <option ${job.edu == '대학교(2,3년) 졸업' ? 'selected' : ''}>대학교(2,3년) 졸업</option>
+				            <option ${job.edu == '대학교(4년) 졸업' ? 'selected' : ''}>대학교(4년) 졸업</option>
+				        </select>
+				        <input type="checkbox" name="eduPending"> 졸업 예정자 가능
+				    </div>
+				</div>
+		
+		        <div class="form-group">
+		            <div class="label-box">급여 <span style="color:red">*</span></div>
+		            <div class="input-box">
+		                <select name="salary">
+						    <option ${job.salary == '면접 후 결정' ? 'selected' : ''}>면접 후 결정</option>
+						    <option ${job.salary == '회사내규에 따름' ? 'selected' : ''}>회사내규에 따름</option>
+						</select>
+		                <div class="info-box" style="margin-top:10px;">
+		                    ⓘ 2026년 기준 최저시급 10,320원<br>
+		                    당사는 최저 임금법을 준수하며, 최저임금 미만의 공고는 강제 마감될 수 있습니다.
+		                </div>
+		            </div>
 		        </div>
-		        
-		        <input type="email" name="mgrEmail" value="${job.mgrEmail}" placeholder="이메일 주소" required>
-		        
-		        <label style="margin-top: 10px; display: block; font-size: 0.9em; color: #666;">
-		            <input type="checkbox" name="isPublic" value="Y" ${job.isPublic == 'Y' ? 'checked' : ''}> 담당자 정보 공개
-		        </label>
-		    </div>
-		</div>
-
-        <div class="form-group">
-		    <div class="label-box">접수 기간 <span style="color:red">*</span></div>
-		    <div class="input-box">
-		        <input type="date" name="openDate" value="${job.openDate}" required style="width: 200px; display:inline-block;">
-		        <span style="margin: 0 10px;">~</span>
-		        <input type="date" name="closeDate" value="${job.closeDate}" required style="width: 200px; display:inline-block;">
-		    </div>
-		</div>
 		
-		<div class="form-group">
-		    <div class="label-box">공고 모집 상태 <span style="color:red">*</span></div>
-		    <div class="input-box">
-		        <select name="postStatus" class="status-select" style="width: 200px; height: 45px; border: 1px solid #ccc; border-radius: 4px; padding-left: 10px;">
-		            <option value="1" ${job.postStatus == 1 ? 'selected' : ''}>진행중 (모집중)</option>
-		            <option value="2" ${job.postStatus == 2 ? 'selected' : ''}>마감</option>
-		            <option value="3" ${job.postStatus == 3 ? 'selected' : ''}>보류 (일시정지)</option>
-		        </select>
-		        <p style="font-size: 0.8em; color: #666; margin-top: 5px;">* '마감' 선택 시 공고 리스트에서 비활성화됩니다.</p>
-		    </div>
-	    </div>
-
-        <div class="button-group">
-		    <button type="submit" class="btn-submit">공고 수정하기</button>
-		    <button type="reset" class="btn-reset">초기화</button>
-		    <button type="button" class="btn-cancel" onclick="history.back()">취소</button>
-		</div>
-    </form>
-</div>
+		        <div class="form-group">
+				    <div class="label-box">근무지 <span style="color:red">*</span></div>
+				    <div class="input-box">
+				        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+				            <input type="text" name="postCode" id="postCode" placeholder="우편번호" style="width: 120px;" readonly required>
+				            <button type="button" onclick="execDaumPostcode()" style="padding: 10px; cursor: pointer; background: #333; color: #fff; border: none; border-radius: 5px;">주소 검색</button>
+				        </div>
+				        <input type="text" name="address1" id="address1" placeholder="기본 주소" style="margin-bottom: 10px;" readonly required>
+				        <input type="text" name="address2" id="address2" placeholder="상세 주소" required>
+				        <input type="hidden" name="address" id="address">
+				        
+				        
+				        <label style="margin-top: 10px; display: block;">
+							<input type="checkbox" name="isRemote" value="Y" ${job.isRemote == 'Y' ? 'checked' : ''}> 재택근무 가능
+						</label>
+				    </div>
+				</div>
+				
+				<div class="form-group">
+				    <div class="label-box">담당자 정보 <span style="color:red">*</span></div>
+				    <div class="input-box">
+				        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+				            <input type="text" name="mgrName" value="${job.mgrName}" placeholder="담당자 이름" required>
+				            
+				            <input type="text" name="mgrPhone" id="mgrPhone" value="${job.mgrPhone}" 
+				                   placeholder="연락처" pattern="01[0-9]-[0-9]{3,4}-[0-9]{4}" required>
+				        </div>
+				        
+				        <input type="email" name="mgrEmail" value="${job.mgrEmail}" placeholder="이메일 주소" required>
+				        
+				        <label style="margin-top: 10px; display: block; font-size: 0.9em; color: #666;">
+				            <input type="checkbox" name="isPublic" value="Y" ${job.isPublic == 'Y' ? 'checked' : ''}> 담당자 정보 공개
+				        </label>
+				    </div>
+				</div>
+		
+		        <div class="form-group">
+				    <div class="label-box">접수 기간 <span style="color:red">*</span></div>
+				    <div class="input-box">
+				        <input type="date" name="openDate" value="${job.openDate}" required style="width: 200px; display:inline-block;">
+				        <span style="margin: 0 10px;">~</span>
+				        <input type="date" name="closeDate" value="${job.closeDate}" required style="width: 200px; display:inline-block;">
+				    </div>
+				</div>
+				
+				<div class="form-group">
+				    <div class="label-box">공고 모집 상태 <span style="color:red">*</span></div>
+				    <div class="input-box">
+				        <select name="postStatus" class="status-select" style="width: 200px; height: 45px; border: 1px solid #ccc; border-radius: 4px; padding-left: 10px;">
+				            <option value="1" ${job.postStatus == 1 ? 'selected' : ''}>진행중 (모집중)</option>
+				            <option value="2" ${job.postStatus == 2 ? 'selected' : ''}>마감</option>
+				            <option value="3" ${job.postStatus == 3 ? 'selected' : ''}>보류 (일시정지)</option>
+				        </select>
+				        <p style="font-size: 0.8em; color: #666; margin-top: 5px;">* '마감' 선택 시 공고 리스트에서 비활성화됩니다.</p>
+				    </div>
+			    </div>
+		
+		        <div class="button-group">
+				    <button type="submit" class="btn-submit">공고 수정하기</button>
+				    <button type="reset" class="btn-reset">초기화</button>
+				    <button type="button" class="btn-cancel" onclick="history.back()">취소</button>
+				</div>
+		    </form>
+		</div>	
+	</main>
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
-
+</body>
 <script>
 // 1. 모집분야 데이터 정의
 const jobData = {
@@ -412,3 +417,4 @@ function execDaumPostcode() {
     }).open();
 }
 </script>
+</html>

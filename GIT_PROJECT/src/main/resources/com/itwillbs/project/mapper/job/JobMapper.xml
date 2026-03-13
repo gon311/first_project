@@ -543,7 +543,8 @@
 	                </choose>
 	            </if>
 	        </where>
-	        ORDER BY a.app_id DESC
+	        ORDER BY a.is_favorite DESC,
+	        a.app_id DESC
 	    ) t
 	    LIMIT #{offset}, #{size}
 	</select>

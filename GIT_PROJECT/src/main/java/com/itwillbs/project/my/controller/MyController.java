@@ -46,7 +46,7 @@ public class MyController {
         if (sId == null) return "redirect:/user/login";
 
         MyDTO user = myService.getUser(sId);
-
+        System.out.println(user.getUserType());
         if ("C".equals(user.getUserType())) {
             return "redirect:/comMy/info";
         }

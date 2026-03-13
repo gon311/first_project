@@ -12,7 +12,14 @@
 <link href="<c:url value="/resources/css/jobCss/jobDetail.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	<c:choose>
+        <c:when test="${userType == 'P' || empty sessionScope.userType}">
+			<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+        </c:when>
+        <c:otherwise>
+            <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+        </c:otherwise>
+    </c:choose>
 <main>
 	<div class="job-detail-container">
 	    <header class="job-header">

@@ -10,7 +10,14 @@
 	<meta charset="UTF-8">
 </head>
 <body>
-	<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	<c:choose>
+        <c:when test="${userType == 'P' || empty sessionScope.userType}">
+			<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+        </c:when>
+        <c:otherwise>
+            <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+        </c:otherwise>
+    </c:choose>
 <main>
 	<div class="main-wrapper">
 	    <form id="searchForm" action="JobList" method="get">

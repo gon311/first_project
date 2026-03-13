@@ -9,7 +9,16 @@
 	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
 <body>
-	<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	<c:choose>
+	    <c:when test="${sessionScope.memberType == 'company'}">
+	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+	    </c:when>
+	
+	    <c:otherwise>
+	        <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	    </c:otherwise>
+	</c:choose>
+	
 	<main class="container-fluid mt-4">
 		<div class="card shadow-sm p-5">
 		    <div class="border-bottom pb-3 mb-4">

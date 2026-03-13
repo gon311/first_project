@@ -5,19 +5,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>공지사항 관리</title>
+	<title>공지사항</title>
 	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
 <body>
-	<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	<c:choose>
+	    <c:when test="${sessionScope.memberType == 'company'}">
+	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+	    </c:when>
+	
+	    <c:otherwise>
+	        <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	    </c:otherwise>
+	</c:choose>
+	
 	<main class="container-fluid mt-4 pt-3">
 	    <div class="card shadow-sm p-4">
 	        <div class="row mb-3 align-items-center">
 	            <div class="col-md-4">
-	                <h4 class="fw-bold">공지사항 관리</h4>
+	                <h4 class="fw-bold">공지사항</h4>
 	            </div>
 	            <div class="col-md-8 text-end">
-	                <form class="d-inline-flex gap-2 md-4" action = "<c:url value = '/admin/contents/notice'/>" >
+	                <form class="d-inline-flex gap-2 md-4" action = "<c:url value = '/help/notice'/>" >
 	                    <select class="form-select form-select-sm" style="width: 150px;" name = "searchType">
 	                        <option value="all" ${searchDTO.type=='all' ? 'selected' : '' }>전체</option>
 	                        <option value="noticeTitle" ${searchDTO.type=='title' ?  'selected' : ''}>제목</option>

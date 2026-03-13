@@ -173,6 +173,44 @@
 		    <version>3.1.0</version>
 		    <scope>compile</scope>
 		</dependency>		
+		
+		<!-- ================================================================================= -->
+		<!-- 11. 자바 메일 라이브러리 -->
+		<!-- Source: https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>javax.mail</artifactId>
+		    <version>1.6.2</version>
+		    <scope>compile</scope>
+		</dependency>
+		
+		<!-- Source: https://mvnrepository.com/artifact/javax.activation/activation -->
+		<dependency>
+		    <groupId>javax.activation</groupId>
+		    <artifactId>activation</artifactId>
+		    <version>1.1.1</version>
+		    <scope>compile</scope>
+		</dependency>
+		
+		<!-- 스프링에서 제공하는 메일 서포트 라이브러리(스프링 기본 버전 프로퍼티값 사용) -->
+		<!-- Source: https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		    <version>${org.springframework-version}</version>
+		    <scope>compile</scope>
+		</dependency>
+		
+		<!-- ================================================================================= -->
+		<!-- 12. 난수 생성 라이브러리 -->
+		<!-- Source: https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.20.0</version>
+		    <scope>compile</scope>
+		</dependency>
+		
 		<!-- ================================================================================= -->
 		<!-- AspectJ -->
 		<dependency>

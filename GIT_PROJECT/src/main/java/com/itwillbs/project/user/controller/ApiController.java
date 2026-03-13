@@ -1,18 +1,21 @@
 package com.itwillbs.project.user.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.project.common.service.MailService;
+import com.itwillbs.project.common.util.RandomCodeGenerator;
+import com.itwillbs.project.user.dto.MailAuthInfo;
 import com.itwillbs.project.user.dto.RequestCorrectionDTO;
 import com.itwillbs.project.user.service.ApiService;
 
@@ -25,6 +28,8 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class ApiController {
 	private final ApiService apiService;
+	@Autowired
+	private MailService mailService;
 	
 	//사업자등록
 	@ResponseBody
@@ -38,15 +43,16 @@ public class ApiController {
 	@ResponseBody
 	@PostMapping(value = "/sendCode", produces = "application/json; charset=UTF-8")
 	public String sendCode(@RequestBody RequestCorrectionDTO requestDTO, HttpSession session) throws IOException {
-		String authCode = UUID.randomUUID().toString().substring(30);
-		session.setAttribute("authCode", authCode);
-		session.setMaxInactiveInterval(60 * 5);
+		// 인증메일에 포함시킬 인증코드(난수) 생성
+		String authCode = RandomCodeGenerator.getRandomCode(6);
 		
 		if(requestDTO.getType().equals("email")) {
-			apiService.sendWelcomeEmail(requestDTO.getValue(), authCode);
-		} else {
-			
+			MailAuthInfo mailAuthInfo = mailService.sendAuthMail(requestDTO.getValue(), authCode);
+			System.out.println(">>>>>>>> 인증메일 정보 : " + mailAuthInfo);
 		}
+		
+		session.setAttribute("authCode", authCode);
+		session.setMaxInactiveInterval(60 * 5);
 		
 		System.out.println(authCode);
 		return "{\"authCode\" : \"" + authCode + "\"}";

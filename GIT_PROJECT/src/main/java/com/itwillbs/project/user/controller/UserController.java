@@ -133,7 +133,12 @@ public class UserController {
 			response.addCookie(cookie2);
 		}
 		
-		return "redirect:/";
+		if(dbUser.getUserType().equals("P")) {
+			return "redirect:/";
+		} else {
+			return "/mainCom";
+		}
+		
 	}
 	
 	// 로그아웃
@@ -169,7 +174,11 @@ public class UserController {
 		session.setAttribute("userType", userDTO.getUserType());
 		session.setMaxInactiveInterval(60 * 60 * 24);
 		
-		return "redirect:/";
+		if(userDTO.getUserType().equals("P")) {
+			return "redirect:/";
+		} else {
+			return "/mainCom";
+		}
 	}
 	
 	// 아이디 체크

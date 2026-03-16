@@ -34,6 +34,7 @@ import com.itwillbs.project.board.service.BoardService;
 import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.common.dto.FileResourceDTO;
 import com.itwillbs.project.common.exception.LoginRequiredException;
+import com.itwillbs.project.common.paging.PageRes;
 import com.itwillbs.project.common.util.FileUtils;
 import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.service.MyService;
@@ -77,18 +78,27 @@ public class BoardController {
 	    cond.setSort(sort);
 	    cond.setSearchType(searchType);
 
+	    // 페이징 세팅
 	    cond.getPage().setPage(page);
 	    cond.getPage().setSize(size);
 
+	    // 조회
 	    List<BoardDTO> posts = boardService.getBoardList(cond);
 	    int total = boardService.getBoardCount(cond);
 
+	    // pager 생성
+	    PageRes pager = PageRes.of(cond.getPage(), total);
+
 	    model.addAttribute("posts", posts);
+	    model.addAttribute("pager", pager);
+	    model.addAttribute("totalCount", total);
+
+	    // 화면에서 필터 값 유지
 	    model.addAttribute("q", q);
 	    model.addAttribute("category", category);
 	    model.addAttribute("sort", sort);
 	    model.addAttribute("searchType", searchType);
-	    model.addAttribute("size", cond.getPage().getSafeSize());
+	    model.addAttribute("size", size);
 
 	    return "/board/board";
 	}

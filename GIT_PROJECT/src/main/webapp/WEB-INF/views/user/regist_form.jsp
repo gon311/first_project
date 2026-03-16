@@ -161,18 +161,28 @@
                     </div>
                 </div>
 
-                <div class="section-title">이용약관 동의</div>
-                <div class="terms-box">
-                    <div class="terms-item">
-                        <input type="checkbox" name="termsCode" value="서비스 이용약관 동의" required> [필수] 서비스 이용약관 동의
-                    </div>
-                    <div class="terms-item">
-                        <input type="checkbox" name="termsCode" value="개인정보 수집 및 이용 동의" required> [필수] 개인정보 수집 및 이용 동의
-                    </div>
-                    <div class="terms-item">
-                        <input type="checkbox" name="termsCode" value="마케팅 정보 수신 동의"> [선택] 마케팅 정보 수신 동의
-                    </div>
-                </div>
+				<div class="terms-box">
+				    <div class="terms-item" style="display: flex; justify-content: space-between; align-items: center;">
+				        <label>
+				            <input type="checkbox" name="termsCode" value="서비스 이용약관 동의" required> [필수] 서비스 이용약관 동의 
+				        </label>
+				        <a href="<c:url value="/help/noticeDetail?noticeId=1" />" class="btn-detail" style="font-size: 0.8em; color: #666; text-decoration: underline;">상세보기</a>
+				    </div>
+				
+				    <div class="terms-item" style="display: flex; justify-content: space-between; align-items: center;">
+				        <label>
+				            <input type="checkbox" name="termsCode" value="개인정보 수집 및 이용 동의" required> [필수] 개인정보 수집 및 이용 동의 
+				        </label>
+				        <a href="<c:url value="/help/noticeDetail?noticeId=2" />"class="btn-detail" style="font-size: 0.8em; color: #666; text-decoration: underline;">상세보기</a>
+				    </div>
+				
+				    <div class="terms-item" style="display: flex; justify-content: space-between; align-items: center;">
+				        <label>
+				            <input type="checkbox" name="termsCode" value="마케팅 정보 수신 동의"> [선택] 마케팅 정보 수신 동의 
+				        </label>
+				        <a href="<c:url value="/help/noticeDetail?noticeId=1" />" class="btn-detail" style="font-size: 0.8em; color: #666; text-decoration: underline;">상세보기</a>
+				    </div>
+				</div>
 
                 <button type="submit" class="btn-submit">가입하기</button>
             </form>

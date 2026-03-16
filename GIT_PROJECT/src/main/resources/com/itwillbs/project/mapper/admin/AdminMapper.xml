@@ -642,7 +642,7 @@
 			</if>
 			<if test="userId != null and userId != 0">
 				AND comp_id LIKE CONCAT('%', #{userId}, '%')
-			</if>
+`			</if>
 			<if test="postStatus != null and postStatus !=0 and postStatus != ''">
 				AND post_status = #{postStatus}
 			</if>
@@ -661,7 +661,7 @@
 			, post_status
 		FROM job_posting
 		<!-- 검색 기능 -->
-		WHERE
+		<where>
 			post_check = 2
 			<if test="keyword !=null and keyword !=''">
 				AND title LIKE CONCAT('%', #{keyword}, '%')
@@ -672,6 +672,7 @@
 			<if test="postStatus != null and postStatus !=0 and postStatus != ''">
 				AND post_status = #{postStatus}
 			</if>
+		</where>
 		LIMIT #{offset}, #{limit}
 	</select>
 	

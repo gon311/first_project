@@ -51,6 +51,10 @@ public class MyController {
         if ("C".equals(user.getUserType())) {
             return "redirect:/comMy/info";
         }
+        
+        if ("A".equals(user.getUserType())) {
+        	return "redirect:/admin/main";
+        }
         return "redirect:/my/myInfo";
     }
 	

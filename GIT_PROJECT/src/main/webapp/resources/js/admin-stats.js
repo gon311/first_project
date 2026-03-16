@@ -3,132 +3,133 @@
  * 피그마 디자인(카드 레이아웃 + 제목) 자동 생성 기능 포함
  */
 
-/* 1. 통계별 설정 데이터 (제목, API 경로) */
+//* 1. 통계별 설정 데이터 */
+var STAT_CONFIG = {
+    user: { titles: ["성별 통계", "연령대별 통계", "직무별 통계"], apiUrl: "/project/admin/api/user-stats" },
+    com: { titles: ["기업별 공고 등록수", "모집 분야별 비중", "고용 형태 분포"], apiUrl: "/project/admin/api/com-stats" },
+    userPay: { titles: ["구직자 상품 판매량", "결제 수단 비중", "최근 매출 추이"], apiUrl: "/project/admin/api/user-pay-stats" },
+    comPay: { titles: ["매출 상위 기업(TOP 5)", "기업 프리미엄 비중", "최근 매출 추이"], apiUrl: "/project/admin/api/com-pay-stats" }
+};
 
-	var STAT_CONFIG = {
-    	user: {
-        	titles: ["성별 통계", "연령대별 통계", "직무별 통계"],
-        	apiUrl: "/project/admin/api/user-stats"
-    	},
-   		com: {
-    		titles: ["기업별 공고 등록수", "모집 분야별 비중", "고용 형태 분포"],
-        	apiUrl: "/project/admin/api/com-stats"
-    	},
-	    userPay: {
-	        titles: ["구직자 상품 판매량", "결제 수단 비중", "최근 매출 추이"],
-	        apiUrl: "/project/admin/api/user-pay-stats"
-	    },
-	    comPay: {
-	        titles: ["매출 상위 기업(TOP 5)", "기업 프리미엄 비중", "최근 매출 추이"],
-	        apiUrl: "/project/admin/api/com-pay-stats"
-	    }
-	};
+/* 2. 메인 대시보드(주간 수익) 초기화 함수 */
+async function initMainDashboard() {
+    var canvasId = 'weekly-revenue-chart';
+    if (!document.getElementById(canvasId)) return;
 
-/* 2. 메인 실행 함수 (탭 클릭 시 호출)*/
-async function changeTab(statType) {
-	const allTabs = document.querySelectorAll('#qnaTab .nav-link');
-	allTabs.forEach(tab=> {
-		tab.classList.remove('active', 'fw-bold');
-	});
-	
-	const activeBtn = document.querySelector(`#qnaTab .nav-link[onclick*="'${statType}'"]`);
-    if (activeBtn) {
-        activeBtn.classList.add('active', 'fw-bold');
+    try {
+        var res = await fetch('/project/admin/api/pay-stats');
+        var data = await res.json();
+        
+        // 데이터 포맷 변환 (안전한 함수 형태)
+        var formattedData = data.labels.map(function(l, i) {
+            return { label: l, value: data.data[i] };
+        });
+        
+        createChart(canvasId, 'line', formattedData, '수익금액');
+
+        var totalSumEl = document.getElementById('total-revenue-sum');
+        if (totalSumEl && data.totalSum) {
+            totalSumEl.innerText = data.totalSum.toLocaleString() + '원';
+        }
+    } catch (err) {
+        console.error("메인 대시보드 로드 실패:", err);
     }
+}
 
-
-    const area = document.getElementById('stat-content-area');
-    const config = STAT_CONFIG[statType];
-
+/* 3. 탭 변경 함수 */
+async function changeTab(statType) {
+    var area = document.getElementById('stat-content-area');
+    var config = STAT_CONFIG[statType];
     if (!area || !config) return;
 
-    // (1) HTML 카드 레이아웃 자동 생성 (피그마 스타일 제목 포함)
-    area.innerHTML = `
-        <div class="stat-container">
-            ${config.titles.map((title, i) => `
-                <div class="my-stat-card">
-                    <div class="card-header">
-                        <h3 class="card-title">${title}</h3>
-                    </div>
-                    <div class="chart-box">
-                        <canvas id="chart-canvas-${i+1}"></canvas>
-                    </div>
-                </div>
-            `).join('')}
-        </div>
-    `;
+    document.querySelectorAll('#qnaTab .nav-link').forEach(function(tab) {
+        tab.classList.remove('active', 'fw-bold');
+    });
+    
+    var activeBtn = document.querySelector("#qnaTab .nav-link[onclick*=\"'" + statType + "'\"]");
+    if (activeBtn) activeBtn.classList.add('active', 'fw-bold');
 
-    // (2) 데이터 페칭 및 차트 생성
+    var html = '<div class="stat-container" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">';
+    config.titles.forEach(function(title, i) {
+        html += '<div class="my-stat-card" style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">';
+        html += '<h6 class="fw-bold mb-3">' + title + '</h6>';
+        html += '<div style="height: 250px;"><canvas id="chart-canvas-' + (i + 1) + '"></canvas></div>';
+        html += '</div>';
+    });
+    html += '</div>';
+    area.innerHTML = html;
+
     try {
-        const res = await fetch(config.apiUrl);
-        const data = await res.json();
-        
-        // 데이터 구조에 맞게 매핑 (기존 로직 통합)
+        var res = await fetch(config.apiUrl);
+        var data = await res.json();
         renderChartsByType(statType, data);
     } catch (err) {
-        console.error("통계 데이터 로드 실패:", err);
-        area.innerHTML = `<p style="padding:20px; color:red;">데이터를 불러오는 중 오류가 발생했습니다.</p>`;
+        console.error("탭 데이터 로드 실패:", err);
     }
-    
-    
 }
 
-// 3. 타입별 차트 렌더링 분기
+/* 4. 차트 렌더링 분기 */
 function renderChartsByType(type, data) {
-	console.log(`${type} 데이터 수신 완료: `, data);
     if (type === 'user') {
-        createChart('chart-canvas-1', 'doughnut', data.gender);
-        createChart('chart-canvas-2', 'doughnut', data.age);
-        createChart('chart-canvas-3', 'doughnut', data.job);
+        createChart('chart-canvas-1', 'doughnut', data.gender, '성별');
+        createChart('chart-canvas-2', 'doughnut', data.age, '연령대');
+        createChart('chart-canvas-3', 'doughnut', data.job, '직무');
     } else if (type === 'com') {
-        createChart('chart-canvas-1', 'doughnut', data.postCounts);
-        createChart('chart-canvas-2', 'doughnut', data.jobFields);
-        createChart('chart-canvas-3', 'doughnut', data.empTypes);
+        createChart('chart-canvas-1', 'doughnut', data.postCounts, '공고수');
+        createChart('chart-canvas-2', 'doughnut', data.jobFields, '분야');
+        createChart('chart-canvas-3', 'doughnut', data.empTypes, '고용형태');
     } else if (type === 'userPay') {
-        createChart('chart-canvas-1', 'doughnut', data.products);
-        createChart('chart-canvas-2', 'doughnut', data.methods);
-        createChart('chart-canvas-3', 'line', data.revenue);
+        createChart('chart-canvas-1', 'doughnut', data.products, '상품별');
+        createChart('chart-canvas-2', 'doughnut', data.methods, '수단별');
+        createChart('chart-canvas-3', 'line', data.revenue, '매출추이');
     } else if (type === 'comPay') {
-        createChart('chart-canvas-1', 'bar', data.topCompanies);
-        createChart('chart-canvas-2', 'doughnut', data.products);
-        createChart('chart-canvas-3', 'line', data.revenue);
+        createChart('chart-canvas-1', 'bar', data.topCompanies, '상위기업');
+        createChart('chart-canvas-2', 'doughnut', data.products, '상품별');
+        createChart('chart-canvas-3', 'line', data.revenue, '매출추이');
     }
 }
 
-// 4. 차트 생성 공통 함수
-function createChart(canvasId, type, chartData) {
-    const ctx = document.getElementById(canvasId);
+/* 5. 차트 생성 공통 도구 (최대한 안전하게 작성) */
+function createChart(canvasId, chartType, chartData, labelName) {
+    var ctx = document.getElementById(canvasId);
     if (!ctx || !chartData) return;
 
-    new Chart(ctx, {
-        type: type,
+    var config = {
+        type: chartType,
         data: {
-            labels: chartData.map(d => d.label),
+            labels: chartData.map(function(d) { return d.label; }),
             datasets: [{
-                data: chartData.map(d => d.value),
-				backgroundColor: [
-				    '#6366F1', // Indigo (Main)
-				    '#A5B4FC', // Soft Indigo
-				    '#C7D2FE', // Light Purple
-				    '#E0E7FF', // Very Light Blue
-				    '#F1F5F9'  // Grayish White
-				],
-                borderColor: type === 'line' ? '#6366F1' : '#fff',
-                borderWidth: 1,
-                fill: type === 'line' ? false : true
+                label: labelName || '통계',
+                data: chartData.map(function(d) { return d.value; }),
+                backgroundColor: ['#0d6efd', '#60a5fa', '#93c5fd', '#bfdbfe', '#eff6ff'],
+                pointBackgroundColor: '#0d6efd',
+                borderWidth: (chartType === 'line' ? 3 : 1),
+                fill: (chartType === 'line' ? false : true),
+                tension: 0.3
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            cutout: type === 'doughnut' ? '70%' : '0%',
             plugins: {
-                legend: { position: 'bottom' }
+                legend: { 
+                    display: (chartType !== 'line'), 
+                    position: 'bottom' 
+                }
             }
         }
-    });
-}
-// ============================================================================
-//----[메인 대시보드 main] ------
-// 1. 주간 수익 
+    };
 
+    if (chartType === 'line') {
+        config.options.scales = {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) { return value.toLocaleString() + '원'; }
+                }
+            }
+        };
+    }
+
+    new Chart(ctx, config);
+}

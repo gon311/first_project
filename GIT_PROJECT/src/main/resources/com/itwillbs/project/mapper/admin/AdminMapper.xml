@@ -746,11 +746,11 @@
 			j.comp_id = c.user_id
 		where
 			1=1
-			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+			<if test="startDate != null and !startDate.equals('')	 and endDate != null and !endDate.equals('')">
 				and 
 					date(j.reg_date) between #{startDate} and #{endDate}
 			</if>
-			<if test="keyword != null and !keyword.equals('')">
+			<if test="keyword != null and !keyword != ''">
 				and 
 					c.company_name like concat('%',#{keyword},'%')
 			</if>
@@ -1358,6 +1358,7 @@
 			field		
 		ORDER BY
 			value DESC
+		LIMIT 5
 	</select>	
 	<select id="getEmpTypeStats" resultType="map">
         SELECT 
@@ -1374,11 +1375,17 @@
 	        pr.product_name AS label 
 	        , COUNT(*) AS value 
 	    FROM 
-			product pr
-		JOIN
 			pay p
+		JOIN
+			user_person up
 		ON
+			p.user_id = up.user_id
+		JOIN
+			product pr 	
+		ON 
 			p.product_id = pr.product_id
+		WHERE
+			pr.product_type = 'user'
 	    GROUP BY 
 	    	pr.product_name
 	</select>
@@ -1473,6 +1480,20 @@
 	    	label
 	    ORDER BY 
 	    	label ASC
+	</select>
+	<select id="getTotalRevenueStats" resultType="map">
+   		SELECT 
+        	DATE_FORMAT(pay_date, '%m-%d') AS label
+        	,  SUM(pay_price) AS value                  		
+       	FROM 
+        	pay 
+    	WHERE 
+        	pay_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+	    GROUP BY 
+	        DATE_FORMAT(pay_date, '%m-%d')            
+        ORDER BY 
+	        MIN(pay_date) ASC
+		
 	</select>
 <!--  ======================================================================== -->
 <!--  [ 자유게시판 관리 ]-->

@@ -2,10 +2,6 @@ package com.itwillbs.project.board.service;
 
 import java.io.IOException;
 import java.util.List;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -134,9 +130,6 @@ public class BoardService {
 
 		// 삭제할 파일 제거
 		deleteBoardFiles(deleteFileIds);
-		
-		// 본문 에디터 이미지 삭제
-		deleteEditorImagesFromContent(post.getContent());
 
 		// 새 파일 추가
 		if (files != null && !files.isEmpty()) {
@@ -151,17 +144,16 @@ public class BoardService {
 	}
 
 	// 게시글 삭제
-	public boolean deleteBoard(Long postId, Long userId) {
+	public boolean deleteBoard(Long postId, Long userId, String userType) {
 
 		BoardDTO post = boardMapper.selectBoard(postId);
 
 		if (post == null) return false;
-		if (!userId.equals(post.getAuthorMemberId())) return false;
+		
+		// 본인, 관리자만 삭제 가능
+		if (!userId.equals(post.getAuthorMemberId()) && !userType.equals("A")) return false;
 
 		deleteBoardFilesByPostId(postId);
-		
-		// 본문 에디터 이미지 삭제
-		deleteEditorImagesFromContent(post.getContent());
 
 		// 댓글 전체 soft delete
 		boardCommentMapper.deleteCommentsByPostId(postId);
@@ -171,36 +163,6 @@ public class BoardService {
 		boardMapper.deleteBoardTags(postId);
 
 		return boardMapper.deleteBoard(postId) > 0;
-	}
-	
-	// 본문 안 에디터 이미지 삭제
-	private void deleteEditorImagesFromContent(String content) {
-		if (content == null || content.isBlank()) {
-			return;
-		}
-
-		Pattern pattern = Pattern.compile(
-				"/board/image/view\\?filePath=([^\"&]+)(?:&|&amp;)storedName=([^\"'>]+)"
-		);
-		Matcher matcher = pattern.matcher(content);
-
-		while (matcher.find()) {
-			try {
-				String filePath = URLDecoder.decode(matcher.group(1), StandardCharsets.UTF_8.name());
-				String storedName = URLDecoder.decode(matcher.group(2), StandardCharsets.UTF_8.name());
-
-				FileDTO fileDTO = new FileDTO();
-				fileDTO.setFilePath(filePath);
-				fileDTO.setStoredName(storedName);
-
-				log.info("에디터 이미지 삭제 시도 - filePath: {}, storedName: {}", filePath, storedName);
-
-				FileUtils.deleteBoardFile(fileDTO);
-
-			} catch (Exception e) {
-				log.error("에디터 이미지 삭제 실패", e);
-			}
-		}
 	}
 
 	// 태그 저장 공통 메서드

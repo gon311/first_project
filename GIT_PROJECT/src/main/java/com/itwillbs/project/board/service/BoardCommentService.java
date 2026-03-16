@@ -40,11 +40,11 @@ public class BoardCommentService {
         return commentList;
     }
 
-    public boolean deleteComment(Long commentId, Long loginUserId) {
+    public boolean deleteComment(Long commentId, Long loginUserId, String userType) {
         BoardCommentDTO comment = boardCommentMapper.selectComment(commentId);
 
         if (comment == null) return false;
-        if (!loginUserId.equals(comment.getAuthorMemberId())) return false;
+        if (!loginUserId.equals(comment.getAuthorMemberId()) && !userType.equals("A")) return false;
 
         return boardCommentMapper.deleteComment(commentId) > 0;
     }

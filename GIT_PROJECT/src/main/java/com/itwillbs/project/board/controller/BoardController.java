@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,6 @@ import com.itwillbs.project.board.service.BoardService;
 import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.common.dto.FileResourceDTO;
 import com.itwillbs.project.common.exception.LoginRequiredException;
-import com.itwillbs.project.common.paging.PageRes;
 import com.itwillbs.project.common.util.FileUtils;
 import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.service.MyService;
@@ -47,14 +45,13 @@ public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
-	
+
 	@Autowired
 	private MyService myService;
-	
+
 	@Autowired
 	private BoardCommentService boardCommentService;
-	
-	
+
 	// 게시글 목록 조회
 	@GetMapping("")
 	public String board(
@@ -80,68 +77,66 @@ public class BoardController {
 	    List<BoardDTO> posts = boardService.getBoardList(cond);
 	    int total = boardService.getBoardCount(cond);
 
-	    PageRes pager = PageRes.of(cond.getPage(), total);
-
 	    model.addAttribute("posts", posts);
-	    model.addAttribute("pager", pager);
-
 	    model.addAttribute("q", q);
 	    model.addAttribute("category", category);
 	    model.addAttribute("sort", sort);
 	    model.addAttribute("searchType", searchType);
+	    model.addAttribute("size", cond.getPage().getSafeSize());
 
 	    return "/board/board";
 	}
-	
-	
 
 	// 게시글 작성 페이지
 	@GetMapping("/write")
 	public String boardWrite(HttpSession session) {
-		String sId = (String) session.getAttribute("sId");
+	    String sId = (String) session.getAttribute("sId");
 
-		if (sId == null) {
-			throw new LoginRequiredException("로그인이 필요한 서비스입니다.\\n로그인 페이지로 이동합니다.");
-		}
+	    if (sId == null) {
+	        throw new LoginRequiredException("로그인이 필요한 서비스입니다.\\n로그인 페이지로 이동합니다.");
+	    }
 
-		return "/board/board_write";
+	    return "/board/board_write";
 	}
 
 	// 게시글 등록 처리
 	@PostMapping("/write")
 	public String boardWrite(BoardDTO boardDTO,
-							 List<MultipartFile> files,
-							 HttpServletRequest request,
-							 HttpSession session,
-							 Model model,
-							 RedirectAttributes ra) throws IOException {
+	                         @RequestParam(value = "tags", required = false) List<String> tags,
+	                         List<MultipartFile> files,
+	                         HttpServletRequest request,
+	                         HttpSession session,
+	                         Model model,
+	                         RedirectAttributes ra) throws IOException {
 
-		Long userIdx = (Long) session.getAttribute("userIdx");
+	    String sId = (String) session.getAttribute("sId");
 
-		if (userIdx == null) {
-			throw new LoginRequiredException("로그인이 필요한 서비스입니다.\\n로그인 페이지로 이동합니다.");
-		}
+	    if (sId == null) {
+	        throw new LoginRequiredException("로그인이 필요한 서비스입니다.\\n로그인 페이지로 이동합니다.");
+	    }
 
-		boardDTO.setAuthorMemberId(userIdx);
+	    MyDTO user = myService.getUser(sId);
 
-		boardService.registBoard(boardDTO, files);
+	    if (user == null) {
+	        throw new LoginRequiredException("로그인 사용자 정보를 확인할 수 없습니다.\\n다시 로그인해주세요.");
+	    }
 
-		// 등록 후 상세 페이지로 이동할 게시글 번호 전달
-		ra.addAttribute("postId", boardDTO.getPostId());
+	    boardDTO.setAuthorMemberId(user.getUserId());
 
-		return "redirect:/board/detail";
+	    boardService.registBoard(boardDTO, files, tags);
+
+	    session.setAttribute("readPost_" + boardDTO.getPostId(), true);
+
+	    ra.addAttribute("postId", boardDTO.getPostId());
+
+	    return "redirect:/board/detail";
 	}
-	
+
 	// 게시글 상세
 	@GetMapping("/detail")
 	public String boardDetail(@RequestParam Long postId,
 	                          HttpSession session,
 	                          Model model) {
-
-	    boardService.increaseReadcount(postId);
-
-	    BoardDTO post = boardService.getBoard(postId);
-	    List<FileDTO> fileList = boardService.getBoardFiles(postId);
 
 	    boolean isOwner = false;
 	    Long loginUserId = null;
@@ -153,13 +148,28 @@ public class BoardController {
 	        if (user != null) {
 	            loginUserId = user.getUserId();
 	            model.addAttribute("loginUser", user);
-
-	            if (user.getUserId().equals(post.getAuthorMemberId())) {
-	                isOwner = true;
-	            }
 	        }
 	    }
 
+	    BoardDTO post = boardService.getBoard(postId);
+
+	    if (post == null) {
+	        return "redirect:/board";
+	    }
+
+	    if (loginUserId != null && loginUserId.equals(post.getAuthorMemberId())) {
+	        isOwner = true;
+	    }
+
+	    String readKey = "readPost_" + postId;
+
+	    if (!isOwner && session.getAttribute(readKey) == null) {
+	        boardService.increaseReadcount(postId);
+	        session.setAttribute(readKey, true);
+	        post = boardService.getBoard(postId);
+	    }
+
+	    List<FileDTO> fileList = boardService.getBoardFiles(postId);
 	    List<BoardCommentDTO> comments = boardCommentService.getCommentList(postId, loginUserId);
 
 	    model.addAttribute("post", post);
@@ -169,7 +179,7 @@ public class BoardController {
 
 	    return "/board/board_detail";
 	}
-	
+
 	// 다운로드
 	@GetMapping("/download")
 	public ResponseEntity<Resource> downloadFile(@RequestParam Integer fileId) {
@@ -187,8 +197,8 @@ public class BoardController {
 	            .header(HttpHeaders.CONTENT_DISPOSITION, fileResourceDTO.getContentDisposition().toString())
 	            .body(resource);
 	}
-	
-	// 수정
+
+	// 수정 페이지
 	@GetMapping("/edit")
 	public String editForm(@RequestParam Long postId,
 	                       HttpSession session,
@@ -213,9 +223,10 @@ public class BoardController {
 
 	    return "/board/board_edit";
 	}
-	
+
 	@PostMapping("/edit")
 	public String editBoard(BoardDTO boardDTO,
+	                        @RequestParam(value = "tags", required = false) List<String> tags,
 	                        @RequestParam(value = "deleteFileIds", required = false) List<Integer> deleteFileIds,
 	                        List<MultipartFile> files,
 	                        HttpSession session,
@@ -226,17 +237,19 @@ public class BoardController {
 
 	    MyDTO user = myService.getUser(sId);
 
-	    boolean result = boardService.updateBoard(boardDTO, deleteFileIds, files, user.getUserId());
+	    boolean result = boardService.updateBoard(boardDTO, deleteFileIds, files, tags, user.getUserId());
 
 	    if (!result) {
 	        ra.addFlashAttribute("msg", "본인이 작성한 글만 수정할 수 있습니다.");
 	        return "redirect:/board/detail?postId=" + boardDTO.getPostId();
 	    }
 
+	    session.setAttribute("readPost_" + boardDTO.getPostId(), true);
+
 	    ra.addFlashAttribute("msg", "게시글이 수정되었습니다.");
 	    return "redirect:/board/detail?postId=" + boardDTO.getPostId();
 	}
-	
+
 	@PostMapping("/delete")
 	public String deleteBoard(@RequestParam Long postId,
 	                          HttpSession session,
@@ -259,7 +272,21 @@ public class BoardController {
 	    return "redirect:/board";
 	}
 	
+	@PostMapping("/report")
+	public String reportBoard(@RequestParam Long postId,
+	                          HttpSession session,
+	                          RedirectAttributes ra) {
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) {
+	        throw new LoginRequiredException("로그인이 필요한 서비스입니다.\\n로그인 페이지로 이동합니다.");
+	    }
 
+	    MyDTO user = myService.getUser(sId);
+	    boolean result = boardService.reportBoard(postId, user.getUserId());
+
+	    ra.addFlashAttribute("msg", result ? "신고가 접수되었습니다." : "신고 처리에 실패했습니다.");
+	    return "redirect:/board/detail?postId=" + postId;
+	}
 	
 	
 	

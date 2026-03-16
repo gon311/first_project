@@ -773,14 +773,55 @@
 			#{startRow}, #{listLimit}
 	</select>
 	
+	
+	
 	<!-- 제출된 공고 상세정보 조회 -->
-	<select id="selectSubmitInfo" resultType="submit">
+	<resultMap id="submitResultMap" type="submit">
+		<collection property="fileList" ofType="com.itwillbs.project.common.dto.FileDTO" notNullColumn="file_id">
+			<id property="fileId" column="file_id" />
+			<result property="categoryIdx" column="category_idx" />
+			<result property="originName" column="origin_name" />
+			<result property="storedName" column="stored_name" />
+			<result property="filePath" column="file_path" />
+			<result property="fileSize" column="file_size" />
+			<result property="fileExt" column="file_ext" />
+			<result property="createdAt" column="reg_date" />
+		</collection>
+	</resultMap>
+	
+	
+	
+<!-- 	<select id="selectSubmitInfo" resultType="submit"> -->
+	<select id="selectSubmitInfo" resultMap="submitResultMap">
 		select 
 			*
 		from 
-			job_posting
+			job_posting j left outer join uploaded_file f
+		on
+			j.job_id = f.job_id
 		where 
-			job_id = #{jobId}
+			f.job_id = #{jobId}
+		and
+			f.category_idx = (
+				select category_idx
+				from file_category
+				where category_code = 'JOB_POSTING'
+			)
+	</select>
+	
+	<!-- 제출 공고 첨부파일 -->
+	<select id="selectFileList" resultType="fileDTO">
+	    SELECT 
+	        file_id AS fileId,
+	        job_id AS idx,              
+	        category_idx AS categoryIdx,
+	        origin_name AS originName,
+	        stored_name AS storedName,
+	        file_path AS filePath,
+	        file_size AS fileSize,
+	        file_ext AS fileExt
+	    FROM uploaded_file
+	    WHERE job_id = #{jobId}
 	</select>
 	
 	<!-- 제출된 공고 상태 변경(compId = #compId 인 공고) -->
@@ -799,16 +840,6 @@
 					post_check = 4
 				</otherwise>
 			</choose>
-		where
-			job_id = #{jobId}
-	</update>
-	
-	<!-- 승인된 공고의 등록일자를 현재시점으로 변경 -->
-	<update id="updateRegDate">
-		update
-			job_posting
-		set
-			reg_date = now()
 		where
 			job_id = #{jobId}
 	</update>

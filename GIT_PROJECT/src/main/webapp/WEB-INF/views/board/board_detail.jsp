@@ -10,15 +10,23 @@
 </head>
 
 <body>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+  <c:choose>
+	    <c:when test="${sessionScope.memberType == 'company'}">
+	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+	    </c:when>
+	
+	    <c:otherwise>
+	        <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	    </c:otherwise>
+	</c:choose>
 
 <c:url var="urlBoardList" value="/board"/>
 <c:url var="urlBoardEdit" value="/board/edit"/>
 <c:url var="urlBoardDelete" value="/board/delete"/>
 <c:url var="urlBoardDownload" value="/board/download"/>
+<c:url var="urlReport" value="/board/report"/>
 <c:url var="urlCommentWrite" value="/board/comment/write"/>
 <c:url var="urlCommentDelete" value="/board/comment/delete"/>
-
 <main class="container wrap">
 
     <div class="card">
@@ -30,7 +38,7 @@
                 <div>
                     <!-- 카테고리 -->
                     <span class="badge-cat">
-                        ${post.boardType}
+                        ${post.categoryName}
                     </span>
 
                     <!-- 제목 -->
@@ -40,7 +48,7 @@
 
                     <!-- 메타정보 -->
                     <div class="meta">
-                        <span>${post.createdAtText}</span>
+                        <span>${post.displayDateText}</span>
                         <span class="dot">·</span>
                         <span>조회 ${post.readcount}</span>
                     </div>
@@ -73,6 +81,24 @@
                         </form>
 
                     </c:if>
+                    
+				    <c:if test="${not isOwner}">
+				        <div class="more-menu">
+				            <button type="button" class="more-btn" onclick="toggleMoreMenu(this)">⋮</button>
+				
+				            <div class="more-dropdown">
+				                <form action="${urlReport}"
+				                      method="post"
+				                      onsubmit="return confirm('작성자를 신고하시겠습니까?');">
+				                    <input type="hidden" name="postId" value="${post.postId}">
+				                    <button type="submit" class="dropdown-item danger">
+				                        작성자 신고
+				                    </button>
+				                </form>
+				            </div>
+				        </div>
+				    </c:if>                    
+                    
 
                 </div>
 
@@ -81,6 +107,14 @@
 
             <!-- 본문 -->
 			<div class="body">${post.content}</div>
+			
+			<c:if test="${not empty post.tagList}">
+			    <div class="post-tag-box">
+			        <c:forEach var="tag" items="${post.tagList}">
+			            <span class="post-tag">#${tag}</span>
+			        </c:forEach>
+			    </div>
+			</c:if>		
 
 
             <!-- 첨부파일 -->
@@ -231,6 +265,28 @@
 </main>
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+
+<script>
+	function toggleMoreMenu(button) {
+	    const menu = button.parentElement;
+	    menu.classList.toggle("open");
+	}
+	
+	function confirmReport() {
+	    const result = confirm("작성자를 신고하시겠습니까?");
+	    if (result) {
+	        alert("신고가 접수되었습니다.");
+	    }
+	}
+	
+	document.addEventListener("click", function(e) {
+	    document.querySelectorAll(".more-menu").forEach(function(menu) {
+	        if (!menu.contains(e.target)) {
+	            menu.classList.remove("open");
+	        }
+	    });
+	});
+</script>
 
 </body>
 </html>

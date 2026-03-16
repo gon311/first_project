@@ -1,17 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
 	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<link href="<c:url value="/resources/css/jobCss/jobCorrection.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
-
-	<%@ include file="/WEB-INF/views/inc/header.jspf" %>
-	
+	<%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
 	<main>
 		<div class="container">
 		    <form action="<c:url value="/job/jobCorrection" />" method="post" enctype="multipart/form-data">
@@ -204,13 +200,10 @@
 				    <button type="button" class="btn-cancel" onclick="history.back()">취소</button>
 				</div>
 		    </form>
-		</div>
+		</div>	
 	</main>
-	
-	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
-
+<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 </body>
-
 <script>
 // 1. 모집분야 데이터 정의
 const jobData = {

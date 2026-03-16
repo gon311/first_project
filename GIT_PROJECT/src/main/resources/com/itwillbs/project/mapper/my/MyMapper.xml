@@ -9,11 +9,16 @@
 ============================== -->
 	<!-- MyDTO -->
 	<resultMap id="userMap" type="com.itwillbs.project.my.dto.MyDTO">
-	  <id     property="userId"   column="user_id" />
-	  <result property="email"    column="email" />
-	  <result property="userName" column="user_name" />
-	  <result property="phone"    column="phone" />
-	  <result property="userType" column="user_type" />
+	  <id     property="userId"    column="user_id" />
+	  <result property="email"     column="email" />
+	  <result property="userName"  column="user_name" />
+	  <result property="phone"     column="phone" />
+	  <result property="userType"  column="user_type" />
+	  <result property="gender"    column="gender" />
+	  <result property="birthDate" column="birth_date" />
+	  <result property="country"   column="country" />
+	  <result property="profileUrl" column="profile_url" />
+	  <result property="status"    column="status" />
 	</resultMap>
 	
 	<!-- MyResumeDTO -->
@@ -216,22 +221,54 @@
      result: MyDTO
 ============================== -->
 	<select id="selectUser" parameterType="string" resultMap="userMap">
-		SELECT user_id, email, user_name, phone, user_type
-		FROM user
-		WHERE email = #{sId}
+	    SELECT
+	        u.user_id,
+	        u.email,
+	        u.user_name,
+	        u.phone,
+	        u.user_type,
+	        u.status,
+	        up.gender,
+	        up.birth_date,
+	        up.country,
+	        up.profile_url
+	    FROM user u
+	    LEFT JOIN user_person up
+	        ON u.user_id = up.user_id
+	    WHERE u.email = #{sId}
 	</select>
 
+<!-- ==============================
+     회원탈퇴
+     parameter: sId
+     result: 
+============================== -->
+	<update id="deleteUser" parameterType="com.itwillbs.project.my.dto.MyDTO">
+		 UPDATE user
+		 SET withdrawn_at = now(),
+		     status = 'WITHDRAWN'
+		 WHERE email = #{sId}
+	</update>
 
 <!-- ==============================
      내정보 수정 저장
      parameter: MyDTO (email, userName, phone ...)
      result: int (affected rows)
 ============================== -->
-	<update id="updateUser" parameterType="com.itwillbs.project.my.dto.MyDTO">
-		 UPDATE user
-		 SET user_name = #{userName},
-		     phone = #{phone}
-		 WHERE email = #{email}
+	<update id="updateUserBasic" parameterType="com.itwillbs.project.my.dto.MyDTO">
+	    UPDATE user
+	    SET user_name = #{userName},
+	        phone = #{phone}
+	    WHERE email = #{email}
+	</update>
+	
+	<update id="updateUserPerson" parameterType="com.itwillbs.project.my.dto.MyDTO">
+	    UPDATE user_person up
+	    JOIN user u ON up.user_id = u.user_id
+	    SET up.gender = #{gender},
+	        up.birth_date = #{birthDate},
+	        up.country = #{country}
+	    WHERE u.email = #{email}
 	</update>
 	
 <!-- ==============================

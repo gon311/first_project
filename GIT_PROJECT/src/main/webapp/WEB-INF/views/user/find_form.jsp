@@ -7,186 +7,195 @@
 	<link href="<c:url value="/resources/css/user/userFindForm.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
+	<c:choose>
+	    <c:when test="${sessionScope.memberType == 'company'}">
+	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+	    </c:when>
 	
-    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
-
-	<form id="findForm" action="<c:url value='/user/findId' />" method="post">
+	    <c:otherwise>
+	        <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	    </c:otherwise>
+	</c:choose>
+	
+	<main>
+		<form id="findForm" action="<c:url value='/user/findId' />" method="post">
 <!-- 		휴대폰 조합 저장 -->
-		<input type="hidden" name="phone" id="final-phone"> 
-
-	    <div class="container">
-	        <nav class="tab-nav">
-	            <button type="button" class="tab-btn active" onclick="switchTab('id')" id="tab-btn-id">아이디 찾기</button>
-	            <button type="button" class="tab-btn" onclick="switchTab('pw')" id="tab-btn-pw">비밀번호 찾기</button>
-	        </nav>
+			<input type="hidden" name="phone" id="final-phone"> 
 	
-	        <div id="view-id">
-	            <h2 class="section-title">회원정보 입력</h2>
-	            <p class="section-desc">· 가입 시 입력한 본인정보를 입력해 주세요.</p>
-	
-	            <div class="split-box">
-	                <div class="member-col">
-	                    <div class="col-header">개인회원</div>
-	                    <div class="col-body">
-	                        <div class="radio-row">
-	                            <label class="radio-label">
-	                                <input type="radio" name="authGroupId" value="P" onclick="updateFormState('id')" checked> 휴대폰 인증
-	                            </label>
-	                        </div>
-	
-	                        <div id="area-id-personal" class="field-area">
-	                            <div class="form-row">
-	                                <label class="form-label">이름</label>
-	                                <div class="form-input-group">
-	                                    <input type="text"  id="id-name" name="userName" placeholder="성명 입력">
-	                                </div>
-	                            </div>
-	
-	
-	                            <div id="row-id-phone" class="form-row">
-	                                <label class="form-label">휴대폰 번호</label>
-	                                <div class="form-input-group">
-	                                    <select style="width: 25%;" id="id-phone-1"><option>010</option></select> - 
-	                                    <input type="text" style="width: 25%;" id="id-phone-2" name="phoneInput" maxlength="4" pattern="^d{4}$"> - 
-	                                    <input type="text" style="width: 25%;" id="id-phone-3" name="phoneInput" maxlength="4" pattern="^d{4}$">
-	                                    <button type="button" class="btn-auth" id="btn-id-send" onclick="sendVerification('id')">인증번호 전송</button>
-	                                    <div id="id-feedback" class="invalid-feedback"></div> 
-	                                </div>
-	                            </div>
-	
-	                            <div id="row-id-authcode" class="form-row verify-area d-none">
-	                                <div class="form-input-group">
-			                            <input type="text" id="id-code" placeholder="인증번호 6자리">
-			                            <button type="button" class="btn-action" onclick="checkVerification('id')">확인</button>
-	                                </div>
-	                                <div id="id-msg" class="verify-msg"></div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                </div>
-	
-	                <div class="member-col">
-	                    <div class="col-header">사업자회원</div>
-	                    <div class="col-body">
-	                        <div class="radio-row">
-	                            <label class="radio-label">
-	                                <input type="radio" name="authGroupId" value="C" onclick="updateFormState('id')"> 기업회원
-	                            </label>
-	                        </div>
-	
-	                        <div id="area-id-biz" class="field-area disabled">
-	                            <div class="form-row">
-	                                <label class="form-label">
-	                                    가입자명 <span class="tooltip-trigger" onclick="toggleTooltip('tt-id')">?</span>
-	                                </label>
-	                                <div class="form-input-group">
-	                                    <input type="text" name="ceoName" id="id-biz-name">
-	                                </div>
-	                                <div id="tt-id" class="tooltip-box">
-	                                    <span class="tooltip-close" onclick="toggleTooltip('tt-id')">×</span>
-	                                    <p>회원가입 시 등록한 기업담당자<br>이름을 입력해 주세요.</p>
-	                                </div>
-	                            </div>
-	                            <div class="form-row"><label class="form-label">사업자번호</label>
-	                            	<div class="form-input-group">
-								    	<input type="text" name="bizRegNo" id="bizRegNo" 
-									           placeholder="000-00-00000" 
-									           maxlength="12"
-									           pattern="\d{3}-\d{2}-\d{5}"
-									           title="사업자등록번호 10자리를 입력해주세요.">
-	                            	</div>
-	                           </div>
-	                        </div>
-	                    </div>
-	                </div>
-	            </div> <button class="btn-submit">아이디 찾기</button>
-	        </div>
-	
-	        <div id="view-pw" class="d-none">
-	            <h2 class="section-title">회원정보 입력</h2>
-	            <p class="section-desc">· 비밀번호를 찾기 위해 가입된 아이디와 정보를 입력해 주세요.</p>
-	
-	            <div class="split-box">
-	                <div class="member-col">
-	                    <div class="col-header">개인회원</div>
-	                    <div class="col-body">
-	                        <div class="radio-row">
-	                            <label class="radio-label">
-	                                <input type="radio" name="authGroupPw" value="P" onclick="updateFormState('pw')" checked> 휴대폰 인증
-	                            </label>
-	                        </div>
-	                        <div id="area-pw-personal" class="field-area">
-	                            <div class="form-row">
-	                                <label class="form-label">아이디</label>
-	                                <div class="form-input-group"><input type="text" name="email" placeholder="아이디 입력"></div>
-	                            </div>
-	                            <div class="form-row">
-	                                <label class="form-label">이름</label>
-	                                <div class="form-input-group"><input type="text" id="pw-name" name="userName" placeholder="성명 입력" ></div>
-	                            </div>
-	
-	
-	                            <div id="row-pw-phone" class="form-row">
-	                                <label class="form-label">휴대폰 번호</label>
-	                                <div class="form-input-group">
-	                                    <select style="width: 25%;" id="pw-phone-1"><option>010</option></select> - 
-	                                    <input type="text" style="width: 25%;" id="pw-phone-2" name="phoneInput" maxlength="4"> - 
-	                                    <input type="text" style="width: 25%;" id="pw-phone-3" name="phoneInput" maxlength="4">
-	                                    <button type="button" class="btn-auth" id="btn-pw-send" onclick="sendVerification('pw')">인증번호 전송</button>
-		                                <div id="pw-feedback" class="invalid-feedback"></div> 
-	                                </div>
-	                            </div>
-	                            
-	                            <div id="row-pw-authcode" class="form-row verify-area d-none">
-	                                <div class="form-input-group">
-			                            <input type="text" id="pw-code" placeholder="인증번호 6자리">
-			                            <button type="button" class="btn-action" onclick="checkVerification('pw')">확인</button>
-	                                </div>
-			                        <div id="pw-msg" class="verify-msg"></div>
-	                            </div>
-	                       </div>
-	                    </div>
-	                </div>
-	
-	                <div class="member-col">
-	                    <div class="col-header">사업자회원</div>
-	                    <div class="col-body">
-	                        <div class="radio-row">
-	                            <label class="radio-label">
-	                                <input type="radio" name="authGroupPw" value="C" onclick="updateFormState('pw')"> 기업회원
-	                            </label>
-	                        </div>
-	                        <div id="area-pw-biz" class="field-area disabled">
-	                            <div class="form-row"><label class="form-label">아이디</label><div class="form-input-group"><input type="text" name="email"></div></div>
-	                            <div class="form-row">
-	                                <label class="form-label">
-	                                    가입자명 <span class="tooltip-trigger" onclick="toggleTooltip('tt-pw')">?</span>
-	                                </label>
-	                                <div class="form-input-group">
-	                                    <input type="text" name="ceoName" id="pw-biz-name">
-	                                </div>
-	                                <div id="tt-id2" class="tooltip-box">
-	                                    <span class="tooltip-close" onclick="toggleTooltip('tt-pw')">×</span>
-	                                    <p>회원가입 시 등록한 기업담당자<br>이름을 입력해 주세요.</p>
-	                                </div>
-	                            </div>
-	                            <div class="form-row"><label class="form-label">사업자번호</label>
-	                            	<div class="form-input-group">
-								    	<input type="text" name="bizRegNo" id="bizRegNo2" 
-									           placeholder="000-00-00000" 
-									           maxlength="12"
-									           pattern="\d{3}-\d{2}-\d{5}"
-									           title="사업자등록번호 10자리를 입력해주세요.">
-	                            	</div>
-	                           </div>
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
-	            <button class="btn-submit">비밀번호 찾기</button>
-	        </div>
-	    </div>
-	</form>
+		    <div class="container">
+		        <nav class="tab-nav">
+		            <button type="button" class="tab-btn active" onclick="switchTab('id')" id="tab-btn-id">아이디 찾기</button>
+		            <button type="button" class="tab-btn" onclick="switchTab('pw')" id="tab-btn-pw">비밀번호 찾기</button>
+		        </nav>
+		
+		        <div id="view-id">
+		            <h2 class="section-title">회원정보 입력</h2>
+		            <p class="section-desc">· 가입 시 입력한 본인정보를 입력해 주세요.</p>
+		
+		            <div class="split-box">
+		                <div class="member-col">
+		                    <div class="col-header">개인회원</div>
+		                    <div class="col-body">
+		                        <div class="radio-row">
+		                            <label class="radio-label">
+		                                <input type="radio" name="authGroupId" value="P" onclick="updateFormState('id')" checked> 휴대폰 인증
+		                            </label>
+		                        </div>
+		
+		                        <div id="area-id-personal" class="field-area">
+		                            <div class="form-row">
+		                                <label class="form-label">이름</label>
+		                                <div class="form-input-group">
+		                                    <input type="text"  id="id-name" name="userName" placeholder="성명 입력">
+		                                </div>
+		                            </div>
+		
+		
+		                            <div id="row-id-phone" class="form-row">
+		                                <label class="form-label">휴대폰 번호</label>
+		                                <div class="form-input-group">
+		                                    <select style="width: 25%;" id="id-phone-1"><option>010</option></select> - 
+		                                    <input type="text" style="width: 25%;" id="id-phone-2" name="phoneInput" maxlength="4"> - 
+		                                    <input type="text" style="width: 25%;" id="id-phone-3" name="phoneInput" maxlength="4">
+		                                    <button type="button" class="btn-auth" id="btn-id-send" onclick="sendVerification('id')">인증번호 전송</button>
+		                                    <div id="id-feedback" class="invalid-feedback"></div> 
+		                                </div>
+		                            </div>
+		
+		                            <div id="row-id-authcode" class="form-row verify-area d-none">
+		                                <div class="form-input-group">
+				                            <input type="text" id="id-code" placeholder="인증번호 6자리">
+				                            <button type="button" class="btn-action" onclick="checkVerification('id')">확인</button>
+		                                </div>
+		                                <div id="id-msg" class="verify-msg"></div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		
+		                <div class="member-col">
+		                    <div class="col-header">사업자회원</div>
+		                    <div class="col-body">
+		                        <div class="radio-row">
+		                            <label class="radio-label">
+		                                <input type="radio" name="authGroupId" value="C" onclick="updateFormState('id')"> 기업회원
+		                            </label>
+		                        </div>
+		
+		                        <div id="area-id-biz" class="field-area disabled">
+		                            <div class="form-row">
+		                                <label class="form-label">
+		                                    가입자명 <span class="tooltip-trigger" onclick="toggleTooltip('tt-id')">?</span>
+		                                </label>
+		                                <div class="form-input-group">
+		                                    <input type="text" name="ceoName" id="id-biz-name">
+		                                </div>
+		                                <div id="tt-id" class="tooltip-box">
+		                                    <span class="tooltip-close" onclick="toggleTooltip('tt-id')">×</span>
+		                                    <p>회원가입 시 등록한 기업담당자<br>이름을 입력해 주세요.</p>
+		                                </div>
+		                            </div>
+		                            <div class="form-row"><label class="form-label">사업자번호</label>
+		                            	<div class="form-input-group">
+									    	<input type="text" name="bizRegNo" id="bizRegNo" 
+										           placeholder="000-00-00000" 
+										           maxlength="12"
+										           pattern="\d{3}-\d{2}-\d{5}"
+										           title="사업자등록번호 10자리를 입력해주세요.">
+		                            	</div>
+		                           </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div> <button class="btn-submit">아이디 찾기</button>
+		        </div>
+		
+		        <div id="view-pw" class="d-none">
+		            <h2 class="section-title">회원정보 입력</h2>
+		            <p class="section-desc">· 비밀번호를 찾기 위해 가입된 아이디와 정보를 입력해 주세요.</p>
+		
+		            <div class="split-box">
+		                <div class="member-col">
+		                    <div class="col-header">개인회원</div>
+		                    <div class="col-body">
+		                        <div class="radio-row">
+		                            <label class="radio-label">
+		                                <input type="radio" name="authGroupPw" value="P" onclick="updateFormState('pw')" checked> 휴대폰 인증
+		                            </label>
+		                        </div>
+		                        <div id="area-pw-personal" class="field-area">
+		                            <div class="form-row">
+		                                <label class="form-label">아이디</label>
+		                                <div class="form-input-group"><input type="text" name="email" placeholder="아이디 입력"></div>
+		                            </div>
+		                            <div class="form-row">
+		                                <label class="form-label">이름</label>
+		                                <div class="form-input-group"><input type="text" id="pw-name" name="userName" placeholder="성명 입력" ></div>
+		                            </div>
+		
+		
+		                            <div id="row-pw-phone" class="form-row">
+		                                <label class="form-label">휴대폰 번호</label>
+		                                <div class="form-input-group">
+		                                    <select style="width: 25%;" id="pw-phone-1"><option>010</option></select> - 
+		                                    <input type="text" style="width: 25%;" id="pw-phone-2" name="phoneInput" maxlength="4"> - 
+		                                    <input type="text" style="width: 25%;" id="pw-phone-3" name="phoneInput" maxlength="4">
+		                                    <button type="button" class="btn-auth" id="btn-pw-send" onclick="sendVerification('pw')">인증번호 전송</button>
+			                                <div id="pw-feedback" class="invalid-feedback"></div> 
+		                                </div>
+		                            </div>
+		                            
+		                            <div id="row-pw-authcode" class="form-row verify-area d-none">
+		                                <div class="form-input-group">
+				                            <input type="text" id="pw-code" placeholder="인증번호 6자리">
+				                            <button type="button" class="btn-action" onclick="checkVerification('pw')">확인</button>
+		                                </div>
+				                        <div id="pw-msg" class="verify-msg"></div>
+		                            </div>
+		                       </div>
+		                    </div>
+		                </div>
+		
+		                <div class="member-col">
+		                    <div class="col-header">사업자회원</div>
+		                    <div class="col-body">
+		                        <div class="radio-row">
+		                            <label class="radio-label">
+		                                <input type="radio" name="authGroupPw" value="C" onclick="updateFormState('pw')"> 기업회원
+		                            </label>
+		                        </div>
+		                        <div id="area-pw-biz" class="field-area disabled">
+		                            <div class="form-row"><label class="form-label">아이디</label><div class="form-input-group"><input type="text" name="email"></div></div>
+		                            <div class="form-row">
+		                                <label class="form-label">
+		                                    가입자명 <span class="tooltip-trigger" onclick="toggleTooltip('tt-pw')">?</span>
+		                                </label>
+		                                <div class="form-input-group">
+		                                    <input type="text" name="ceoName" id="pw-biz-name">
+		                                </div>
+		                                <div id="tt-id2" class="tooltip-box">
+		                                    <span class="tooltip-close" onclick="toggleTooltip('tt-pw')">×</span>
+		                                    <p>회원가입 시 등록한 기업담당자<br>이름을 입력해 주세요.</p>
+		                                </div>
+		                            </div>
+		                            <div class="form-row"><label class="form-label">사업자번호</label>
+		                            	<div class="form-input-group">
+									    	<input type="text" name="bizRegNo" id="bizRegNo2" 
+										           placeholder="000-00-00000" 
+										           maxlength="12"
+										           pattern="\d{3}-\d{2}-\d{5}"
+										           title="사업자등록번호 10자리를 입력해주세요.">
+		                            	</div>
+		                           </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		            <button class="btn-submit">비밀번호 찾기</button>
+		        </div>
+		    </div>
+		</form>
+	</main>
 	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 	
     <script>

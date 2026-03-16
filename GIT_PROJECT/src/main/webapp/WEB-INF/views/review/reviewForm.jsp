@@ -229,10 +229,10 @@
 								다음으로</button>
 						</div>
 						
-						<!-- 임시저장/1단계저장 status - 1:1단계저장, 2:임시저장 -->
-						<input type="hidden" id="saveStatus" name="saveStatus" value="1">
+						
 						<!-- ai 생성 여부  -->
 						<input type="hidden" id="aiGenerated" name="aiGenerated" value="0">
+						<input type="hidden" id="coverLetterIdx" name="coverLetterIdx" value="0">
 						
 						<!-- 토스트 메세지 -->
 						<div id="toast" class="toast"></div>
@@ -410,18 +410,16 @@
 			// 임시저장 버튼 프로세스 
 			document.addEventListener('DOMContentLoaded', () => {
 				const form = document.getElementById('registForm');
-				const statusInput = document.getElementById('saveStatus');
 				const btnDraft = document.getElementById('saveDraft');
 				
 				btnDraft.addEventListener('click', () => {
-					statusInput.value = "2"; // 임시저장 상태 
 					async function requestDraftSave() {
 						try{
 							const param = new URLSearchParams();
 							param.append("title", document.getElementById('title').value);
 							param.append("industryCode", document.querySelector('input[name="industryCode"]:checked')?.value);
 							param.append("jobCode", document.querySelector('input[name="jobCode"]:checked')?.value);
-							param.append("roleCode", document.querySelector('input[name="roleCode"]:checked')?.value);
+							param.append("roleCode", document.getElementById('roleCode').value);
 							param.append("companyCode", document.querySelector('input[name="companyCode"]:checked')?.value);
 							param.append("appliedField", document.getElementById('appliedField').value);
 							param.append("companyName", document.getElementById('companyName').value);
@@ -441,7 +439,12 @@
 							const result = await response.json();
 							
 							if(result.success) {
-								showToast(result.message, true); //토스트 메세지 띄우기 
+								showToast(result.message, true); //토스트 메세지 띄우기
+								
+								// 반환된 coverLetterIdx hidden input 저장
+								if(result.coverLetterIdx) {
+									document.getElementById('coverLetterIdx').value = result.coverLetterIdx;
+								}
 							} else {
 								showToast("저장을 실패하였습니다.", false);
 							}
@@ -455,7 +458,7 @@
 					requestDraftSave();
 				});
 			});
-						
+			
 		</script>
 	</body>
 </html>

@@ -8,7 +8,15 @@
     <link href="<c:url value="/resources/css/user/userFindId.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	<c:choose>
+	    <c:when test="${sessionScope.memberType == 'company'}">
+	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+	    </c:when>
+	
+	    <c:otherwise>
+	        <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	    </c:otherwise>
+	</c:choose>
 
     <main class="container">
         <div class="find-id-container">

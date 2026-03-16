@@ -130,16 +130,7 @@
 							<td>${status.count}</td>
 							<td>${pay.payId}</td>
 							<td>
-								<c:choose>
-									<c:when test="${not empty pay.issuedAt}">	<%-- 가상결제 --%>
-										<fmt:parseDate var="issuedAt" value="${pay.issuedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-										<fmt:formatDate value="${issuedAt}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
-									</c:when>
-									<c:otherwise>	<%-- 카드결제 --%>
-										<fmt:parseDate var="payDate" value="${pay.payDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-									<fmt:formatDate value="${payDate}" pattern="yyyy년 MM월 dd일 HH:mm:ss" />
-									</c:otherwise>
-								</c:choose>
+								${pay.strPayDate}
 							</td>
 							<td>${pay.productName}</td>
 							<td>${pay.userId}</td>

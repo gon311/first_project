@@ -28,7 +28,7 @@
 				<section id="intro" class="row justify-content-center g-4">
 				    <div class="col-12 col-md-5">
 				        <div class="cta-card text-center h-100" role="button"
-				            onclick="location.href='<c:url value="#" />'">
+				            onclick="location.href='<c:url value="/store/cstore" />'">
 				            <div class="cta-label">프리미엄 요금제 살펴보기</div>
 				        </div>
 				    </div>

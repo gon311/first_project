@@ -89,7 +89,7 @@ public class UserController {
 				response.addCookie(cookie2);
 			}
 			
-			return "redirect:/";
+			return "redirect:/admin/users";
 		}
 		
 		if(dbUser == null || !dbUser.getUserType().equals(type) || !passwordEncoder.matches(userDTO.getPassword(), dbUser.getPassword())) {
@@ -133,7 +133,12 @@ public class UserController {
 			response.addCookie(cookie2);
 		}
 		
-		return "redirect:/";
+		if(dbUser.getUserType().equals("P")) {
+			return "redirect:/";
+		} else {
+			return "/mainCom";
+		}
+		
 	}
 	
 	// 로그아웃
@@ -169,7 +174,11 @@ public class UserController {
 		session.setAttribute("userType", userDTO.getUserType());
 		session.setMaxInactiveInterval(60 * 60 * 24);
 		
-		return "redirect:/";
+		if(userDTO.getUserType().equals("P")) {
+			return "redirect:/";
+		} else {
+			return "/mainCom";
+		}
 	}
 	
 	// 아이디 체크
@@ -231,7 +240,7 @@ public class UserController {
 				throw new BackwardException("일치하는 정보가 없습니다");
 			}
 		} else if(userDTO.getUserType().equals("C")) {
-			if(userdb == null || !userDTO.getUserType().equals(userdb.getUserType()) || userDTO.getBizRegNo().equals(userdb.getBizRegNo()) || userDTO.getCeoName().equals(userdb.getCeoName())) {
+			if(userdb == null || !userDTO.getUserType().equals(userdb.getUserType()) || !userDTO.getBizRegNo().equals(userdb.getBizRegNo()) || !userDTO.getCeoName().equals(userdb.getCeoName())) {
 				throw new BackwardException("일치하는 정보가 없습니다");
 			}
 		} 

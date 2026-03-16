@@ -24,6 +24,7 @@ import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.admin.dto.SubmitPageDTO;
 import com.itwillbs.project.admin.dto.UserPageDTO;
 import com.itwillbs.project.admin.mapper.AdminMapper;
+import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.store.dto.PaymentDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -417,16 +418,16 @@ public class AdminService{
 	// 제출된 공고 상세 조회
 	public SubmitDTO getSubmitInfo(long jobId) {
 		return adminMapper.selectSubmitInfo(jobId);
+		
+	}
+
+	public List<FileDTO> getFileList(Long jobId) {
+		return adminMapper.selectFileList(jobId);
 	}
 	
 	// 공고 상태 변경
 	public void changeSubmitStatus(long jobId, Integer postCheck) {
 		adminMapper.updateSubmitStatus(jobId, postCheck);
-	}
-	
-	// 공고 승인 시 사이트에 등록되는 등록일자를 현재로 변경
-	public void changeRegDate(long jobId) {
-		adminMapper.updateRegDate(jobId);
 	}
 	
 	//========================================================================================

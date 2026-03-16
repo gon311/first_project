@@ -27,6 +27,21 @@
 		LIMIT 6
 	</select>
 	
+	<update id="updateAllDisplayOff">
+		UPDATE	banner
+		SET		is_display = 0
+	</update>
+	
+	<update id="updateSelectedDisplayOn">
+		UPDATE 	banner
+		SET 	is_display = 1 
+		WHERE job_id in 
+		<foreach collection="jobIds" item="jobId" open="(" separator="," close=")">
+        	#{jobId}
+   	 	</foreach>
+	</update>
+	
+	
 	<select id="selectPopularCompanies" resultType="com.itwillbs.project.common.dto.CompanyCardDTO">
 		SELECT
 			j.job_id as jobId
@@ -57,8 +72,8 @@
 		WHERE j.job_id IN (
 		    SELECT job_id
 		    FROM (SELECT job_id
-					FROM favorite_company
-					WHERE person_user_id = #{userIdx}
+					FROM job_bookmark
+					WHERE user_id = #{userIdx}
 					ORDER BY RAND()
 					LIMIT 6) AS bookmark)
 	</select>

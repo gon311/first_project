@@ -4,40 +4,89 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.project.board.mapper.BoardMapper">
 	
-	<insert id="insertBoard" useGeneratedKeys="true" keyProperty="postId">
-		INSERT INTO BOARD_POST (
-			board_type
-			, author_member_id
-			, title
-			, content
-			, created_at
-		)
-		VALUES ( 
-			"FREE"
-			, #{authorMemberId}
-			, #{title}
-			, #{content}
-			, NOW()
-		)
+	<!-- 게시글 등록 -->
+	<insert id="insertBoard"
+	        useGeneratedKeys="true"
+	        keyProperty="postId">
+	    INSERT INTO BOARD_POST (
+	        board_type,
+	        author_member_id,
+	        title,
+	        content,
+	        status
+	    ) VALUES (
+	        #{boardType},
+	        #{authorMemberId},
+	        #{title},
+	        #{content},
+	        'ACTIVE'
+	    )
 	</insert>
 	
 	
 	<!-- 게시물 상세 -->
 	<select id="selectBoard" resultType="com.itwillbs.project.board.dto.BoardDTO">
-		SELECT
-		post_id AS postId,
-		board_type AS boardType,
-		author_member_id AS authorMemberId,
-		title,
-		content,
-		readcount,
-		status,
-		created_at AS createdAt,
-		updated_at AS updatedAt
-		FROM BOARD_POST
-		WHERE post_id = #{postId}
-		AND status = 'ACTIVE'
+	    SELECT
+	        post_id AS postId,
+	        board_type AS boardType,
+	        CASE
+	            WHEN board_type = 'JOB' THEN '취준/이직'
+	            WHEN board_type = 'CAREER' THEN '회사생활/커리어'
+	            WHEN board_type = 'FREE' THEN '자유주제'
+	            WHEN board_type = 'INTERVIEW_REVIEW' THEN '면접후기'
+	        END AS categoryName,
+	        author_member_id AS authorMemberId,
+	        title,
+	        content,
+	        readcount,
+	        status,
+	        created_at AS createdAt,
+	        updated_at AS updatedAt
+	    FROM BOARD_POST
+	    WHERE post_id = #{postId}
+	      AND status = 'ACTIVE'
 	</select>
+	
+	<!-- 게시글 작성자 조회 -->
+	<select id="selectAuthorMemberIdByPostId" resultType="long">
+	    SELECT author_member_id
+	    FROM BOARD_POST
+	    WHERE post_id = #{postId}
+	      AND status = 'ACTIVE'
+	</select>
+
+	<!-- 신고 누적 횟수 증가 -->
+	<update id="increaseReportReceivedCount">
+	    UPDATE USER_PERSON
+	    SET report_received_count = report_received_count + 1
+	    WHERE user_id = #{userId}
+	</update>	
+	
+	
+	<!-- 태그 저장 -->
+	<insert id="insertBoardTag">
+	    INSERT INTO BOARD_TAG (
+	        post_id,
+	        tag_name
+	    ) VALUES (
+	        #{postId},
+	        #{tagName}
+	    )
+	</insert>
+	
+	<!-- 게시글 태그 조회 -->
+	<select id="selectBoardTags" resultType="string">
+	    SELECT tag_name
+	    FROM BOARD_TAG
+	    WHERE post_id = #{postId}
+	    ORDER BY tag_id ASC
+	</select>
+	
+	<!-- 태그 삭제 -->
+	<delete id="deleteBoardTags">
+	    DELETE FROM BOARD_TAG
+	    WHERE post_id = #{postId}
+	</delete>		
 	
 	<!-- 조회수 증가 -->
 	<update id="updateReadcount">
@@ -85,36 +134,39 @@
 	        #{fileDTO.fileExt}
 	    )
 	</insert>
-
+	
 	<!-- 게시글 목록 -->
 	<select id="selectBoardList"
 	        parameterType="com.itwillbs.project.board.dto.BoardCond"
 	        resultType="com.itwillbs.project.board.dto.BoardDTO">
 	
 	SELECT
-	    p.post_id       AS postId,
-	    p.board_type    AS categoryName,
+	    p.post_id AS postId,
+	    p.board_type AS boardType,
+	    CASE
+	        WHEN p.board_type = 'JOB' THEN '취준/이직'
+	        WHEN p.board_type = 'CAREER' THEN '회사생활/커리어'
+	        WHEN p.board_type = 'FREE' THEN '자유주제'
+	        WHEN p.board_type = 'INTERVIEW_REVIEW' THEN '면접후기'
+	    END AS categoryName,
 	    p.title,
 	    p.content,
-	    p.readcount     AS viewCount,
-	    p.created_at,
-	    u.user_name     AS writerNickname,
-	
+	    p.readcount AS viewCount,
+	    p.created_at AS createdAt,
+	    p.updated_at AS updatedAt,
+	    u.user_name AS writerNickname,
 	    LEFT(p.content, 120) AS excerpt,
-	
 	    (
 	        SELECT COUNT(*)
 	        FROM BOARD_COMMENT c
 	        WHERE c.post_id = p.post_id
-	        AND c.status = 'ACTIVE'
+	          AND c.status = 'ACTIVE'
 	    ) AS commentCount,
-	
-	    0 AS likeCount
-	
+	    0 AS likeCount,
+	    0 AS scrapCount
 	FROM BOARD_POST p
 	JOIN USER u
-	ON p.author_member_id = u.user_id
-	
+	  ON p.author_member_id = u.user_id
 	WHERE p.status = 'ACTIVE'
 	
 	<if test="category != null and category != 'ALL'">
@@ -122,43 +174,38 @@
 	</if>
 	
 	<if test="q != null and q != ''">
-	  <choose>
-	    <when test="searchType == 'title'">
-	      AND p.title LIKE CONCAT('%', #{q}, '%')
-	    </when>
-	    <when test="searchType == 'content'">
-	      AND p.content LIKE CONCAT('%', #{q}, '%')
-	    </when>
-	    <otherwise>
-	      AND (
-	        p.title LIKE CONCAT('%', #{q}, '%')
-	        OR p.content LIKE CONCAT('%', #{q}, '%')
-	      )
-	    </otherwise>
-	  </choose>
+	    <choose>
+	        <when test="searchType == 'title'">
+	            AND p.title LIKE CONCAT('%', #{q}, '%')
+	        </when>
+	        <when test="searchType == 'content'">
+	            AND p.content LIKE CONCAT('%', #{q}, '%')
+	        </when>
+	        <otherwise>
+	            AND (
+	                p.title LIKE CONCAT('%', #{q}, '%')
+	                OR p.content LIKE CONCAT('%', #{q}, '%')
+	            )
+	        </otherwise>
+	    </choose>
 	</if>
 	
 	ORDER BY
-	
 	<choose>
-	
 	    <when test="sort == 'view'">
 	        p.readcount DESC
 	    </when>
-	
 	    <when test="sort == 'comment'">
 	        (
 	            SELECT COUNT(*)
 	            FROM BOARD_COMMENT c
 	            WHERE c.post_id = p.post_id
-	            AND c.status = 'ACTIVE'
+	              AND c.status = 'ACTIVE'
 	        ) DESC
 	    </when>
-	
 	    <otherwise>
 	        p.created_at DESC
 	    </otherwise>
-	
 	</choose>
 	
 	LIMIT #{page.offset}, #{page.safeSize}

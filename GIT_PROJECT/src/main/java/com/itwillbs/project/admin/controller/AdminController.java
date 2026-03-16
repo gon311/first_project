@@ -25,6 +25,7 @@ import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.admin.dto.SubmitPageDTO;
 import com.itwillbs.project.admin.dto.UserPageDTO;
 import com.itwillbs.project.admin.service.AdminService;
+import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.store.dto.PaymentDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -249,7 +250,10 @@ public class AdminController {
 			comDTO.setProductName("보유 이용권 없음");
 		}
 		
+		List<FileDTO> detailFile = adminService.getFileList(submitDTO.getJobId());
+		
 		model.addAttribute("com", comDTO);
+		model.addAttribute("detailFile", detailFile);
 		
 		return "admin/submit/submitInfo";
 		
@@ -262,16 +266,14 @@ public class AdminController {
 		// 공고 상태 변경
 		SubmitDTO submitDTO = adminService.getSubmitInfo(jobId);
 		adminService.changeSubmitStatus(submitDTO.getJobId(), postCheck);
-		 
-		// 공고 승인 시 등록일자를 승인 시점으로 변경
+		
+		// 공고 승인 시
 		if(postCheck == 2) {
-			adminService.changeRegDate(submitDTO.getJobId());
 			
 			// 프리미엄 이용권 구매 기업 공고 배너 관리 페이지로 전송
 			BannerDTO bannerDTO = new BannerDTO();
 			bannerDTO.setJobId(jobId);
 			bannerDTO.setCompId(submitDTO.getCompId());
-//			System.out.println(bannerDTO.getJobId());
 			adminService.insertBanner(bannerDTO);
 		}
 		

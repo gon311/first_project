@@ -57,54 +57,6 @@
                             	onclick="checkMethod()" required>
                             <label class="form-check-label" for="credit">신용카드</label>
                         </div>
-                        
-                        <!-- 신용카드를 선택한 경우 -->
-                        <div id="selectCredit" class="row mb-3 mx-3" style="display:none;">
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">카드사 선택 <span style="color:red">*</span></label>
-                                <select id="cardCompany" class="form-select" name="cardCompany">
-                                    <option value="">선택하세요.</option>
-                                    <option value="ss">삼성카드</option>
-                                    <option value="sh">신한카드</option>
-                                    <option value="kb">KB국민카드</option>
-                                    <option value="wr">우리카드</option>
-                                    <option value="bc">비씨카드</option>
-                                    <option value="rd">롯데카드</option>
-                                    <option value="hd">현대카드</option>
-                                    <option value="hn">하나카드</option>
-                                    <option value="ct">씨티카드</option>
-                                    <option value="kk">카카오뱅크</option>
-                                    <option value="kj">광주카드</option>
-                                    <option value="jb">전북카드</option>
-                                    <option value="sb">수협카드</option>
-                                    <option value="jj">제주카드</option>
-                                    <option value="cu">신협카드</option>
-                                    <option value="eb">우체국체크카드</option>
-                                    <option value="mg">새마을금고</option>
-                                    <option value="kdb">KDB산업체크카드</option>
-                                    <option value="nh">NH카드</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">할부 개월 수 <span style="color:red">*</span></label>
-                                <select id="installment" class="form-select" name="installment">
-                                	<option value="">선택하세요.</option>
-                                    <option value="1">일시불</option>
-                                    <option value="2">2개월</option>
-                                    <option value="3">3개월</option>
-                                    <option value="4">4개월</option>
-                                    <option value="5">5개월</option>
-                                    <option value="6">6개월</option>
-                                    <option value="7">7개월</option>
-                                    <option value="8">8개월</option>
-                                    <option value="9">9개월</option>
-                                    <option value="10">10개월</option>
-                                    <option value="11">11개월</option>
-                                    <option value="12">12개월</option>
-                                </select>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 
@@ -200,13 +152,6 @@
     <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
     
     <script type="text/javascript">
-    	// 결제 수단 선택에 따라 해당하는 셀렉트 박스 디스플레이
-		function checkMethod() {
-			if(document.getElementById("credit").checked) {
-    			document.getElementById("selectCredit").style.display = "block";
-    		} 
-    	}
-    	
     	// 유료 서비스 약관에 동의했을 경우에만 구매 버튼 활성화
     	document.getElementById("checkModal").addEventListener("click", function() {
     		if(document.getElementById("checkModal").checked) {
@@ -220,12 +165,6 @@
     	async function requestPay() {
     		if(!document.payForm.payMethod.checked) {
     			document.payForm.payMethod.focus();
-    			return false;
-    		} else if(document.payForm.payMethod.checked && document.payForm.cardCompany.value == "") {
-    			document.payForm.cardCompany.focus();
-    			return false;
-    		} else if(document.payForm.payMethod.checked && document.payForm.installment.value == "") {
-    			document.payForm.installment.focus();
     			return false;
     		} 
     		
@@ -298,13 +237,6 @@
     		
     	}
     	
-    	// KST 기준 ISO 문자열 생성 함수
-    	function getKSTISOString(date) {
-		    const tzOffset = 9 * 60; // 한국 시간 +9h
-		    const local = new Date(date.getTime() + tzOffset * 60000);
-		    // toISOString()로 나온 문자열에서 밀리초 제거하고 Z를 +09:00로 대체
-		    return local.toISOString().replace(/\.\d{3}/, '').replace('Z', '+09:00');
-		}
     	
     </script>
     

@@ -9,7 +9,7 @@
    ========================= --%>
 <c:url var="urlJobList" value="/comMy/job"/>
 <c:url var="urlJobCreate" value="/job/JobPosting"/>
-<c:url var="urlApplicantManage" value="/job/comApplicants"/>   <%-- ?jobId= --%>
+<c:url var="urlApplicantManage" value="/job/ApplicantManage"/>   <%-- ?jobId= --%>
 <c:url var="urlJobDetail" value="/job/JobDetail"/>               <%-- ?jobId= (있으면 사용) --%>
 <c:url var="urlJobEdit" value="/job/edit"/>                   <%-- ?jobId= (있으면 사용) --%>
 <c:url var="urlJobDelete" value="/comMy/delete"/>				  <!-- 삭제 -->

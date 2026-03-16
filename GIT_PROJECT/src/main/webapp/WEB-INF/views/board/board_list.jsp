@@ -13,7 +13,15 @@
 </head>
 <body>
 	<%-- 헤더 영역 --%>
-	<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+  <c:choose>
+	    <c:when test="${sessionScope.memberType == 'company'}">
+	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+	    </c:when>
+	
+	    <c:otherwise>
+	        <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	    </c:otherwise>
+	</c:choose>
 	
 	<%-- 컨텐츠 영역 --%>
 	<main class="container mt-5">
@@ -94,7 +102,7 @@
 								<td>${board.postId}</td>
 								<td>${board.title}</td>
 								<td>${board.authorMemberId}</td>
-								<td>${board.strCreatedAt}</td>
+								<td>${board.displayDateText}</td>
 								<td>${board.readcount}</td>
 							</tr>
 						</c:forEach>

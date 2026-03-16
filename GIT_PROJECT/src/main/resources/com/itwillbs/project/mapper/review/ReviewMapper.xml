@@ -6,7 +6,6 @@
 
 	<insert id="insertForm" useGeneratedKeys="true" keyProperty="coverLetterIdx">
 		INSERT INTO cover_letter (
-			-- cover_letter_idx(AI)
 			user_id
 			, title
 			, industry_idx
@@ -37,6 +36,22 @@
 	
 	</insert>
 	
+	<update id="updateForm">
+		UPDATE cover_letter
+		SET
+			title			= #{title}
+			, industry_idx	= (SELECT industry_idx FROM industry WHERE industry_code = #{industryCode})
+			, job_idx		= (SELECT job_idx FROM job_group WHERE job_code = #{jobCode})
+			, role_idx		= (SELECT role_idx FROM job_role WHERE role_code = #{roleCode})
+			, applied_field = #{appliedField}
+			, company_name 	= #{companyName}
+			, company_idx	= (SELECT company_idx FROM company_type WHERE company_code = #{companyCode})
+			, career_idx	= (SELECT career_idx FROM career_level WHERE career_code = #{careerCode})
+			, save_status	= #{saveStatus}
+		WHERE cover_letter_idx = #{coverLetterIdx}
+			AND user_id = #{userId}
+	</update>
+	
 	<update id="updateContent">
 		UPDATE cover_letter
 		SET 
@@ -53,4 +68,22 @@
 		DELETE FROM cover_letter
 		WHERE cover_letter_idx = #{coverLetterIdx}
 	</delete>
+	
+	<select id="selectCoverLetter" resultType="com.itwillbs.project.review.dto.CoverLetterDTO">
+		SELECT 
+			cover_letter_idx
+			, user_id
+			, title
+			, content
+			, industry_idx
+			, job_idx
+			, role_idx
+			, applied_field
+			, company_name
+			, company_idx
+			, career_idx
+			, save_status
+		FROM cover_letter
+		WHERE cover_letter_idx = #{coverLetterIdx}
+	</select>
 </mapper>

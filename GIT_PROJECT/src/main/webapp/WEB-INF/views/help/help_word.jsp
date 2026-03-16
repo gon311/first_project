@@ -43,40 +43,68 @@
 </head>
 
 <body>
-	<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	<c:choose>
+	    <c:when test="${sessionScope.memberType == 'company'}">
+	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+	    </c:when>
+	
+	    <c:otherwise>
+	        <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	    </c:otherwise>
+	</c:choose>
 	
 	<main>
 		<div class="cs-container">
-		    <section class="search-section">
-		        <h2>무엇을 도와드릴까요?</h2>
-		        <div class="search-box">
-		            <input type="text" placeholder="서비스 이용 중 궁금한 점을 입력해 주세요.">
-		            <i class="fa-solid fa-magnifying-glass"></i>
-		        </div>
-		    </section>
-		
+			<form action="<c:url value="/help/helpWord" />" method="post">
+			    <section class="search-section">
+			        <h2>무엇을 도와드릴까요?</h2>
+			        <div class="search-box">
+			            <input type="text" name="keyword" placeholder="서비스 이용 중 궁금한 점을 입력해 주세요.">
+			            <i class="fa-solid fa-magnifying-glass"></i>
+			        </div>
+			    </section>
+			</form>
 		    <nav class="cs-tabs">
-		        <div class="tab-item active" onclick="switchTab('person')">개인회원</div>
-		        <div class="tab-item" onclick="switchTab('company')">기업회원</div>
+		        <div class="tab-item nav-link ${userType eq 'user' ? 'active fw-bold' : ''}" onclick="location.href='?userType=user'">개인회원</div>
+		        <div class="tab-item nav-link ${userType eq 'com' ? 'active fw-bold' : ''}" onclick="location.href='?userType=com'">기업회원</div>
 		    </nav>
 		
 		    <section class="quick-menu" id="menu-grid">
-		        <div class="menu-card"><i class="fa-regular fa-user"></i><span>계정관리</span></div>
-		        <div class="menu-card"><i class="fa-regular fa-file-lines"></i><span>이력서관리</span></div>
-		        <div class="menu-card"><i class="fa-regular fa-paper-plane"></i><span>입사지원현황</span></div>
+		        <div class="menu-card" onclick="location.href='?userType=${userType}&category=account'"><i class="fa-regular fa-user"></i><span>계정/로그인</span></div>
+		        <div class="menu-card" onclick="location.href='?userType=${userType}&category=service'"><i class="fa-regular fa-file-lines"></i><span>이용문의</span></div>
+		        <div class="menu-card" onclick="location.href='?userType=${userType}&category=error'"><i class="fa-regular fa-paper-plane"></i><span>오류보고</span></div>
 		        <div class="menu-card" onclick="location.href='<c:url value="/help/notice" />'"><i class="fa-regular fa-bell"></i><span>공지사항</span></div>
 		    </section>
 		
 		    <section class="faq-section">
-		        <h3>자주 묻는 질문 TOP 5 <small style="font-size:14px; color:#4485ff; cursor:pointer;">전체보기 ></small></h3>
+		        <h3>
+		        	<c:choose>
+		        		<c:when test="${category eq 'account'}">계정/로그인 질문 TOP 10</c:when>
+		        		<c:when test="${category eq 'service'}">이용문의 질문 TOP 10</c:when>
+		        		<c:when test="${category eq 'error'}">오류보고 질문 TOP 10</c:when>
+		        		<c:otherwise>자주 묻는 질문 TOP 5 </c:otherwise>
+		        	</c:choose>
+		        	<small style="font-size:14px; color:#4485ff; cursor:pointer;">
+		        		<a href="<c:url value="/help/faq" />">전체보기 ></a>
+		        	</small>
+		        </h3>
 		        <div class="faq-list">
 		            <div class="faq-item">
-		                <div class="faq-q">비밀번호를 재설정하고 싶어요. <i class="fa-solid fa-chevron-down"></i></div>
-		                <div class="faq-a">로그인 페이지 하단의 '비밀번호 찾기'를 통해 등록된 이메일이나 휴대폰 번호로 본인 확인 후 재설정이 가능합니다.</div>
-		            </div>
-		            <div class="faq-item">
-		                <div class="faq-q">이력서를 기업에게 비공개로 설정할 수 있나요? <i class="fa-solid fa-chevron-down"></i></div>
-		                <div class="faq-a">이력서 관리 메뉴에서 각 이력서의 '공개 설정'을 '비공개'로 변경하시면 됩니다.</div>
+		            	<c:choose>
+                        	<c:when test = "${not empty faqList }">
+						    <c:forEach var="faq" items="${faqList}" varStatus="status">
+						        <%-- 1. 제목 행 --%>
+					            <div class="faq-q">${faq.faqTitle} <i class="fa-solid fa-chevron-down"></i></div>
+					            <div class="faq-a">${faq.faqContent}</div>
+						    </c:forEach>
+						    </c:when>
+						    <c:otherwise>
+	                    		<div class="text-center py-5 text-muted">
+	                    			<i class="bi bi-exclamation-circle fs-2 d-bold mb-2"></i>
+	                    			검색 결과가 없습니다.
+	                    		</div>
+						    </c:otherwise>
+					    </c:choose>
 		            </div>
 		        </div>
 		    </section>
@@ -90,23 +118,20 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 	    // FAQ 아코디언 기능
-	    $(document).ready(function(){
-	        $('.faq-q').click(function(){
-	            $(this).next('.faq-a').slideToggle(200);
-	            $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
-	        });
-	    });
+		$('.faq-q').click(function() {
+		    const $answer = $(this).next('.faq-a');
+		
+		    // 답변 슬라이드 제어
+		    $('.faq-a').not($answer).slideUp(200);
+		    $answer.slideToggle(200);
+		
+		    // 아이콘 제어
+		    $('.faq-q').not(this).find('i').attr('class', 'fas fa-chevron-down');
+		    $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
+		});
 	
-	    // 탭 전환 가짜 로직 (프로토타입용)
-	    function switchTab(type) {
-	        $('.tab-item').removeClass('active');
-	        if(type === 'person') {
-	            $('.tab-item:contains("개인회원")').addClass('active');
-	            // 여기에 개인용 아이콘 변경 로직 추가 가능
-	        } else {
-	            $('.tab-item:contains("기업회원")').addClass('active');
-	            // 여기에 기업용 아이콘 변경 로직 추가 가능
-	        }
+	    window.onload = function() {
+	    	!location.search && (location.href = '?userType=user');
 	    }
 	</script>
 

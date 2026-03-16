@@ -12,7 +12,15 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-	<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+		<c:choose>
+	    <c:when test="${sessionScope.memberType == 'company'}">
+	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+	    </c:when>
+	
+	    <c:otherwise>
+	        <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	    </c:otherwise>
+	</c:choose>
 
     <main class="flex-grow-1 d-flex justify-content-center align-items-center py-5">
         
@@ -33,7 +41,7 @@
                                 	type="text" 
                                 	class="form-control form-control-lg ps-5" 
                                 	name="email" 
-                                	value="${cookie['remember-type'].value == 'P' ? type == 'P' ? errorId : cookie['remember-id'].value : ''}"
+                                	value="${cookie['remember-type'].value == 'P' ? cookie['remember-id'].value : type == 'P' ? errorId : ''}"
                                 	placeholder="개인 ID">
                             </div>
                             <div class="position-relative">
@@ -70,7 +78,7 @@
                         <div class="col-9">
                             <div class="position-relative mb-2">
                                 <i class="fa-regular fa-building position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>
-                                <input type="text" class="form-control form-control-lg ps-5" name="email" value="${cookie['remember-type'].value == 'C' ? type == 'C' ? errorId : cookie['remember-id'].value : ''}" placeholder="기업 ID">
+                                <input type="text" class="form-control form-control-lg ps-5" name="email" value="${cookie['remember-type'].value == 'C' ? cookie['remember-id'].value : type == 'C' ? errorId : ''}" placeholder="기업 ID">
                             </div>
                             <div class="position-relative">
                                 <i class="fa-solid fa-lock position-absolute top-50 start-0 translate-middle-y ms-3 icon-left"></i>

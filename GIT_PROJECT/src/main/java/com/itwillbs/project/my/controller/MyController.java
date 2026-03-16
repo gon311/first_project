@@ -1,5 +1,6 @@
 package com.itwillbs.project.my.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -68,7 +69,21 @@ public class MyController {
 	    return "/my/myInfo";
 	}
 	
-
+	// 회원 탈퇴
+	@GetMapping("/user/delete")
+	public String userdelete(HttpSession session) {
+		
+		String sId = (String) session.getAttribute("sId");
+		System.out.println(sId);
+		if (sId == null) return "redirect:/user/login_form";
+		myService.deleteUser(sId);
+		System.out.println(sId);
+		
+		session.invalidate();
+		
+		return "redirect:/";
+	}
+	
 	// 내정보 수정
 	@GetMapping("/updateInfo")
 	public String updateInfoForm(HttpSession session, Model model) {
@@ -88,13 +103,12 @@ public class MyController {
 
 	    String sId = (String) session.getAttribute("sId");
 	    if (sId == null) return "redirect:/user/login_form";
-	    
-	    // ------------------------------------------------------
-	    // 입력값 검증
-	    String userName = myDTO.getUserName() == null ? "" : myDTO.getUserName().trim();
-	    String phone    = myDTO.getPhone()    == null ? "" : myDTO.getPhone().trim();
 
-	    // 1) 빈값
+	    String userName = myDTO.getUserName() == null ? "" : myDTO.getUserName().trim();
+	    String phone    = myDTO.getPhone() == null ? "" : myDTO.getPhone().trim();
+	    String gender   = myDTO.getGender() == null ? "" : myDTO.getGender().trim();
+	    String country  = myDTO.getCountry() == null ? "" : myDTO.getCountry().trim();
+
 	    if (userName.isEmpty() || phone.isEmpty()) {
 	        model.addAttribute("currentMenu", "myInfo");
 	        model.addAttribute("loginUser", myService.getUser(sId));
@@ -102,7 +116,6 @@ public class MyController {
 	        return "/my/updateInfo";
 	    }
 
-	    // 2) 형식 검증(이름/전화번호)
 	    if (!userName.matches("^[가-힣a-zA-Z\\s]{2,20}$")) {
 	        model.addAttribute("currentMenu", "myInfo");
 	        model.addAttribute("loginUser", myService.getUser(sId));
@@ -117,27 +130,36 @@ public class MyController {
 	        return "/my/updateInfo";
 	    }
 	    
-	    // ------------------------------------------------------
-	    
-	    // 조작 방지: 이메일은 세션 기준으로 고정 (WHERE email에 쓸 값)
-	    myDTO.setEmail(sId);
+	    if (myDTO.getBirthDate() != null && myDTO.getBirthDate().isAfter(LocalDate.now())) {
+	        model.addAttribute("currentMenu", "myInfo");
+	        model.addAttribute("loginUser", myService.getUser(sId));
+	        model.addAttribute("errorMsg", "생년월일은 오늘 이후 날짜를 선택할 수 없습니다.");
+	        return "/my/updateInfo";
+	    }
 
-	    // 디버깅 로그
-	    log.debug("[updateInfo POST] sId={}, userName={}, phone={}",
-	            sId, myDTO.getUserName(), myDTO.getPhone());
+	    if (!gender.isEmpty() && !gender.matches("^[MFN]$")) {
+	        model.addAttribute("currentMenu", "myInfo");
+	        model.addAttribute("loginUser", myService.getUser(sId));
+	        model.addAttribute("errorMsg", "성별 값이 올바르지 않습니다.");
+	        return "/my/updateInfo";
+	    }
+
+	    if (!country.isEmpty() && country.length() > 60) {
+	        model.addAttribute("currentMenu", "myInfo");
+	        model.addAttribute("loginUser", myService.getUser(sId));
+	        model.addAttribute("errorMsg", "국적 값이 올바르지 않습니다.");
+	        return "/my/updateInfo";
+	    }
+
+	    myDTO.setEmail(sId); // 조작 방지
 
 	    int updated = myService.updateUser(myDTO);
-	    log.debug("[updateInfo POST] updatedRows={}", updated);
-	    
-	    // 업데이트 갱신
+
 	    if (updated > 0) {
 	        session.setAttribute("userName", myDTO.getUserName());
 	    }
-	    
 
-	    ra.addFlashAttribute("msg", updated > 0 ? "저장 완료!" : "저장 실패(변경된 행 0)");
-
-
+	    ra.addFlashAttribute("msg", updated > 0 ? "저장 완료!" : "저장 실패!");
 	    return "redirect:/my/myInfo";
 	}
 	

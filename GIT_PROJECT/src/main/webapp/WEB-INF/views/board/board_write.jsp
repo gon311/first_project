@@ -6,12 +6,23 @@
 <head>
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 <link rel="stylesheet" href="<c:url value='/resources/css/board/board_write.css'/>" type="text/css">
+
+<!-- Summernote Lite -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 </head>
 
 <body>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+<c:choose>
+  <c:when test="${sessionScope.memberType == 'company'}">
+    <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+  </c:when>
+  <c:otherwise>
+    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+  </c:otherwise>
+</c:choose>
 
-<!-- URL주소 -->
 <c:url var="urlBoardList"  value="/board"/>
 <c:url var="urlBoardWrite" value="/board/write"/>
 
@@ -31,10 +42,11 @@
             </div>
 
             <div style="min-width:260px; max-width:320px;">
-              <select class="select" name="category" id="category">
+              <select class="select" name="boardType" id="category">
                 <option value="JOB">취준/이직</option>
                 <option value="CAREER">회사생활/커리어</option>
                 <option value="FREE">자유주제</option>
+                <option value="INTERVIEW_REVIEW">면접후기</option>
               </select>
             </div>
           </div>
@@ -52,24 +64,12 @@
           </div>
 
           <div class="editor">
-            <div class="editor-toolbar">
-              <button type="button" class="tool-btn" data-tool="bold">B</button>
-              <button type="button" class="tool-btn" data-tool="italic">I</button>
-              <button type="button" class="tool-btn" data-tool="underline">U</button>
-              <span style="width:1px; height:18px; background:#e5e7eb; display:inline-block; margin:0 4px;"></span>
-              <button type="button" class="tool-btn" data-tool="bullet">• 목록</button>
-              <button type="button" class="tool-btn" data-tool="quote">“ 인용</button>
-            </div>
-
-            <textarea class="editor-area" name="content" id="content"
-                      placeholder="등록한 글은 사용하는 닉네임으로 등록됩니다.&#10;* 타인의 권리를 침해하거나 부적절한 내용은 사전 공지 없이 삭제될 수 있어요..&#10;"
-                      maxlength="5000" required></textarea>
+            <textarea name="content" id="content" required></textarea>
           </div>
 
           <div class="counter"><span id="contentCount">0</span>/5000자</div>
         </div>
 
-        <!-- 첨부파일 -->
         <div class="section">
           <div class="label">첨부파일 <span class="hint">여러 파일 업로드 가능</span></div>
           <input type="file" class="input" name="files" multiple>
@@ -109,15 +109,38 @@
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const content = document.getElementById("content");
-    const countEl = document.getElementById("contentCount");
-
-    function updateCount() {
-      countEl.textContent = content.value.length;
+  $(function () {
+    function getPlainText(html) {
+      return $('<div>').html(html).text().trim();
     }
-    content.addEventListener("input", updateCount);
-    updateCount();
+
+    function getPlainTextLength(html) {
+      return getPlainText(html).replace(/\s/g, '').length;
+    }
+
+    function updateCount(contents) {
+      $('#contentCount').text(getPlainTextLength(contents));
+    }
+
+    $('#content').summernote({
+      placeholder: '등록한 글은 사용하는 닉네임으로 등록됩니다.\n* 타인의 권리를 침해하거나 부적절한 내용은 사전 공지 없이 삭제될 수 있어요.',
+      tabsize: 2,
+      height: 320,
+      toolbar: [
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['insert', ['link', 'table']],
+        ['view', ['codeview']]
+      ],
+      callbacks: {
+        onInit: function () {
+          updateCount($('#content').summernote('code'));
+        },
+        onChange: function (contents) {
+          updateCount(contents);
+        }
+      }
+    });
 
     const tagWrap = document.getElementById("tagWrap");
     const tags = tagWrap.querySelectorAll(".tag");
@@ -147,8 +170,27 @@
         }, 0);
       });
     });
+
+    $('#writeForm').on('submit', function (e) {
+      const html = $('#content').summernote('code');
+      const plainText = getPlainText(html);
+      const textLength = plainText.replace(/\s/g, '').length;
+
+      if (!plainText) {
+        e.preventDefault();
+        alert('내용을 입력해주세요.');
+        $('#content').summernote('focus');
+        return false;
+      }
+
+      if (textLength > 5000) {
+        e.preventDefault();
+        alert('내용은 최대 5000자까지 입력할 수 있어요.');
+        $('#content').summernote('focus');
+        return false;
+      }
+    });
   });
 </script>
-
 </body>
 </html>

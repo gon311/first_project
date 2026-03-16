@@ -13,4 +13,6 @@ public interface BoardCommentMapper {
     BoardCommentDTO selectComment(Long commentId);
 
     int deleteComment(Long commentId);
+    
+    int deleteCommentsByPostId(Long postId); // 댓글 삭제
 }

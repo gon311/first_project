@@ -3,6 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
@@ -34,4 +35,13 @@
 		<beans:property name="maxUploadSize" value="10485760" /> <!-- 10mb -->
 		<beans:property name="defaultEncoding" value="UTF-8" />
 	</beans:bean>	
+	
+	
+	<mvc:interceptors>
+	    <mvc:interceptor>
+	        <mvc:mapping path="/admin/**"/> 
+	        <mvc:exclude-mapping path="/admin/user/login"/> 
+			<beans:bean class="com.itwillbs.project.admin.controller.AdminInterceptor" />
+	    </mvc:interceptor>
+	</mvc:interceptors>
 </beans:beans>

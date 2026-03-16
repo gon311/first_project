@@ -1141,7 +1141,7 @@
 			<if test="category !=null and category != '' and category != 'all'">
 				AND category = #{category}
 			</if>
-				<if test="faqId != null">
+			<if test="faqId != null">
 	            AND faq_id = #{faqId}
 	        </if>
 	        

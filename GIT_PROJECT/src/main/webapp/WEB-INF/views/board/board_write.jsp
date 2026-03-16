@@ -48,6 +48,7 @@
                 <option value="JOB">취준/이직</option>
                 <option value="CAREER">회사생활/커리어</option>
                 <option value="FREE">자유주제</option>
+                <option value="INTERVIEW_REVIEW">면접후기</option>
               </select>
             </div>
           </div>

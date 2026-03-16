@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.io.File;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -296,6 +294,7 @@ public class BoardController {
 	    return "redirect:/board/detail?postId=" + postId;
 	}
 	
+	// 게시판 에디터 이미지 업로드
 	@PostMapping("/image/upload")
 	@ResponseBody
 	public Map<String, Object> uploadEditorImage(@RequestParam("file") MultipartFile file,
@@ -315,30 +314,33 @@ public class BoardController {
 	        return result;
 	    }
 
-	    String uploadDir = request.getServletContext().getRealPath("/resources/upload/editor");
+	    FileDTO fileDTO = FileUtils.uploadBoardEditorImage(file);
 
-	    File dir = new File(uploadDir);
-	    if (!dir.exists()) {
-	        dir.mkdirs();
-	    }
-
-	    String originalName = file.getOriginalFilename();
-	    String ext = "";
-
-	    if (originalName != null && originalName.lastIndexOf(".") > -1) {
-	        ext = originalName.substring(originalName.lastIndexOf("."));
-	    }
-
-	    String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
-
-	    File target = new File(dir, savedName);
-	    file.transferTo(target);
-
-	    String imageUrl = request.getContextPath() + "/resources/upload/editor/" + savedName;
+	    String imageUrl = request.getContextPath()
+	            + "/board/image/view?filePath="
+	            + fileDTO.getFilePath()
+	            + "&storedName="
+	            + fileDTO.getStoredName();
 
 	    result.put("success", true);
 	    result.put("url", imageUrl);
+
 	    return result;
+	}
+	
+	@GetMapping("/image/view")
+	public ResponseEntity<Resource> viewEditorImage(@RequestParam String filePath,
+	                                                @RequestParam String storedName) {
+	    FileDTO fileDTO = new FileDTO();
+	    fileDTO.setFilePath(filePath);
+	    fileDTO.setStoredName(storedName);
+
+	    FileResourceDTO fileResourceDTO = FileUtils.getImageResource(fileDTO);
+	    Resource resource = fileResourceDTO.getResource();
+
+	    return ResponseEntity.ok()
+	            .contentType(fileResourceDTO.getContentType())
+	            .body(resource);
 	}
 	
 	

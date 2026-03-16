@@ -50,6 +50,7 @@
                 <option value="JOB" ${post.boardType eq 'JOB' ? 'selected' : ''}>취준/이직</option>
                 <option value="CAREER" ${post.boardType eq 'CAREER' ? 'selected' : ''}>회사생활/커리어</option>
                 <option value="FREE" ${post.boardType eq 'FREE' ? 'selected' : ''}>자유주제</option>
+                <option value="INTERVIEW_REVIEW">면접후기</option>
               </select>
             </div>
           </div>

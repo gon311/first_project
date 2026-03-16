@@ -28,7 +28,8 @@ public class FileUtils {
 	// 업로드에 사용될 기본 경로들을 필드에 저장
 	private static final String uploadBaseLocation = "/upload";
 	private static final String boardFileLocation = "/board";
-	private static final String qnaFileLocation = "/qna"; 
+	private static final String qnaFileLocation = "/qna";
+	private static final String editorFileLocation = "/editor";
 	
 //	private static final String noticeFileLocation = "/notice";
 	
@@ -206,4 +207,96 @@ public class FileUtils {
         }
         return subDir;
     }
+    
+ // 게시판 에디터 이미지 업로드
+    public static FileDTO uploadBoardEditorImage(MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "업로드할 이미지가 없습니다.");
+        }
+
+        String originName = file.getOriginalFilename();
+        String fileExt = "";
+
+        if (originName != null && originName.lastIndexOf(".") > -1) {
+            fileExt = originName.substring(originName.lastIndexOf(".") + 1);
+        }
+
+        String filePath = createBoardEditorDirectories();
+
+        String storedName = UUID.randomUUID().toString().substring(24) + "_" + originName;
+
+        Path uploadDirectory = Paths.get(
+                uploadBaseLocation,
+                boardFileLocation,
+                editorFileLocation,
+                filePath
+        ).toAbsolutePath().normalize();
+
+        if (!Files.exists(uploadDirectory)) {
+            Files.createDirectories(uploadDirectory);
+        }
+
+        Path uploadPath = uploadDirectory.resolve(storedName);
+        file.transferTo(uploadPath);
+
+        FileDTO fileDTO = new FileDTO();
+        fileDTO.setOriginName(originName);
+        fileDTO.setStoredName(storedName);
+        fileDTO.setFilePath("editor/" + filePath); // 중요
+        fileDTO.setFileSize(file.getSize());
+        fileDTO.setFileExt(fileExt);
+
+        return fileDTO;
+    }
+
+    // 게시판 에디터 이미지 조회
+    public static FileResourceDTO getImageResource(FileDTO fileDTO) {
+        try {
+            Path uploadPath = Paths.get(
+                    uploadBaseLocation,
+                    boardFileLocation,
+                    fileDTO.getFilePath(),
+                    fileDTO.getStoredName()
+            ).toAbsolutePath().normalize();
+
+            Resource resource = new FileSystemResource(uploadPath);
+
+            if (!resource.exists() || !resource.isReadable()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다");
+            }
+
+            String contentType = Files.probeContentType(uploadPath);
+
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+
+            return new FileResourceDTO(resource, null, contentType);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 조회 실패");
+        }
+    }
+
+    // 게시판 에디터 이미지 날짜 폴더 생성
+    private static String createBoardEditorDirectories() throws IOException {
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String subDir = today.format(dtf);
+
+        Path uploadPath = Paths.get(
+                uploadBaseLocation,
+                boardFileLocation,
+                editorFileLocation,
+                subDir
+        ).toAbsolutePath().normalize();
+
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        return subDir;
+    }
+    
 }

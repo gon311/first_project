@@ -232,3 +232,54 @@
     color:#64748b;
   }
   .kebabBtn:hover{ background:#f8fafc; }
+  
+  
+  
+  /* ====== 빈 상태 ====== */
+.emptyState{
+  margin-top: 18px;
+  border: 1px solid #eef2f7;
+  border-radius: 14px;
+  background: #fff;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.emptyState-icon{
+  font-size: 44px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.emptyState-title{
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #111827;
+  letter-spacing: -.2px;
+}
+
+.emptyState-desc{
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: .95rem;
+  font-weight: 700;
+}
+
+.emptyState .btn{
+  margin-top: 18px;
+  border-radius: 10px;
+  font-weight: 800;
+  padding: .65rem 1.2rem;
+}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

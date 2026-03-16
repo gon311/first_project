@@ -125,9 +125,14 @@
             </c:when>
 
             <c:otherwise>
-              <div class="reviewCard">
-                아직 작성한 자기소개서가 없습니다.
-              </div>
+			  <div class="emptyState">
+			    <div class="emptyState-icon">
+			      <i class="bi bi-pencil-square"></i>
+			    </div>
+			    <div class="emptyState-title">작성한 자기소개서가 없어요</div>
+			    <div class="emptyState-desc">자기소개서를 미리 작성해두면 지원할 때 훨씬 편해져요.</div>
+			    <a href="${urlReviewCreate}" class="btn btn-primary">자기소개서 작성하기</a>
+			  </div>
             </c:otherwise>
 
           </c:choose>

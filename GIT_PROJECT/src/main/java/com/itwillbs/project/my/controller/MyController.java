@@ -23,10 +23,12 @@ import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.PasswordChangeDTO;
 import com.itwillbs.project.my.dto.PaymentCond;
+import com.itwillbs.project.my.dto.QnaCond;
 import com.itwillbs.project.my.dto.RecommendedCond;
 import com.itwillbs.project.my.dto.RecommendedRowDTO;
 import com.itwillbs.project.my.dto.MyReviewDTO;
 import com.itwillbs.project.my.dto.MyPaymentDTO;
+import com.itwillbs.project.my.dto.MyQnaDTO;
 import com.itwillbs.project.my.service.MyService;
 
 import lombok.RequiredArgsConstructor;
@@ -627,6 +629,44 @@ public class MyController {
 	         + "&size=" + size
 	         + "&sort=" + sort
 	         + "&onlyApplyable=" + onlyApplyable;
+	}
+	
+	// 내 문의 내역
+	@GetMapping("/qna")
+	public String qnaList(HttpSession session,
+	                      Model model,
+	                      @RequestParam(defaultValue = "all") String status,
+	                      @RequestParam(defaultValue = "") String q,
+	                      @RequestParam(defaultValue = "1") int page,
+	                      @RequestParam(defaultValue = "5") int size) {
+
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    model.addAttribute("currentMenu", "qna");
+
+	    MyDTO user = myService.getUser(sId);
+	    model.addAttribute("loginUser", user);
+
+	    QnaCond cond = new QnaCond();
+	    cond.setUserId(user.getUserId());
+	    cond.setStatus(status);
+	    cond.setQ(q);
+	    cond.getPage().setPage(page);
+	    cond.getPage().setSize(size);
+
+	    List<MyQnaDTO> qnaList = myService.getQnaList(cond);
+	    int total = myService.getQnaCount(cond);
+
+	    PageRes pager = PageRes.of(cond.getPage(), total);
+
+	    model.addAttribute("qnaList", qnaList);
+	    model.addAttribute("pager", pager);
+
+	    model.addAttribute("status", status);
+	    model.addAttribute("q", q);
+
+	    return "/my/qna";
 	}
 	
 	

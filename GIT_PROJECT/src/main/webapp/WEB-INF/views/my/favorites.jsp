@@ -89,9 +89,11 @@
            ========================= -->
         <div class="list">
           <c:if test="${empty favorites}">
-            <div style="padding:20px; color:#6b7280; font-weight:800;">
-              관심 공고가 없습니다.
-            </div>
+			  <div class="empty">
+			    <div style="font-size:48px;">💙</div>
+			    <div class="big">관심 공고가 없습니다</div>
+			    <div>마음에 드는 채용공고를 스크랩하면 여기에서 모아볼 수 있어요</div>
+			  </div>
           </c:if>
 
           <c:forEach var="fav" items="${favorites}">

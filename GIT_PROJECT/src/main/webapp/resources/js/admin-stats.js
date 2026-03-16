@@ -7,7 +7,7 @@
 var STAT_CONFIG = {
     user: { titles: ["성별 통계", "연령대별 통계", "직무별 통계"], apiUrl: "/project/admin/api/user-stats" },
     com: { titles: ["기업별 공고 등록수", "모집 분야별 비중", "고용 형태 분포"], apiUrl: "/project/admin/api/com-stats" },
-    userPay: { titles: ["구직자 상품 판매량", "결제 수단 비중", "최근 매출 추이"], apiUrl: "/project/admin/api/user-pay-stats" },
+    userPay: { titles: ["구직자 상품 판매 비중", "결제 수단 비중", "최근 매출 추이"], apiUrl: "/project/admin/api/user-pay-stats" },
     comPay: { titles: ["매출 상위 기업(TOP 5)", "기업 프리미엄 비중", "최근 매출 추이"], apiUrl: "/project/admin/api/com-pay-stats" }
 };
 

@@ -9,7 +9,6 @@
 		select	count(*)
 		from 
 			user u left outer join user_product p
-		on
 			u.user_id = p.user_id
 		left outer join
 			product pd
@@ -1231,7 +1230,7 @@
 			job_id = #{jobId}
 	</select>
     
-    <insert id="insertBanner" parameterType="com.itwillbs.project.admin.dto.BannerDTO">
+    <insert id="insertBanner">
     INSERT INTO banner (job_id, comp_id, is_display)
     SELECT j.job_id, j.comp_id, 1
     FROM job_posting j

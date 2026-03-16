@@ -18,7 +18,7 @@
 	            </div>
 	            <div class="col-md-8 text-end">
 	                <form class="d-inline-flex gap-2 md-4" action = "<c:url value = '/admin/contents/notice'/>" >
-	                    <select class="form-select form-select-sm" style="width: 150px;" name = "searchType">
+	                    <select class="form-select form-select-sm" style="width: 150px;" name = "type">
 	                        <option value="all" ${searchDTO.type=='all' ? 'selected' : '' }>전체</option>
 	                        <option value="noticeTitle" ${searchDTO.type=='title' ?  'selected' : ''}>공지사항 명</option>
 	                        <option value="status" ${searchDTO.type == 'status' ? 'selected' : '' }>게시 상태</option>

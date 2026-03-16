@@ -1,6 +1,7 @@
 package com.itwillbs.project.help.mapper;
 
 import com.itwillbs.project.help.dto.SupportQnaDTO;
+import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.common.dto.FileDTO;
 
 import java.util.List;
@@ -17,4 +18,8 @@ public interface QnaMapper {
     
  // 특정 사용자의 QNA 리스트 가져오기
     List<SupportQnaDTO> selectQnaList(Long writerId);
+    
+    
+    // 상세 목록
+	QnaDTO getQnaById(int qnaId);
 }

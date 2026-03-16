@@ -101,60 +101,216 @@
 		        </tr>
 		      </thead>
 		
-		      <tbody>
-		        <c:forEach var="p" items="${payments}">
-		          <tr>
-		            <!-- 결제일시 -->
-		            <td>${p.payDateText}</td>
-		
-		            <!-- 상품명(상세 링크) -->
-		            <td>
-		              <a class="prod-link" href="${urlPaymentDetail}?payId=${p.payId}">
-		                ${p.productName}
-		              </a>
-		            </td>
-		
-		            <!-- 금액 -->
-		            <td>${p.payPrice}원</td>
-		
-		            <!-- 상태 배지 -->
-		            <td>
-		              <c:choose>
-		                <c:when test="${p.payStatus == 'paid' && p.payPrice == 0}">
-		                  <span class="badge badge-free">무료결제</span>
-		                </c:when>
-		                <c:when test="${p.payStatus == 'paid'}">
-		                  <span class="badge badge-paid">결제완료</span>
-		                </c:when>
-		                <c:when test="${p.payStatus == 'ready'}">
-		                  <span class="badge badge-unpaid">미결제</span>
-		                </c:when>
-		                <c:otherwise>
-		                  <span class="badge badge-cancelled">취소됨</span>
-		                </c:otherwise>
-		              </c:choose>
-		            </td>
-		
-		            <!-- 수단/증빙 -->
-		            <td>
-		              <c:choose>
-		                <c:when test="${empty p.payMethod}">-</c:when>
-		                <c:otherwise>${p.payMethod}</c:otherwise>
-		              </c:choose>
-		            </td>
-		
-		            <!-- 비고 -->
-		            <td>
-		              <c:choose>
-		                <c:when test="${p.payStatus == 'ready'}">
-		                  <a class="btn-pay" href="${urlPayAgain}?payId=${p.payId}">결제하기</a>
-		                </c:when>
-		                <c:otherwise>-</c:otherwise>
-		              </c:choose>
-		            </td>
-		          </tr>
-		        </c:forEach>
-		      </tbody>
+			<tbody>
+			    <c:forEach var="p" items="${payments}" varStatus="st">
+
+			        <!-- ===================== -->
+			        <!-- 기본 결제 목록 행 -->
+			        <!-- ===================== -->
+			        <tr class="payment-row">
+			
+			            <!-- 결제일시 -->
+			            <td>
+			                ${p.payDateText}
+			            </td>
+			
+			            <!-- 상품명 (클릭하면 상세 펼침) -->
+			            <td>
+			                <button type="button"
+			                        class="prod-link detail-toggle"
+			                        data-target="detail-${st.index}">
+			                    ${p.productName}
+			                </button>
+			            </td>
+			
+			            <!-- 결제금액 -->
+			            <td>
+			                ${p.payPrice}원
+			            </td>
+			
+			            <!-- 결제상태 -->
+			            <td>
+			                <c:choose>
+			
+			                    <c:when test="${p.payStatus == 'paid'}">
+			                        <span class="badge badge-paid">
+			                            결제완료
+			                        </span>
+			                    </c:when>
+			
+			                    <c:when test="${p.payStatus == 'ready'}">
+			                        <span class="badge badge-unpaid">
+			                            미결제
+			                        </span>
+			                    </c:when>
+			
+			                    <c:otherwise>
+			                        <span class="badge badge-cancelled">
+			                            취소됨
+			                        </span>
+			                    </c:otherwise>
+			
+			                </c:choose>
+			            </td>
+			
+			            <!-- 결제수단 -->
+			            <td>
+			                <c:choose>
+			
+			                    <c:when test="${empty p.payMethod}">
+			                        -
+			                    </c:when>
+			
+			                    <c:otherwise>
+			                        ${p.payMethod}
+			                    </c:otherwise>
+			
+			                </c:choose>
+			            </td>
+			
+			            <!-- 비고 -->
+			            <td>
+			                <c:choose>
+			
+			                    <c:when test="${p.payStatus == 'ready'}">
+			                        <a class="btn-pay"
+			                           href="${urlPayAgain}?payId=${p.payId}">
+			                            결제하기
+			                        </a>
+			                    </c:when>
+			
+			                    <c:otherwise>
+			                        -
+			                    </c:otherwise>
+			
+			                </c:choose>
+			            </td>
+			
+			        </tr>
+			
+			
+			        <!-- ===================== -->
+			        <!-- 요약 상세 영역 -->
+			        <!-- ===================== -->
+			        <tr id="detail-${st.index}"
+			            class="detail-row"
+			            style="display:none;">
+			
+			            <td colspan="6">
+			
+			                <div class="payment-mini-detail">
+			
+			                    <div class="mini-grid">
+			
+			                        <!-- 상품명 -->
+			                        <div>
+			                            <span class="label">
+			                                상품
+			                            </span>
+			
+			                            <span class="value">
+			                                ${p.productName}
+			                            </span>
+			                        </div>
+			
+			
+			                        <!-- 결제일시 -->
+			                        <div>
+			                            <span class="label">
+			                                결제일
+			                            </span>
+			
+			                            <span class="value">
+			                                ${p.payDateText}
+			                            </span>
+			                        </div>
+			
+			
+			                        <!-- 결제금액 -->
+			                        <div>
+			                            <span class="label">
+			                                금액
+			                            </span>
+			
+			                            <span class="value">
+			                                ${p.payPrice}원
+			                            </span>
+			                        </div>
+			
+			
+			                        <!-- 결제수단 -->
+			                        <div>
+			                            <span class="label">
+			                                결제수단
+			                            </span>
+			
+			                            <span class="value">
+			
+			                                <c:choose>
+			
+			                                    <c:when test="${empty p.payMethod}">
+			                                        -
+			                                    </c:when>
+			
+			                                    <c:otherwise>
+			                                        ${p.payMethod}
+			                                    </c:otherwise>
+			
+			                                </c:choose>
+			
+			                            </span>
+			                        </div>
+			
+			
+			                        <!-- 결제상태 -->
+			                        <div>
+			                            <span class="label">
+			                                상태
+			                            </span>
+			
+			                            <span class="value">
+			
+			                                <c:choose>
+			
+			                                    <c:when test="${p.payStatus == 'paid'}">
+			                                        결제완료
+			                                    </c:when>
+			
+			                                    <c:when test="${p.payStatus == 'ready'}">
+			                                        미결제
+			                                    </c:when>
+			
+			                                    <c:otherwise>
+			                                        취소됨
+			                                    </c:otherwise>
+			
+			                                </c:choose>
+			
+			                            </span>
+			                        </div>
+			
+			
+			                        <!-- 주문번호 -->
+			                        <div>
+			                            <span class="label">
+			                                주문번호
+			                            </span>
+			
+			                            <span class="value">
+			                                ${p.payId}
+			                            </span>
+			                        </div>
+			
+			                    </div>
+			
+			                </div>
+			
+			            </td>
+			
+			        </tr>
+			
+			    </c:forEach>
+			</tbody>
 		    </table>
 		  </div>
 
@@ -185,6 +341,35 @@
 </main>
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+
+<script>
+
+document.querySelectorAll(".detail-toggle").forEach(function(btn){
+
+    btn.addEventListener("click", function(){
+
+        const id = this.dataset.target;
+        const row = document.getElementById(id);
+
+        if(row.style.display === "table-row"){
+
+            row.style.display = "none";
+
+        }else{
+
+            document.querySelectorAll(".detail-row").forEach(function(r){
+                r.style.display = "none";
+            });
+
+            row.style.display = "table-row";
+
+        }
+
+    });
+
+});
+
+</script>
 
 </body>
 </html>

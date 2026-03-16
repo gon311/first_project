@@ -14,7 +14,7 @@
 
 <c:url var="urlQnaList" value="/my/qna"/>
 <c:url var="urlQnaWrite" value="/help/QnAWrite"/>
-<c:url var="urlQnaDetail" value="/help/detail"/>
+<c:url var="urlQnaDetail" value="/help/QnADetail"/>
 
 <main class="container-fluid px-0 mypage-wrap">
   <div class="row g-0">

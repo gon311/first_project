@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.help.dto.SupportQnaDTO;
 import com.itwillbs.project.help.service.QnaService;
 
@@ -74,6 +75,17 @@ public class QnaController {
         
         return "/help/qna_list"; // views/help/qna_list.jsp
     }
+    
+
+    //	1:1 문의글 상세 조회
+	@GetMapping("/QnADetail")
+	public String qnaDetail(@RequestParam("qnaId") int qnaId
+							, Model model) {
+		QnaDTO qnaDTO = qnaService.getQnADetail(qnaId);
+		
+		model.addAttribute("qnaDTO", qnaDTO);
+		return "help/qnaDetail";
+	}
     
     
 }

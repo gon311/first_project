@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+/* 특정 셀에 말줄임 적용을 위한 클래스 */
+.text-ellipsis {
+    max-width: 200px;       /* 원하는 최대 너비 설정 */
+    white-space: nowrap;    /* 줄바꿈 방지 */
+    overflow: hidden;       /* 넘치는 부분 숨김 */
+    text-overflow: ellipsis; /* ... 표시 */
+}

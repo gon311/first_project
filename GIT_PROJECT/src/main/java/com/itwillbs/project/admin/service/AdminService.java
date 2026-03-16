@@ -1,6 +1,8 @@
 package com.itwillbs.project.admin.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -388,6 +390,7 @@ public class AdminService{
 		if(listCount == 0) {
 			return new SubmitPageDTO(new ArrayList<>(), null);
 		}
+		
 		// 2) 한 페이지에서 표시할 목록 갯수 설정
 		int pageListLimit = 5;	// 한 페이지 당 표시할 페이지 목록 번호 갯수
 		
@@ -407,12 +410,13 @@ public class AdminService{
 		
 		// 3. 페이징 정보를 관리하는 객체에 pageInfoDTO 객체에 계산 결과 저장
 		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage, startPage, endPage, pageNum);
-		 
+		
 		// 4. 공고 목록 조회
-		List<SubmitDTO> SubmitList = adminMapper.selectSubmitList(startRow, listLimit, keyword, startDate, endDate, submitStatus, sort);
+		List<SubmitDTO> submitList = adminMapper.selectSubmitList(startRow, listLimit, keyword, startDate, endDate, submitStatus, sort);
+		
 		  
 		// 5. SubmitPageDTO 객체에 게시물 목록 정보와 페이징 정보 저장 후 리턴
-		return new SubmitPageDTO(SubmitList, pageInfoDTO);
+		return new SubmitPageDTO(submitList, pageInfoDTO);
 	}
 	
 	// 제출된 공고 상세 조회
@@ -543,9 +547,10 @@ public class AdminService{
 		return adminMapper.getBannerList(bannerDTO);
 	}
 	public void insertBanner(BannerDTO bannerDTO) {
-		Integer existingCount = adminMapper.countBannerById(bannerDTO.getJobId());
+		int existingCount = adminMapper.countBannerById(bannerDTO.getJobId());
+		System.out.println("existingCount: " + existingCount);
 		
-		if (existingCount != null && existingCount == 0) {
+		if (existingCount == 0) {
 			adminMapper.insertBanner(bannerDTO);
 		} else {
 			System.out.println("중복 배너 등록 시도 차단: jobId = " + bannerDTO.getJobId());

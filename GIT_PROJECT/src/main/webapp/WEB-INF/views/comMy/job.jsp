@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ include file="/WEB-INF/views/inc/head.jspf" %>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+<%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
 
 <%-- =========================
      URL (전부 c:url)

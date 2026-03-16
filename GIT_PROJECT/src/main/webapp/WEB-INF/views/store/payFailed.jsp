@@ -17,7 +17,14 @@
 </head>
 <body>
 
-    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+    <c:choose>
+		<c:when test="${sessionScope.userType eq 'C'}">
+		    <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+		</c:when>
+		<c:otherwise>
+		    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+		</c:otherwise>
+	</c:choose>
     
     <main>
         <div class="container">
@@ -34,11 +41,11 @@
                     </p>
             
                     <div class="d-grid gap-3">
-                        <button type="button" class="btn btn-dark btn-retry text-white" onclick="window.history.go(-2)">
+                        <button type="button" class="btn btn-dark btn-retry text-white" onclick="retryPay()">
                             <i class="bi bi-arrow-clockwise me-2"></i> 다시 결제 시도하기
                         </button>
             
-                        <a href="<c:url value="/" />" class="btn btn-home bg-white">
+                        <a id="goToMain" class="btn btn-home bg-white">
                             홈으로 돌아가기
                         </a>
                     </div>
@@ -56,14 +63,38 @@
     <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
     
     <script>
+    	const userType = "${sessionScope.userType}";
+    
 	    // 페이지 로드 시 현재 상태를 히스토리에 한 번 더 쌓음
 		history.pushState(null, null, location.href);
 		
 		window.onpopstate = function() {
 		    // 뒤로가기 감지 시 메인페이지로 강제 이동
 		    alert("잘못된 접근입니다.");
-		    location.replace("<c:url value='/' />"); 
+		    if(userType === "C") {
+			    location.replace("<c:url value='/mainCom' />"); 
+			} else {
+			    location.replace("<c:url value='/' />"); 
+			}
 		};
+		
+		document.getElementById("goToMain").addEventListener("click", function() {
+			if(userType === "C") {
+				location.href="<c:url value="/mainCom" />" ;
+			} else {
+				location.href="<c:url value="/" />" ;
+			}
+		});
+		
+		function retryPay() {
+			if(userType === "C") {
+				location.href="<c:url value="/store/cstore" />" ;
+			} else {
+				location.href="<c:url value="/store/ustore" />" ;
+			}
+			
+		}
+		
     </script>
 
 </body>

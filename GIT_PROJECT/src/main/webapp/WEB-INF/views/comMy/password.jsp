@@ -10,7 +10,7 @@
 </head>
 
 <body>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+<%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
 
 <c:url var="urlSubmit" value="/my/password"/>
 <c:url var="urlCancel" value="/my/myInfo"/>

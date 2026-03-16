@@ -7,6 +7,9 @@
 <html>
 <head>
 	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
+	
+	<%-- 현재 페이지 전용 CSS 영역--%>
+	<link href="<c:url value="/resources/css/userInfo.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/admin/common/header.jsp" %>
@@ -148,10 +151,10 @@
 										</thead>
 							 			<tbody>
 										<c:forEach var="free" varStatus="status" items="${freeList}">
-											<tr class="clickable-row" onclick="location.href='<c:url value="admin/contents/boardDetail?postId=${free.postId}" />'">
+											<tr class="clickable-row" onclick="location.href='<c:url value="/board/detail?postId=${free.postId}" />'">
 												<td>${status.count}</td>
 												<td>${free.boardType}</td> 
-												<td>${free.title}</td>
+												<td class="text-ellipsis">${free.title}</td>
 												<td>
 													<c:choose>
 														<c:when test="${not empty free.strUpdatedAt}">
@@ -194,9 +197,9 @@
 										</thead>
 							 			<tbody>
 											<c:forEach var="qna" varStatus="status" items="${qnaList}">
-												<tr class="clickable-row" onclick="location.href='<c:url value="admin/contents/QnADetail?qnaId=${qna.qnaId}" />'">
+												<tr class="clickable-row" onclick="location.href='<c:url value="/admin/contents/QnADetail?qnaId=${qna.qnaId}" />'">
 													<td>${status.count}</td>
-													<td>${qna.qnaTitle}</td>
+													<td class="text-ellipsis">${qna.qnaTitle}</td>
 													<td>
 		                           						<fmt:formatDate value="${qna.regDate}" pattern="yyyy년 MM월 dd일"/>
 													</td>
@@ -233,14 +236,23 @@
 										</thead>
 							 			<tbody>
 											<c:forEach var="comment" varStatus="status" items="${commentList}">
-												<tr class="clickable-row" onclick="location.href='<c:url value="admin/contents/boardDetail?postId=${comment.postId}" />'">
+												<tr class="clickable-row" onclick="location.href='<c:url value="/board/detail/?postId=${comment.postId}" />'">
 													<td>${status.count}</td>
-													<td>${comment.title}</td>
-													<td>${comment.content}</td>
+													<td class="text-ellipsis">${comment.title}</td>
+													<td class="text-ellipsis">${comment.content}</td>
 													<td>
 		                           						${comment.strCreatedAt}
 													</td>
-													<td>${comment.status}</td>
+													<td>
+														<c:choose>
+															<c:when test="${comment.status eq 'ACTIVE'}">
+																게시중
+															</c:when>
+															<c:otherwise>
+																삭제
+															</c:otherwise>
+														</c:choose>
+													</td>
 												</tr>
 											</c:forEach>
 										</tbody>

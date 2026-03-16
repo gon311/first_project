@@ -1,6 +1,7 @@
-
 package com.itwillbs.project.admin.mapper;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,8 @@ import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.dto.SubmitDTO;
 import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.store.dto.PaymentDTO;
+
+import lombok.extern.log4j.Log4j2;
 
 @Mapper
 public interface AdminMapper {
@@ -150,9 +153,9 @@ public interface AdminMapper {
 	// 결제 목록 조회
 	List<PaymentDTO> selectPaymentList(@Param("startRow") int startRow
 									, @Param("listLimit") int listLimit
-									,@Param("startDate") String startDate
-									, @Param("endDate") String endDate
 									, @Param("keyword") String keyword
+									, @Param("startDate") String startDate
+									, @Param("endDate") String endDate
 									, @Param("userType") String userType
 									, @Param("payStatus") String payStatus
 									, @Param("sort") String sort); 
@@ -173,17 +176,16 @@ public interface AdminMapper {
 	// 제출된 공고 목록 조회
 	List<SubmitDTO> selectSubmitList(@Param("startRow") int startRow
 									, @Param("listLimit") int listLimit
+									, @Param("keyword") String keyword
 									, @Param("startDate") String startDate
 									, @Param("endDate") String endDate
-									, @Param("keyword") String keyword
 									, @Param("submitStatus") String submitStatus
 									, @Param("sort") String sort);
+	
+	
 
 	// 제출된 공고 상세정보 조회
 	SubmitDTO selectSubmitInfo(long jobId);
-	
-	// 첨부파일
-	List<FileDTO> selectFileList(Long jobId);
 	
 	// 공고 상태 변경
 	void updateSubmitStatus(@Param("jobId") long jobId, @Param("postCheck") Integer postCheck);
@@ -230,7 +232,7 @@ public interface AdminMapper {
 	
 	List<BannerDTO> getBannerList(BannerDTO bannerDTO);
 	
-	Integer countBannerById(long jobId);
+	int countBannerById(long jobId);
 
 	void insertBanner(BannerDTO bannerDTO);
 	
@@ -267,8 +269,7 @@ public interface AdminMapper {
 
 	List<Map<String, Object>> getComRevenueStats();
 
-//	5. 메인화면 통계
-	List<Map<String, Object>> getTotalRevenueStats();	
+	
 // =============================================================
 // == [자유게시판 관리] ==
 

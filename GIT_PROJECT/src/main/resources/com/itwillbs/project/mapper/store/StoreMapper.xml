@@ -202,6 +202,19 @@
 			pay_id = #{payId}
 	</update>
 	
+	<!-- 구직자 회원의 pass_count 추가 -->
+	<update id="updatePassCount">
+		update
+			user_person
+		set
+			pass_count =  (
+				select	product_count
+				from	product
+				where	product_id = #{productId}
+			)
+		where
+			user_id = #{userId}
+	</update>
 </mapper>
 
 

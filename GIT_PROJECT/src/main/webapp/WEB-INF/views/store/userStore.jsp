@@ -128,7 +128,7 @@
 	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 	
 	<script type="text/javascript">
-		async function checkRemain(productId, userId) {
+		async function checkRemain(productId, userId, userType) {
 			if(userId == null) {
 				alert("로그인 한 회원만 구매 가능합니다.");
 				location.href = "<c:url value="/user/login" />";

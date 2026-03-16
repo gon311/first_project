@@ -1358,6 +1358,7 @@
 			field		
 		ORDER BY
 			value DESC
+		LIMIT 5
 	</select>	
 	<select id="getEmpTypeStats" resultType="map">
         SELECT 
@@ -1374,11 +1375,17 @@
 	        pr.product_name AS label 
 	        , COUNT(*) AS value 
 	    FROM 
-			product pr
-		JOIN
 			pay p
+		JOIN
+			user_person up
 		ON
+			p.user_id = up.user_id
+		JOIN
+			product pr 	
+		ON 
 			p.product_id = pr.product_id
+		WHERE
+			pr.product_type = 'user'
 	    GROUP BY 
 	    	pr.product_name
 	</select>

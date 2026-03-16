@@ -13,8 +13,7 @@
             <a href="<c:url value="/user/logout" />" class="btn btn-sm btn-danger">로그아웃</a>
         </div>
     </div>
-
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
                 <span class="navbar-toggler-icon"></span>

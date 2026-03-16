@@ -267,7 +267,8 @@ public interface AdminMapper {
 
 	List<Map<String, Object>> getComRevenueStats();
 
-	
+//	5. 메인화면 통계
+	List<Map<String, Object>> getTotalRevenueStats();	
 // =============================================================
 // == [자유게시판 관리] ==
 

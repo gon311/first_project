@@ -603,6 +603,36 @@ public class AdminService{
 	    return result;
 		
 	}
+//	전체 결제 통계
+	public Map<String, Object> getTotalPayStatistics() {
+	    Map<String, Object> result = new HashMap<>();
+	    
+	    List<Map<String, Object>> statsList = adminMapper.getTotalRevenueStats();
+	    
+	    List<String> labels = new ArrayList<>();
+	    List<Long> values = new ArrayList<>();
+	    long totalSum = 0; // 총 합계를 계산할 변수
+	    
+	    for (Map<String, Object> row : statsList) {
+	        String label = String.valueOf(row.get("label"));
+	        Long value = ((Number) row.get("value")).longValue();
+	        
+	        labels.add(label);
+	        values.add(value);
+	        totalSum += value; 
+	    }
+	    
+	    // 2. 차트용 데이터
+	    result.put("labels", labels);
+	    result.put("data", values);
+	    
+	    // 3. '7일간 총 수익금액'
+	    result.put("totalSum", totalSum); 
+	    
+	    return result;
+	}
+
+
 
 
 

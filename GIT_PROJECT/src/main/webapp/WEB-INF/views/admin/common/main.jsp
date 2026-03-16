@@ -17,7 +17,7 @@
 		      <div class="card p-3">
 		        <h5>주간 수익 현황</h5>
 		        <div class="chart-box" style="padding-top: 25px;">
-               		<canvas id="daily-traffic-chart"></canvas>
+               		<canvas id="weekly-revenue-chart"></canvas>
             	</div>
 		      </div>
 		    </div>
@@ -25,7 +25,8 @@
 		      <div class="card p-3 text-center">
 		        <h5>일간 트래픽 현황</h5>
 		        <div class="chart-box" style="padding-top: 25px;">
-                	<canvas id="weekly-revenue-chart"></canvas>
+                	<canvas id="daily-traffic-chart
+		        "></canvas>
             	</div>
 		      </div>
 		    </div>
@@ -34,5 +35,51 @@
 		
 				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
 				<script src="${pageContext.request.contextPath}/resources/js/admin-stats.js"></script> 
+				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('weekly-revenue-chart').getContext('2d');
+    
+    // 2. API 데이터 호출
+   
+    fetch('${pageContext.request.contextPath}/api/pay-stats')
+        .then(response => response.json())
+        .then(data => {
+            // 3. 차트 생성
+            new Chart(ctx, {
+                type: 'line', 
+                data: {
+                    labels: data.labels, // ["월", "화", ...]
+                    datasets: [{
+                        label: '주간 수익 (원)',
+                        data: data.data, // [120000, ...]
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4 
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString() + '원';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('데이터 로드 실패:', error));
+});
+</script>
+				
 </body>
 </html>

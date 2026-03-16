@@ -32,7 +32,7 @@
                                     
                                     <div class="col-md-5">
                                         <label class="form-label small fw-bold mb-1">작성자명</label>
-                                        <input type="text" class="form-control form-control-sm" name="authorMemberId" 
+                                        <input type="text" class="form-control form-control-sm" name="userId" 
                                                placeholder="아이디 입력" value="${param.userId}">
                                     </div>
                                     
@@ -93,7 +93,7 @@
                                             <td>${board.authorMemberId}</td>
                                             <td class="text-muted small">
                                        			<fmt:parseDate var="createDate" value="${board.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-                                                <fmt:formatDate value="${createDate}" pattern="yyyy-MM-dd"/>
+                                                <fmt:formatDate value="${createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                             </td>
                                             <td>
                                             <c:if test= '${board.status == "ACTIVE"}'>

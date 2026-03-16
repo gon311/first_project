@@ -746,11 +746,11 @@
 			j.comp_id = c.user_id
 		where
 			1=1
-			<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+			<if test="startDate != null and !startDate.equals('')	 and endDate != null and !endDate.equals('')">
 				and 
 					date(j.reg_date) between #{startDate} and #{endDate}
 			</if>
-			<if test="keyword != null and !keyword.equals('')">
+			<if test="keyword != null and !keyword != ''">
 				and 
 					c.company_name like concat('%',#{keyword},'%')
 			</if>
@@ -1473,6 +1473,20 @@
 	    	label
 	    ORDER BY 
 	    	label ASC
+	</select>
+	<select id="getTotalRevenueStats" resultType="map">
+   		SELECT 
+        	DATE_FORMAT(pay_date, '%m-%d') AS label
+        	,  SUM(pay_price) AS value                  		
+       	FROM 
+        	pay 
+    	WHERE 
+        	pay_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+	    GROUP BY 
+	        DATE_FORMAT(pay_date, '%m-%d')            
+        ORDER BY 
+	        MIN(pay_date) ASC
+		
 	</select>
 <!--  ======================================================================== -->
 <!--  [ 자유게시판 관리 ]-->

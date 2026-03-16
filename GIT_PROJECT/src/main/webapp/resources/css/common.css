@@ -113,7 +113,7 @@ main{
 
 /* 메가 메뉴 컨테이너 - 아이시 화이트 */
 .mega-menu-content {
-    display: none !important; 
+    display: none;
     position: absolute;
     top: 100%; 
     left: 0;
@@ -180,9 +180,11 @@ main{
 /* footer 영역 */
 
 footer.footer {
-    background-color: #1B263B !important; /* 세련된 딥 네이비 */
-    color: #FFFFFF !important;           /* 흰색 글자 */
-    padding: 60px 0;
+    background-color: #1B263B !important; 
+    color: #FFFFFF !important;
+    padding: 60px 0 !important;
+    display: block !important; /* 가끔 float나 flex 때문에 깨지는 것 방지 */
+    clear: both; /* 위쪽 요소의 영향을 받지 않도록 */
 }
 
 .footer-link {

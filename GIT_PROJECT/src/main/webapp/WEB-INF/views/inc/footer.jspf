@@ -43,24 +43,4 @@
 			location.href = "<c:url value="/user/logout" />";
 		}
 	}
-	
-	document.addEventListener('DOMContentLoaded', function() {
-	    const toggleBtn = document.getElementById('toggleAllBtn');
-	    const megaMenu = document.getElementById('megaMenu');
-
-	    if (toggleBtn && megaMenu) {
-	        toggleBtn.addEventListener('click', function(e) {
-	            e.preventDefault();
-	            // active 클래스를 넣었다 뺐다 함으로써 보이게/안보이게 조절
-	            megaMenu.classList.toggle('active');
-	        });
-
-	        // 메뉴 외부 클릭 시 닫힘
-	        document.addEventListener('click', function(e) {
-	            if (!megaMenu.contains(e.target) && e.target !== toggleBtn) {
-	                megaMenu.classList.remove('active');
-	            }
-	        });
-	    }
-	});
 </script>

@@ -127,7 +127,9 @@
 		from	
 			com_product
 		where
-			use_status = 'active'
+			user_id = #{userId}
+			AND use_status = 'active' 
+			AND use_status IS NOT NULL
 	</select>
 	
 	<!-- 이용권 상태 설정 -->

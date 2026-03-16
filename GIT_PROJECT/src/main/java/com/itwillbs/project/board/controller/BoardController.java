@@ -1,10 +1,15 @@
 package com.itwillbs.project.board.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.io.File;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -36,6 +42,8 @@ import com.itwillbs.project.my.service.MyService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
+
 
 @Controller
 @RequestMapping("/board")
@@ -287,6 +295,53 @@ public class BoardController {
 	    ra.addFlashAttribute("msg", result ? "신고가 접수되었습니다." : "신고 처리에 실패했습니다.");
 	    return "redirect:/board/detail?postId=" + postId;
 	}
+	
+	@PostMapping("/image/upload")
+	@ResponseBody
+	public Map<String, Object> uploadEditorImage(@RequestParam("file") MultipartFile file,
+	                                             HttpServletRequest request) throws Exception {
+	    Map<String, Object> result = new HashMap<>();
+
+	    if (file == null || file.isEmpty()) {
+	        result.put("success", false);
+	        result.put("message", "파일이 없습니다.");
+	        return result;
+	    }
+
+	    String contentType = file.getContentType();
+	    if (contentType == null || !contentType.startsWith("image/")) {
+	        result.put("success", false);
+	        result.put("message", "이미지 파일만 업로드할 수 있습니다.");
+	        return result;
+	    }
+
+	    String uploadDir = request.getServletContext().getRealPath("/resources/upload/editor");
+
+	    File dir = new File(uploadDir);
+	    if (!dir.exists()) {
+	        dir.mkdirs();
+	    }
+
+	    String originalName = file.getOriginalFilename();
+	    String ext = "";
+
+	    if (originalName != null && originalName.lastIndexOf(".") > -1) {
+	        ext = originalName.substring(originalName.lastIndexOf("."));
+	    }
+
+	    String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+
+	    File target = new File(dir, savedName);
+	    file.transferTo(target);
+
+	    String imageUrl = request.getContextPath() + "/resources/upload/editor/" + savedName;
+
+	    result.put("success", true);
+	    result.put("url", imageUrl);
+	    return result;
+	}
+	
+	
 	
 	
 	

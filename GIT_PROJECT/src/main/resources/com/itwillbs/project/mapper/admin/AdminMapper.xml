@@ -558,10 +558,10 @@
 		 			</when>
 		 			
 		 			<when test = 'type == "status"'>
-		 				AND status = #{keyword}
+		 				AND status =  LIKE CONCAT ('%', #{keyword}, '%')
 		 			</when>
 		 			<when test = 'type == "userType"'>
-		 				AND user_type = #{keyword}
+		 				AND user_type  LIKE CONCAT ('%', #{keyword}, '%')
 		 			</when>
 		 		</choose>
 			</if>
@@ -1179,7 +1179,7 @@
 	        
 	        <if test="faqId == null">
 	            <if test="keyword != null and keyword != ''">
-	                AND question LIKE CONCAT('%', #{keyword}, '%')
+	                AND faq_title LIKE CONCAT('%', #{keyword}, '%')
 	            </if>
             </if>
 	    </where>

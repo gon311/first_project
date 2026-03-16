@@ -558,10 +558,10 @@
 		 			</when>
 		 			
 		 			<when test = 'type == "status"'>
-		 				AND status =  LIKE CONCAT ('%', #{keyword}, '%')
+		 				AND status = #{keyword}
 		 			</when>
 		 			<when test = 'type == "userType"'>
-		 				AND user_type  LIKE CONCAT ('%', #{keyword}, '%')
+		 				AND user_type = #{keyword}
 		 			</when>
 		 		</choose>
 			</if>
@@ -642,7 +642,7 @@
 			</if>
 			<if test="userId != null and userId != 0">
 				AND comp_id LIKE CONCAT('%', #{userId}, '%')
-`			</if>
+			</if>
 			<if test="postStatus != null and postStatus !=0 and postStatus != ''">
 				AND post_status = #{postStatus}
 			</if>
@@ -661,7 +661,7 @@
 			, post_status
 		FROM job_posting
 		<!-- 검색 기능 -->
-		<where>
+		WHERE
 			post_check = 2
 			<if test="keyword !=null and keyword !=''">
 				AND title LIKE CONCAT('%', #{keyword}, '%')
@@ -672,7 +672,6 @@
 			<if test="postStatus != null and postStatus !=0 and postStatus != ''">
 				AND post_status = #{postStatus}
 			</if>
-		</where>
 		LIMIT #{offset}, #{limit}
 	</select>
 	
@@ -777,7 +776,35 @@
 	
 	
 	<!-- 제출된 공고 상세정보 조회 -->
-	<resultMap id="submitResultMap" type="submit">
+	<resultMap id="submitResultMap" type="com.itwillbs.project.admin.dto.SubmitDTO">
+		<id property="jobId" column="job_id"/>
+		<result property="compId" column="comp_id"/>
+		
+		<result property="title" column="title"/> 
+		<result property="field" column="field"/>
+		<result property="task" column="task"/>
+		
+		<result property="empType" column="emp_type"/>
+		<result property="probation" column="probation"/>
+		<result property="expType" column="exp_type"/>
+		<result property="expYear" column="exp_year"/>
+		<result property="edu" column="edu"/>
+		<result property="salary" column="salary"/>
+		
+		<result property="address" column="address"/>
+		<result property="isRemote" column="is_remote"/>
+		
+		<result property="mgrName" column="mgr_name"/>
+		<result property="mgrPhone" column="mgr_phone"/>
+		<result property="mgrEmail" column="mgr_email"/>
+		<result property="isPublic" column="is_public"/>
+		
+		<result property="openDate" column="open_date"/>
+		<result property="closeDate" column="close_date"/>
+		<result property="postStatus" column="post_status"/>
+		<result property="regDate" column="reg_date"/>
+		<result property="postCheck" column="post_check"/>
+		
 		<collection property="fileList" ofType="com.itwillbs.project.common.dto.FileDTO" notNullColumn="file_id">
 			<id property="fileId" column="file_id" />
 			<result property="categoryIdx" column="category_idx" />
@@ -788,8 +815,8 @@
 			<result property="fileExt" column="file_ext" />
 			<result property="createdAt" column="reg_date" />
 		</collection>
+		
 	</resultMap>
-	
 	
 	
 <!-- 	<select id="selectSubmitInfo" resultType="submit"> -->
@@ -811,19 +838,19 @@
 	</select>
 	
 	<!-- 제출 공고 첨부파일 -->
-	<select id="selectFileList" resultType="fileDTO">
-	    SELECT 
-	        file_id AS fileId,
-	        job_id AS idx,              
-	        category_idx AS categoryIdx,
-	        origin_name AS originName,
-	        stored_name AS storedName,
-	        file_path AS filePath,
-	        file_size AS fileSize,
-	        file_ext AS fileExt
-	    FROM uploaded_file
-	    WHERE job_id = #{jobId}
-	</select>
+<!-- 	<select id="selectFileList" resultType="fileDTO"> -->
+<!-- 	    SELECT  -->
+<!-- 	        file_id AS fileId, -->
+<!-- 	        job_id AS idx,               -->
+<!-- 	        category_idx AS categoryIdx, -->
+<!-- 	        origin_name AS originName, -->
+<!-- 	        stored_name AS storedName, -->
+<!-- 	        file_path AS filePath, -->
+<!-- 	        file_size AS fileSize, -->
+<!-- 	        file_ext AS fileExt -->
+<!-- 	    FROM uploaded_file -->
+<!-- 	    WHERE job_id = #{jobId} -->
+<!-- 	</select> -->
 	
 	<!-- 제출된 공고 상태 변경(compId = #compId 인 공고) -->
 	<update id="updateSubmitStatus">
@@ -890,12 +917,8 @@
 			, pd.product_name
 			, p.pay_method
 			, p.card_name
-			, p.bank_name
-			, p.deposit_account
-			, p.deposit_name
 			, p.pay_price
 			, p.pay_date
-			, p.issued_at
 			, p.pay_status
 		from 
 			pay p join product pd
@@ -952,10 +975,6 @@
 			, p.pay_method
 			, p.card_name
 			, p.card_num
-			, p.bank_name
-			, p.deposit_account
-			, p.deposit_name
-			, p.issued_at
 			, p.pay_price
 			, p.pay_date
 			, p.pay_status
@@ -1048,20 +1067,62 @@
 		LIMIT #{offset}, #{limit}
 	</select>
 	
-	<select id = "getQnaById" resultType="qna">
+	<!-- 문의하기 상세조회(첨부파일) -->
+	<resultMap id="qnaResultMap" type="com.itwillbs.project.admin.dto.QnaDTO">
+		<id property="qnaId" column="qna_id"/>
+		<result property="qnaTitle" column="qna_title"/>
+		<result property="qnaContent" column="qna_category"/> 
+		<result property="qnaContent" column="qna_content"/> 
+		<result property="writerId" column="writer_id"/>
+		<result property="regDate" column="reg_date"/>
+		<result property="reStatus" column="reg_status"/>
+		<result property="reDate" column="re_date"/>
+		<result property="reContent" column="re_content"/>
+		
+		<collection property="fileList" ofType="com.itwillbs.project.common.dto.FileDTO" notNullColumn="file_id">
+			<id property="fileId" column="file_id" />
+			<result property="categoryIdx" column="category_idx" />
+			<result property="originName" column="origin_name" />
+			<result property="storedName" column="stored_name" />
+			<result property="filePath" column="file_path" />
+			<result property="fileSize" column="file_size" />
+			<result property="fileExt" column="file_ext" />
+			<result property="createdAt" column="reg_date" />
+		</collection>
+	</resultMap>
+	
+<!-- 	<select id = "getQnaById" resultType="qna"> -->
+<!-- 		SELECT  -->
+<!-- 			qna_id -->
+<!-- 			, qna_title -->
+<!-- 			, qna_content -->
+<!-- 			, writer_id -->
+<!-- 			, reg_date -->
+<!-- 			, re_status -->
+<!-- 			, re_date -->
+<!-- 			, re_content -->
+<!-- 		FROM -->
+<!-- 			qna -->
+<!-- 		WHERE -->
+<!-- 			qna_id = #{qnaId} -->
+	
+<!-- 	</select> -->
+
+	<select id = "getQnaById" resultMap="qnaResultMap">
 		SELECT 
-			qna_id
-			, qna_title
-			, qna_content
-			, writer_id
-			, reg_date
-			, re_status
-			, re_date
-			, re_content
+			*
 		FROM
-			qna
-		WHERE
-			qna_id = #{qnaId}
+			qna q left outer join uploaded_file f
+		on
+			q.qna_id = f.qna_id
+		where 
+			f.qna_id = #{qnaId}
+		and
+			f.category_idx = (
+				select category_idx
+				from file_category
+				where category_code = 'QNA'
+			)
 	
 	</select>
 	<delete id="deleteQna">
@@ -1173,13 +1234,13 @@
 			<if test="category !=null and category != '' and category != 'all'">
 				AND category = #{category}
 			</if>
-			<if test="faqId != null">
+				<if test="faqId != null">
 	            AND faq_id = #{faqId}
 	        </if>
 	        
 	        <if test="faqId == null">
 	            <if test="keyword != null and keyword != ''">
-	                AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+	                AND question LIKE CONCAT('%', #{keyword}, '%')
 	            </if>
             </if>
 	    </where>

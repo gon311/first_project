@@ -120,6 +120,26 @@
 		WHERE email = #{sId}
 	</update>
 	
+	<!-- 이용권 정보 조회 -->
+	<select id="selectComProductInfo" resultType="memberProduct">
+		select 
+			*
+		from	
+			com_product
+		where
+			use_status = 'active'
+	</select>
+	
+	<!-- 이용권 상태 설정 -->
+	<update id="updateProductStatus">
+		update
+			com_product
+		set
+			use_status = if(end_date = date(now()) - 1, 'expired', 'active')
+		where
+			user_id = #{userId}
+	</update>
+	
 </mapper>
 
 

@@ -7,7 +7,7 @@
 	<!--  파일 상세 정보 조회 - SELECT   -->
 	<select id="selectFile" resultType="fileDTO">
 		SELECT 	* 
-		FROM 	file 
+		FROM 	uploaded_file 	-- 테이블 file -> uploaded_file 로 수정
 		WHERE 	file_id = #{fileId}
 	</select>
 	

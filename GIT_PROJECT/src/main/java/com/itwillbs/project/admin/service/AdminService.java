@@ -421,10 +421,6 @@ public class AdminService{
 		
 	}
 
-	public List<FileDTO> getFileList(Long jobId) {
-		return adminMapper.selectFileList(jobId);
-	}
-	
 	// 공고 상태 변경
 	public void changeSubmitStatus(long jobId, Integer postCheck) {
 		adminMapper.updateSubmitStatus(jobId, postCheck);

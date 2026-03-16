@@ -148,8 +148,6 @@ public class AdminController {
 		model.addAttribute("activeTab", activeTab); 
 		//-----------------------------------------------------------
 		// 전체 회원 목록 조회
-		char userType = 'c';
-		
 		UserPageDTO comPageDTO = adminService.getComList(searchDTO.getKeyword()
 														, searchDTO.getType()
 														, searchDTO.getStatus()
@@ -250,10 +248,8 @@ public class AdminController {
 			comDTO.setProductName("보유 이용권 없음");
 		}
 		
-		List<FileDTO> detailFile = adminService.getFileList(submitDTO.getJobId());
 		
 		model.addAttribute("com", comDTO);
-		model.addAttribute("detailFile", detailFile);
 		
 		return "admin/submit/submitInfo";
 		

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.project.store.dto.MemberProductDTO;
 import com.itwillbs.project.user.dto.UserDTO;
 
 @Mapper
@@ -25,7 +26,13 @@ public interface UserMapper {
 	// 비밀번호 찾기
 	String selectPassword(String sId);
 	int updatePassword(@Param("sId") String sId,@Param("password") String newHash);
+	
+	//-----------------------------------------------------------------------------------------
+	// 이용권 정보 조회
+	MemberProductDTO selectComProductInfo(Long userId); 
 
+	// 이용권 상태 설정
+	void updateProductStatus(Long userId);
 
 
 }

@@ -1,4 +1,3 @@
-
 package com.itwillbs.project.admin.mapper;
 
 import java.util.List;
@@ -183,7 +182,6 @@ public interface AdminMapper {
 	SubmitDTO selectSubmitInfo(long jobId);
 	
 	// 첨부파일
-	List<FileDTO> selectFileList(Long jobId);
 	
 	// 공고 상태 변경
 	void updateSubmitStatus(@Param("jobId") long jobId, @Param("postCheck") Integer postCheck);

@@ -24,19 +24,19 @@
 					        <!-- 키워드 검색 -->
 					        <div class="col-md-4">
 					          <label for="keyword" class="form-label">공고제목</label>
-					          <input type="text" class="form-control" name="keyword" placeholder="제목을 입력하세요" value = "${searchDTO.keyword }">
+					          <input type="text" class="form-control" name="keyword" placeholder="제목을 입력하세요">
 					        </div>
 							<div class="col-md-4">
 					    		<label for="userId" class="form-label">기업Id</label>
-					    		<input type="text" class="form-control" name="userId" placeholder="아이디를 입력하세요" value="${searchDTO.userId }">
+					    		<input type="text" class="form-control" name="userId" placeholder="아이디를 입력하세요">
 					    	</div>  
 					        <!-- 구분 -->
 					        <div class="col-md-4">
 					          <label for="postStatus" class="form-label">공고상태</label>
 					          <select class="form-select" name="postStatus">
-					            <option value=""  ${empty searchDTO.postStatus ? 'selected' : "" }>전체</option>
-					            <option value="1" ${searchDTO.postStatus == 1 ? 'selected' : '' }>모집중</option>
-					            <option value="2" ${searchDTO.postStatus == 2? 'selected' : '' }>마감</option>
+					            <option value=""  ${empty jobPostDTO.postStatus ? 'selected' : "" }>전체</option>
+					            <option value="1" ${jobPostDTO.postStatus == 1 ? 'selected' : '' }>모집중</option>
+					            <option value="2" ${jobPostDTO.postStatus == 2? 'selected' : '' }>마감</option>
 					            <!--  0: 삭제는 데이터베이스 내에서 삭제 -->
 					          </select>
 					        </div>

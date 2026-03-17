@@ -131,7 +131,7 @@
 				                    <c:forEach var="i" begin="${pageInfoDTO.startPage}" end="${pageInfoDTO.endPage}">
 										<c:choose>
 											<c:when test="${i eq pageInfoDTO.pageNum}">
-												<a class="page-link">${i}</a>
+												<a class="page-link active">${i}</a>
 											</c:when>
 											<c:otherwise>
 												<a class="page-link" href="<c:url value="/admin/contents/FaQ?pageNum=${i}" />">${i}</a>

@@ -47,7 +47,7 @@
             </form>
 
             <div class="mt-4">
-                <a href="#" class="help-link">도움이 필요하신가요?</a>
+                <a href="<c:url value="/help/helpWord" />" class="help-link">도움이 필요하신가요?</a>
             </div>
         </div>
     </main>

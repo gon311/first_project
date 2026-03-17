@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link href="<c:url value="/resources/css/jobCss/jobDetail.css" />" rel="stylesheet" type="text/css">
+<%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
 <body>
 	<c:choose>
@@ -43,21 +44,21 @@
 	            <input type="hidden" name="userId" value="${userId}">
 	        </div>
 	        <c:choose>
-	        <%-- 상태가 '모집중(1)'일 때만 버튼 활성화 --%>
-	        <c:when test="${post.postStatus == 1}">
-	            <button type="button" class="apply-btn" id="applyBtn" onclick="checkResumeAndApply()">입사지원</button>
-	        </c:when>
-	        
-	        <%-- '마감(2)'일 때 --%>
-	        <c:when test="${post.postStatus == 2}">
-	            <button type="button" class="apply-btn" style="background: #ccc; cursor: not-allowed;" disabled>지원 마감</button>
-	        </c:when>
-	        
-	        <%-- '보류' 또는 기타 상태일 때 --%>
-	        <c:otherwise>
-	            <button type="button" class="apply-btn" style="background: #ccc; cursor: not-allowed;" disabled>지원 불가</button>
-	        </c:otherwise>
-	    </c:choose>
+		        <%-- 상태가 '모집중(1)'일 때만 버튼 활성화 --%>
+		        <c:when test="${post.postStatus == 1 && sessionScope.userType ne 'C'}">
+		            <button type="button" class="apply-btn" id="applyBtn" onclick="checkResumeAndApply()">입사지원</button>
+		        </c:when>
+		        
+		        <%-- '마감(2)'일 때 --%>
+		        <c:when test="${post.postStatus == 2}">
+		            <button type="button" class="apply-btn" style="background: #ccc; cursor: not-allowed;" disabled>지원 마감</button>
+		        </c:when>
+		        
+		        <%-- '보류' 또는 기타 상태일 때 --%>
+		        <c:otherwise>
+		            <button type="button" class="apply-btn" style="background: #ccc; cursor: not-allowed;" disabled>지원 불가</button>
+		        </c:otherwise>
+	   		</c:choose>
 	</header>
 	
 	    <section class="info-summary-grid">
@@ -91,10 +92,11 @@
 				                        <c:choose>
 				                            <c:when test="${file.fileExt.contains('image') || file.fileExt.contains('jpg') || file.fileExt.contains('png')}">
 				                                <div style="margin-bottom: 10px;">
-				                                    <img src="/upload/board/${file.filePath}/${file.storedName}" 
-				                                         alt="${file.originName}" 
-				                                         style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-				                                </div>
+										            <%-- 컨트롤러 매핑인 /board/image/view 를 사용합니다 --%>
+										            <img src="<c:url value='/board/image/view'/>?filePath=${file.filePath}&storedName=${file.storedName}" 
+										                 alt="${file.originName}" 
+										                 style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+										        </div>
 				                            </c:when>
 				                            <c:otherwise>
 				                                <%-- 이미지가 아닌 일반 파일은 기존처럼 링크로 표시 --%>
@@ -215,7 +217,7 @@
             document.getElementById('applyModal').style.display = 'block';
         } else {
             if (confirm("등록된 이력서가 없습니다. 이력서를 작성하시겠습니까?")) {
-                location.href = "/resume/write";
+                location.href = "<c:url value="/resume/regist" />";
             }
         }
     }

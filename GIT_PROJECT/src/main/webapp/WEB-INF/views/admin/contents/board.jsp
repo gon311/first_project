@@ -92,8 +92,7 @@
                                             <td class="text-start ps-4 text-center">${board.title}</td>
                                             <td>${board.authorMemberId}</td>
                                             <td class="text-muted small">
-                                       			<fmt:parseDate var="createDate" value="${board.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-                                                <fmt:formatDate value="${createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                   				${board.createDate}
                                             </td>
                                             <td>
                                             <c:if test= '${board.status == "ACTIVE"}'>

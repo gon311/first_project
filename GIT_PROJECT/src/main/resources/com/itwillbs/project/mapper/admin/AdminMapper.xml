@@ -9,6 +9,7 @@
 		select	count(*)
 		from 
 			user u left outer join user_product p
+		on
 			u.user_id = p.user_id
 		left outer join
 			product pd

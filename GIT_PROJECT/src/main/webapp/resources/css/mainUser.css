@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-@charset "UTF-8";
 
 /* 1. 카드 탭 영역 (오늘의 기업, 인기 기업 등) */
 .ad-menu {
@@ -108,29 +107,59 @@
     font-weight: bold;
 }
 
-/* 4. AI 자소서 첨삭 버튼 영역 */
-.btnAi {
-    margin-top: 20em;
+/* 2. AI 섹션 전체 레이아웃 */
+.sec02 {
+    margin-top: 60px; /* 20em에서 대폭 축소 */
+    padding: 60px 0;
+    background: #F8FAFC; /* 연한 배경색으로 섹션 구분 */
+    border-radius: 30px;
     text-align: center;
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* AI 버튼 스타일 - 그라데이션 적용으로 특별함 부여 */
-.btnAi input[type="button"] {
-    width: 220px;
-    height: 55px;
+.ai-banner-content h3 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1A365D;
+    margin-bottom: 10px;
+}
+
+.ai-banner-content p {
     font-size: 16px;
-    font-weight: 700;
+    color: #64748B;
+    margin-bottom: 30px;
+}
+
+/* 3. AI 자소서 버튼 크기 대폭 확대 및 강조 */
+.btnAi {
+    display: flex;
+    justify-content: center;
+}
+
+.btnAi input[type="button"] {
+    width: 320px; /* 220px -> 320px */
+    height: 70px; /* 55px -> 70px */
+    font-size: 20px; /* 16px -> 20px */
+    font-weight: 800;
     color: #FFFFFF;
-    background: linear-gradient(135deg, #0047AB 0%, #002D6B 100%);
+    background: linear-gradient(135deg, #0047AB 0%, #06B6D4 100%); /* 그라데이션 변화 */
     border: none;
-    border-radius: 12px;
+    border-radius: 50px; /* 완전 둥글게 */
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(0, 71, 171, 0.25);
-    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 71, 171, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
 }
 
 .btnAi input[type="button"]:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(0, 71, 171, 0.35);
-    background: linear-gradient(135deg, #0056D2 0%, #0047AB 100%);
+    transform: translateY(-5px); /* 위로 살짝 뜸 */
+    box-shadow: 0 15px 30px rgba(0, 71, 171, 0.4);
+}
+
+/* 버튼 내부에 반짝이는 효과 (선택사항) */
+.btnAi input[type="button"]::after {
+    content: " ✨"; /* 텍스트 뒤에 아이콘 추가 느낌 */
 }

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="/WEB-INF/views/inc/head.jspf" %>
+<%@ include file="/WEB-INF/views/inc/header.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,171 +11,162 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link href="<c:url value="/resources/css/jobCss/jobDetail.css" />" rel="stylesheet" type="text/css">
-<%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
 <body>
-	<c:choose>
-        <c:when test="${userType == 'P' || empty sessionScope.userType}">
-			<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+
+<div class="job-detail-container">
+    <header class="job-header">
+        <div class="company-info">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+		        <p style="color: #666; margin: 0;">${post.companyName}</p>
+		        
+		        <c:choose>
+		            <c:when test="${post.postStatus == 1}">
+		                <span style="background: #28a745; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">모집중</span>
+		            </c:when>
+		            <c:when test="${post.postStatus == 2}">
+		                <span style="background: #dc3545; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">마감</span>
+		            </c:when>
+		            <c:otherwise>
+		                <span style="background: #ffc107; color: black; padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">보류</span>
+		            </c:otherwise>
+		        </c:choose>
+		    </div>
+		    <h1>${post.title}</h1>
+            <input type="hidden" name="userId" value="${userId}">
+        </div>
+        <c:choose>
+        <%-- 상태가 '모집중(1)'일 때만 버튼 활성화 --%>
+        <c:when test="${post.postStatus == 1}">
+            <button type="button" class="apply-btn" id="applyBtn" onclick="checkResumeAndApply()">입사지원</button>
         </c:when>
+        
+        <%-- '마감(2)'일 때 --%>
+        <c:when test="${post.postStatus == 2}">
+            <button type="button" class="apply-btn" style="background: #ccc; cursor: not-allowed;" disabled>지원 마감</button>
+        </c:when>
+        
+        <%-- '보류' 또는 기타 상태일 때 --%>
         <c:otherwise>
-            <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+            <button type="button" class="apply-btn" style="background: #ccc; cursor: not-allowed;" disabled>지원 불가</button>
         </c:otherwise>
     </c:choose>
-<main>
-	<div class="job-detail-container">
-	    <header class="job-header">
-	        <div class="company-info">
-	            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
-			        <p style="color: #666; margin: 0;">${post.companyName}</p>
-			        
-			        <c:choose>
-			            <c:when test="${post.postStatus == 1}">
-			                <span style="background: #28a745; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">모집중</span>
-			            </c:when>
-			            <c:when test="${post.postStatus == 2}">
-			                <span style="background: #dc3545; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">마감</span>
-			            </c:when>
-			            <c:otherwise>
-			                <span style="background: #ffc107; color: black; padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">보류</span>
-			            </c:otherwise>
-			        </c:choose>
-			    </div>
-			    <h1>${post.title}</h1>
-	            <input type="hidden" name="userId" value="${userId}">
-	        </div>
-	        <c:choose>
-		        <%-- 상태가 '모집중(1)'일 때만 버튼 활성화 --%>
-		        <c:when test="${post.postStatus == 1 && sessionScope.userType ne 'C'}">
-		            <button type="button" class="apply-btn" id="applyBtn" onclick="checkResumeAndApply()">입사지원</button>
-		        </c:when>
-		        
-		        <%-- '마감(2)'일 때 --%>
-		        <c:when test="${post.postStatus == 2}">
-		            <button type="button" class="apply-btn" style="background: #ccc; cursor: not-allowed;" disabled>지원 마감</button>
-		        </c:when>
-		        
-		        <%-- '보류' 또는 기타 상태일 때 --%>
-		        <c:otherwise>
-		            <button type="button" class="apply-btn" style="background: #ccc; cursor: not-allowed;" disabled>지원 불가</button>
-		        </c:otherwise>
-	   		</c:choose>
-	</header>
-	
-	    <section class="info-summary-grid">
-	        <div class="left-info">
-	<%--             <div class="info-item"><span class="info-label">경력</span><span class="info-value">${post.expType == 'career' ? '경력' : '신입·경력'} ${post.expYear != null ? post.expYear : '경력 무관'}</span></div> --%>
-	            <div class="info-item"><span class="info-label">경력</span><span class="info-value">${post.expYear}</span></div>
-	            <div class="info-item"><span class="info-label">학력</span><span class="info-value">${post.edu}</span></div>
-	            <div class="info-item"><span class="info-label">근무형태</span><span class="info-value">${post.empType} ${post.probation == 'Y' ? '수습기간 있음' : ''}</span></div>
-	        </div>
-	        <div class="right-info">
-	            <div class="info-item"><span class="info-label">급여</span><span class="info-value">${post.salary}</span></div>
-	            <div class="info-item"><span class="info-label">근무지역</span><span class="info-value">${post.address}
-	            <a href="#map" onclick="scrollToMap(event)" style="cursor:pointer; color:#007bff; margin-left:5px;">[지도]</a></span></div>
-	            
-	        </div>
-	    </section>
-	
-	    <section class="detail-content-body">
-		    <div style="padding-top: 50px;">
-		        <h2>모직 직무 분야 : ${post.field}</h2>
-		        <p>${post.task}</p>
-		        
-		        <div class="file-attachments" style="margin-top:25px; padding:15px; background:#f9f9f9; border-radius:8px;">
-				    <h4 style="margin-bottom:15px;"><i class="fa-solid fa-image"></i> 직무 관련 이미지/첨부</h4>
-				    <c:choose>
-				        <c:when test="${not empty detailFile}">
-				            <div class="file-preview-container" style="display: flex; flex-wrap: wrap; gap: 15px;">
-				                <c:forEach var="file" items="${detailFile}">
-				                    <div class="file-item" style="width: 100%;">
-				                        <%-- 파일이 이미지인 경우 (간단하게 확장자나 DB의 contentType으로 구분) --%>
-				                        <c:choose>
-				                            <c:when test="${file.fileExt.contains('image') || file.fileExt.contains('jpg') || file.fileExt.contains('png')}">
-				                                <div style="margin-bottom: 10px;">
-				                                    <img src="/upload/board/${file.filePath}/${file.storedName}" 
-				                                         alt="${file.originName}" 
-				                                         style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-				                                </div>
-				                            </c:when>
-				                            <c:otherwise>
-				                                <%-- 이미지가 아닌 일반 파일은 기존처럼 링크로 표시 --%>
-				                                <a href="/upload/board/${file.filePath}/${file.storedName}" 
-				                                   download="${file.originName}" 
-				                                   style="color:#007bff; text-decoration:none; display: block; padding: 10px; border: 1px dashed #ccc;">
-				                                    <i class="fa-regular fa-file-lines"></i> ${file.originName} (다운로드)
-				                                </a>
-				                            </c:otherwise>
-				                        </c:choose>
-				                    </div>
-				                </c:forEach>
-				            </div>
-				        </c:when>
-				        <c:otherwise>
-				            <p style="color:#999; font-size:0.9em;">등록된 이미지가 없습니다.</p>
-				        </c:otherwise>
-				    </c:choose>
-				</div>
-		    </div>
-		</section>
-	
-	    <section class="company-footer-section">
-	        <div class="footer-flex">
-	            <div id="map" class="map-area">
-	                <p><i class="fa-solid fa-location-dot"></i> 지도 API 연결 영역 (근무지 위치)</p>
-	            </div>
-	            <div class="company-stats">
-	                <h4>기업 정보</h4>
-	                <ul>
-	                    <li>접수기간: 시작일 ${post.openDate} ~ 마감일 ${post.closeDate}</li>
-	                    <li>기업주소: ${post.address}</li>
-	                    
-	                    <c:if test="${post.isPublic eq 'Y'}">
-				            <li>담당자: ${post.mgrName}</li>
-				            <li>연락처: ${post.mgrPhone}</li>
-				            <li>이메일: ${post.mgrEmail}</li>
-				        </c:if>
-	                </ul>
-	            </div>
-	        </div>
-	    </section>
-	</div>
-	
-	<div id="applyModal" class="modal-overlay">
-	    <div class="modal-content">
-	        <div class="modal-header">
-	            <h3>${post.companyName} 입사지원</h3>
-	            <button class="close-btn" onclick="closeApplyModal()">&times;</button>
-	        </div>
-	       <form action="<c:url value="/job/ApplyAction" />" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-		       <input type="hidden" name="resumeId" id="selectedResumeId" value="">
-		       <input type="hidden" name="jobId" value="${post.jobId}">
-		        <div class="modal-body">
-		            <p class="job-title-mini">${post.title}</p>
-		            	
-		            <div class="resume-section">
-		                <div class="section-header" style="margin-bottom: 10px; font-weight: bold;">
-		                    <span>지원할 이력서 선택</span>
-		                </div>
-		                <div class="resume-card-container" style="max-height: 250px; overflow-y: auto;">
-		                    <c:forEach var="resume" items="${resumeList}">
-		                        <div class="resume-card" onclick="selectResume('${resume.resumeId}', this)">
-		                            <p class="resume-name">${resume.title}</p>
-		                        </div>
-		                    </c:forEach>
-		                    <c:if test="${empty resumeList}">
-		                        <p style="text-align: center; padding: 20px; color: #888;">보유 중인 이력서가 없습니다.</p>
-		                    </c:if>
-		                </div>
-		            </div>
-		        </div>
-	        <div class="modal-footer">
-	            <button type="submit" class="final-apply-btn">입사지원하기</button>
-	        </div>
-	        </form>
+</header>
+
+    <section class="info-summary-grid">
+        <div class="left-info">
+<%--             <div class="info-item"><span class="info-label">경력</span><span class="info-value">${post.expType == 'career' ? '경력' : '신입·경력'} ${post.expYear != null ? post.expYear : '경력 무관'}</span></div> --%>
+            <div class="info-item"><span class="info-label">경력</span><span class="info-value">${post.expYear}</span></div>
+            <div class="info-item"><span class="info-label">학력</span><span class="info-value">${post.edu}</span></div>
+            <div class="info-item"><span class="info-label">근무형태</span><span class="info-value">${post.empType} ${post.probation == 'Y' ? '수습기간 있음' : ''}</span></div>
+        </div>
+        <div class="right-info">
+            <div class="info-item"><span class="info-label">급여</span><span class="info-value">${post.salary}</span></div>
+            <div class="info-item"><span class="info-label">근무지역</span><span class="info-value">${post.address}
+            <a href="#map" onclick="scrollToMap(event)" style="cursor:pointer; color:#007bff; margin-left:5px;">[지도]</a></span></div>
+            
+        </div>
+    </section>
+
+    <section class="detail-content-body">
+	    <div style="padding-top: 50px;">
+	        <h2>모직 직무 분야 : ${post.field}</h2>
+	        <p>${post.task}</p>
+	        
+	        <div class="file-attachments" style="margin-top:25px; padding:15px; background:#f9f9f9; border-radius:8px;">
+			    <h4 style="margin-bottom:15px;"><i class="fa-solid fa-image"></i> 직무 관련 이미지/첨부</h4>
+			    <c:choose>
+			        <c:when test="${not empty detailFile}">
+			            <div class="file-preview-container" style="display: flex; flex-wrap: wrap; gap: 15px;">
+			                <c:forEach var="file" items="${detailFile}">
+			                    <div class="file-item" style="width: 100%;">
+			                        <%-- 파일이 이미지인 경우 (간단하게 확장자나 DB의 contentType으로 구분) --%>
+			                        <c:choose>
+			                            <c:when test="${file.fileExt.contains('image') || file.fileExt.contains('jpg') || file.fileExt.contains('png')}">
+			                                <div style="margin-bottom: 10px;">
+			                                    <img src="/upload/board/${file.filePath}/${file.storedName}" 
+			                                         alt="${file.originName}" 
+			                                         style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+			                                </div>
+			                            </c:when>
+			                            <c:otherwise>
+			                                <%-- 이미지가 아닌 일반 파일은 기존처럼 링크로 표시 --%>
+			                                <a href="/upload/board/${file.filePath}/${file.storedName}" 
+			                                   download="${file.originName}" 
+			                                   style="color:#007bff; text-decoration:none; display: block; padding: 10px; border: 1px dashed #ccc;">
+			                                    <i class="fa-regular fa-file-lines"></i> ${file.originName} (다운로드)
+			                                </a>
+			                            </c:otherwise>
+			                        </c:choose>
+			                    </div>
+			                </c:forEach>
+			            </div>
+			        </c:when>
+			        <c:otherwise>
+			            <p style="color:#999; font-size:0.9em;">등록된 이미지가 없습니다.</p>
+			        </c:otherwise>
+			    </c:choose>
+			</div>
 	    </div>
-	</div>
-</main>
+	</section>
+
+    <section class="company-footer-section">
+        <div class="footer-flex">
+            <div id="map" class="map-area">
+                <p><i class="fa-solid fa-location-dot"></i> 지도 API 연결 영역 (근무지 위치)</p>
+            </div>
+            <div class="company-stats">
+                <h4>기업 정보</h4>
+                <ul>
+                    <li>접수기간: 시작일 ${post.openDate} ~ 마감일 ${post.closeDate}</li>
+                    <li>기업주소: ${post.address}</li>
+                    
+                    <c:if test="${post.isPublic eq 'Y'}">
+			            <li>담당자: ${post.mgrName}</li>
+			            <li>연락처: ${post.mgrPhone}</li>
+			            <li>이메일: ${post.mgrEmail}</li>
+			        </c:if>
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div id="applyModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>${post.companyName} 입사지원</h3>
+            <button class="close-btn" onclick="closeApplyModal()">&times;</button>
+        </div>
+       <form action="<c:url value="/job/ApplyAction" />" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+	       <input type="hidden" name="resumeId" id="selectedResumeId" value="">
+	       <input type="hidden" name="jobId" value="${post.jobId}">
+	        <div class="modal-body">
+	            <p class="job-title-mini">${post.title}</p>
+	            	
+	            <div class="resume-section">
+	                <div class="section-header" style="margin-bottom: 10px; font-weight: bold;">
+	                    <span>지원할 이력서 선택</span>
+	                </div>
+	                <div class="resume-card-container" style="max-height: 250px; overflow-y: auto;">
+	                    <c:forEach var="resume" items="${resumeList}">
+	                        <div class="resume-card" onclick="selectResume('${resume.resumeId}', this)">
+	                            <p class="resume-name">${resume.title}</p>
+	                        </div>
+	                    </c:forEach>
+	                    <c:if test="${empty resumeList}">
+	                        <p style="text-align: center; padding: 20px; color: #888;">보유 중인 이력서가 없습니다.</p>
+	                    </c:if>
+	                </div>
+	            </div>
+	        </div>
+        <div class="modal-footer">
+            <button type="submit" class="final-apply-btn">입사지원하기</button>
+        </div>
+        </form>
+    </div>
+</div>
+
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 <script>
     // 1. 지도 초기화 및 마커 표시
@@ -215,7 +208,7 @@
             document.getElementById('applyModal').style.display = 'block';
         } else {
             if (confirm("등록된 이력서가 없습니다. 이력서를 작성하시겠습니까?")) {
-                location.href = "<c:url value="/resume/regist" />";
+                location.href = "/resume/write";
             }
         }
     }

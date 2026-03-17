@@ -50,7 +50,7 @@ public class QnaController {
 	        return "redirect:/user/login";
 	    }
 	    
-    	System.out.println("전달된 데이터: " + qna.toString());
+//    	System.out.println("전달된 데이터: " + qna.toString());
     	
         qna.setWriterId(sId);
 
@@ -73,7 +73,7 @@ public class QnaController {
         if (sId == null) {
         	return "redirect:/user/login";
         }
-
+        
         List<SupportQnaDTO> list = qnaService.getQnaList(sId);
         model.addAttribute("qnaList", list);
         

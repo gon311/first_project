@@ -16,7 +16,7 @@ header + hr {
 }
 
 /* 레이아웃 컨테이너 */
-.container { 
+.job-post-container { 
     max-width: 900px; 
     background: #fff; 
     padding: 30px; 

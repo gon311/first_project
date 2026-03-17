@@ -16,7 +16,6 @@ public class JobPostDTO {
 	// 출력 위한 임시 DTO
 	private Long jobId;
 	private Long compId;
-	private String companyName;
 	private String title;
 	private String field;
 	private String task;
@@ -29,10 +28,6 @@ public class JobPostDTO {
 	private Date openDate;
 	private Date closeDate;
 	private Integer postStatus;
-	private String address;
-	private String mgrName;
-	private String mgrEmail;
-	private String mgrPhone;
-	private String isPublic;
+	
 	private String keyword;
 }

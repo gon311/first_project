@@ -18,15 +18,11 @@
        			작성자 : ${freeDTO.authorMemberId } |
        		</span>
             <span>
-            	작성일:
-            		<fmt:parseDate var="createDate" value="${freeDTO.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-                    <fmt:formatDate value="${createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+            	작성일: ${freeDTO.strCreatedAt}
            	</span> |
             <c:if test="${not empty freeDTO.updatedAt}" >
            	<span>
-            	수정일:	
-            		<fmt:parseDate var="updateDate" value="${freeDTO.updatedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-                    <fmt:formatDate value="${updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/> 
+            	수정일:	${freeDTO.strUpdatedAt}
             </span> 
             </c:if>
             <span class="ms-3">|   조회수: ${freeDTO.readcount}</span> 

@@ -12,6 +12,6 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class PaymentPageDTO {
-	private List<PaymentDTO> PaymentList;
+	private List<PaymentDTO> paymentList;
 	private PageInfoDTO pageInfoDTO; 
 } 

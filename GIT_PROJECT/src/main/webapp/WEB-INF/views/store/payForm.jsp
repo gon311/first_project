@@ -53,8 +53,7 @@
                     <div class="card-header fw-bold">결제 수단 <span style="color:red">*</span></div>
                     <div id="selectMethod" class="card-body">
                         <div class="form-check mb-2">
-                            <input id="credit" class="form-check-input" type="radio" name="payMethod" value="credit" 
-                            	onclick="checkMethod()" required>
+                            <input id="credit" class="form-check-input" type="radio" name="payMethod" value="credit" required>
                             <label class="form-check-label" for="credit">신용카드</label>
                         </div>
                     </div>
@@ -216,7 +215,7 @@
 				if(result.ok) {
 					const payResult = await result.text();
 				    if(payResult === "success") {
-				        window.location.href = "<c:url value="/store/paySuccess" />";
+				        location.href = "<c:url value="/store/paySuccess" />";
 				    } else if(payResult === "mismatch") {
 				    	alert("결제 금액 검증에 실패하였습니다. 위변조가 의심됩니다.");
 				        location.href = "<c:url value="/store/payFailed" />";

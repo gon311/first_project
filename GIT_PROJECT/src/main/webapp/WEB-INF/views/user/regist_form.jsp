@@ -187,11 +187,20 @@
                 <button type="submit" class="btn-submit">가입하기</button>
             </form>
         </div>
+     	<div id="loadingOverlay" 
+			class="position-fixed top-0 start-0 w-100 h-100 d-none"
+			style="background: rgba(0,0,0,0.4); z-index: 9999">
+			
+			<div class="d-flex justify-content-center align-items-center h-100">
+				<div class="text-center text-white">
+					<div class="spinner-border" role="status"></div>
+					<div class="mt-3">인증번호 발송중입니다...</div>
+				</div> 
+			</div>
+		</div>
     </main>
 
-    <footer>
-        <p>&copy; 2026 My Service Inc. All rights reserved.</p>
-    </footer>
+	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 
     <script>
         let currentUserType = 'P';
@@ -265,6 +274,8 @@
                     value: val    // 실제 이메일 주소나 전화번호
             };
             
+            document.getElementById("loadingOverlay").classList.remove("d-none");
+            
 			async function mailRequestCorrectContent() {
 				try {
 					const response = await fetch("<c:url value="/api/sendCode" />", { // 요청 주소
@@ -287,6 +298,7 @@
 						document.getElementById("phone-code").value = result.authCode;
 		            }
 		            
+		            document.getElementById("loadingOverlay").classList.add("d-none");
 				} catch(error) {
 					alert("요청 오류 발생 : " + error);
 				}

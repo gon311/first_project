@@ -63,7 +63,7 @@
             <label><i class="fa-solid fa-paperclip"></i> 첨부 파일</label>
             <div class="file-upload-section">
                 <input type="file" name="uploadFiles" multiple>
-                <p style="font-size: 0.8em; color: #888; margin-top: 5px;">* 최대 3개까지 업로드 가능합니다.</p>
+                <p style="font-size: 0.8em; color: #888; margin-top: 5px;">* 첨부 파일 업로드 가능합니다.</p>
             </div>
         </div>
 

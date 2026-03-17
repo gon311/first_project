@@ -106,7 +106,11 @@
                     <a href="<c:url value="/user/regist?id=co" />" class="text-decoration-none fw-bold text-primary">기업회원가입</a>
                 </div>
             </div>
-
+	        <div class="text-center text-secondary small mt-5">
+	            <a href="<c:url value="/user/login/p" />" class="text-decoration-none text-secondary">테스트용 개인회원 로그인</a> <hr>
+	            <a href="<c:url value="/user/login/c" />" class="text-decoration-none text-secondary">테스트용 기업회원 로그인</a> <hr>
+	            <a href="<c:url value="/user/login/a" />" class="text-decoration-none fw-bold text-primary">테스트용 관리자 로그인</a>
+	        </div>
         </div>
         </main>
 

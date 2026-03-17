@@ -68,7 +68,7 @@
                 <div class="col-xl-6 col-lg-6 col-md-12 mb-4">
                     <div class="resumeList-card resumeList-createCard">
                         <div class="resumeList-createInner">
-                            <div class="resumeList-createIcon">＋</div>
+                            <div class="resumeList-createIcon" href="<c:url value='/resume/regist' />">＋</div>
                             <div class="resumeList-createText">새 이력서 작성</div>
                         </div>
                     </div>

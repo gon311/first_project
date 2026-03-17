@@ -27,7 +27,7 @@
 	            </div>
 	            <div class="col-md-8 text-end">
 	                <form class="d-inline-flex gap-2 md-4" action = "<c:url value = '/help/notice'/>" >
-	                    <select class="form-select form-select-sm" style="width: 150px;" name = "searchType">
+	                    <select class="form-select form-select-sm" style="width: 150px;" name = "type">
 	                        <option value="all" ${searchDTO.type=='all' ? 'selected' : '' }>전체</option>
 	                        <option value="noticeTitle" ${searchDTO.type=='title' ?  'selected' : ''}>제목</option>
 	                        <option value="userType" ${searchDTO.type == 'userType' ? 'selected' : '' }>대상</option>
@@ -76,8 +76,6 @@
 	                            	<c:if test="${notice.userType == 'com' }">기업회원</c:if>
 	                            </td>
 	                        </tr>
-	                        
-
 	                    </c:forEach>
 	                    </c:when>
 	                    <%-- 검색 결과 없는 경우 --%>
@@ -101,7 +99,7 @@
 			            <nav aria-label="Page navigation">
 			                <ul class="pagination pagination-sm m-0">
 			                    <li class="page-item <c:if test="${pageInfoDTO.pageNum eq 1}">disabled</c:if>">
-			                    	<a class="page-link" href="<c:url value="/admin/contents/notice?pageNum=${pageInfoDTO.pageNum - 1}" />">&lt;</a>
+			                    	<a class="page-link" href="<c:url value="/help/notice?pageNum=${pageInfoDTO.pageNum - 1}" />">&lt;</a>
 			                    </li>
 			                    
 			                    <c:forEach var="i" begin="${pageInfoDTO.startPage}" end="${pageInfoDTO.endPage}">
@@ -110,13 +108,13 @@
 											<a class="page-link">${i}</a>
 										</c:when>
 										<c:otherwise>
-											<a class="page-link" href="<c:url value="/admin/contents/notice?pageNum=${i}" />">${i}</a>
+											<a class="page-link" href="<c:url value="/help/notice?pageNum=${i}" />">${i}</a>
 										</c:otherwise>
 									</c:choose>
 			                    </c:forEach>
 			                    
 			                    <li class="page-item <c:if test="${pageInfoDTO.pageNum eq pageInfoDTO.maxPage}">disabled</c:if>">
-			                    	<a class="page-link" href="<c:url value="/admin/contents/notice?pageNum=${pageInfoDTO.pageNum + 1}" />">&gt;</a>
+			                    	<a class="page-link" href="<c:url value="/help/notice?pageNum=${pageInfoDTO.pageNum + 1}" />">&gt;</a>
 			                    </li>
 			                </ul>
 			            </nav>
@@ -126,5 +124,7 @@
 	        </div>
 	    </div>
 	</main>
+	
+	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 </body>
 </html>

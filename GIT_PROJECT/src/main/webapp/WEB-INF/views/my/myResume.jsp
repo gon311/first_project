@@ -120,7 +120,7 @@
                       <%-- 액션 --%>
                       <div class="d-flex align-items-center gap-2">
                         <a class="btn btn-outline-primary"
-                           href="${urlResumeEdit}?resumeId=${r.resumeId}"
+                           href="${urlResumeDetail}?resumeId=${r.resumeId}"
                            onclick="return confirm('이력서를 수정하시겠습니까?');">
                           수정
                         </a>

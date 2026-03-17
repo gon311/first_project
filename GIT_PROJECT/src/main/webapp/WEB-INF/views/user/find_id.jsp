@@ -27,10 +27,10 @@
                 <div class="id-list-group">
 					<c:forEach var="userId" items="${userIdList}">
 						<label class="id-item w-100 m-0">
-	                        <div class="id-info">
+	                        <span class="id-info">
 	                            <span class="user-icon">👤</span>
 	                            <span class="fw-bold">${userId.email}</span>
-	                        </div>
+	                        </span>
 	                        <input type="radio" name="email" value="${userId.email}">
 	                    </label>
 					</c:forEach>
@@ -47,7 +47,7 @@
             </form>
 
             <div class="mt-4">
-                <a href="#" class="help-link">도움이 필요하신가요?</a>
+                <a href="<c:url value="/help/helpWord" />" class="help-link">도움이 필요하신가요?</a>
             </div>
         </div>
     </main>

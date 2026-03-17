@@ -204,6 +204,7 @@ public class StoreController {
 		    // 이용권 테이블에 구매자의 이용권 정보 저장
 		    if(orderInfo.getUserType() == 'P') {
 		    	storeService.setUserProduct(paymentDTO);
+		    	storeService.setPassCount(paymentDTO);
 		    } else if(orderInfo.getUserType() == 'C') {
 		    	storeService.setComProduct(paymentDTO);
 		    }

@@ -441,7 +441,7 @@
 	        LEFT JOIN job_posting p ON a.job_id = p.job_id
 	        <where>
 	            AND a.job_id = #{jobId}
-	            
+<!-- 	            AND a.resume_id = #{resumeId} -->
 	            <if test="appStep != null and appStep != '' and appStep != 'all'">
 	                AND a.app_step = #{appStep}
 	            </if>

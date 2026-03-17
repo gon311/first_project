@@ -45,5 +45,7 @@
 			
 		</div>
 	</main>
+	
+	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 </body>
 </html>

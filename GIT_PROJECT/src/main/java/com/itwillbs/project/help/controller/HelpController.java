@@ -15,6 +15,7 @@ import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.PageInfoDTO;
 import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.service.AdminService;
+import com.itwillbs.project.help.service.HelpService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,6 +27,9 @@ import lombok.extern.log4j.Log4j2;
 public class HelpController {
 	@Autowired
 	private AdminService adminService;
+	
+	@Autowired
+	private HelpService helpService;
 	
 	@GetMapping("/helpWord")
 	public String posting(@RequestParam(value="userType", defaultValue="all") String userType
@@ -119,7 +123,7 @@ public class HelpController {
 		int listLimit = 10;
 		int pageListLimit = 5; 
 		
-		int listCount = adminService.getNoitceTotalCount(searchDTO);
+		int listCount = helpService.getNoitceTotalCount(searchDTO);
 		
 		int maxPage = (int)Math.ceil((double)listCount/listLimit);
 		int startPage = ((pageNum -1 )/ pageListLimit) * pageListLimit + 1;
@@ -134,7 +138,7 @@ public class HelpController {
 		searchDTO.setLimit(listLimit);
 		
 		
-		List<NoticeDTO> noticeList = adminService.getNoticeList(searchDTO);
+		List<NoticeDTO> noticeList = helpService.getNoticeList(searchDTO);
 		
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("searchDTO", searchDTO); 

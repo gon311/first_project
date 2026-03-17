@@ -5,7 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.itwillbs.project.help.dto.NoticeDTO;
+import com.itwillbs.project.admin.dto.NoticeDTO;
+import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.help.mapper.HelpMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,12 @@ public class HelpService{
 	
 
 	// 공지사항 리스트 조회 (DTO 파라미터로 사용)
-	public List<NoticeDTO> getNoticeList(NoticeDTO noticeDTO){
-		return helpMapper.getNoticeList(noticeDTO);
+	public int getNoitceTotalCount(SearchDTO searchDTO) {
+		return helpMapper.getNoticeTotalCount(searchDTO);
+	}
+	
+	public List<NoticeDTO> getNoticeList(SearchDTO searchDTO){
+		return helpMapper.getNoticeList(searchDTO);
 	}
 	
 	// 공지사항 상세 조회(DTO 리턴)

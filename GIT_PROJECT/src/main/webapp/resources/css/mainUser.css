@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-@charset "UTF-8";
 
 /* 1. 카드 탭 영역 (오늘의 기업, 인기 기업 등) */
 .ad-menu {
@@ -110,7 +109,7 @@
 
 /* 4. AI 자소서 첨삭 버튼 영역 */
 .btnAi {
-    margin-top: 20em;
+    margin-top: 2em;
     text-align: center;
 }
 

@@ -9,6 +9,7 @@
 </head>
 
 <c:url var="urlUpdateInfo" value="/my/updateInfo"/>
+<c:url var="urlPassword" value="/my/password"/>
 
 <body>
 <%@ include file="/WEB-INF/views/inc/header.jspf" %>
@@ -28,6 +29,7 @@
 					</div>
 
 					<div class="top-actions">
+						<a class="btn btn-outline-secondary" href="${urlPassword}">비밀번호 변경</a>
 						<a href="${urlUpdateInfo}" class="btn btn-primary">정보 수정</a>
 					</div>
 				</div>
@@ -137,5 +139,7 @@
 </main>
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+
+
 </body>
 </html>

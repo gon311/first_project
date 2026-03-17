@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.resume.dto.ResumeDTO;
 import com.itwillbs.project.resume.dto.ResumeEducationDTO;
 import com.itwillbs.project.resume.dto.ResumeExperienceDTO;
@@ -65,7 +66,22 @@ public class ResumeService {
 	};    // 기존 학력 삭제
 	public void deleteResumeExp(int resumeId){
 		resumeMapper.deleteResumeExp(resumeId);
-	};    // 기존 경력 삭제
+	}
+
+	// 사진 등록
+	public void registResumePhoto(FileDTO fileDTO) {
+	    resumeMapper.insertResumePhoto(fileDTO);
+	}
+
+	// 사진 가져오기.
+	public FileDTO getResumePhoto(Integer resumeId) {
+	    return resumeMapper.selectResumePhoto(resumeId); // category_idx=1, LIMIT 1
+	}
+
+	// 사진 수정시 > 삭제 후 저장.
+	public void deleteResumePhoto(int resumeId) {
+		resumeMapper.deleteUpPhoto(resumeId);	
+	}
+		
 	
-	// 새학력, 경력 저장은 기존거 사용.
 }

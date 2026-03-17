@@ -48,7 +48,7 @@
       
       <!-- 중앙 메인폼 -->
       <div class="col-12 col-md-8 main-form">
-        <form action="<c:url value='/resume/resumeSave' />" method="post" class="resume-form">
+        <form action="<c:url value='/resume/resumeSave' />" method="post" enctype="multipart/form-data" class="resume-form">
 	        <!-- 1.jsp에서 넘어온 값들을 hidden으로 다시 담아줌 -->
 		    <input type="hidden" name="industryCode" value="${param.industryCode}" />
 		    <input type="hidden" name="jobCode" value="${param.jobCode}" />
@@ -93,7 +93,14 @@
                 <!-- 사진 영역 -->
                 <div class="col-12 col-md-3 text-center mb-4">
                     <div class="profile-box mx-auto mb-3"></div>
-                    <button class="btn btn-outline-secondary btn-sm">사진 첨부</button>
+                    
+                    <!-- 실제 파일 input -->
+    				<input type="file" name="photo" id="photo" accept="image/*" style="display:none;">
+    				<button type="button"
+				            class="btn btn-outline-secondary btn-sm"
+				            onclick="document.getElementById('photo').click();">
+				        사진 첨부
+    				</button>
                 </div>
 
                 <!-- 입력 영역 -->
@@ -485,9 +492,11 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   
   
-  <%-- footer area --%>
-		<%@ include file="/WEB-INF/views/inc/footer.jspf"%>
+  	<%-- footer area --%>
+	<%@ include file="/WEB-INF/views/inc/footer.jspf"%>
   
+  	<!-- Custom JS -->
+	<script src="/resources/js/resumeRegist2.js"></script>
 </body>
     
 

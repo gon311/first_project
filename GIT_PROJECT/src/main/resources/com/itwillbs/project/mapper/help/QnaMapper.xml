@@ -52,5 +52,20 @@
 	    SET is_deleted = 'Y' 
 	    WHERE qna_id = #{qnaId}
 	</update>
+	
+	<select id="getFileList" resultType="fileDTO">
+	    SELECT 
+	        file_id AS fileId,
+	        job_id AS idx,              
+	        category_idx AS categoryIdx,
+	        origin_name AS originName,
+	        stored_name AS storedName,
+	        file_path AS filePath,
+	        file_size AS fileSize,
+	        file_ext AS fileExt
+	    FROM uploaded_file
+	    WHERE qna_id = #{qnaId}
+	</select>
+	
 
 </mapper>

@@ -64,5 +64,9 @@ public class QnaService {
 	    qnaMapper.deleteQna(qnaId);
 	    return true; // 삭제 성공
 	}
+
+	public List<FileDTO> getFileList(int qnaId) {
+		return qnaMapper.getFileList(qnaId);
+	}
     
 }

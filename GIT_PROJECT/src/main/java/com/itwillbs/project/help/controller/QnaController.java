@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.help.dto.SupportQnaDTO;
 import com.itwillbs.project.help.service.QnaService;
 
@@ -49,7 +50,7 @@ public class QnaController {
 	        return "redirect:/user/login";
 	    }
 	    
-    	System.out.println("전달된 데이터: " + qna.toString());
+//    	System.out.println("전달된 데이터: " + qna.toString());
     	
         qna.setWriterId(sId);
 
@@ -72,7 +73,7 @@ public class QnaController {
         if (sId == null) {
         	return "redirect:/user/login";
         }
-
+        
         List<SupportQnaDTO> list = qnaService.getQnaList(sId);
         model.addAttribute("qnaList", list);
         
@@ -89,9 +90,11 @@ public class QnaController {
         
         // 1. qnaId로 DB에서 게시글 정보 가져오기
         SupportQnaDTO qna = qnaService.getQnaDetail(qnaId);
+        List<FileDTO> qnaFiles = qnaService.getFileList(qnaId);
         
         // 2. JSP로 전달
         model.addAttribute("qna", qna); 
+        model.addAttribute("qnaFiles", qnaFiles); 
         
         return "/help/qna_detail";
     }

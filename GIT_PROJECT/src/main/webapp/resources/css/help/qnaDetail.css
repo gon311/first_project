@@ -1,0 +1,78 @@
+@charset "UTF-8";
+/* 첨부파일 영역 전체 배경 */
+.file-attachments {
+    margin-top: 25px;
+    padding: 20px;
+    background: #fcfcfc;
+    border-radius: 12px;
+    border: 1px solid #eee;
+}
+
+/* 박스들을 가로로 나열 */
+.file-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* 박스 사이 간격 */
+}
+
+/* 개별 아이템 상자 (이미지와 일반파일 공통 크기) */
+.file-item {
+    width: 180px;      /* 박스 너비 고정 */
+    height: 180px;     /* 박스 높이 고정 (이미지와 동일하게) */
+    overflow: hidden;
+}
+
+/* 1. 이미지 스타일 */
+.file-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지를 상자에 꽉 채움 */
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: block;
+}
+
+/* 2. 일반 파일 다운로드 버튼 스타일 */
+.file-download-link {
+    display: flex;
+    flex-direction: column;   /* 아이콘과 글자를 세로로 */
+    justify-content: center;  /* 상하 중앙 정렬 */
+    align-items: center;      /* 좌우 중앙 정렬 */
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-decoration: none !important;
+    color: #444;
+    transition: all 0.2s;
+}
+
+/* 파일 아이콘 크기 키우기 */
+.file-download-link i {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    color: #007bff;
+}
+
+/* 파일명 스타일 (길면 ... 처리) */
+.file-download-link span {
+    font-size: 0.85rem;
+    text-align: center;
+    width: 100%;
+    display: block;
+    white-space: normal;      /* 두 줄까지는 허용 */
+    word-break: break-all;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;    /* 최대 2줄 표시 */
+    -webkit-box-orient: vertical;
+}
+
+.file-download-link:hover {
+    background: #f8f9fa;
+    border-color: #007bff;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}

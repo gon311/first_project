@@ -9,7 +9,14 @@
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
 </head>
 <body>
-    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+    <c:choose>
+		<c:when test="${sessionScope.userType eq 'C'}">
+		    <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+		</c:when>
+		<c:otherwise>
+		    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+		</c:otherwise>
+	</c:choose>
     
     <main>
         <div class="container mt-5 custom-width">

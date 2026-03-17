@@ -23,8 +23,14 @@
     </style>
 </head>
 <body>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>
-
+	<c:choose>
+        <c:when test="${userType == 'P' || empty sessionScope.userType}">
+			<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+        </c:when>
+        <c:otherwise>
+            <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+        </c:otherwise>
+    </c:choose>
 <main class="qna-container">
     <div class="qna-title">
         <h2><i class="fa-solid fa-headset"></i> 1:1 문의하기</h2>

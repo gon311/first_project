@@ -62,7 +62,7 @@ public class QnaController {
             rttr.addFlashAttribute("error", "등록 중 오류가 발생했습니다.");
         }
 
-        return "redirect:/help/list"; // 문의 내역 리스트로 이동
+        return "redirect:/my/qna"; // 문의 내역 리스트로 이동
     }
     
     @GetMapping("/list")

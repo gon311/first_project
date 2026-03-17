@@ -82,7 +82,7 @@
 			                    <div class="file-item" style="width: 100%;">
 			                        <%-- 파일이 이미지인 경우 (간단하게 확장자나 DB의 contentType으로 구분) --%>
 			                        <c:choose>
-			                            <c:when test="${file.fileExt.contains('image') || file.fileExt.contains('jpg')}">
+			                            <c:when test="${file.fileExt.contains('image') || file.fileExt.contains('jpg') || file.fileExt.contains('png')}">
 			                                <div style="margin-bottom: 10px;">
 			                                    <img src="/upload/board/${file.filePath}/${file.storedName}" 
 			                                         alt="${file.originName}" 
@@ -208,7 +208,7 @@
             document.getElementById('applyModal').style.display = 'block';
         } else {
             if (confirm("등록된 이력서가 없습니다. 이력서를 작성하시겠습니까?")) {
-                location.href = "/resume/write";
+                location.href = "<c:url value="/resume/regist" />";
             }
         }
     }

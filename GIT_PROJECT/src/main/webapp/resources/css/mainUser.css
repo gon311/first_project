@@ -106,13 +106,13 @@
     font-size: 18px;
     font-weight: bold;
 }
-
 /* 4. AI 섹션 전체 레이아웃 */
 .sec02 {
     margin-top: 60px; /* 20em에서 대폭 축소 */
     padding: 60px 0;
     background: #F8FAFC; /* 연한 배경색으로 섹션 구분 */
     border-radius: 30px;
+>>>>>>> refs/heads/develop
     text-align: center;
     width: 1000px;
     margin-left: auto;

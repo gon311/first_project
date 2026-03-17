@@ -14,7 +14,7 @@
 	
 	<!-- <Appenders> 태그 사용하여 로그를 출력할 위치와 출력 형식 지정 -->
 	<Appenders>
-		<!-- <Console> 태그 사용하여 이클립스 콘솔에 출력하기 위한 로그 형식 지정 -->
+		<!-- 1) <Console> 태그 사용하여 이클립스 콘솔에 출력하기 위한 로그 형식 지정 -->
 		<!-- name 속성값으로 console(변경 가능), target 속성값으로 SYSTEM_OUT(고정값) 지정 -->
 		<Console name="console" target="SYSTEM_OUT">
 			<!-- <Console> 태그 내부에 <PatternLayout> 태그 사용하여 로그 메세지의 형식 지정 -->
@@ -28,6 +28,68 @@
 			<!-- => pattern 속성값으로 <Property> 태그의 name 속성값 지정 -->
 			<PatternLayout pattern="${layoutPattern}" />
 		</Console>
+		
+		<!-- ======================================================  -->
+		<!-- 2)로그 메세지를 외부 파일로 출력하기 위한 Appender 설정  -->
+		<!--
+			RollingFile Appender : 파일의 크기 또는 파일 백업 인덱스 등의 지정을 통해서, 
+			특정 크기 이상으로 파일 크기가 커지거나 특정 기간을 지나면
+			기존 파일(target)
+		 -->
+		 <RollingFile name="rollingFile"
+					 	fileName="./my_log/mylog.log"
+					 	filePattern="./my_log/rmylog-%d{yyyy-mm-dd}%i.log">
+		 	<!-- 파일에 출력할 로그메세지 형식(패턴) 지정) -->
+			<PatternLayout pattern="${layoutPattern}" />
+		 	
+		 	<!-- <Policies> 태그 사이에 롤링 파일 정책 설정 -->
+		 	<Policies> 
+		 		<!-- <SizeBasedTiriggerIngPolicy> 파일 크기에 따른 롤링 정책 설정 -->
+		 		<SizeBasedTriggeringPolicy size="1MB" />
+		 	</Policies>
+		 	
+		 	
+		 </RollingFile>
+		 
+		 <RollingFile name="rollingFileForErrorLevel"
+					 	fileName="./my_log/mylog_error.log"
+					 	filePattern="./my_log/my_log-%d{yyyy-mm-dd}%i.log">
+		 	<!-- 파일에 출력할 로그메세지 형식(패턴) 지정) -->
+			<PatternLayout pattern="${layoutPattern}" />
+		 	
+		 	<!-- <Policies> 태그 사이에 롤링 파일 정책 설정 -->
+		 	<Policies> 
+		 		<!-- <SizeBasedTiriggerIngPolicy> 파일 크기에 따른 롤링 정책 설정 -->
+		 		<SizeBasedTriggeringPolicy size="1MB" />
+		 	</Policies>
+		 	<!-- 특정 대상 레벨(심각도) 로그에 대한 필터링
+		 	 일반 로그 메세지에는 ERROR 레벨 이상 로그 제외, 에러 로그메세지에는 ERROR 레벨 이상 로그만 허용
+		 	 인계점 필터링<ThresholdFilter>  -->
+		 	 <ThresholdFilter level="ERROR"
+		 	 					onMatch="ACCEPT"
+		 	 					onMismatch="DENY" />
+		 </RollingFile>
+		 
+		 <!-- sql 실행 관련 로그 메세지만 별도의 롤링 파일로 분리 -->
+		 <RollingFile name="rollingFileForSQL"
+					 	fileName="./my_log/rolling_log_sql.log"
+					 	filePattern="./my_log/rolling_log_sql-%d{yyyy-mm-dd}%i.log">
+		 	<!-- 파일에 출력할 로그메세지 형식(패턴) 지정) -->
+			<PatternLayout pattern="${layoutPattern}" />
+		 	
+		 	<!-- <Policies> 태그 사이에 롤링 파일 정책 설정 -->
+		 	<Policies> 
+		 		<!-- <SizeBasedTiriggerIngPolicy> 파일 크기에 따른 롤링 정책 설정 -->
+		 		<SizeBasedTriggeringPolicy size="1MB" />
+		 	</Policies>
+		 </RollingFile>
+
+		 
+		
+		
+		
+			
+		
 	</Appenders>
 	
 	<!-- <Loggers> 태그 사용하여 로그를 관리할 대상 지정(대상에 대한 로그 메세지 사용 설정) -->
@@ -40,6 +102,7 @@
 		<Root level="INFO">
 <!-- 		<Root level="DEBUG"> -->
 			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingFile" />
 		</Root>
 		
 		<!-- 2. 여기서부터 현재 프로젝트(애플리케이션) 내의 각 로그 대상 지정 -->
@@ -47,6 +110,7 @@
 		<Logger name="com.itwillbs.project" level="INFO" additivity="false">
 <!-- 		<Logger name="com.itwillbs.mvc_board" level="DEBUG" additivity="false"> -->
 			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingFile" />
 		</Logger>
 		
 		<!-- 2) log4jdbc 를 활용한 SQL 로그 출력 -->
@@ -65,6 +129,7 @@
 		<Logger name="log4jdbc.log4j2" level="INFO" additivity="false">
 <!-- 		<Logger name="log4jdbc.log4j2" level="OFF" additivity="false"> -->
 			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingFileForSQL" />
 		</Logger>
 		
 	</Loggers>

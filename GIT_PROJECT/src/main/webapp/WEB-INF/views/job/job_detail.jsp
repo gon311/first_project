@@ -29,7 +29,7 @@
 			        <p style="color: #666; margin: 0;">${post.companyName}</p>
 			        
 			        <c:choose>
-			            <c:when test="${post.postStatus == 1}">
+			            <c:when test="${post.postStatus == 1 && post.postCheck == 2}">
 			                <span style="background: #28a745; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8em;">모집중</span>
 			            </c:when>
 			            <c:when test="${post.postStatus == 2}">
@@ -45,7 +45,7 @@
 	        </div>
 	        <c:choose>
 		        <%-- 상태가 '모집중(1)'일 때만 버튼 활성화 --%>
-		        <c:when test="${post.postStatus == 1 && sessionScope.userType ne 'C'}">
+		        <c:when test="${post.postStatus == 1 && sessionScope.userType ne 'C' && post.postCheck == 2}">
 		            <button type="button" class="apply-btn" id="applyBtn" onclick="checkResumeAndApply()">입사지원</button>
 		        </c:when>
 		        

@@ -183,3 +183,43 @@ tbody tr:hover{ background:#fbfdff; }
   border-color:#2563eb;
   color:#fff;
 }
+
+.detail-row td{
+  background:#f8fbff;
+  padding:15px 20px;
+}
+
+.payment-mini-detail{
+  font-size:14px;
+}
+
+.mini-grid{
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:12px 20px;
+}
+
+.label{
+  display:block;
+  font-size:12px;
+  color:#6b7280;
+  font-weight:700;
+}
+
+.value{
+  font-size:14px;
+  font-weight:700;
+  color:#111827;
+}
+
+button.prod-link{
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-weight:700;
+  color:#2563eb;
+}
+
+button.prod-link:hover{
+  text-decoration:underline;
+}

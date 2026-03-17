@@ -14,11 +14,12 @@
 
 <!-- 수정 URL들 -->
 <c:url var="urlRecommend" value="/my/recommend"/>              <%-- 목록(필터/정렬 GET) --%>
-<c:url var="urlJobDetail" value="/job/JobDetail"/>             <%-- ?jobId= --%>
+<c:url var="urlJobDetail" value="/job/JobDetail"/>  <%-- 예: /job/detail?jobId= --%>
 <c:url var="urlApply" value="/job/apply"/>                     <%-- ?jobId= (입사지원) --%>
 <c:url var="urlHide" value="/my/recommend/hide"/>              <%-- POST: jobId --%>
 <c:url var="urlBookmarkToggle" value="/my/bookmark/toggle"/>   <%-- POST: jobId --%>
 <c:url var="urlRecoBookmark" value="/my/recommend/bookmark"/>  <%-- 추천에서 스크랩(확정) --%>
+
 
 <main class="container-fluid px-0 mypage-wrap">
   <div class="row g-0">
@@ -109,7 +110,7 @@
                   </div>
 
                   <div class="job-right">
-                    <a class="btn-apply" href="${urlApply}?jobId=${row.jobId}">입사지원</a>
+                    <a class="btn-apply" href="${urlJobDetail}?jobId=${row.jobId}">입사지원</a>
 
                     <div class="deadline">
                       ~ <fmt:formatDate value="${row.closeDate}" pattern="MM/dd(E)"/>

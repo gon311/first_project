@@ -101,12 +101,16 @@
                       </div>
 
                       <!-- 액션 -->
-                      <div class="d-flex align-items-center gap-2">
-                        <a class="btn btn-outline-primary"
-                           href="<c:url value='/review/${rv.coverLetterIdx}/registText' />"
-                           onclick="return confirm('자기소개서를 수정하시겠습니까?');">
-                          수정
-                        </a>
+					<div class="d-flex align-items-center gap-2">
+					  <c:url var="editUrl" value="/review/${rv.coverLetterIdx}/registText">
+					    <c:param name="title" value="${rv.title}" />
+					  </c:url>
+					
+					  <a class="btn btn-outline-primary"
+					     href="${editUrl}"
+					     onclick="return confirm('자기소개서를 수정하시겠습니까?');">
+					    수정
+					  </a>
 
 						<!-- 삭제 -->
 						<form action="${urlReviewDelete}" method="post" style="display:inline;"

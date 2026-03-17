@@ -4,16 +4,19 @@ import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Getter
+@Setter
 public class JobPostDTO {
-	// 출력 위한 임시 DTO
 	// 출력 위한 임시 DTO
 	private Long jobId;
 	private Long compId;
@@ -36,3 +39,5 @@ public class JobPostDTO {
 	private String mgrPhone;
 	private String isPublic;
 	private String keyword;
+	
+}

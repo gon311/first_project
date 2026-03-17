@@ -1,3 +1,4 @@
+
 package com.itwillbs.project.admin.mapper;
 
 import java.time.LocalDate;
@@ -246,7 +247,7 @@ public interface AdminMapper {
 
 	List<Map<String, Object>> getAgeStats();
 
-	List<Map<String, Object>> getJobStats();
+	List<Map<String, Object>> getCountryStats();
 	
 // 	2. 기업회원 유형별 통계
 	List<Map<String, Object>> getComPostStats();
@@ -269,7 +270,8 @@ public interface AdminMapper {
 
 	List<Map<String, Object>> getComRevenueStats();
 
-	
+//	5. 메인화면 통계
+	List<Map<String, Object>> getTotalRevenueStats();	
 // =============================================================
 // == [자유게시판 관리] ==
 

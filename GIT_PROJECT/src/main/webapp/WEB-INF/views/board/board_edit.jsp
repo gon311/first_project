@@ -25,6 +25,7 @@
   </c:otherwise>
 </c:choose>
 
+<c:url var="urlBoardList" value="/board"/>
 <c:url var="urlBoardEdit" value="/board/edit"/>
 <c:url var="urlBoardDetail" value="/board/detail"/>
 <c:url var="urlBoardDownload" value="/board/download"/>
@@ -50,7 +51,7 @@
                 <option value="JOB" ${post.boardType eq 'JOB' ? 'selected' : ''}>취준/이직</option>
                 <option value="CAREER" ${post.boardType eq 'CAREER' ? 'selected' : ''}>회사생활/커리어</option>
                 <option value="FREE" ${post.boardType eq 'FREE' ? 'selected' : ''}>자유주제</option>
-                <option value="INTERVIEW_REVIEW">면접후기</option>
+                <option value="INTERVIEW_REVIEW" ${post.boardType eq 'INTERVIEW_REVIEW' ? 'selected' : ''}>면접후기</option>
               </select>
             </div>
           </div>
@@ -77,7 +78,9 @@
             <textarea name="content" id="content" required>${post.content}</textarea>
           </div>
 
-          <div class="counter"><span id="contentCount">0</span>/5000자</div>
+          <div class="counter">
+          	<span id="contentCount">0</span>/5000자
+          </div>
         </div>
 
         <c:if test="${not empty fileList}">
@@ -129,7 +132,9 @@
 
         <div class="bottom">
           <a class="btn-ghost" href="${urlBoardDetail}?postId=${post.postId}">취소</a>
-          <button type="submit" class="btn-primaryish">게시글 수정하기</button>
+          <button type="submit" class="btn-primaryish" id="submitBtn">
+            게시글 수정하기
+          </button>
         </div>
 
       </form>
@@ -155,7 +160,7 @@
     }
 
     $('#content').summernote({
-      placeholder: '내용을 입력하세요.',
+      placeholder: '등록한 글은 사용하는 닉네임으로 등록됩니다.\n* 타인의 권리를 침해하거나 부적절한 내용은 사전 공지 없이 삭제될 수 있어요.',
       tabsize: 2,
       height: 320,
       minHeight: 300,

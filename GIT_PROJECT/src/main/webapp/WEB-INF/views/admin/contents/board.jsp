@@ -32,7 +32,7 @@
                                     
                                     <div class="col-md-5">
                                         <label class="form-label small fw-bold mb-1">작성자명</label>
-                                        <input type="text" class="form-control form-control-sm" name="authorMemberId" 
+                                        <input type="text" class="form-control form-control-sm" name="userId" 
                                                placeholder="아이디 입력" value="${param.userId}">
                                     </div>
                                     
@@ -92,7 +92,7 @@
                                             <td class="text-start ps-4 text-center">${board.title}</td>
                                             <td>${board.authorMemberId}</td>
                                             <td class="text-muted small">
-												${board.createDate}
+                                   				${board.createDate}
                                             </td>
                                             <td>
                                             <c:if test= '${board.status == "ACTIVE"}'>

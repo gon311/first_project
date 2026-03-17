@@ -21,9 +21,9 @@ import lombok.ToString;
 public class QnaDTO {
 
 	private int qnaId;
+	private String qnaTitle;
 	private String qnaContent;
 	private String qnaCategory;
-	private String qnaTitle;
 	private int writerId;
 	private Date regDate;
 	private String reStatus;

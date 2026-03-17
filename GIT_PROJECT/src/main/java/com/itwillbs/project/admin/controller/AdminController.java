@@ -394,5 +394,11 @@ public class AdminController {
 	public Map<String, Object> getComPayStats() {
 		return adminService.getComPayStatistics();
 	}
+	
+	@GetMapping("/api/pay-stats")
+	@ResponseBody
+	public Map<String, Object> getTotalPayStats(){
+		return adminService.getTotalPayStatistics();
+	}
 
 }

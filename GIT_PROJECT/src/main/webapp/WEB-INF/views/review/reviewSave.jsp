@@ -4,8 +4,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<title>자소서 작성</title>
 		<%@ include file="/WEB-INF/views/inc/head.jspf"%>
-		<%-- 현재 페이지(rivewSave.jsp) 전용 CSS 영역--%>
+		<%-- 현재 페이지 전용 CSS 영역--%>
 		<link href="<c:url value="/resources/css/review/reviewSave.css" />" rel="stylesheet" type="text/css">
 	</head>
 	<body>

@@ -2,6 +2,8 @@ package com.itwillbs.project.help.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +17,10 @@ import com.itwillbs.project.admin.dto.NoticeDTO;
 import com.itwillbs.project.admin.dto.PageInfoDTO;
 import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.service.AdminService;
+import com.itwillbs.project.common.exception.BackwardException;
 import com.itwillbs.project.help.service.HelpService;
+import com.itwillbs.project.user.dto.UserDTO;
+import com.itwillbs.project.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,6 +35,8 @@ public class HelpController {
 	
 	@Autowired
 	private HelpService helpService;
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping("/helpWord")
 	public String posting(@RequestParam(value="userType", defaultValue="all") String userType
@@ -151,8 +158,21 @@ public class HelpController {
 	}
 	
 	@GetMapping("/noticeDetail")
-	public String noticeDetail(@RequestParam("noticeId") int noticeId, Model model) {
-		NoticeDTO noticeDTO = adminService.getNoticeDetail(noticeId);
+	public String noticeDetail(@RequestParam("noticeId") int noticeId, Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		UserDTO dbUser = userService.getUser(sId);
+		NoticeDTO noticeDTO = helpService.getNoticeDetail(noticeId);
+		
+		if(noticeDTO == null) {
+			throw new BackwardException("잘못된 접근 입니다.");
+		}
+		
+		if(!noticeDTO.getStatus().equals("Y")) { 
+			if(dbUser == null || !dbUser.getUserType().equals("A")) {
+				throw new BackwardException("잘못된 접근입니다!");
+			}
+		}
+		
 		model.addAttribute("noticeDTO", noticeDTO); 
 		return "help/noticeDetail";
 	}

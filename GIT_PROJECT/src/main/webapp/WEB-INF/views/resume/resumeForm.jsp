@@ -20,7 +20,7 @@
 				id="registForm" method="post" novalidate>
 				<div class="card shadow-sm">
 					<div class="card-body p-4">
-	
+	 
 						<!-- 1. 이력서 제목 -->
 						<div class="mb-4">
 							<label for="title" class="form-label fw-semibold">이력서 제목 <span

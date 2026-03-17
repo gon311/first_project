@@ -150,13 +150,6 @@
 
 								<dt class="col-sm-3 text-secondary">정보 공개 여부</dt>
 								<dd class="col-sm-9">${submit.isPublic}</dd>
-
-								<dt class="col-sm-3 text-secondary">접수기간</dt>
-								<dd class="col-sm-9">
-									<fmt:formatDate value="${submit.openDate}" pattern="yyyy/MM/dd"/> 
-									~ 
-									<fmt:formatDate value="${submit.closeDate}" pattern="yyyy/MM/dd"/>
-								</dd>
 								
 								<dt class="col-sm-3 text-secondary">첨부파일</dt>
 								<dd class="col-sm-9" style="word-break: break-all;">

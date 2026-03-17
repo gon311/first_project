@@ -35,6 +35,7 @@ import com.itwillbs.project.job.dto.JobDTO;
 import com.itwillbs.project.job.dto.JobPageDTO;
 import com.itwillbs.project.job.service.JobService;
 import com.itwillbs.project.resume.dto.ResumeDTO;
+import com.itwillbs.project.resume.service.ResumeService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -48,6 +49,8 @@ public class JobController {
 	@Autowired
 	private JobService jobService;
 	
+	@Autowired
+	private ResumeService resumeService;
 	// ===================================================
 	// 공고 이용권 확인
 	@GetMapping("/JobPosting")
@@ -157,7 +160,7 @@ public class JobController {
 		String sId = (String) session.getAttribute("userType");
 		Long userId = (Long)session.getAttribute("userIdx");
 		applicationDTO.setUserId(userId);
-		if (sId == null || !"C".equals(sId)) return "redirect:/user/login";
+		if (sId == null || !"P".equals(sId)) return "redirect:/user/login";
 		
 		if(resumeId == null) {
 			throw new BackwardException("잘못된 접근입니다!");
@@ -301,5 +304,24 @@ public class JobController {
 
 	    return "job/job_management";
 	}
+	
+	// 이력서 상세정보.
+		@GetMapping("/resumeView")
+		public String resumeView(@RequestParam("resumeId") Integer resumeId
+									,HttpSession session
+									,Model model) {
+			
+			 if (resumeId == null) {
+			        return "redirect:/resume/list";
+			 }
+			 ResumeDTO resume = resumeService.getResumeInfo(resumeId);
+
+			 if (resume == null) {
+		        return "redirect:/resume/list";
+			 }
+			 model.addAttribute("resume", resume);
+			 
+			 return "job/job_resume_view";
+		} // 이력서 상세정보 끝.
 	
 }

@@ -29,22 +29,28 @@
 	    WHERE writer_id = #{writerId} AND is_deleted = 'N'
 	    ORDER BY reg_date DESC
 	</select>
+
+	<select id="selectQnaDetail" parameterType="int" resultType="com.itwillbs.project.help.dto.SupportQnaDTO">
+	    SELECT 
+	        qna_id, 
+	        qna_category, 
+	        qna_title, 
+	        qna_content, 
+	        writer_id, 
+	        reg_date, 
+	        re_status, 
+	        re_date, 
+	        re_content, 
+	        is_deleted
+	    FROM qna
+	    WHERE qna_id = #{qnaId} 
+	      AND is_deleted = 'N'
+	</select>
 	
-	<select id = "getQnaById" resultType="qna">
-		SELECT 
-			qna_id
-			, qna_title
-			, qna_category
-			, qna_content
-			, writer_id
-			, reg_date
-			, re_status
-			, re_date
-			, re_content
-		FROM
-			qna
-		WHERE
-			qna_id = #{qnaId}
-	</select>	
+	<update id="deleteQna" parameterType="int">
+	    UPDATE qna 
+	    SET is_deleted = 'Y' 
+	    WHERE qna_id = #{qnaId}
+	</update>
 
 </mapper>

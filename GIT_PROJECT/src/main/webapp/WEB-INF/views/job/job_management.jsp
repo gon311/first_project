@@ -116,7 +116,7 @@
 	                            <td>
 	                                <span class="name-tag">${app.userName}</span>
 	                                <div class="doc-links">
-	                                    <a href="<c:url value='/resume/resumeView?resumeId=${app.resumeId - 1}'/>" class="doc-btn">
+	                                    <a href="<c:url value='/job/resumeView?resumeId=${app.resumeId}'/>" class="doc-btn">
 	                                        <i class="fa-solid fa-file-user"></i> 이력서
 	                                    </a>
 	                                </div>

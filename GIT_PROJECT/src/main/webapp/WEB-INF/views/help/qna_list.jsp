@@ -43,7 +43,15 @@
                     <c:forEach var="qna" items="${qnaList}">
                         <tr>
                             <td>${qna.qnaId}</td>
-                            <td>${qna.qnaCategory}</td>
+                            <td>
+							    <c:choose>
+							        <c:when test="${qna.qnaCategory eq 'job'}">입사지원 관련</c:when>
+							        <c:when test="${qna.qnaCategory eq 'account'}">계정/인증 관련</c:when>
+							        <c:when test="${qna.qnaCategory eq 'error'}">오류 신고</c:when>
+							        <c:when test="${qna.qnaCategory eq 'etc'}">기타 문의</c:when>
+							        <c:otherwise>${qna.qnaCategory}</c:otherwise> <%-- 혹시 모를 예외 대비 --%>
+							    </c:choose>
+							</td>
                             <td style="text-align: left;">
                                 <a href="<c:url value='/help/detail?qnaId=${qna.qnaId}' />">${qna.qnaTitle}</a>
                             </td>

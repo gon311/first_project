@@ -100,7 +100,7 @@
 	        , SUBSTRING_INDEX(SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 2), ' ', -1) as district
 	    FROM JOB_POSTING
 	    WHERE post_status = 1
-<!-- 	   	  AND post_check = 2 -->
+	   	  AND post_check = 2
 	      AND address IS NOT NULL
 	</select>
 	
@@ -311,8 +311,8 @@
 	    FROM com_product
 	    WHERE user_id = #{userId}
 	    
-	    <!-- 기업 이용권 만료 시 상태 변경 확인용으로 주석 처리 -->
-<!-- 	      AND end_date > CURDATE() -->
+<!-- 	    기업 이용권 만료 시 상태 변경 확인용으로 주석 처리 -->
+	      AND end_date > CURDATE()
 	      AND use_status = 'active'
 	</select>
 	
@@ -441,7 +441,7 @@
 	        LEFT JOIN job_posting p ON a.job_id = p.job_id
 	        <where>
 	            AND a.job_id = #{jobId}
-	            
+<!-- 	            AND a.resume_id = #{resumeId} -->
 	            <if test="appStep != null and appStep != '' and appStep != 'all'">
 	                AND a.app_step = #{appStep}
 	            </if>

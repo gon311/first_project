@@ -45,7 +45,7 @@
       
       <!-- 중앙 메인폼 -->
       <div class="col-12 col-md-8 main-form">
-        <form action="<c:url value='/resume/resumeModify' />" method="post" enctype="multipart/form-data" class="resume-form">
+        <form id="resumeForm" action="<c:url value='/resume/resumeModify' />" method="post" enctype="multipart/form-data" class="resume-form">
         
         	<input type="hidden" name="resumeId" value="${resume.resumeId}">
 	        <!-- 1.jsp에서 넘어온 값들을 hidden으로 다시 담아줌 -->
@@ -475,7 +475,14 @@
   </div>
 
 	<!-- 우측 공백 영역 -->
-      <div class="col-12 col-md-2 side-space"></div>
+      <div class="col-12 col-md-2 side-space">
+      	<button id="printBtn" class="btn custom-btn" >인쇄하기</button>
+		<div id="printContent">
+<!-- 		    <h1>인쇄할 내용</h1> -->
+<!-- 		    <p>여기에 인쇄할 내용을 넣습니다.</p> -->
+		</div>
+      
+      </div>
     </div>
   </div>
   

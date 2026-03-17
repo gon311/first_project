@@ -19,6 +19,42 @@ window.onload = function() {
 	
 	    reader.readAsDataURL(file);
 	});
+	
+	// - 미리보기 및 인쇄
+	document.getElementById("printBtn").addEventListener("click", function () {
+
+    // form 내용 가져오기
+    var content = document.getElementById("resumeForm").innerHTML;
+
+    // 팝업창 열기
+    var printWindow = window.open("", "", "width=900,height=1000");
+
+	    printWindow.document.write(`
+	        <html>
+	        <head>
+	            <title>이력서 인쇄</title>
+	            <link rel="stylesheet"
+	                  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+	            <style>
+	                body { padding: 20px; }
+	                input, select, button { border: none; }
+	            </style>
+	        </head>
+	        <body>
+	            ${content}
+	        </body>
+	        </html>
+	    `);
+	
+	    printWindow.document.close();
+	
+	    // 로딩 후 인쇄 실행
+	    printWindow.onload = function () {
+	        printWindow.focus();
+	        printWindow.print();
+	        printWindow.close();
+	    };
+	});
     
 };
 

@@ -39,7 +39,7 @@ public class UserController {
 	// 테스트 로그인
 	@GetMapping("/login/p")
 	public String loginP(HttpSession session) {
-		UserDTO dbUser = userService.getUser("user1");
+		UserDTO dbUser = userService.getUser("user1@test.com");
 		session.setAttribute("userIdx", dbUser.getUserId());
 		session.setAttribute("sId", dbUser.getEmail());
 		session.setAttribute("userName", dbUser.getUserName());
@@ -61,7 +61,7 @@ public class UserController {
 	}
 	@GetMapping("/login/a")
 	public String loginA(HttpSession session) {
-		UserDTO dbUser = userService.getUser("admin");
+		UserDTO dbUser = userService.getUser("admin@test.com");
 		session.setAttribute("userIdx", dbUser.getUserId());
 		session.setAttribute("sId", dbUser.getEmail());
 		session.setAttribute("userName", dbUser.getUserName());

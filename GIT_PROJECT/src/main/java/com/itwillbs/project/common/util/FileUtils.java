@@ -77,7 +77,15 @@ public class FileUtils {
 	public static FileResourceDTO getFileResource(FileDTO fileDTO) {
 		try {
 			// 파일 업로드 경로 및 실제 업로드 된 파일명 사용하여 Path 객체 생성 
-			Path uploadPath = Paths.get(uploadBaseLocation, boardFileLocation, fileDTO.getFilePath(), fileDTO.getStoredName()).toAbsolutePath().normalize();
+			Path uploadPath = null;
+			
+			if(fileDTO.getCategoryIdx() == 6) { // qna 파일 다운로드 경로 설정
+				uploadPath = Paths.get(uploadBaseLocation, qnaFileLocation, fileDTO.getFilePath(), fileDTO.getStoredName()).toAbsolutePath().normalize();
+				
+			} else {
+				uploadPath = Paths.get(uploadBaseLocation, boardFileLocation, fileDTO.getFilePath(), fileDTO.getStoredName()).toAbsolutePath().normalize();
+			}
+			
 			
 			// 해당 파일에 대한 Resource 객체 생성
 			Resource resource = new FileSystemResource(uploadPath);

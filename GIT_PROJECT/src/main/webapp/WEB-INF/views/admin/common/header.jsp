@@ -10,9 +10,11 @@
         <div class="header-util">
             <a href="/project/" class="btn btn-sm btn-outline-secondary">사용자 페이지</a>
             <span class="badge bg-light text-dark mx-2">관리자 모드</span>
-            <a href="<c:url value="/user/logout" />" class="btn btn-sm btn-danger">로그아웃</a>
+            <a href="<c:url value="/user/logout" />" class="btn btn-sm btn-danger" onclick="requestLogout()">
+            로그아웃</a>
         </div>
     </div>
+
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">

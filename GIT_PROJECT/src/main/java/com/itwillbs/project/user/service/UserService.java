@@ -68,6 +68,21 @@ public class UserService {
 		}
 	}
 
+	//--------------------------------------------------------------------------
+	// 이용권 정보 조회
+	public Boolean getComProductInfo(Long userId) {
+		if(userMapper.selectComProductInfo(userId) != null) { // 이용권이 있는 경우
+			return true;
+		} else {
+			return false;
+		}
+		
+	}
+
+	// 이용권 상태 설정
+	public void changeProductStatus(Long userId) {
+		userMapper.updateProductStatus(userId);
+	}
 
 
 

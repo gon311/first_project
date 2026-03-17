@@ -14,8 +14,15 @@
 	
 </head>
 <body>
-
-    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	
+	<c:choose>
+		<c:when test="${sessionScope.userType eq 'C'}">
+		    <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+		</c:when>
+		<c:otherwise>
+		    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
+		</c:otherwise>
+	</c:choose>
     
     <main>
         <div class="container">
@@ -32,11 +39,11 @@
                     </p>
             
                     <div class="d-grid gap-3"> 
-                        <a href="<c:url value="/my/payment" />" class="btn btn-dark btn-main text-white text-decoration-none">
+                        <a id="checkPayment" class="btn btn-dark btn-main text-white text-decoration-none">
                             <i class="bi bi-receipt me-2"></i> 결제 내역 확인하기
                         </a>
             
-                        <a href="<c:url value="/" />" class="btn btn-sub text-decoration-none">
+                        <a id="goToMain" class="btn btn-sub text-decoration-none">
                             메인페이지로 이동
                         </a>
                     </div>
@@ -49,14 +56,36 @@
     <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
     
     <script>
+		const userType = "${sessionScope.userType}";
+		
 	    // 페이지 로드 시 현재 상태를 히스토리에 한 번 더 쌓음
 		history.pushState(null, null, location.href);
 		
 		window.onpopstate = function() {
 		    // 뒤로가기 감지 시 메인페이지로 강제 이동
 		    alert("잘못된 접근입니다.");
-		    location.replace("<c:url value='/' />"); 
+		    if(userType === "C") {
+			    location.replace("<c:url value='/mainCom' />"); 
+			} else {
+			    location.replace("<c:url value='/' />"); 
+			}
 		};
+		
+		document.getElementById("checkPayment").addEventListener("click", function() {
+			if(userType === "C") {
+				location.href="<c:url value="/comMy/payment" />" ;
+			} else {
+				location.href="<c:url value="/my/payment" />" ;
+			}
+		});
+		
+		document.getElementById("goToMain").addEventListener("click", function() {
+			if(userType === "C") {
+				location.href="<c:url value="/mainCom" />" ;
+			} else {
+				location.href="<c:url value="/" />" ;
+			}
+		});
     </script>
 
 </body>

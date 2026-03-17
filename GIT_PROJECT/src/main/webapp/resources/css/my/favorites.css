@@ -236,3 +236,65 @@
   border-color:#2563eb;
   color:#fff;
 }
+
+/* ====== 관심목록 empty state ====== */
+.emptyFav{
+  margin-top: 18px;
+  border: 1px solid #eef2f7;
+  border-radius: 16px;
+  background: #fff;
+  padding: 56px 20px;
+  text-align: center;
+}
+
+.emptyFav-icon{
+  font-size: 42px;
+  color: #2563eb;
+  line-height: 1;
+  margin-bottom: 14px;
+}
+
+.emptyFav-img{
+  width: 140px;
+  max-width: 100%;
+  margin-bottom: 14px;
+  opacity: .95;
+}
+
+.emptyFav-title{
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #111827;
+  letter-spacing: -.2px;
+}
+
+.emptyFav-desc{
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: .95rem;
+  font-weight: 700;
+}
+
+.empty{
+  padding: 56px 20px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.empty .big{
+  margin-top: 10px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.empty div:last-child{
+  margin-top: 8px;
+  font-size: 15px;
+}
+
+
+
+
+
+

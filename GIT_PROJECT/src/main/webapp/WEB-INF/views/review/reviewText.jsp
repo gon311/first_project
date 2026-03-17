@@ -221,16 +221,21 @@
 						return false;
 					}
 				}
+				// 5) 뒤로 가기 방지 함수 
+				const preventBack = () => {
+					history.pushState(null, null, location.href);
+				};
 				
-					// 사용자가 페이지를 한 번이라도 클릭하면 뒤로가기 방지 활성화
-					window.addEventListener('click', () => {
-					    history.pushState(null, null, location.href);
-					}, { once: true }); 
-
-					window.onpopstate = function () {
-					    history.pushState(null, null, location.href);
-					    alert("변경사항이 저장되지 않을 수 있습니다.");
-					};
+				// 6) 사용자가 페이지에서 첫 클릭을 하면 히스토리 스택을 하나 쌓음
+				window.addEventListener('click', () => {
+				    preventBack;
+				}, { once: true }); 
+				
+				// 7) 뒤로가기 시도시 다시 앞으로 밀어내고 경고 
+				window.onpopstate = function (e) {
+				    preventBack;
+				    alert("변경사항이 저장되지 않을 수 있습니다.");
+				};
 			</script>
 	</body>
 </html>

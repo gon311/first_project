@@ -89,7 +89,7 @@ public class UserController {
 				response.addCookie(cookie2);
 			}
 			
-			return "redirect:/admin/users";
+			return "redirect:/admin/main";
 		}
 		
 		if(dbUser == null || !dbUser.getUserType().equals(type) || !passwordEncoder.matches(userDTO.getPassword(), dbUser.getPassword())) {
@@ -107,6 +107,17 @@ public class UserController {
 		session.setAttribute("userName", dbUser.getUserName());
 		session.setAttribute("userType", dbUser.getUserType());
 		session.setMaxInactiveInterval(60 * 60 * 24);
+		
+		//--------------------------------------------------------------------------------------------
+		// 기업 이용권 만료 기능 추가
+		// 이용권 정보 조회
+		Boolean isExists = userService.getComProductInfo(dbUser.getUserId());
+		
+		// 이용권 상태 설정
+		if(isExists) {
+			userService.changeProductStatus(dbUser.getUserId());
+		}
+		//--------------------------------------------------------------------------------------------
 		
 		if(rememberId != null) {
 			log.info("아이디 : " + userDTO.getEmail());

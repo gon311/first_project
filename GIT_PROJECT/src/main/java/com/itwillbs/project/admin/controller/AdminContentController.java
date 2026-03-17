@@ -1,5 +1,3 @@
-package com.itwillbs.project.admin.controller;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,7 @@ import com.itwillbs.project.admin.dto.PageInfoDTO;
 import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.admin.dto.SearchDTO;
 import com.itwillbs.project.admin.service.AdminService;
+import com.itwillbs.project.common.dto.FileDTO;
 
 @Controller
 @RequestMapping("/admin/contents")
@@ -372,6 +371,7 @@ public class AdminContentController {
 	public String qnaDetail(@RequestParam("qnaId") int qnaId
 							, Model model) {
 		QnaDTO qnaDTO = adminService.getQnADetail(qnaId);
+		
 		model.addAttribute("qnaDTO", qnaDTO);
 		return "admin/contents/qnaDetail";
 	}

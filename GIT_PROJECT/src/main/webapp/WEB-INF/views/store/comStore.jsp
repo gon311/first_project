@@ -164,7 +164,7 @@
 			if(result.posibillity === "none") { // 구매가능
 				location.href = "pay?productId=" + productId;
 			} else if(result.posibillity === "basic") {
-				if(confirm("보유중인 [ 일반 이용권 ] 이 소멸됩니다.\n 구매하시겠습니까?")) {
+				if(confirm("보유중인 [ 일반 이용권 ] 이 소멸됩니다.\n구매하시겠습니까?")) {
 					location.href = "pay?productId=" + productId;
 				} else {
 					return;

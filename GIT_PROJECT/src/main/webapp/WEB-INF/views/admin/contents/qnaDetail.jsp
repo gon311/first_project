@@ -21,8 +21,35 @@ pageEncoding="UTF-8"%>
 			 	<c:if test='${qnaDTO.reStatus eq "pending"}'> 답변전 </c:if>
 			 	<c:if test= '${qnaDTO.reStatus eq "completed"}'> 답변 완료 </c:if>
 			 <hr>
-			<div class="contents">
+			<div class="contents mb-5">
 				${qnaDTO.qnaContent}
+			</div>
+			<!-- 첨부파일 -->
+			<div class="mt-3">
+			    <span class="small fw-semibold">
+			        <i class="bi bi-paperclip"></i> 첨부파일 :
+			    </span>
+			
+			    <c:choose>
+			        <c:when test="${not empty qnaDTO.fileList}">
+			        
+			            <c:forEach var="fileDTO" items="${qnaDTO.fileList}">
+			                <span class="ms-2 small">
+			                    <i class="bi bi-file-earmark text-secondary"></i>
+			                    ${fileDTO.originName}
+			                    <a href="<c:url value="/file/${fileDTO.fileId}" />"
+			                       class="btn btn-sm btn-outline-primary py-0 px-2 ms-1">
+			                       다운로드
+			                    </a>
+			                </span>
+			            </c:forEach>
+			
+			        </c:when>
+			
+			        <c:otherwise>
+			            <span class="text-muted small ms-2">첨부된 파일이 없습니다.</span>
+			        </c:otherwise>
+			    </c:choose>
 			</div>
 		<hr class="my-5">
 		<div class="card bg-light shadow-sm mb-5">

@@ -256,11 +256,13 @@ public class BoardController {
 	                          RedirectAttributes ra) {
 
 	    String sId = (String) session.getAttribute("sId");
+	    String userType = (String) session.getAttribute("userType");
+	    
 	    if (sId == null) return "redirect:/user/login";
 
 	    MyDTO user = myService.getUser(sId);
 
-	    boolean result = boardService.deleteBoard(postId, user.getUserId());
+	    boolean result = boardService.deleteBoard(postId, user.getUserId(), userType);
 
 	    if (!result) {
 	        ra.addFlashAttribute("msg", "본인이 작성한 글만 삭제할 수 있습니다.");

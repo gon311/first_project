@@ -11,9 +11,11 @@ import com.itwillbs.project.my.dto.FavoriteJobCond;
 import com.itwillbs.project.my.dto.FavoriteJobRowDTO;
 import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.dto.MyPaymentDTO;
+import com.itwillbs.project.my.dto.MyQnaDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.MyReviewDTO;
 import com.itwillbs.project.my.dto.PaymentCond;
+import com.itwillbs.project.my.dto.QnaCond;
 import com.itwillbs.project.my.dto.RecommendedCond;
 import com.itwillbs.project.my.dto.RecommendedRowDTO;
 
@@ -88,6 +90,12 @@ public interface MyMapper {
     int upsertRecommendedJobs(@Param("userId") long userId);
 
 	void deleteUser(String sId);
+	
+	
+	//문의내역
+	// 문의내역
+	List<MyQnaDTO> selectQnaList(QnaCond cond);
+	int selectQnaCount(QnaCond cond);
     
     
 

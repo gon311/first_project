@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+<%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
 
 <!-- URL -->
 <c:url var="urlPaymentList" value="/comMy/payment"/>
@@ -109,7 +109,7 @@
 		
 		            <!-- 상품명(상세 링크) -->
 		            <td>
-		              <a class="prod-link" href="${urlPaymentDetail}?payId=${p.payId}">
+		              <a class="prod-link">
 		                ${p.productName}
 		              </a>
 		            </td>

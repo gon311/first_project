@@ -144,12 +144,14 @@ public class BoardService {
 	}
 
 	// 게시글 삭제
-	public boolean deleteBoard(Long postId, Long userId) {
+	public boolean deleteBoard(Long postId, Long userId, String userType) {
 
 		BoardDTO post = boardMapper.selectBoard(postId);
 
 		if (post == null) return false;
-		if (!userId.equals(post.getAuthorMemberId())) return false;
+		
+		// 본인, 관리자만 삭제 가능
+		if (!userId.equals(post.getAuthorMemberId()) && !userType.equals("A")) return false;
 
 		deleteBoardFilesByPostId(postId);
 

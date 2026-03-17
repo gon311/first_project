@@ -159,34 +159,29 @@
 								</dd>
 								
 								<dt class="col-sm-3 text-secondary">첨부파일</dt>
-								<dd class="col-sm-9">
+								<dd class="col-sm-9" style="word-break: break-all;">
+								
 								    <c:choose>
-								        <c:when test="${not empty submitDTO.fileList}">
+								        <c:when test="${not empty submit.fileList}">
 								        
-								        	<c:forEach var="fileDTO" items="${submitDTO.fileList}">
-					                        	<div class="list-group-item d-flex justify-content-between align-items-center">
-					                        		<div class="me-3">${fileDTO.originalName}</div>
-					                        		<div class="d-flex gap-2">
-					                        			<a href="<c:url value="/file/${fileDTO.fileId}" />" class="btn btn-sm btn-outline-primary">다운로드</a>
-					                        		</div>
-					                        	</div>
-					                        </c:forEach>
-<%-- 								        <c:forEach var="file" items="${detailFile}"> --%>
-<!-- 						                    <div class="file-item" style="width: 100%;"> -->
-<!-- 						                                이미지가 아닌 일반 파일은 기존처럼 링크로 표시 -->
-<%-- 						                                <a href="/upload/board/${file.filePath}/${file.storedName}"  --%>
-<%-- 						                                   download="${file.originName}"  --%>
-<!-- 						                                   style="color:#007bff; text-decoration:none; display: block; padding: 10px; border: 1px dashed #ccc;"> -->
-<%-- 						                                    <i class="fa-regular fa-file-lines"></i> ${file.originName} (다운로드) --%>
-<!-- 						                                </a> -->
-<!-- 						                    </div> -->
-<%-- 						                </c:forEach> --%>
+								            <c:forEach var="fileDTO" items="${submit.fileList}">
+								                <span class="me-2 small">
+								                    <i class="bi bi-file-earmark text-secondary"></i>
+								                    ${fileDTO.originName}
+								                    <a href="<c:url value='/file/${fileDTO.fileId}' />"
+								                       class="btn btn-sm btn-outline-primary py-0 px-2 ms-1">
+								                        다운로드
+								                    </a>
+								                </span><br>
+								            </c:forEach>
+								
 								        </c:when>
-								        
+								
 								        <c:otherwise>
 								            <span class="text-muted small">첨부된 파일이 없습니다.</span>
 								        </c:otherwise>
 								    </c:choose>
+								
 								</dd>
 								
 							</dl>

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.project.admin.dto.QnaDTO;
 import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.common.util.FileUtils;
 import com.itwillbs.project.help.dto.SupportQnaDTO;
@@ -36,5 +37,10 @@ public class QnaService {
     public List<SupportQnaDTO> getQnaList(Long writerId) {
         return qnaMapper.selectQnaList(writerId);
     }
+    
+    // 게시글 상세
+	public QnaDTO getQnADetail(int qnaId) {
+		return qnaMapper.getQnaById(qnaId);
+	}
     
 }

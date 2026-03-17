@@ -15,6 +15,7 @@
 		FROM JOB_POSTING j JOIN USER_COMPANY u
 		ON 	j.comp_id = u.user_id
 		WHERE j.post_status = 1                                    -- 구인중인 공고 
+		AND j.post_check = 2									   -- 검토 상태 : 2 승인
 		AND	j.close_date >= NOW()								   -- 마감일이 남은 공고  
 		AND	j.reg_date = (SELECT MAX(j1.reg_date)                  -- 기업별 가장 최근 공고
 						  FROM 	job_posting j1 JOIN user_company u1

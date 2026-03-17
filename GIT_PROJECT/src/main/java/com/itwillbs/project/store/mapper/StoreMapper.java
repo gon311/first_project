@@ -61,6 +61,9 @@ public interface StoreMapper {
 	// 이용권 테이블의 use_status 를 'expired' 로 변경
 	void updateUseStatus(String payId);
 
+	// 구직자 회원의 pass_count 추가
+	void updatePassCount(PaymentDTO paymentDTO);
+
 
 	
 

@@ -148,8 +148,6 @@ public class AdminController {
 		model.addAttribute("activeTab", activeTab); 
 		//-----------------------------------------------------------
 		// 전체 회원 목록 조회
-		char userType = 'c';
-		
 		UserPageDTO comPageDTO = adminService.getComList(searchDTO.getKeyword()
 														, searchDTO.getType()
 														, searchDTO.getStatus()
@@ -190,7 +188,16 @@ public class AdminController {
 		List<JobPostDTO> jobPostDTO = adminService.getJobPostInfo(memberDTO.getUserId());
 		model.addAttribute("jobPostlist", jobPostDTO); 
 		
-		// 2) 1대1 문의
+		// 작성한 게시글 목록 조회
+		// 2) 자유게시판
+		List<FreeDTO> freeDTO = adminService.getFreeInfo(memberDTO.getUserId());
+		model.addAttribute("freeList", freeDTO);
+		
+		// 3) 작성한 댓글 조희
+		List<CommentDTO> commentDTO = adminService.getCommentInfo(memberDTO.getUserId());
+		model.addAttribute("commentList", commentDTO);
+		
+		// 4) 1대1 문의
 		List<QnaDTO> qnaDTO = adminService.getQnaInfo(memberDTO.getUserId());
 		model.addAttribute("qnaList", qnaDTO);
 		
@@ -216,7 +223,7 @@ public class AdminController {
 	}
 	
 	//===========================================================================
-	// [ 제출된 공고 관리 ](상세정보 구현 예정)
+	// [ 제출된 공고 관리 ]
 	// 제출된 공고 목록 조회
 	@GetMapping("/submits")
 	public String submitList(SubmitDTO submitDTO, Model model, SearchDTO searchDTO, String sort
@@ -228,6 +235,7 @@ public class AdminController {
 																, searchDTO.getSubmitStatus()
 																, sort
 																, pageNum);
+		
 		
 		model.addAttribute("submitList", submitPageDTO.getSubmitList());
 		model.addAttribute("pageInfo", submitPageDTO.getPageInfoDTO());
@@ -250,10 +258,8 @@ public class AdminController {
 			comDTO.setProductName("보유 이용권 없음");
 		}
 		
-		List<FileDTO> detailFile = adminService.getFileList(submitDTO.getJobId());
 		
 		model.addAttribute("com", comDTO);
-		model.addAttribute("detailFile", detailFile);
 		
 		return "admin/submit/submitInfo";
 		
@@ -290,13 +296,15 @@ public class AdminController {
 	// 결제 내역 목록 조회
 	@GetMapping("/payments")
 	public String payList(Model model, SearchDTO searchDTO, String sort, @RequestParam(defaultValue="1") Integer pageNum) {
+		
 		PaymentPageDTO paymentPageDTO = adminService.getPayList(searchDTO.getStartDate()
-													, searchDTO.getEndDate()
-													, searchDTO.getKeyword()
-													, searchDTO.getUserType()
-													, searchDTO.getPayStatus()
-													, sort
-													, pageNum);
+																, searchDTO.getEndDate()
+																, searchDTO.getKeyword()
+																, searchDTO.getUserType()
+																, searchDTO.getPayStatus()
+																, sort
+																, pageNum);
+		
 		model.addAttribute("payList", paymentPageDTO.getPaymentList());
 		model.addAttribute("pageInfo", paymentPageDTO.getPageInfoDTO());
 		

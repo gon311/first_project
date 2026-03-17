@@ -57,7 +57,7 @@
                 <!-- 작성자 메뉴 -->
                 <div class="menu">
 
-                    <c:if test="${isOwner}">
+                    <c:if test="${isOwner or sessionScope.userType eq 'A'}">
 
                         <a class="btn-ghost"
                            href="${urlBoardEdit}?postId=${post.postId}">
@@ -223,7 +223,7 @@
 		
 					<div class="comment-body">${cmt.content}</div>
 		
-		                <c:if test="${cmt.owner}">
+		                <c:if test="${cmt.owner or sessionScope.userType eq 'A'}">
 		                    <div class="comment-footer">
 		                        <form action="${urlCommentDelete}" method="post"
 		                              onsubmit="return confirm('댓글을 삭제하시겠습니까?');">

@@ -4,13 +4,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <%@ include file="/WEB-INF/views/inc/head.jspf" %>
-  <link rel="stylesheet" href="<c:url value='/resources/css/board/board_write.css'/>" type="text/css">
+<%@ include file="/WEB-INF/views/inc/head.jspf" %>
+<link rel="stylesheet" href="<c:url value='/resources/css/board/board_write.css'/>" type="text/css">
 
-  <!-- Summernote Lite -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css">
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+<!-- Summernote Lite -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css">
+
+<!-- head.jspf에 jQuery가 이미 있으면 아래 한 줄은 빼도 됨 -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 </head>
 
 <body>
@@ -77,7 +79,7 @@
           </div>
 
           <div class="counter">
-            <span id="contentCount">0</span>/5000자
+          	<span id="contentCount">0</span>/5000자
           </div>
         </div>
 
@@ -161,11 +163,19 @@
       placeholder: '등록한 글은 사용하는 닉네임으로 등록됩니다.\n* 타인의 권리를 침해하거나 부적절한 내용은 사전 공지 없이 삭제될 수 있어요.',
       tabsize: 2,
       height: 320,
+      minHeight: 300,
+      maxHeight: 700,
+      dialogsInBody: true,
       toolbar: [
-        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['style', ['style']],
+        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+        ['fontsize', ['fontsize']],
+        ['color', ['color']],
         ['para', ['ul', 'ol', 'paragraph']],
-        ['insert', ['link', 'table']],
-        ['view', ['codeview']]
+        ['table', ['table']],
+        ['insert', ['link', 'picture', 'video', 'hr']],
+        ['view', ['fullscreen', 'codeview', 'help']],
+        ['history', ['undo', 'redo']]
       ],
       callbacks: {
         onInit: function () {
@@ -173,9 +183,39 @@
         },
         onChange: function (contents) {
           updateCount(contents);
+        },
+        onImageUpload: function(files) {
+          for (let i = 0; i < files.length; i++) {
+            uploadSummernoteImage(files[i], this);
+          }
         }
       }
     });
+
+    function uploadSummernoteImage(file, editor) {
+      const data = new FormData();
+      data.append("file", file);
+
+      $.ajax({
+        url: '<c:url value="/board/image/upload"/>',
+        type: 'POST',
+        data: data,
+        contentType: false,
+        processData: false,
+        success: function(res) {
+          if (res.success) {
+            $(editor).summernote('insertImage', res.url, function($image) {
+              $image.attr('alt', file.name);
+            });
+          } else {
+            alert(res.message || '이미지 업로드에 실패했습니다.');
+          }
+        },
+        error: function() {
+          alert('이미지 업로드 중 오류가 발생했습니다.');
+        }
+      });
+    }
 
     const tagWrap = document.getElementById("tagWrap");
     const tags = tagWrap.querySelectorAll(".tag");

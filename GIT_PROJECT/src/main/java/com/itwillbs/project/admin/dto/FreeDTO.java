@@ -24,6 +24,8 @@ public class FreeDTO {
 	private String strCreatedAt;
 	private String strUpdatedAt;
 	
+	private String createDate;
+	
 	private String keyword;
 	private LocalDateTime StartDate;
 	private LocalDateTime endDate;
@@ -35,6 +37,8 @@ public class FreeDTO {
 			this.boardType = "회사생활/커리어";
 		} else if(boardType.equals("FREE")) {
 			this.boardType = "자유주제";
+		} else if(boardType.equals("INTERVIEW_REVIEW")) {
+			this.boardType = "면접후기";
 		} 
 	}
 	
@@ -43,6 +47,7 @@ public class FreeDTO {
 		
 		if(createdAt != null) { 
 			this.strCreatedAt = createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+			this.createDate = createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		}
 	}
 	
@@ -52,5 +57,6 @@ public class FreeDTO {
 		if(updatedAt != null) { 
 			this.strUpdatedAt = updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 		}
+		
 	}
 }

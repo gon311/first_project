@@ -29,5 +29,22 @@
 	    WHERE writer_id = #{writerId} AND is_deleted = 'N'
 	    ORDER BY reg_date DESC
 	</select>
+	
+	<select id = "getQnaById" resultType="qna">
+		SELECT 
+			qna_id
+			, qna_title
+			, qna_category
+			, qna_content
+			, writer_id
+			, reg_date
+			, re_status
+			, re_date
+			, re_content
+		FROM
+			qna
+		WHERE
+			qna_id = #{qnaId}
+	</select>	
 
 </mapper>

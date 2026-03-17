@@ -14,6 +14,7 @@ import lombok.ToString;
 @ToString
 public class JobPostDTO {
 	// 출력 위한 임시 DTO
+	// 출력 위한 임시 DTO
 	private Long jobId;
 	private Long compId;
 	private String companyName;
@@ -35,4 +36,3 @@ public class JobPostDTO {
 	private String mgrPhone;
 	private String isPublic;
 	private String keyword;
-}

@@ -7,6 +7,9 @@
 <html>
 <head>
 	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
+	
+	<%-- 현재 페이지 전용 CSS 영역--%>
+	<link href="<c:url value="/resources/css/userInfo.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/admin/common/header.jsp" %>
@@ -111,6 +114,20 @@
 								</button>
 							</li>
 							<li class="nav-item" role="presentation">
+								<button class="nav-link ${activeTab eq 'free' ? 'active' : ''}" 
+								        id="free-tab" 
+								        data-bs-toggle="tab" 
+								        data-bs-target="#free" 
+								        type="button" role="tab">작성한 글</button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link ${activeTab eq 'comment' ? 'active' : ''}" 
+								        id="comment-tab" 
+								        data-bs-toggle="tab" 
+								        data-bs-target="#comment" 
+								        type="button" role="tab">작성한 댓글</button>
+							</li>
+							<li class="nav-item" role="presentation">
 								<button class="nav-link ${activeTab eq 'qna' ? 'active' : ''}"
 								        id="qna-tab"
 								        data-bs-toggle="tab"
@@ -142,7 +159,7 @@
 											<c:forEach var="job" varStatus="status" items="${jobPostlist}">
 												<tr class="clickable-row" onclick="location.href='<c:url value="/job/JobDetail?jobId=${job.jobId}"/>'">
 													<td>${status.count}</td>
-													<td>${job.title}</td>
+													<td class="text-ellipsis">${job.title}</td>
 													<td>${job.field}</td>
 													<td>
 														<fmt:formatDate value="${job.openDate}" pattern="yyyy/MM/dd"/> 
@@ -158,6 +175,93 @@
 									</table>
 								</div>
 
+							</div>
+							
+							<!-- 작성한 글 -->
+							<div class="tab-pane fade ${activeTab eq 'free' ? 'show active' : ''}" 
+							     id="free" role="tabpanel" aria-labelledby="free-tab">
+								<div class="table-responsive">
+									<table class="table table-hover table-bordered align-middle text-center">
+										<thead class="table-light">
+											<tr>
+												<th>No</th>
+												<th>카테고리</th>
+												<th>제목</th>
+												<th>작성일자</th>
+												<th>상태</th>
+											</tr>
+										</thead>
+							 			<tbody>
+										<c:forEach var="free" varStatus="status" items="${freeList}">
+											<tr class="clickable-row" onclick="location.href='<c:url value="/board/detail?postId=${free.postId}" />'">
+												<td>${status.count}</td>
+												<td>${free.boardType}</td> 
+												<td class="text-ellipsis">${free.title}</td>
+												<td>
+													<c:choose>
+														<c:when test="${not empty free.strUpdatedAt}">
+															${free.strUpdatedAt}
+														</c:when>
+														<c:otherwise>
+															${free.strCreatedAt}
+														</c:otherwise>
+													</c:choose>
+												</td>
+												<td>
+													<c:choose>
+														<c:when test="${free.status eq 'ACTIVE'}">
+															게시중
+														</c:when>
+														<c:otherwise>
+															삭제
+														</c:otherwise>
+													</c:choose>
+												</td>
+											</tr>
+										</c:forEach>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+							<!-- 작성한 댓글 -->
+							<div class="tab-pane fade ${activeTab eq 'comment' ? 'show active' : ''}" 
+							     id="comment" role="tabpanel" aria-labelledby="qna-tab">
+								<div class="table-responsive">
+									<table class="table table-hover table-bordered align-middle text-center">
+										<thead class="table-light">
+											<tr>
+												<th>No</th>
+												<th>글제목</th>
+												<th>댓글내용</th>
+												<th>작성일자</th>
+												<th>상태</th>
+											</tr>
+										</thead>
+							 			<tbody>
+											<c:forEach var="comment" varStatus="status" items="${commentList}">
+												<tr class="clickable-row" onclick="location.href='<c:url value="/board/detail/?postId=${comment.postId}" />'">
+													<td>${status.count}</td>
+													<td class="text-ellipsis">${comment.title}</td>
+													<td class="text-ellipsis">${comment.content}</td>
+													<td>
+		                           						${comment.strCreatedAt}
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${comment.status eq 'ACTIVE'}">
+																게시중
+															</c:when>
+															<c:otherwise>
+																삭제
+															</c:otherwise>
+														</c:choose>
+													</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+								</div>
 							</div>
 
 							<!-- 1:1 문의글 -->
@@ -176,9 +280,9 @@
 										</thead>
 										<tbody>
 											<c:forEach var="qna" varStatus="status" items="${qnaList}">
-												<tr class="clickable-row" onclick="location.href='/admin/contents/QnADetail?qnaId=${qna.qnaId}'">
+												<tr class="clickable-row" onclick="location.href='<c:url value="/admin/contents/QnADetail?qnaId=${qna.qnaId}" />'">
 													<td>${status.count}</td>
-													<td>${qna.qnaTitle}</td>
+													<td class="text-ellipsis">${qna.qnaTitle}</td>
 													<td>
 		                           						<fmt:formatDate value="${qna.regDate}" pattern="yyyy년 MM월 dd일"/>
 													</td>

@@ -49,11 +49,13 @@ public class BoardCommentController {
                                 RedirectAttributes ra) {
 
         String sId = (String) session.getAttribute("sId");
+        String userType = (String) session.getAttribute("userType");
+        
         if (sId == null) return "redirect:/user/login";
 
         MyDTO user = myService.getUser(sId);
 
-        boolean result = boardCommentService.deleteComment(commentId, user.getUserId());
+        boolean result = boardCommentService.deleteComment(commentId, user.getUserId(), userType);
 
         if (!result) {
             ra.addFlashAttribute("msg", "본인 댓글만 삭제할 수 있습니다.");

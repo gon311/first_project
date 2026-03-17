@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+<%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
 
 <!-- URL수정 -->
 <c:url var="urlUpdateInfo" value="/comMy/updateInfo"/>   <%-- POST 처리 URL --%>

@@ -16,7 +16,9 @@ import com.itwillbs.project.my.dto.MyDTO;
 import com.itwillbs.project.my.dto.MyResumeDTO;
 import com.itwillbs.project.my.dto.MyReviewDTO;
 import com.itwillbs.project.my.dto.MyPaymentDTO;
+import com.itwillbs.project.my.dto.MyQnaDTO;
 import com.itwillbs.project.my.dto.PaymentCond;
+import com.itwillbs.project.my.dto.QnaCond;
 import com.itwillbs.project.my.dto.RecommendedCond;
 import com.itwillbs.project.my.dto.RecommendedRowDTO;
 import com.itwillbs.project.my.mapper.MyMapper;
@@ -243,7 +245,14 @@ public class MyService {
 
 
 	
-	
+	// 문의내역
+	public List<MyQnaDTO> getQnaList(QnaCond cond) {
+	    return myMapper.selectQnaList(cond);
+	}
+
+	public int getQnaCount(QnaCond cond) {
+	    return myMapper.selectQnaCount(cond);
+	}
 	
 
 

@@ -310,7 +310,9 @@
 	    SELECT COUNT(*)
 	    FROM com_product
 	    WHERE user_id = #{userId}
-	      AND end_date > CURDATE()
+	    
+	    <!-- 기업 이용권 만료 시 상태 변경 확인용으로 주석 처리 -->
+<!-- 	      AND end_date > CURDATE() -->
 	      AND use_status = 'active'
 	</select>
 	

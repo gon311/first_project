@@ -64,9 +64,14 @@
         <div class="resumeList">
           <c:choose>
             <c:when test="${empty myResumes}">
-              <div class="resumeCard" style="margin-top:16px;">
-                아직 등록된 이력서가 없습니다.
-              </div>
+			  <div class="emptyState">
+			    <div class="emptyState-icon">
+			      <i class="bi bi-file-earmark-text"></i>
+			    </div>
+			    <div class="emptyState-title">등록된 이력서가 없어요</div>
+			    <div class="emptyState-desc">이력서를 작성하면 지원할 때 더 빠르게 활용할 수 있어요.</div>
+			    <a href="${urlResumeCreate}" class="btn btn-primary">이력서 작성하기</a>
+			  </div>
             </c:when>
 
             <c:otherwise>

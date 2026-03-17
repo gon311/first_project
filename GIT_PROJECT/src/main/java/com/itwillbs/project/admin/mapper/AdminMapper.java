@@ -247,7 +247,7 @@ public interface AdminMapper {
 
 	List<Map<String, Object>> getAgeStats();
 
-	List<Map<String, Object>> getJobStats();
+	List<Map<String, Object>> getCountryStats();
 	
 // 	2. 기업회원 유형별 통계
 	List<Map<String, Object>> getComPostStats();

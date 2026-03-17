@@ -571,7 +571,7 @@ public class AdminService{
 		Map<String, Object> result = new HashMap<>();
 		result.put("gender", adminMapper.getGenderStats());
 		result.put("age", adminMapper.getAgeStats());
-		result.put("job", adminMapper.getJobStats());
+		result.put("country", adminMapper.getCountryStats());
 		return result;
 	}
 	

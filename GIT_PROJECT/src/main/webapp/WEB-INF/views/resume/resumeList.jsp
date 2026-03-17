@@ -32,7 +32,8 @@
             <div class="resumeList-profileCard">
 
                 <div class="resumeList-profileImageArea">
-                    <img src="/resources/images/profile_base_1.png"
+<!--                     <img src="/resources/images/profile_base_1.png" -->
+                    <img src="<c:url value='/resources/images/profile_base_1.png' />"
                     	
                          class="resumeList-profileImage"
                          alt="profile">

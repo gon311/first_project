@@ -17,7 +17,7 @@
 <!-- 수정 URL들 -->
 <c:url var="urlMyResume" value="/my/myResume"/>
 <c:url var="urlResumeCreate" value="/resume/regist"/>   <%-- 새 이력서 작성 --%>
-<c:url var="urlResumeEdit" value="/mresume/resumeModify"/>       <%-- 수정 --%>
+<c:url var="urlResumeEdit" value="/resume/resumeModify"/>       <%-- 수정 --%>
 <c:url var="urlResumeDelete" value="/my/resume/delete"/>   <%-- 삭제(나중에 POST) --%>
 <c:url var="urlResumeDetail" value="/resume/resumeView"/>   <%-- 디테일 --%>
 
@@ -120,7 +120,7 @@
                       <%-- 액션 --%>
                       <div class="d-flex align-items-center gap-2">
                         <a class="btn btn-outline-primary"
-                           href="${urlResumeEdit}?resumeId=${r.resumeId}"
+                           href="${urlResumeDetail}?resumeId=${r.resumeId}"
                            onclick="return confirm('이력서를 수정하시겠습니까?');">
                           수정
                         </a>

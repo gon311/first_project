@@ -16,7 +16,6 @@
 		<link href="<c:url value="/resources/css/resume.css" />" 
 			rel="stylesheet" type="text/css">
 	<!-- resumeView.js -->	
-	
 	<script src="<c:url value="/resources/js/resumeView.js" />"></script>		
 </head>
 

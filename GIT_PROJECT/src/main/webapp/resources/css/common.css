@@ -10,10 +10,10 @@ body {
     font-family: 'Pretendard', sans-serif;
 }
 
-main{
-	min-height: 900px;
+main {
+    min-height: auto !important; /* 너무 길게 잡지 않음 */
+    padding-bottom: 50px;
 }
-
 
 /* header 영역 */
 #header-upper{

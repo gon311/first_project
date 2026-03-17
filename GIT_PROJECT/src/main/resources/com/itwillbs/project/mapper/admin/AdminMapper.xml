@@ -917,7 +917,7 @@
 					p.pay_date desc
 				</when>
 				<otherwise>
-					p.pay_id desc
+					p.pay_date desc
 				</otherwise>
 			</choose>
 		limit

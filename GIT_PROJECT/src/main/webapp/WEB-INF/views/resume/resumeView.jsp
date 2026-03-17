@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<%-- 	<%@ include file="/WEB-INF/views/inc/head.jspf"%> --%>
+	<%@ include file="/WEB-INF/views/inc/head.jspf"%>
     <meta charset="UTF-8">
     <title>이력서</title>
 
@@ -15,9 +15,7 @@
     <%-- 현재 페이지(main.jsp) 전용 CSS 영역--%>
 		<link href="<c:url value="/resources/css/resume.css" />" 
 			rel="stylesheet" type="text/css">
-	<!-- resumeView.js -->	
 	
-	<script src="<c:url value="/resources/js/resumeView.js" />"></script>		
 </head>
 
 <body class="resume-body">
@@ -47,7 +45,7 @@
       
       <!-- 중앙 메인폼 -->
       <div class="col-12 col-md-8 main-form">
-        <form action="<c:url value='/resume/resumeModify' />" method="post" class="resume-form">
+        <form id="resumeForm" action="<c:url value='/resume/resumeModify' />" method="post" enctype="multipart/form-data" class="resume-form">
         
         	<input type="hidden" name="resumeId" value="${resume.resumeId}">
 	        <!-- 1.jsp에서 넘어온 값들을 hidden으로 다시 담아줌 -->
@@ -92,10 +90,25 @@
         <div class="card-body">
             <div class="row">
                 <!-- 사진 영역 -->
-                <div class="col-12 col-md-3 text-center mb-4">
-                    <div class="profile-box mx-auto mb-3"></div>
-                    <button class="btn btn-outline-secondary btn-sm">사진 첨부</button>
-                </div>
+			    <div class="col-12 col-md-3 text-center mb-4">
+			        <div class="profile-box mx-auto mb-3" 
+			             style="width:150px; height:180px; border:1px solid #ccc; display:flex; align-items:center; justify-content:center;">
+			            
+			           <c:if test="${not empty photo}">
+						    <img src="<c:url value='${photo.filePath}/${photo.storedName}' />"
+
+						         alt="이력서 사진" 
+						         style="max-width:100%; max-height:100%; object-fit:contain;"/>
+						</c:if>
+			        </div>
+			
+			        <!-- 실제 파일 input -->
+			        <input type="file" name="photo" id="photo" accept="image/*" style="display:none;">
+			        <button type="button" class="btn btn-outline-secondary btn-sm"
+			                onclick="document.getElementById('photo').click();">
+			            사진 첨부
+			        </button>
+			    </div>
 
                 <!-- 입력 영역 -->
                 <div class="col-12 col-md-9">
@@ -462,7 +475,14 @@
   </div>
 
 	<!-- 우측 공백 영역 -->
-      <div class="col-12 col-md-2 side-space"></div>
+      <div class="col-12 col-md-2 side-space">
+      	<button id="printBtn" class="btn custom-btn" >인쇄하기</button>
+		<div id="printContent">
+<!-- 		    <h1>인쇄할 내용</h1> -->
+<!-- 		    <p>여기에 인쇄할 내용을 넣습니다.</p> -->
+		</div>
+      
+      </div>
     </div>
   </div>
   
@@ -473,6 +493,9 @@
   <%-- footer area --%>
 		<%@ include file="/WEB-INF/views/inc/footer.jspf"%>
   <script src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  
+  <!-- resumeView.js -->	
+	<script src="<c:url value="/resources/js/resumeView.js" />"></script>		
 </body>
     
 

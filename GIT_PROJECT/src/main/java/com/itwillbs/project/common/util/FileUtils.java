@@ -57,6 +57,8 @@ public class FileUtils {
 	        Path uploadDirectory = Paths.get(uploadBaseLocation, boardFileLocation, filePath).toAbsolutePath().normalize();
 	        Path uploadPath = uploadDirectory.resolve(storedName);
 			
+	        log.info(">>>>>>>>> uploadPath: " + uploadPath);
+	        
 	        // 파일 물리적 저장
 	        mFile.transferTo(uploadPath);
 	        

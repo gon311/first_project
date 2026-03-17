@@ -143,8 +143,11 @@ public class StoreService{
         
     }
 
-
-	
+ // 구직자 회원의 pass_count 추가
+    public void setPassCount(PaymentDTO paymentDTO) {
+        storeMapper.updatePassCount(paymentDTO);
+    }
+    
 
 	
 

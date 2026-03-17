@@ -207,11 +207,9 @@
 		update
 			user_person
 		set
-			pass_count =  (
-				select	product_count
-				from	product
-				where	product_id = #{productId}
-			)
+			pass_count =  pass_count + (select	product_count
+										from	product
+										where	product_id = #{productId})
 		where
 			user_id = #{userId}
 	</update>

@@ -36,6 +36,41 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	// 테스트 로그인
+	@GetMapping("/login/p")
+	public String loginP(HttpSession session) {
+		UserDTO dbUser = userService.getUser("user1");
+		session.setAttribute("userIdx", dbUser.getUserId());
+		session.setAttribute("sId", dbUser.getEmail());
+		session.setAttribute("userName", dbUser.getUserName());
+		session.setAttribute("userType", dbUser.getUserType());
+		session.setMaxInactiveInterval(60 * 60 * 24);
+		
+		return "redirect:/";
+	}
+	@GetMapping("/login/c")
+	public String loginC(HttpSession session) {
+		UserDTO dbUser = userService.getUser("comp1@test.com");
+		session.setAttribute("userIdx", dbUser.getUserId());
+		session.setAttribute("sId", dbUser.getEmail());
+		session.setAttribute("userName", dbUser.getUserName());
+		session.setAttribute("userType", dbUser.getUserType());
+		session.setMaxInactiveInterval(60 * 60 * 24);
+		
+		return "/mainCom";
+	}
+	@GetMapping("/login/a")
+	public String loginA(HttpSession session) {
+		UserDTO dbUser = userService.getUser("admin");
+		session.setAttribute("userIdx", dbUser.getUserId());
+		session.setAttribute("sId", dbUser.getEmail());
+		session.setAttribute("userName", dbUser.getUserName());
+		session.setAttribute("userType", dbUser.getUserType());
+		session.setMaxInactiveInterval(60 * 60 * 24);
+		
+		return "redirect:/admin/main";
+	}
+	
 	// 로그인 페이지로 이동
 	@GetMapping("/login")
 	public String login(HttpSession session) {
@@ -50,7 +85,7 @@ public class UserController {
 	
 	// 로그인
 	@PostMapping("/login")
-	public String loginP(UserDTO userDTO, BCryptPasswordEncoder passwordEncoder,
+	public String login(UserDTO userDTO, BCryptPasswordEncoder passwordEncoder,
 						 HttpSession session, HttpServletResponse response,
 						 RedirectAttributes ra, String rememberId, String type) {
 		

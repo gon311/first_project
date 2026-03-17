@@ -64,7 +64,7 @@
 									<button type="button"
 										class="btn btn-outline-secondary text-center action-btn"
 										onclick="location.href='<c:url value="/review/copyCheck" />'">
-										표절검사</button>
+										문장 다듬기</button>
 									<button type="button"
 										class="btn btn-light border text-center action-btn" 
 										onclick ="location.href='<c:url value="/my/myReview" />'">

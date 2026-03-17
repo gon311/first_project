@@ -158,6 +158,7 @@
 		FROM job_posting p JOIN user_company c
 		ON p.comp_id = c.user_id
 		WHERE p.job_id = #{jobId}
+        AND p.close_date >= now()
 	</select>
 	
 	<!-- =================================================== -->
@@ -354,6 +355,7 @@
 	        ON j.job_id = b.job_id AND b.user_id = #{userIdx}
 	    <where>
 	    	AND post_check = 2
+	    	AND close_date >= now()
 	        <if test="q != null and q != ''">
 	            AND (j.title LIKE CONCAT('%', #{q}, '%') 
 	                 OR u.company_name LIKE CONCAT('%', #{q}, '%')
@@ -401,6 +403,7 @@
 	    JOIN USER_COMPANY u ON j.comp_id = u.user_id
 	    <where>
 	    	AND post_check = 2
+	    	AND close_date >= now()
 	        <if test="q != null and q != ''">
 	            AND (j.title LIKE CONCAT('%', #{q}, '%') 
 	                 OR u.company_name LIKE CONCAT('%', #{q}, '%')
@@ -448,6 +451,7 @@
 	    FROM JOB_POSTING
 	    WHERE post_status = 1
 	   	  AND post_check = 2
+          AND close_date >= now()
 	      AND address IS NOT NULL
 	</select>
 	

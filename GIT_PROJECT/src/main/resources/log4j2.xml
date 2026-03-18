@@ -37,8 +37,8 @@
 			기존 파일(target)
 		 -->
 		 <RollingFile name="rollingFile"
-					 	fileName="./my_log/mylog.log"
-					 	filePattern="./my_log/rmylog-%d{yyyy-mm-dd}%i.log">
+					 	fileName="d:/upload/logs/mylog.log"
+					 	filePattern="d:/upload/logs/mylog-%d{yyyy-mm-dd}%i.log">
 		 	<!-- 파일에 출력할 로그메세지 형식(패턴) 지정) -->
 			<PatternLayout pattern="${layoutPattern}" />
 		 	
@@ -52,8 +52,8 @@
 		 </RollingFile>
 		 
 		 <RollingFile name="rollingFileForErrorLevel"
-					 	fileName="./my_log/mylog_error.log"
-					 	filePattern="./my_log/my_log-%d{yyyy-mm-dd}%i.log">
+					 	fileName="d:/upload/logs/mylog_error.log"
+					 	filePattern="d:/upload/logs/my_log_error-%d{yyyy-mm-dd}%i.log">
 		 	<!-- 파일에 출력할 로그메세지 형식(패턴) 지정) -->
 			<PatternLayout pattern="${layoutPattern}" />
 		 	
@@ -72,8 +72,8 @@
 		 
 		 <!-- sql 실행 관련 로그 메세지만 별도의 롤링 파일로 분리 -->
 		 <RollingFile name="rollingFileForSQL"
-					 	fileName="./my_log/rolling_log_sql.log"
-					 	filePattern="./my_log/rolling_log_sql-%d{yyyy-mm-dd}%i.log">
+					 	fileName="d:/upload/logs/rolling_log_sql.log"
+					 	filePattern="d:/upload/logs/rolling_log_sql-%d{yyyy-mm-dd}%i.log">
 		 	<!-- 파일에 출력할 로그메세지 형식(패턴) 지정) -->
 			<PatternLayout pattern="${layoutPattern}" />
 		 	
@@ -83,12 +83,6 @@
 		 		<SizeBasedTriggeringPolicy size="1MB" />
 		 	</Policies>
 		 </RollingFile>
-
-		 
-		
-		
-		
-			
 		
 	</Appenders>
 	
@@ -103,6 +97,7 @@
 <!-- 		<Root level="DEBUG"> -->
 			<AppenderRef ref="console" />
 			<AppenderRef ref="rollingFile" />
+			<AppenderRef ref="rollingFileForErrorLevel" />
 		</Root>
 		
 		<!-- 2. 여기서부터 현재 프로젝트(애플리케이션) 내의 각 로그 대상 지정 -->
@@ -111,6 +106,7 @@
 <!-- 		<Logger name="com.itwillbs.mvc_board" level="DEBUG" additivity="false"> -->
 			<AppenderRef ref="console" />
 			<AppenderRef ref="rollingFile" />
+			<AppenderRef ref="rollingFileForErrorLevel" />
 		</Logger>
 		
 		<!-- 2) log4jdbc 를 활용한 SQL 로그 출력 -->
@@ -130,6 +126,7 @@
 <!-- 		<Logger name="log4jdbc.log4j2" level="OFF" additivity="false"> -->
 			<AppenderRef ref="console" />
 			<AppenderRef ref="rollingFileForSQL" />
+			<AppenderRef ref="rollingFileForErrorLevel" />
 		</Logger>
 		
 	</Loggers>

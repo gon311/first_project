@@ -1,9 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+// 세션 체크 
+	if(session.getAttribute("sId") == null) {
+%>
+	<script>
+		alert("로그인이 필요한 서비스입니다.");
+		location.href="<c:url value='/user/login' />";
+	</script>
+<%
+		return;
+	}
+
+%>
 <!DOCTYPE html>
 <html>
 	<head>
+		<title>문장 다듬기</title>
 		<%@ include file="/WEB-INF/views/inc/head.jspf"%>
 		<%-- 현재 페이지 전용 CSS 영역--%>
 		<link href="<c:url value="/resources/css/review/copyCheck.css" />" rel="stylesheet" type="text/css">
@@ -18,7 +32,7 @@
 				<div class="card-body p-4">
 	
 					<!-- 제목 -->
-					<h1 class="h4 mb-4">표절 검사</h1>
+					<h1 class="h4 mb-4">문장 다듬기</h1>
 	
 					<!-- 레이아웃: 좌(입력) / 우(수정결과 + 세부설명) -->
 					<div class="row g-4">
@@ -26,7 +40,7 @@
 						<div class="col-12 col-lg-6 left-pane">
 							<label for="inputText" class="form-label">입력창</label>
 							<textarea id="inputText" name="inputText" class="form-control"
-								placeholder="표절 검사를 진행할 원문을 입력하세요."></textarea>
+								placeholder="회원님의 소중한 경험은 그대로, 표현은 더 독창적이고 전문적으로 바꿔보세요."></textarea>
 						</div>
 	
 						<!-- 우측: 위/아래 스택 -->
@@ -46,7 +60,7 @@
 					<!-- 버튼 영역 -->
 					<div class="d-flex justify-content-end gap-2 mt-4">
 						<button type="button" id="runCheck" class="btn btn-primary">
-							검사하기</button>
+							글 다듬기</button>
 						<button type="button" id="copyBtn" name="copyBtn"
 							class="btn btn-outline-secondary">복사 하기</button>
 					</div>
@@ -60,7 +74,7 @@
 				<div class="d-flex justify-content-center align-items-center h-100">
 					<div class="text-center text-white">
 						<div class="spinner-border" role="status"></div>
-						<div class="mt-3">표절 검사하는 중...</div>
+						<div class="mt-3">글 다듬는 중...</div>
 					</div>
 				</div>
 			</div>

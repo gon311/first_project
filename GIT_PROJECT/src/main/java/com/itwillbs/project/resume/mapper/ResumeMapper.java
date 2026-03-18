@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.itwillbs.project.common.dto.FileDTO;
 import com.itwillbs.project.resume.dto.ResumeDTO;
 import com.itwillbs.project.resume.dto.ResumeEducationDTO;
 import com.itwillbs.project.resume.dto.ResumeExperienceDTO;
@@ -36,5 +37,12 @@ public interface ResumeMapper {
 	void deleteResumeEdu(int resumeId);
 
 	void deleteResumeExp(int resumeId);
+
+	void insertResumePhoto(FileDTO fileDTO);
+
+	// 내 이력서의 사진을 가져옵니다.(1장)
+	FileDTO selectResumePhoto(Integer resumeId);
+
+	void deleteUpPhoto(int resumeId);
 
 }

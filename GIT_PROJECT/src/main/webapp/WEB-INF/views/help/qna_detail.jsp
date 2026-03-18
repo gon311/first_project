@@ -6,18 +6,17 @@
 <html>
 <head>
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
-    <title>내 문의 상세 보기</title>
-    <style>
-        .qna-detail-card { max-width: 900px; margin: 50px auto; }
-        .qna-header { background-color: #f8f9fa; border-bottom: 2px solid #333; }
-        .qna-content { min-height: 200px; padding: 20px; white-space: pre-wrap; }
-        .answer-box { background-color: #f0f7ff; border-left: 5px solid #007bff; }
-        .status-badge { font-size: 0.9em; padding: 5px 10px; border-radius: 20px; }
-    </style>
+    <link href="<c:url value="/resources/css/help/qnaDetail.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <%@ include file="/WEB-INF/views/inc/header.jspf" %>
-
+    <c:choose>
+        <c:when test="${userType == 'P' || empty sessionScope.userType}">
+			<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+        </c:when>
+        <c:otherwise>
+            <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+        </c:otherwise>
+    </c:choose>
     <main class="container qna-detail-card">
         <div class="card shadow-sm">
             <%-- 질문 헤더 --%>
@@ -49,9 +48,38 @@
             </div>
 
             <%-- 질문 내용 --%>
-            <div class="card-body qna-content">
-                ${qna.qnaContent}
-            </div>
+			<div class="card-body qna-content">
+			    ${qna.qnaContent}
+			    
+			    <c:if test="${not empty qnaFiles}">
+			        <div class="file-attachments">
+			            <div class="file-preview-container">
+			                <c:forEach var="file" items="${qnaFiles}">
+							    <c:choose>
+							        <%-- 이미지인 경우 --%>
+							        <c:when test="${file.fileExt.contains('image') || file.fileExt.contains('jpg') || file.fileExt.contains('png')}">
+							            <div class="file-item img-item"> <img src="/upload/qna/${file.filePath}/${file.storedName}" alt="${file.originName}">
+							            </div>
+							        </c:when>
+							        <%-- 일반 파일인 경우 --%>
+							        <c:otherwise>
+									    <a href="/upload/qna/${file.filePath}/${file.storedName}" 
+									       download="${file.originName}" 
+									       class="file-download-link">
+									        <i class="fa-regular fa-file-lines"></i>
+									        <span>${file.originName}</span> </a>
+									</c:otherwise>
+							    </c:choose>
+							</c:forEach>
+			            </div>
+			        </div>
+			    </c:if>
+			    
+			    <c:if test="${empty qnaFiles}">
+			        <%-- 이미지가 없을 때는 굳이 영역을 보여주지 않거나 아주 작게 표시 --%>
+			        <p class="text-muted mt-3" style="font-size:0.8em;">첨부파일 없음</p>
+			    </c:if>
+			</div>
 
             <%-- 답변 영역 (답변이 있을 때만 출력) --%>
             <c:if test="${qna.reStatus eq 'completed'}">
@@ -74,7 +102,7 @@
         </div>
 
         <div class="text-center mt-4 mb-5">
-            <a href="<c:url value='/help/list' />" class="btn btn-outline-secondary">목록으로 돌아가기</a>
+            <a href="<c:url value='/my/qna' />" class="btn btn-outline-secondary">목록으로 돌아가기</a>
             <c:if test="${qna.reStatus eq 'pending'}">
                 <button class="btn btn-danger ms-2" onclick="confirmDelete(${qna.qnaId})">문의 취소</button>
             </c:if>

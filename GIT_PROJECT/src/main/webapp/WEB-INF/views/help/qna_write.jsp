@@ -23,8 +23,14 @@
     </style>
 </head>
 <body>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>
-
+	<c:choose>
+        <c:when test="${userType == 'P' || empty sessionScope.userType}">
+			<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+        </c:when>
+        <c:otherwise>
+            <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+        </c:otherwise>
+    </c:choose>
 <main class="qna-container">
     <div class="qna-title">
         <h2><i class="fa-solid fa-headset"></i> 1:1 문의하기</h2>
@@ -63,7 +69,7 @@
             <label><i class="fa-solid fa-paperclip"></i> 첨부 파일</label>
             <div class="file-upload-section">
                 <input type="file" name="uploadFiles" multiple>
-                <p style="font-size: 0.8em; color: #888; margin-top: 5px;">* 최대 3개까지 업로드 가능합니다.</p>
+                <p style="font-size: 0.8em; color: #888; margin-top: 5px;">* 첨부 파일 업로드 가능합니다.</p>
             </div>
         </div>
 

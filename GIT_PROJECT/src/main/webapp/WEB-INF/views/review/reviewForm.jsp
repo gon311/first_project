@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
-// 1. 세션 체크 
+// 세션 체크 
 	if(session.getAttribute("sId") == null) {
 %>
 	<script>
@@ -13,11 +13,11 @@
 		return;
 	}
 
-// 2. 
 %>
 <!DOCTYPE html>
 <html>
 	<head>
+		<title>자소서 작성</title>
 		<%@ include file="/WEB-INF/views/inc/head.jspf"%>
 		
 		<%-- 현재 페이지(main.jsp) 전용 CSS 영역--%>

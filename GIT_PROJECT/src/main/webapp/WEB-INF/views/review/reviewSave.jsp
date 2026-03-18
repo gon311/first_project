@@ -4,8 +4,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<title>자소서 작성</title>
 		<%@ include file="/WEB-INF/views/inc/head.jspf"%>
-		<%-- 현재 페이지(rivewSave.jsp) 전용 CSS 영역--%>
+		<%-- 현재 페이지 전용 CSS 영역--%>
 		<link href="<c:url value="/resources/css/review/reviewSave.css" />" rel="stylesheet" type="text/css">
 	</head>
 	<body>
@@ -63,7 +64,7 @@
 									<button type="button"
 										class="btn btn-outline-secondary text-center action-btn"
 										onclick="location.href='<c:url value="/review/copyCheck" />'">
-										표절검사</button>
+										문장 다듬기</button>
 									<button type="button"
 										class="btn btn-light border text-center action-btn" 
 										onclick ="location.href='<c:url value="/my/myReview" />'">

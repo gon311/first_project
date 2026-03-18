@@ -32,7 +32,8 @@
             <div class="resumeList-profileCard">
 
                 <div class="resumeList-profileImageArea">
-                    <img src="/resources/images/profile_base_1.png"
+<!--                     <img src="/resources/images/profile_base_1.png" -->
+                    <img src="<c:url value='/resources/images/profile_base_1.png' />"
                     	
                          class="resumeList-profileImage"
                          alt="profile">
@@ -67,7 +68,7 @@
                 <div class="col-xl-6 col-lg-6 col-md-12 mb-4">
                     <div class="resumeList-card resumeList-createCard">
                         <div class="resumeList-createInner">
-                            <div class="resumeList-createIcon">＋</div>
+                            <div class="resumeList-createIcon" href="<c:url value='/resume/regist' />">＋</div>
                             <div class="resumeList-createText">새 이력서 작성</div>
                         </div>
                     </div>

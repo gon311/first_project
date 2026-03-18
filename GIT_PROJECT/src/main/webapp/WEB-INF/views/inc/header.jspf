@@ -68,7 +68,7 @@
 	          <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownReview" id="submenu-review">
 	            <li><a class="dropdown-item" href="<c:url value='/review/registForm' />">자소서 첨삭</a></li>
 	            <li><a class="dropdown-item" href="<c:url value='/review/spellCheck' />">맞춤법 검사</a></li>
-	            <li><a class="dropdown-item" href="<c:url value='/review/copyCheck' />">표절 검사</a></li>
+	            <li><a class="dropdown-item" href="<c:url value='/review/copyCheck' />">문장 다듬기</a></li>
 	          </ul>
 	        </li>
 	
@@ -129,7 +129,7 @@
 		            <ul class="list-unstyled">
 		                <li><a href="<c:url value='/review/registForm' />">자소서 첨삭</a></li>
 		                <li><a href="<c:url value='/review/spellCheck' />">맞춤법 검사</a></li>
-		                <li><a href="<c:url value='/review/copyCheck' />">표절 검사</a></li>
+		                <li><a href="<c:url value='/review/copyCheck' />">문장 다듬기</a></li>
 		            </ul>
 		        </div>
 		        <div class="menu-group">

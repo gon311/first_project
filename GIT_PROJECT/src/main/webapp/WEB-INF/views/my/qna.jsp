@@ -14,7 +14,7 @@
 
 <c:url var="urlQnaList" value="/my/qna"/>
 <c:url var="urlQnaWrite" value="/help/QnAWrite"/>
-<c:url var="urlQnaDetail" value="/help/QnADetail"/>
+<c:url var="urlQnaDetail" value="/help/detail"/>
 
 <main class="container-fluid px-0 mypage-wrap">
   <div class="row g-0">
@@ -87,8 +87,14 @@
                   <tr>
                     <td>${qna.qnaId}</td>
                     <td>
-                      <span class="category-text">${qna.qnaCategory}</span>
-                    </td>
+					    <c:choose>
+					        <c:when test="${qna.qnaCategory eq 'job'}">입사지원 관련</c:when>
+					        <c:when test="${qna.qnaCategory eq 'account'}">계정/인증 관련</c:when>
+					        <c:when test="${qna.qnaCategory eq 'error'}">오류 신고</c:when>
+					        <c:when test="${qna.qnaCategory eq 'etc'}">기타 문의</c:when>
+					        <c:otherwise>${qna.qnaCategory}</c:otherwise> <%-- 혹시 모를 예외 대비 --%>
+					    </c:choose>
+					</td>
                     <td class="td-left">
                       <a class="qna-link" href="${urlQnaDetail}?qnaId=${qna.qnaId}">
                         ${qna.qnaTitle}

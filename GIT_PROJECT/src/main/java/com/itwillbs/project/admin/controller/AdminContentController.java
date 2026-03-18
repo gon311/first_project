@@ -242,10 +242,7 @@ public class AdminContentController {
 // == [ FAQ 관리 ] ==
 	// FAQ 전체 목록 및 카테고리별 출력
 	@GetMapping("/FaQ")
-	public String faqList(@RequestParam(value="userType", defaultValue="all") String userType
-						, @RequestParam(value="category", defaultValue="") String category
-						, @RequestParam(defaultValue="1") Integer pageNum
-						,FaqDTO faqDTO
+	public String faqList(@RequestParam(defaultValue="1") Integer pageNum
 						, SearchDTO searchDTO
 						, Model model) {
 		
@@ -276,9 +273,9 @@ public class AdminContentController {
 //	    faqDTO.getKeyword().trim();
 	    
 	    model.addAttribute("faqList", faqList);
-	    model.addAttribute("userType", userType); // 탭 활성화 유지용
-	    model.addAttribute("keyword", faqDTO.getKeyword());   // 검색어 유지용
-	    model.addAttribute("category", category); // 카테고리 유지용
+	    model.addAttribute("userType", searchDTO.getUserType()); // 탭 활성화 유지용
+	    model.addAttribute("keyword", searchDTO.getKeyword());   // 검색어 유지용
+	    model.addAttribute("category", searchDTO.getCategory()); // 카테고리 유지용
 	    model.addAttribute("searchDTO", searchDTO);
 	    model.addAttribute("pageInfoDTO", pageInfoDTO);
 	    

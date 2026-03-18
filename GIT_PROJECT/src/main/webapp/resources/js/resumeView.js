@@ -3,6 +3,58 @@ window.onload = function() {
     el.setAttribute("readonly", true);
     el.disabled = true; // select 같은 경우 disabled로 처리
   });
+  
+  // 사진 업로드 (미리보기)
+	document.getElementById("photo").addEventListener("change", function(e){
+	
+	    const file = e.target.files[0];
+	    if(!file) return;
+	
+	    const reader = new FileReader();
+	
+	    reader.onload = function(event){
+	        document.querySelector(".profile-box").innerHTML =
+	            '<img src="'+event.target.result+'" style="width:100%;height:100%;object-fit:cover;">';
+	    };
+	
+	    reader.readAsDataURL(file);
+	});
+	
+	// - 미리보기 및 인쇄
+	document.getElementById("printBtn").addEventListener("click", function () {
+
+    // form 내용 가져오기
+    var content = document.getElementById("resumeForm").innerHTML;
+
+    // 팝업창 열기
+    var printWindow = window.open("", "", "width=900,height=1000");
+
+	    printWindow.document.write(`
+	        <html>
+	        <head>
+	            <title>이력서 인쇄</title>
+	            <link rel="stylesheet"
+	                  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+	            <style>
+	                body { padding: 20px; }
+	                input, select, button { border: none; }
+	            </style>
+	        </head>
+	        <body>
+	            ${content}
+	        </body>
+	        </html>
+	    `);
+	
+	    printWindow.document.close();
+	
+	    // 로딩 후 인쇄 실행
+	    printWindow.onload = function () {
+	        printWindow.focus();
+	        printWindow.print();
+	        printWindow.close();
+	    };
+	});
     
 };
 
@@ -38,80 +90,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-// 학력, 경력 추가 
-let eduIndex = 1;
-let expIndex = 1;
 
-$("#addEducation").click(function(){
-
-let html = `
-<div class="education-item border p-3 mb-3">
-
-<div class="row mb-3">
-<div class="col-md-6">
-<label>학력</label>
-<select name="educationList[`+eduIndex+`].educationLevel" class="form-control">
-<option value="고등학교">고등학교</option>
-<option value="대학교(2-3년제)">대학교(2-3년제)</option>
-<option value="대학교(4년제)">대학교(4년제)</option>
-<option value="대학원(석사)">대학원(석사)</option>
-<option value="대학원(박사)">대학원(박사)</option>
-</select>
-</div>
-
-<div class="col-md-6">
-<label>학교명</label>
-<input type="text" name="educationList[`+eduIndex+`].schoolName" class="form-control">
-</div>
-</div>
-
-<button type="button" class="btn btn-danger removeEducation">삭제</button>
-
-</div>
-`;
-
-$("#educationContainer").append(html);
-
-eduIndex++;
-
-});
-
-
-$(document).on("click",".removeEducation",function(){
-$(this).closest(".education-item").remove();
-});
-
-
-
-$("#addExperience").click(function(){
-
-let html = `
-<div class="experience-item border p-3 mb-3">
-
-<div class="row mb-3">
-<div class="col-md-6">
-<label>기업명</label>
-<input type="text" name="experienceList[`+expIndex+`].companyName" class="form-control">
-</div>
-
-<div class="col-md-6">
-<label>근무부서</label>
-<input type="text" name="experienceList[`+expIndex+`].depatmentName" class="form-control">
-</div>
-</div>
-
-<button type="button" class="btn btn-danger removeExperience">삭제</button>
-
-</div>
-`;
-
-$("#experienceContainer").append(html);
-
-expIndex++;
-
-});
-
-
-$(document).on("click",".removeExperience",function(){
-$(this).closest(".experience-item").remove();
-});

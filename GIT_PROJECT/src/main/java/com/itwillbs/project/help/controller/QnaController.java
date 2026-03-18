@@ -34,7 +34,8 @@ public class QnaController {
         if (sId == null) {
         	return "redirect:/user/login";
         }
-        return "/help/qna_write"; // 아까 만든 JSP 경로
+        
+        return "/help/qna_write";
     }
 
     // 2. 문의 등록 처리 (파일 업로드 포함)
@@ -81,11 +82,19 @@ public class QnaController {
     }
     
     @GetMapping("/detail")
-    public String qnaDetail(@RequestParam("qnaId") int qnaId, Model model, HttpSession session) {
+    public String qnaDetail(@RequestParam("qnaId") int qnaId, 
+    		@RequestParam("writerId") int writerId, 
+    		RedirectAttributes rttr, Model model, HttpSession session) {
     	Long sId = (Long) session.getAttribute("userIdx");
         
         if (sId == null) {
         	return "redirect:/user/login";
+        }
+        System.out.println("sId" + sId);
+        System.out.println("writerId" + writerId);
+        
+        if (writerId != sId) {
+        	rttr.addFlashAttribute("message", "비정상적인 접근입니다.");
         }
         
         // 1. qnaId로 DB에서 게시글 정보 가져오기

@@ -128,7 +128,7 @@ public class QnaController {
             rttr.addFlashAttribute("error", "삭제 중 오류가 발생했습니다.");
         }
         
-        return "redirect:/help/list"; // 삭제 후 목록으로 이동
+        return "redirect:/my/qna"; // 삭제 후 목록으로 이동
     }
     
 }

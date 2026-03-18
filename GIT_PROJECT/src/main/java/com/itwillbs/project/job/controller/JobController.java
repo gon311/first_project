@@ -129,7 +129,7 @@ public class JobController {
 	        rt.addFlashAttribute("msg", "공고 수정에 실패하였습니다. 권한을 확인하세요.");
 	    }
 
-	    return "redirect:/job/JobList"; 
+	    return "redirect:/comMy/job"; 
 	}
 	
 	@GetMapping("/JobDetail")

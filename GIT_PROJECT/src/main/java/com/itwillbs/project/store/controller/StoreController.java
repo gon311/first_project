@@ -129,6 +129,7 @@ public class StoreController {
 	    int randNum = (int)(Math.random() * 100000); // 0~99999 랜덤 숫자, 5자리 고정
 	    String randStr = String.format("%05d", randNum);
 	    
+	    // 구매 번호 저장
 	    orderInfo.setOrderId(today.format(dtf) + randStr);
 	    //----------------------------------------------------------
 	    model.addAttribute("orderInfo", orderInfo);
@@ -137,8 +138,8 @@ public class StoreController {
 		StoreDTO storeInfo = storeService.getStoreInfo(storeDTO.getProductId());
 		model.addAttribute("storeInfo", storeInfo);
 		
-		session.setAttribute("orderDTO", orderInfo);
-		session.setAttribute("storeDTO", storeInfo);
+		// 주문 정보 삽입 
+		storeService.setOrderInfo(orderInfo, storeInfo);
 		
 		return "store/payForm";
 	}
@@ -153,21 +154,13 @@ public class StoreController {
 							, HttpSession session
 							, OrderDTO orderDTO) {
 		
-		OrderDTO order = (OrderDTO) session.getAttribute("orderDTO");
-		StoreDTO store = (StoreDTO) session.getAttribute("storeDTO");
-		
-		session.removeAttribute("orderDTO");
-		session.removeAttribute("storeDTO");
-		 
-		// 주문 정보 삽입 
-		storeService.setOrderInfo(order, store);
-		
 		// 1️ PortOne 서버에서 결제 정보 조회
 	    // 클라이언트에서 넘어온 paymentId를 이용해서 실제 결제 정보 확인
 	    PortoneDTO paymentInfo = storeService.getPayment(responsePaymentDTO.getPaymentId());
 	    
 	    // 해당 구매번호와 일치하는 주문 정보 조회
 	    OrderDTO orderInfo = storeService.findByPaymentId(responsePaymentDTO.getPaymentId());
+	    log.info("주문정보 일치여부 >>>>>>>>> " + orderInfo);
 	    
 	    // 2️ 결제 금액 검증
 	    // PortOne 서버에서 받은 결제 금액(paymentInfo.getAmount)와 DB 주문 금액(orderInfo.getProductPrice)이 일치하는지 확인
@@ -179,18 +172,15 @@ public class StoreController {
 	    // (기업회원의 경우) 일반 이용권 보유 유무 조회
 	    MemberProductDTO memberProductDTO = storeService.getMemberProduct(orderInfo.getUserId());
 	     
-	    // 결제 내역에 저장
-	    paymentDTO.setPayId(responsePaymentDTO.getPaymentId());
-	    paymentDTO.setUserId(orderInfo.getUserId());          
-	    paymentDTO.setProductId(orderInfo.getProductId());    
-	    
-	    // 카드 결제 시
+	    // 결제 성공 상태(PAID)인 경우
     	if(paymentInfo.getStatus().equals("PAID")) {
-    		// 결제 성공 상태(PAID)인 경우
 	    	orderInfo.setStatus("PAID");       			// 주문 상태를 PAID로 업데이트
 	        storeService.setOrderStatus(orderInfo);     // DB 반영
 	        
 	        // 결제 내역에 저장
+	        paymentDTO.setPayId(responsePaymentDTO.getPaymentId());
+	        paymentDTO.setUserId(orderInfo.getUserId());          
+	        paymentDTO.setProductId(orderInfo.getProductId());    
 		    paymentDTO.setPayMethod("신용카드");
 		    paymentDTO.setCardName(paymentInfo.getMethod().getCard().getName());
 		    paymentDTO.setCardNum(paymentInfo.getMethod().getCard().getNumber() + "**********");

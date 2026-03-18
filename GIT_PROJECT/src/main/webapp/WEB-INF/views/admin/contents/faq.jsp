@@ -122,7 +122,7 @@
 			            <nav aria-label="Page navigation">
 			                <ul class="pagination pagination-sm m-0">
 			                    <li class="page-item <c:if test="${pageInfoDTO.pageNum eq 1}">disabled</c:if>">
-			                    	<a class="page-link" href="<c:url value="/admin/contents/FaQ?pageNum=${pageInfoDTO.pageNum - 1}" />">&lt;</a>
+			                    	<a class="page-link" href="<c:url value="/admin/contents/FaQ?pageNum=${pageInfoDTO.pageNum - 1}&userType=all&category=${category}&keyword=${keyword}" />">&lt;</a>
 			                    </li>
 			                    
 			                    <c:forEach var="i" begin="${pageInfoDTO.startPage}" end="${pageInfoDTO.endPage}">
@@ -131,13 +131,13 @@
 											<a class="page-link">${i}</a>
 										</c:when>
 										<c:otherwise>
-											<a class="page-link" href="<c:url value="/admin/contents/FaQ?pageNum=${i}" />">${i}</a>
+											<a class="page-link" href="<c:url value="/admin/contents/FaQ?pageNum=${i}&userType=all&category=${category}&keyword=${keyword}" />">${i}</a>
 										</c:otherwise>
 									</c:choose>
 			                    </c:forEach>
 			                    
 			                    <li class="page-item <c:if test="${pageInfoDTO.pageNum eq pageInfoDTO.maxPage}">disabled</c:if>">
-			                    	<a class="page-link" href="<c:url value="/admin/contents/FaQ?pageNum=${pageInfoDTO.pageNum + 1}" />">&gt;</a>
+			                    	<a class="page-link" href="<c:url value="/admin/contents/FaQ?pageNum=${pageInfoDTO.pageNum + 1}&userType=all&category=${category}&keyword=${keyword}" />">&gt;</a>
 			                    </li>
 			                </ul>
 			            </nav>

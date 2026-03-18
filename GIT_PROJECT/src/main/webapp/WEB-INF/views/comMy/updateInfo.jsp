@@ -50,13 +50,14 @@
                      title="이름은 한글/영문 2~20자만 입력하세요." />        
             </div>
 
-            <div class="form-row-full">
-              <div class="field-label">전화번호</div>
-              <input type="text" class="form-control" name="phone"
-                     value="${loginUser.phone}"
-                      required pattern="^01[0-9]-\d{3,4}-\d{4}$"
-                      title="전화번호는 010-1234-5678 형식으로 입력하세요." />
-            </div>
+			<div class="form-row-full">
+			  <div class="field-label">전화번호</div>
+			  <input type="text" class="form-control" name="phone"
+			         value="${loginUser.phone}"
+			         required
+			         pattern="^((01[016789]|02|0[3-9][0-9]|070)-\d{3,4}-\d{4}|1[0-9]{3}-\d{4})$"
+			         title="전화번호는 010-1234-5678, 051-123-4567, 1588-1234 형식으로 입력하세요." />
+			</div>
 
           </div>
 

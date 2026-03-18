@@ -94,7 +94,7 @@ public class ComMyController {
 	        return "/comMy/updateInfo";
 	    }
 
-	    if (!phone.matches("^01[0-9]-\\d{3,4}-\\d{4}$")) {
+	    if (!phone.matches("^(01[016789]|02|0[3-9][0-9]|070|1[0-9]{3})-\\d{3,4}-\\d{4}$")) {
 	    	model.addAttribute("currentMenu", "info");
 	        model.addAttribute("loginUser", comMyService.getUser(sId));
 	        model.addAttribute("errorMsg", "전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)");

@@ -161,7 +161,7 @@
                   </div>
 
                   <div class="row-right">
-                    <div class="stat">좋아요 ${p.likeCount}</div>
+<%--                     <div class="stat">좋아요 ${p.likeCount}</div> --%>
                     <div class="stat">댓글 ${p.commentCount}</div>
                     <div class="stat">조회 ${p.viewCount}</div>
                   </div>

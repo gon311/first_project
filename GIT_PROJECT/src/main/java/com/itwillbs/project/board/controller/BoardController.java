@@ -233,9 +233,17 @@ public class BoardController {
 	    }
 
 	    List<FileDTO> fileList = boardService.getBoardFiles(postId);
+	    
 
+	    String selectedTagStr = ",";
+	    if (post.getTagList() != null && !post.getTagList().isEmpty()) {
+	        selectedTagStr = "," + String.join(",", post.getTagList()) + ",";
+	    }
+	    
+	    
 	    model.addAttribute("post", post);
 	    model.addAttribute("fileList", fileList);
+	    model.addAttribute("selectedTagStr", selectedTagStr);
 
 	    return "/board/board_edit";
 	}

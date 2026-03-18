@@ -10,6 +10,12 @@
 </head>
 
 <body>
+<c:if test="${not empty msg}">
+    <script>
+        alert("${msg}");
+    </script>
+</c:if>
+
   <c:choose>
 	    <c:when test="${sessionScope.memberType == 'company'}">
 	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>

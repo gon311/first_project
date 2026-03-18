@@ -31,6 +31,7 @@
 	    .menu-card:hover { border-color: #4485ff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transform: translateY(-5px); }
 	    .menu-card i { font-size: 32px; color: #4485ff; margin-bottom: 15px; display: block; }
 	    .menu-card span { font-size: 16px; font-weight: 500; }
+	    .activeCard {border-color: #4485ff;}
 	
 	    /* 5. FAQ 섹션 */
 	    .faq-section h3 { font-size: 22px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
@@ -73,10 +74,10 @@
 		    </nav>
 		
 		    <section class="quick-menu" id="menu-grid">
-		        <div class="menu-card ${category == 'account' ? 'active' : ''}" onclick="location.href='?userType=${userType}&category=account'"><i class="fa-regular fa-user"></i><span>계정/로그인</span></div>
-		        <div class="menu-card ${category == 'service' ? 'active' : ''}" onclick="location.href='?userType=${userType}&category=service'"><i class="fa-regular fa-file-lines"></i><span>이용문의</span></div>
-		        <div class="menu-card ${category == 'error' ? 'active' : ''}" onclick="location.href='?userType=${userType}&category=error'"><i class="fa-regular fa-paper-plane"></i><span>오류보고</span></div>
-		        <div class="menu-card ${category == 'etc' ? 'active' : ''}" onclick="location.href='<c:url value="/help/notice" />'"><i class="fa-regular fa-bell"></i><span>공지사항</span></div>
+		        <div class="menu-card ${category == 'account' ? 'activeCard' : ''}" onclick="location.href='?userType=${userType}&category=account'"><i class="fa-regular fa-user"></i><span>계정/로그인</span></div>
+		        <div class="menu-card ${category == 'service' ? 'activeCard' : ''}" onclick="location.href='?userType=${userType}&category=service'"><i class="fa-regular fa-file-lines"></i><span>이용문의</span></div>
+		        <div class="menu-card ${category == 'error' ? 'activeCard' : ''}" onclick="location.href='?userType=${userType}&category=error'"><i class="fa-regular fa-paper-plane"></i><span>오류보고</span></div>
+		        <div class="menu-card ${category == 'etc' ? 'activeCard' : ''}" onclick="location.href='<c:url value="/help/notice" />'"><i class="fa-regular fa-bell"></i><span>공지사항</span></div>
 		    </section>
 		
 		    <section class="faq-section">
@@ -133,6 +134,9 @@
 		    $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
 		});
 	    
+	    window.onload = function() {
+	    	!location.search && (location.href = '?userType=user');
+	    }
 	</script>
 
 </body>

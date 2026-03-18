@@ -43,7 +43,7 @@
 	        <div class="card shadow-sm" style="border-top-left-radius: 0; border: 1px solid #dee2e6;">
 	            <div class="card-body p-4">
 	                <%-- 검색 영역 --%>
-	                <form action='<c:url value = "/help/faq"/>' class="d-flex justify-content-end align-items-end mb-4 gap-2">
+	                <form id="faqForm" action='<c:url value = "/help/faq"/>' class="d-flex justify-content-end align-items-end mb-4 gap-2">
    	                	<input type="hidden" name="userType" value="${not empty userType ? userType : 'all'}">                 
 						<div class="col-md-3">
 	                        <label class="form-label fw-bold small text-muted">질문 카테고리</label>
@@ -126,7 +126,7 @@
 				            <nav aria-label="Page navigation">
 				                <ul class="pagination pagination-sm m-0">
 				                    <li class="page-item <c:if test="${pageInfoDTO.pageNum eq 1}">disabled</c:if>">
-				                    	<a class="page-link" href="<c:url value="/admin/contents/Board?pageNum=${pageInfoDTO.pageNum - 1}" />">&lt;</a>
+				                    	<a class="page-link" href="<c:url value="/help/faq?pageNum=${pageInfoDTO.pageNum - 1}&userType=${userType}&category=${category}&keyword=${keyword }" />">&lt;</a>
 				                    </li>
 				                    
 				                    <c:forEach var="i" begin="${pageInfoDTO.startPage}" end="${pageInfoDTO.endPage}">
@@ -135,13 +135,13 @@
 												<a class="page-link active">${i}</a>
 											</c:when>
 											<c:otherwise>
-												<a class="page-link" href="<c:url value="/admin/contents/FaQ?pageNum=${i}" />">${i}</a>
+												<a class="page-link" href="<c:url value="/help/faq?pageNum=${i}&userType=${userType}&category=${category}&keyword=${keyword }" />">${i}</a>
 											</c:otherwise>
 										</c:choose>
 				                    </c:forEach>
 				                    
 				                    <li class="page-item <c:if test="${pageInfoDTO.pageNum eq pageInfoDTO.maxPage}">disabled</c:if>">
-				                    	<a class="page-link" href="<c:url value="/admin/contents/FaQ?pageNum=${pageInfoDTO.pageNum + 1}" />">&gt;</a>
+				                    	<a class="page-link" href="<c:url value="/help/faq?pageNum=${pageInfoDTO.pageNum + 1}&userType=${userType}&category=${category}&keyword=${keyword }" />">&gt;</a>
 				                    </li>
 				                </ul>
 				            </nav>

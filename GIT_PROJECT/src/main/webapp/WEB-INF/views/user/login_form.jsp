@@ -9,6 +9,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<link href="<c:url value="/resources/css/user/userLogin.css" />" rel="stylesheet" type="text/css">
+	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -63,13 +64,6 @@
                     </div>
                 </form>
 
-                <div class="text-center text-secondary small">
-                    <a href="<c:url value="/user/find?type=id" />" class="text-decoration-none text-secondary">아이디 찾기</a>
-                    <span class="mx-2 text-black-50">|</span>
-                    <a href="<c:url value="/user/find?type=pw" />" class="text-decoration-none text-secondary">비밀번호 찾기</a>
-                    <span class="mx-2 text-black-50">|</span>
-                    <a href="<c:url value="/user/regist?id=pe"/>" class="text-decoration-none fw-bold text-primary">회원가입</a>
-                </div>
             </div>
 
             <div id="corporate-content" class="tab-content-area">
@@ -98,21 +92,29 @@
                         </div>
                     </div>
                 </form>
-                <div class="text-center text-secondary small mt-5">
-                    <a href="<c:url value="/user/find?type=id" />" class="text-decoration-none text-secondary">아이디 찾기</a>
-                    <span class="mx-2 text-black-50">|</span>
-                    <a href="<c:url value="/user/find?type=pw" />" class="text-decoration-none text-secondary">비밀번호 찾기</a>
-                    <span class="mx-2 text-black-50">|</span>
-                    <a href="<c:url value="/user/regist?id=co" />" class="text-decoration-none fw-bold text-primary">기업회원가입</a>
-                </div>
             </div>
+            
+			<div class="mb-3">
+				<div class="border rounded-3 p-3 bg-light">
+					<div class="cf-turnstile" data-sitekey="0x4AAAAAACnFvtsMiRr6zWEI"></div>
+				</div>
+			</div>
+			
+            <div class="text-center text-secondary small mt-5">
+                <a href="<c:url value="/user/find?type=id" />" class="text-decoration-none text-secondary">아이디 찾기</a>
+                <span class="mx-2 text-black-50">|</span>
+                <a href="<c:url value="/user/find?type=pw" />" class="text-decoration-none text-secondary">비밀번호 찾기</a>
+                <span class="mx-2 text-black-50">|</span>
+                <a href="<c:url value="/user/regist?id=pe" />" class="text-decoration-none fw-bold text-primary">회원가입</a>
+            </div>
+		
 	        <div class="text-center text-secondary small mt-5">
 	            <a href="<c:url value="/user/login/p" />" class="text-decoration-none text-secondary">테스트용 개인회원 로그인</a> <hr>
 	            <a href="<c:url value="/user/login/c" />" class="text-decoration-none text-secondary">테스트용 기업회원 로그인</a> <hr>
 	            <a href="<c:url value="/user/login/a" />" class="text-decoration-none fw-bold text-primary">테스트용 관리자 로그인</a>
 	        </div>
-        </div>
-        </main>
+   		</div>
+	</main>
 
     <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
 

@@ -413,12 +413,11 @@
 		function checkVerification(type) {
 		    const code = document.getElementById(type + "-code").value;
 		    const msgEl = document.getElementById(type + "-msg");
-		
 		    // 세션 값을 직접 비교하지 않고 서버에 요청을 보냅니다.
 		    fetch("<c:url value='/api/verifyCode' />", {
 		        method: "POST",
 		        headers: { "Content-type": "application/json" },
-		        body: JSON.stringify({ code: code })
+		        body: JSON.stringify({ code: code, type: "phone" })
 		    })
 		    .then(response => response.json())
 		    .then(result => {
@@ -427,6 +426,10 @@
 		            msgEl.innerText = "인증되었습니다.";
 		            msgEl.className = "verify-msg msg-success";
 		            document.getElementById(type + "-code").readOnly = true;
+		            document.getElementById(type + "-name").readOnly = true;
+		            document.getElementById(type + "-phone-1").readOnly = true;
+		            document.getElementById(type + "-phone-2").readOnly = true;
+		            document.getElementById(type + "-phone-3").readOnly = true;
 		            document.getElementById("btn-" + type + "-send").classList.add("verified");
 		        } else {
 		            verificationStatus[type] = false;

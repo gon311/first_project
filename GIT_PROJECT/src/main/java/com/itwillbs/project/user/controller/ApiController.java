@@ -49,8 +49,10 @@ public class ApiController {
 		if(requestDTO.getType().equals("email")) {
 			MailAuthInfo mailAuthInfo = mailService.sendAuthMail(requestDTO.getValue(), authCode);
 			System.out.println(">>>>>>>> 인증메일 정보 : " + mailAuthInfo);
+			session.setAttribute("authCodeE", authCode);
+		} else {
+			session.setAttribute("authCodeP", authCode);
 		}
-		
 		session.setAttribute("authCode", authCode);
 		session.setMaxInactiveInterval(60 * 5);
 		
@@ -63,12 +65,23 @@ public class ApiController {
 	@PostMapping(value = "/verifyCode", produces = "application/json; charset=UTF-8")
 	public String verifyCode(@RequestBody Map<String, String> request, HttpSession session) {
 	    String inputCode = request.get("code");
-	    String savedCode = (String) session.getAttribute("authCode");
+	    String inputType = request.get("type");
+	    String savedCodeE = (String) session.getAttribute("authCodeE");
+	    String savedCodeP = (String) session.getAttribute("authCodeP");
 	    
-	    if (savedCode != null && savedCode.equals(inputCode)) {
-	        return "{\"success\": true}";
+	    if(inputType.equals("email")) {
+	    	if (savedCodeE != null && savedCodeE.equals(inputCode)) {
+	    		return "{\"success\": true}";
+	    	} else {
+	    		return "{\"success\": false}";
+	    	}
 	    } else {
-	        return "{\"success\": false}";
+	    	if (savedCodeP != null && savedCodeP.equals(inputCode)) {
+	    		return "{\"success\": true}";
+	    	} else {
+	    		return "{\"success\": false}";
+	    	}
 	    }
+	    
 	}
 }

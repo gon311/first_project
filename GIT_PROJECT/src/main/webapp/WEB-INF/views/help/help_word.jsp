@@ -39,6 +39,7 @@
 	    .faq-q { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; font-weight: 500; }
 	    .faq-q:hover { background-color: #f9f9f9; }
 	    .faq-a { padding: 20px 25px; background-color: #fcfcfc; color: #666; display: none; border-top: 1px solid #f5f5f5; line-height: 1.6; }
+	    
 	</style>
 </head>
 
@@ -55,12 +56,14 @@
 	
 	<main>
 		<div class="cs-container">
-			<form action="<c:url value="/help/helpWord" />" method="post">
+			<form action="<c:url value="/help/helpWord" />" method="get" >
+			    <input type="hidden" name="userType" value="${userType}">    
+			    <input type="hidden" name="category" value="${category}">    
 			    <section class="search-section">
 			        <h2>무엇을 도와드릴까요?</h2>
 			        <div class="search-box">
 			            <input type="text" name="keyword" placeholder="서비스 이용 중 궁금한 점을 입력해 주세요.">
-			            <i class="fa-solid fa-magnifying-glass"></i>
+				        <i class="fa-solid fa-magnifying-glass" onclick="location.href='?userType=${userType}&category=${category}&keyword=${keyword}'" /></i>
 			        </div>
 			    </section>
 			</form>
@@ -70,10 +73,10 @@
 		    </nav>
 		
 		    <section class="quick-menu" id="menu-grid">
-		        <div class="menu-card" onclick="location.href='?userType=${userType}&category=account'"><i class="fa-regular fa-user"></i><span>계정/로그인</span></div>
-		        <div class="menu-card" onclick="location.href='?userType=${userType}&category=service'"><i class="fa-regular fa-file-lines"></i><span>이용문의</span></div>
-		        <div class="menu-card" onclick="location.href='?userType=${userType}&category=error'"><i class="fa-regular fa-paper-plane"></i><span>오류보고</span></div>
-		        <div class="menu-card" onclick="location.href='<c:url value="/help/notice" />'"><i class="fa-regular fa-bell"></i><span>공지사항</span></div>
+		        <div class="menu-card ${category == 'account' ? 'active' : ''}" onclick="location.href='?userType=${userType}&category=account'"><i class="fa-regular fa-user"></i><span>계정/로그인</span></div>
+		        <div class="menu-card ${category == 'service' ? 'active' : ''}" onclick="location.href='?userType=${userType}&category=service'"><i class="fa-regular fa-file-lines"></i><span>이용문의</span></div>
+		        <div class="menu-card ${category == 'error' ? 'active' : ''}" onclick="location.href='?userType=${userType}&category=error'"><i class="fa-regular fa-paper-plane"></i><span>오류보고</span></div>
+		        <div class="menu-card ${category == 'etc' ? 'active' : ''}" onclick="location.href='<c:url value="/help/notice" />'"><i class="fa-regular fa-bell"></i><span>공지사항</span></div>
 		    </section>
 		
 		    <section class="faq-section">
@@ -129,10 +132,7 @@
 		    $('.faq-q').not(this).find('i').attr('class', 'fas fa-chevron-down');
 		    $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
 		});
-	
-	    window.onload = function() {
-	    	!location.search && (location.href = '?userType=user');
-	    }
+	    
 	</script>
 
 </body>

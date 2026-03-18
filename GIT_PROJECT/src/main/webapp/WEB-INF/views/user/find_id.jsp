@@ -35,15 +35,24 @@
 	                    </label>
 					</c:forEach>
                 </div>
-
-                <div class="row g-2">
-                    <div class="col-6">
-                        <button type="submit" class="btn btn-pw-find w-100 fw-bold">비밀번호 찾기</button>
-                    </div>
-                    <div class="col-6">
-                        <a href="<c:url value='/user/login' />" class="btn btn-login w-100 fw-bold">로그인하러 가기</a>
-                    </div>
-                </div>
+		
+				<c:choose>
+					<c:when test="${userIdList.size() > 0}">
+		                <div class="row g-2">
+		                    <div class="col-6">
+		                        <button type="submit" class="btn btn-pw-find w-100 fw-bold">비밀번호 찾기</button>
+		                    </div>
+		                    <div class="col-6">
+		                        <a href="<c:url value='/user/login' />" class="btn btn-login w-100 fw-bold">로그인하러 가기</a>
+		                    </div>
+		                </div>
+					</c:when>
+					<c:otherwise>
+		                    <div class="col-6">
+		                        <a href="<c:url value='/user/regist' />" class="btn btn-login w-100 fw-bold">회원가입하러 가기</a>
+		                    </div>
+					</c:otherwise>
+				</c:choose>
             </form>
 
             <div class="mt-4">

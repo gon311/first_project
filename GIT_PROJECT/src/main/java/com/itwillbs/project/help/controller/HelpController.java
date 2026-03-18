@@ -80,48 +80,6 @@ public class HelpController {
 		return "/help/help_word";
 	}
 	
-	@PostMapping("/helpWord")
-	public String helpWord(@RequestParam(value="userType", defaultValue="all") String userType
-			, @RequestParam(value="category", defaultValue="") String category
-			, @RequestParam(defaultValue="1") Integer pageNum
-			, FaqDTO faqDTO
-			, SearchDTO searchDTO
-			, Model model) {
-		
-		int listLimit = 5;
-		int pageListLimit = 5; 
-		
-		int listCount = adminService.getFaqTotalCount(searchDTO);
-		
-		int maxPage = (int)Math.ceil((double)listCount/listLimit);
-		int startPage = ((pageNum -1 )/ pageListLimit) * pageListLimit + 1;
-		int endPage = startPage + pageListLimit - 1;
-		if (endPage > maxPage) {
-			endPage = maxPage;
-		}
-		
-		PageInfoDTO pageInfoDTO = new PageInfoDTO(listCount, pageListLimit, maxPage,startPage, endPage, pageNum);
-		
-		searchDTO.setOffset((pageNum - 1) * listLimit);
-		searchDTO.setLimit(listLimit);
-		
-		// 서비스 호출 (카테고리, 키워드 포함)
-		List<FaqDTO> faqList = adminService.getFaqList(searchDTO);
-//	    System.out.println(faqList);
-//	    System.out.println(category.toString());
-		
-//	    faqDTO.getKeyword().trim();
-		
-		model.addAttribute("faqList", faqList);
-		model.addAttribute("userType", userType); // 탭 활성화 유지용
-		model.addAttribute("keyword", faqDTO.getKeyword());   // 검색어 유지용
-		model.addAttribute("category", category); // 카테고리 유지용
-		model.addAttribute("searchDTO", searchDTO);
-		model.addAttribute("pageInfoDTO", pageInfoDTO);
-		
-		return "/help/help_word?userType=" + userType + "&category=" + category;
-	}
-	
 	@GetMapping("/notice")
 	public String noticeList(@RequestParam(value="pageNum", defaultValue="1") int pageNum,
 			SearchDTO searchDTO,

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.common.exception.BackwardException;
+import com.itwillbs.project.my.service.MyService;
 import com.itwillbs.project.user.dto.NewPasswordDTO;
 import com.itwillbs.project.user.dto.UserDTO;
 import com.itwillbs.project.user.service.UserService;
@@ -35,6 +36,9 @@ import lombok.extern.log4j.Log4j2;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private MyService myService;
 	
 	// 테스트 로그인
 	@GetMapping("/login/p")
@@ -87,7 +91,17 @@ public class UserController {
 	@PostMapping("/login")
 	public String login(UserDTO userDTO, BCryptPasswordEncoder passwordEncoder,
 						 HttpSession session, HttpServletResponse response,
-						 RedirectAttributes ra, String rememberId, String type) {
+						 RedirectAttributes ra, String rememberId, String type,
+						 @RequestParam(value = "cf-turnstile-response", required = false) String turnstileToken) {
+		
+		if (turnstileToken == null || turnstileToken.trim().isEmpty()) {
+		    throw new BackwardException("자동입력 방지 확인을 완료해주세요.");
+		}
+
+		boolean captchaOk = myService.verifyTurnstile(turnstileToken);
+		if (!captchaOk) {
+		    throw new BackwardException("자동입력 방지 검증에 실패했습니다. 다시 시도해주세요.");
+		}
 		
 		UserDTO dbUser = userService.getUser(userDTO.getEmail());
 		ra.addFlashAttribute("type", type);
@@ -263,10 +277,11 @@ public class UserController {
 	
 	// 새 비밀번호 작성 페이지
 	@GetMapping("/findPw")
-	public String findPw(HttpSession session) {
-		
+	public String findPw(@RequestParam(value = "email", defaultValue = "none") String email, HttpSession session) {
 		if(session.getAttribute("userType") != null) {
 			throw new BackwardException("잘못된 접근입니다!");
+		} else if (email.equals("none")) {
+			throw new BackwardException("이메일을 선택해주세요");
 		}
 		
 		return "/user/find_pw";
@@ -299,30 +314,36 @@ public class UserController {
 	public String password(NewPasswordDTO form,
 						   String email,
 						   HttpSession session,
-						   RedirectAttributes ra) {
+						   RedirectAttributes ra,
+						   @RequestParam(value = "cf-turnstile-response", required = false) String turnstileToken) {
 
 	    // 2) 1차 입력 검증(빈값/공백)
 		String newPass = form.getNewPassword() == null ? "" : form.getNewPassword().trim();
 		String conPass = form.getNewPasswordConfirm() == null ? "" : form.getNewPasswordConfirm().trim();
 		if(newPass.isEmpty() || conPass.isEmpty()) {
-			ra.addFlashAttribute("errorMsg", "필수 항목을 입력해주세요.");
-			return "redirect:/user/find_pw";
+			throw new BackwardException("필수항목을 입력해주세요");
 		}
 
 	    // 3) 새 비밀번호 확인 일치 체크
 		if(!newPass.equals(conPass)) {
-			ra.addFlashAttribute("errorMsg", "새 비밀번호가 일치하지 않습니다.");
-			return "redirect:/user/find_pw";
+			throw new BackwardException("새 비밀번호가 일치하지 않습니다");
 		}
 		
 
 	    // 4) 새 비밀번호 정책 정규식 체크
 		String pwRule = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,30}$";
 		if(!newPass.matches(pwRule)) {
-		    ra.addFlashAttribute("errorMsg", "비밀번호는 8~30자, 영문/숫자/특수문자를 포함해야 합니다.");
-		    return "redirect:/user/find_pw";        
+		    throw new BackwardException("비밀번호는 8~30자, 영문/숫자/특수문자를 포함해야 합니다.");    
 		}
 		
+		if (turnstileToken == null || turnstileToken.trim().isEmpty()) {
+		    throw new BackwardException("자동입력 방지 확인을 완료해주세요.");
+		}
+
+		boolean captchaOk = myService.verifyTurnstile(turnstileToken);
+		if (!captchaOk) {
+		    throw new BackwardException("자동입력 방지 검증에 실패했습니다. 다시 시도해주세요.");
+		}
 
 	    // 서비스 호출 (여기서 현재 비번 맞는지 확인 + 업데이트)
 		

@@ -137,7 +137,8 @@
 						           maxlength="12"
 						           pattern="\d{3}-\d{2}-\d{5}"
 						           title="사업자등록번호 10자리를 입력해주세요.">
-							<div id="biz-feedback" class="invalid-feedback"></div> 
+							<div id="biz-feedback" class="invalid-feedback"></div>
+							테스트용 사업자 등록번호( 124-81-00998 )
 						</div>
                     </div>
                     
@@ -187,17 +188,7 @@
                 <button type="submit" class="btn-submit">가입하기</button>
             </form>
         </div>
-     	<div id="loadingOverlay" 
-			class="position-fixed top-0 start-0 w-100 h-100 d-none"
-			style="background: rgba(0,0,0,0.4); z-index: 9999">
-			
-			<div class="d-flex justify-content-center align-items-center h-100">
-				<div class="text-center text-white">
-					<div class="spinner-border" role="status"></div>
-					<div class="mt-3">인증번호 발송중입니다...</div>
-				</div> 
-			</div>
-		</div>
+        
     </main>
 
 	<%@ include file="/WEB-INF/views/inc/footer.jspf" %>
@@ -256,7 +247,7 @@
             const idValue = document.getElementById("id-feedback").innerText;
             const phoneRegex = /^(010|011)[-\s]?[\d]{3,4}[-\s]?[\d]{4}$/;
             const mobileCarrierValue = document.getElementById("mobileCarrier").value;
-            
+
             if(!val) { 
             	alert("정보를 입력해주세요.");
             	return;
@@ -268,14 +259,13 @@
             	return;
             }
             
-            
             const requestContent = {
                     type: type,   // 'email' 또는 'phone'
                     value: val    // 실제 이메일 주소나 전화번호
             };
             
-            document.getElementById("loadingOverlay").classList.remove("d-none");
-            
+            document.getElementById("btn-" + type + "-send").textContent = "재발송";
+            alert("인증 메일을 발송했습니다. 메일이 도착하기까지 최대 2~3분 정도 소요될 수 있습니다.");
 			async function mailRequestCorrectContent() {
 				try {
 					const response = await fetch("<c:url value="/api/sendCode" />", { // 요청 주소
@@ -291,14 +281,13 @@
 					}
 					const result = await response.json();
 					
-					alert("인증번호가 발송되었습니다.");
+					alert("인증번호를 입력해주세요.");
 		            document.getElementById(type + "-verify-area").style.display = 'block';
 					
 		            if(type == "phone") {
 						document.getElementById("phone-code").value = result.authCode;
 		            }
 		            
-		            document.getElementById("loadingOverlay").classList.add("d-none");
 				} catch(error) {
 					alert("요청 오류 발생 : " + error);
 				}
@@ -316,7 +305,7 @@
 		    fetch("<c:url value='/api/verifyCode' />", {
 		        method: "POST",
 		        headers: { "Content-type": "application/json" },
-		        body: JSON.stringify({ code: code })
+		        body: JSON.stringify({ code: code, type: type })
 		    })
 		    .then(response => response.json())
 		    .then(result => {

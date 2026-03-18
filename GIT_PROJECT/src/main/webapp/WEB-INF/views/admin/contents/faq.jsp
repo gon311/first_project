@@ -144,8 +144,8 @@
 					</div>
 				</c:if>   
    
-    </div></div>
-    
+    </div></div> 
+      
     <script>
     function deleteFaq(faqId) {
     	console.log("삭제요청 id :" + faqId);

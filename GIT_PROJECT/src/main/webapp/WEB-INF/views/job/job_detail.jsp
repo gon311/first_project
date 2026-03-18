@@ -149,8 +149,8 @@
 	        <form action="<c:url value="/job/ApplyAction" />" method="post" onsubmit="return validateForm()">
 	            <div class="modal-body">
 	                <p class="job-title-mini">${post.title}</p>
+	                <span><b>지원할 이력서 선택</b></span>
 	                <div class="resume-card-container">
-	                	<span><b>지원할 이력서 선택</b></span>
 	                    <c:forEach var="resume" items="${resumeList}">
 	                        <div class="resume-card" onclick="selectResume('${resume.resumeId}', this)">
 	                            <p class="resume-name">${resume.title}</p>

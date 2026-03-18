@@ -10,6 +10,12 @@
 </head>
 
 <body>
+<c:if test="${not empty msg}">
+    <script>
+        alert("${msg}");
+    </script>
+</c:if>
+
   <c:choose>
 	    <c:when test="${sessionScope.memberType == 'company'}">
 	        <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
@@ -155,26 +161,26 @@
 
 
             <!-- 하단 버튼 -->
-            <div class="bottom-actions">
+<!--             <div class="bottom-actions"> -->
 
-                <div class="actions-left">
+<!--                 <div class="actions-left"> -->
 
-                    <button type="button" class="btn-ghost">
-                        좋아요
-                    </button>
+<!--                     <button type="button" class="btn-ghost"> -->
+<!--                         좋아요 -->
+<!--                     </button> -->
 
-                    <button type="button" class="btn-ghost">
-                        스크랩
-                    </button>
+<!--                     <button type="button" class="btn-ghost"> -->
+<!--                         스크랩 -->
+<!--                     </button> -->
 
-                </div>
+<!--                 </div> -->
 
-                <a class="btn-dark"
-                   href="${urlBoardList}">
-                    목록
-                </a>
+<!--                 <a class="btn-dark" -->
+<%--                    href="${urlBoardList}"> --%>
+<!--                     목록 -->
+<!--                 </a> -->
 
-            </div>
+<!--             </div> -->
 
 
 		<!-- 댓글 영역 -->

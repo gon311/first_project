@@ -32,8 +32,13 @@ public class BoardCommentController {
         String sId = (String) session.getAttribute("sId");
         if (sId == null) return "redirect:/user/login";
 
-        MyDTO user = myService.getUser(sId);
+        MyDTO user = myService.getUser(sId);              
         commentDTO.setAuthorMemberId(user.getUserId());
+        
+        if (!"ACTIVE".equals(user.getStatus())) {
+            ra.addFlashAttribute("msg", "차단된 회원은 댓글을 작성할 수 없습니다.");
+            return "redirect:/board/detail?postId=" + commentDTO.getPostId();
+        }
 
         boardCommentService.writeComment(commentDTO);
 

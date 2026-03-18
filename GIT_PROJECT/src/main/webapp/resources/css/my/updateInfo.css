@@ -111,9 +111,10 @@
 
 .form-actions{
   margin-top: 36px;
-  display:flex;
-  justify-content: space-between;
+  display: flex;
+  justify-content: center;
   align-items: center;
+  gap: 12px;
 }
 
 .danger-link{
@@ -136,3 +137,52 @@
   border-color:#ffa726;
   color:#fff;
 }
+
+.btn-cancel{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:#f3f4f6;
+  border:1px solid #e5e7eb;
+  color:#374151;
+  font-weight:800;
+  border-radius:8px;
+  padding:14px 30px;
+  text-decoration:none;
+}
+
+.btn-cancel:hover{
+  background:#e5e7eb;
+  color:#111827;
+  text-decoration:none;
+}
+
+.btn-withdraw{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 22px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 800;
+  background: #fff5f5;
+  border: 1px solid #f3caca;
+  color: #d64545;
+  transition: all 0.2s ease;
+}
+
+.btn-withdraw:hover{
+  background: #ffeaea;
+  border-color: #e9b5b5;
+  color: #c53030;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+

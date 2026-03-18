@@ -105,15 +105,15 @@
 		<result property="statusLabel" column="status_label" />
 	</resultMap>
 	
-		<!-- RecommendedRowDTO  -->
+	<!-- RecommendedRowDTO -->
 	<resultMap id="recommendedRowMap" type="com.itwillbs.project.my.dto.RecommendedRowDTO">
-		 <id property="jobId" column="job_id"/>
-		 <result property="score" column="score"/>
-		 <result property="title" column="title"/>
-		 <result property="field" column="field"/>
-		 <result property="address" column="address"/>
-		 <result property="openDate" column="open_date"/>
-		 <result property="closeDate" column="close_date"/>
+	  <id property="jobId" column="job_id"/>
+	  <result property="score" column="score"/>
+	  <result property="title" column="title"/>
+	  <result property="field" column="field"/>
+	  <result property="address" column="address"/>
+	  <result property="openDate" column="open_date"/>
+	  <result property="closeDate" column="close_date"/>
 	</resultMap>
 	
 	
@@ -219,12 +219,12 @@
 <sql id="recommendedWhere">
   WHERE r.person_user_id = #{userId}
     AND r.is_active = 1
-    AND jp.post_status = 1
-    AND jp.close_date &gt;= CURDATE()
-    
     AND bm.job_id IS NULL
 
   <if test="onlyApplyable">
+    AND jp.post_check = 2
+    AND jp.post_status = 1
+    AND jp.close_date &gt;= CURDATE()
     AND ja2.job_id IS NULL
   </if>
 </sql>
@@ -616,10 +616,10 @@
 </delete>
 
 <!-- ==============================
-    추천 공고
-     parameter:RecomendedCond.java
-     result: 
-============================== -->	
+     추천 공고
+     parameter: RecommendedCond.java
+     result: RecommendedRowDTO
+================================ -->
 <select id="selectRecommendedList"
         parameterType="com.itwillbs.project.my.dto.RecommendedCond"
         resultMap="recommendedRowMap">
@@ -633,7 +633,7 @@
     , jp.close_date
   FROM RECOMMENDED_JOB r
   JOIN JOB_POSTING jp ON jp.job_id = r.job_id
-  
+
   LEFT JOIN job_bookmark bm
     ON bm.user_id = #{userId}
    AND bm.job_id  = jp.job_id
@@ -667,8 +667,7 @@
   SELECT COUNT(*)
   FROM RECOMMENDED_JOB r
   JOIN JOB_POSTING jp ON jp.job_id = r.job_id
-  
-  
+
   LEFT JOIN job_bookmark bm
     ON bm.user_id = #{userId}
    AND bm.job_id  = jp.job_id

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
 <html>
@@ -10,7 +11,6 @@
 <!-- Summernote Lite -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css">
 
-<!-- head.jspf에 jQuery가 이미 있으면 아래 한 줄은 빼도 됨 -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 </head>
@@ -29,6 +29,8 @@
 <c:url var="urlBoardEdit" value="/board/edit"/>
 <c:url var="urlBoardDetail" value="/board/detail"/>
 <c:url var="urlBoardDownload" value="/board/download"/>
+
+
 
 <main class="container wrap">
   <div class="cardx">
@@ -79,13 +81,15 @@
           </div>
 
           <div class="counter">
-          	<span id="contentCount">0</span>/5000자
+            <span id="contentCount">0</span>/5000자
           </div>
         </div>
 
         <c:if test="${not empty fileList}">
           <div class="section">
-            <div class="label">기존 첨부파일 <span class="hint">삭제할 파일은 체크해주세요</span></div>
+            <div class="label">
+              기존 첨부파일 <span class="hint">삭제할 파일은 체크해주세요</span>
+            </div>
 
             <div class="edit-file-list">
               <c:forEach var="file" items="${fileList}">
@@ -108,26 +112,63 @@
         </c:if>
 
         <div class="section">
-          <div class="label">첨부파일 <span class="hint">새 파일을 추가할 수 있어요</span></div>
+          <div class="label">
+            첨부파일 <span class="hint">새 파일을 추가할 수 있어요</span>
+          </div>
           <input type="file" class="input" name="files" multiple>
         </div>
 
         <div class="section">
-          <div class="label">해시태그 <span class="hint">최대 5개까지 선택가능합니다</span></div>
-
-          <div class="tag-wrap" id="tagWrap">
-            <label class="tag"><input type="checkbox" name="tags" value="신입">#신입</label>
-            <label class="tag"><input type="checkbox" name="tags" value="취업">#취업</label>
-            <label class="tag"><input type="checkbox" name="tags" value="이직">#이직</label>
-            <label class="tag"><input type="checkbox" name="tags" value="잡담">#잡담</label>
-            <label class="tag"><input type="checkbox" name="tags" value="면접">#면접</label>
-            <label class="tag"><input type="checkbox" name="tags" value="자소서">#자소서</label>
-            <label class="tag"><input type="checkbox" name="tags" value="커리어">#커리어</label>
-            <label class="tag"><input type="checkbox" name="tags" value="퇴사">#퇴사</label>
-            <label class="tag"><input type="checkbox" name="tags" value="채용">#채용</label>
-            <label class="tag"><input type="checkbox" name="tags" value="경력">#경력</label>
-            <label class="tag"><input type="checkbox" name="tags" value="회사생활">#회사생활</label>
+          <div class="label">
+            해시태그 <span class="hint">최대 5개까지 선택가능합니다</span>
           </div>
+
+			<div class="tag-wrap" id="tagWrap">
+			  <label class="tag">
+			    <input type="checkbox" name="tags" value="신입"
+			      <c:if test="${fn:contains(selectedTagStr, ',신입,')}">checked</c:if>>#신입
+			  </label>
+			  <label class="tag">
+			    <input type="checkbox" name="tags" value="취업"
+			      <c:if test="${fn:contains(selectedTagStr, ',취업,')}">checked</c:if>>#취업
+			  </label>
+			  <label class="tag">
+			    <input type="checkbox" name="tags" value="이직"
+			      <c:if test="${fn:contains(selectedTagStr, ',이직,')}">checked</c:if>>#이직
+			  </label>
+			  <label class="tag">
+			    <input type="checkbox" name="tags" value="잡담"
+			      <c:if test="${fn:contains(selectedTagStr, ',잡담,')}">checked</c:if>>#잡담
+			  </label>
+			  <label class="tag">
+			    <input type="checkbox" name="tags" value="면접"
+			      <c:if test="${fn:contains(selectedTagStr, ',면접,')}">checked</c:if>>#면접
+			  </label>
+			  <label class="tag">
+			    <input type="checkbox" name="tags" value="자소서"
+			      <c:if test="${fn:contains(selectedTagStr, ',자소서,')}">checked</c:if>>#자소서
+			  </label>
+			  <label class="tag">
+			    <input type="checkbox" name="tags" value="커리어"
+			      <c:if test="${fn:contains(selectedTagStr, ',커리어,')}">checked</c:if>>#커리어
+			  </label>
+			  <label class="tag">
+			    <input type="checkbox" name="tags" value="퇴사"
+			      <c:if test="${fn:contains(selectedTagStr, ',퇴사,')}">checked</c:if>>#퇴사
+			  </label>
+			  <label class="tag">
+			    <input type="checkbox" name="tags" value="채용"
+			      <c:if test="${fn:contains(selectedTagStr, ',채용,')}">checked</c:if>>#채용
+			  </label>
+			  <label class="tag">
+			    <input type="checkbox" name="tags" value="경력"
+			      <c:if test="${fn:contains(selectedTagStr, ',경력,')}">checked</c:if>>#경력
+			  </label>
+			  <label class="tag">
+			    <input type="checkbox" name="tags" value="회사생활"
+			      <c:if test="${fn:contains(selectedTagStr, ',회사생활,')}">checked</c:if>>#회사생활
+			  </label>
+			</div>
         </div>
 
         <div class="bottom">
@@ -136,7 +177,6 @@
             게시글 수정하기
           </button>
         </div>
-
       </form>
 
     </div>
@@ -184,7 +224,7 @@
         onChange: function (contents) {
           updateCount(contents);
         },
-        onImageUpload: function(files) {
+        onImageUpload: function (files) {
           for (let i = 0; i < files.length; i++) {
             uploadSummernoteImage(files[i], this);
           }
@@ -194,7 +234,7 @@
 
     function uploadSummernoteImage(file, editor) {
       const data = new FormData();
-      data.append("file", file);
+      data.append('file', file);
 
       $.ajax({
         url: '<c:url value="/board/image/upload"/>',
@@ -202,23 +242,23 @@
         data: data,
         contentType: false,
         processData: false,
-        success: function(res) {
+        success: function (res) {
           if (res.success) {
-            $(editor).summernote('insertImage', res.url, function($image) {
+            $(editor).summernote('insertImage', res.url, function ($image) {
               $image.attr('alt', file.name);
             });
           } else {
             alert(res.message || '이미지 업로드에 실패했습니다.');
           }
         },
-        error: function() {
+        error: function () {
           alert('이미지 업로드 중 오류가 발생했습니다.');
         }
       });
     }
 
-    const tagWrap = document.getElementById("tagWrap");
-    const tags = tagWrap.querySelectorAll(".tag");
+    const tagWrap = document.getElementById('tagWrap');
+    const tags = tagWrap.querySelectorAll('.tag');
 
     function selectedCount() {
       return tagWrap.querySelectorAll("input[type='checkbox']:checked").length;
@@ -227,21 +267,26 @@
     tags.forEach(tag => {
       const chk = tag.querySelector("input[type='checkbox']");
 
-      if (chk.checked) tag.classList.add("active");
+      if (chk.checked) {
+        tag.classList.add('active');
+      }
 
-      tag.addEventListener("click", function () {
+      tag.addEventListener('click', function () {
         setTimeout(() => {
           const cnt = selectedCount();
 
           if (cnt > 5) {
             chk.checked = false;
-            tag.classList.remove("active");
-            alert("해시태그는 최대 5개까지 선택할 수 있어요!");
+            tag.classList.remove('active');
+            alert('해시태그는 최대 5개까지 선택할 수 있어요!');
             return;
           }
 
-          if (chk.checked) tag.classList.add("active");
-          else tag.classList.remove("active");
+          if (chk.checked) {
+            tag.classList.add('active');
+          } else {
+            tag.classList.remove('active');
+          }
         }, 0);
       });
     });

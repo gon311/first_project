@@ -117,7 +117,10 @@
 
               <c:forEach var="row" items="${list}">
                 <div class="row-item">
-                  <div class="row-date">${row.applyDateStr}</div>
+					<div class="row-date">
+					  <span>${row.applyDateStr}</span>
+					  <span>~ ${row.closeDate}</span>
+					</div>
 
                   <div class="row-mid">
                     <a class="title-link" href="${urlJobDetail}?jobId=${row.jobId}">

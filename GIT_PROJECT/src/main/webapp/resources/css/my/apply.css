@@ -131,12 +131,22 @@ body{ background:#f6f7fb; }
   border-bottom: 1px solid #eef2f7;
 }
 .row-date{
-  width: 96px;
+  width: 110px;
   color:#6b7280;
   font-weight:900;
   font-size:.92rem;
   padding-top: 3px;
+
+  display:flex;
+  flex-direction:column;
+  line-height:1.25;
 }
+
+.row-date span{
+  white-space:nowrap;
+}
+
+
 .row-mid{ flex:1; min-width:0; }
 .title-link{
   display:inline-block;

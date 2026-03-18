@@ -137,13 +137,12 @@
 					</div>
 
 					<div class="form-actions">
-						<a href="${urlDeleteUser}" class="danger-link"
-						   onclick="return confirm('정말 탈퇴하시겠습니까?');">회원 탈퇴</a>
-
-						<div class="d-flex gap-2">
-							<a href="${urlMyInfo}" class="btn btn-light">취소</a>
-							<button type="submit" class="btn btn-save">저장하기</button>
-						</div>
+					    <a href="${urlDeleteUser}" class="btn-withdraw"
+					       onclick="return confirm('정말 탈퇴하시겠습니까?');">회원 탈퇴</a>
+					
+					    <a href="${urlMyInfo}" class="btn-cancel">취소</a>
+					
+					    <button type="submit" class="btn-save">저장하기</button>
 					</div>
 				</form>
 

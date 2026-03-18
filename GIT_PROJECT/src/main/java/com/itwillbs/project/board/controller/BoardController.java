@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -105,11 +106,22 @@ public class BoardController {
 
 	// 게시글 작성 페이지
 	@GetMapping("/write")
-	public String boardWrite(HttpSession session) {
+	public String boardWrite(HttpSession session, Model model) {
 	    String sId = (String) session.getAttribute("sId");
 
 	    if (sId == null) {
 	        throw new LoginRequiredException("로그인이 필요한 서비스입니다.\\n로그인 페이지로 이동합니다.");
+	    }
+
+	    MyDTO user = myService.getUser(sId);
+
+	    if (user == null) {
+	        throw new LoginRequiredException("로그인 사용자 정보를 확인할 수 없습니다.\\n다시 로그인해주세요.");
+	    }
+
+	    if (!"ACTIVE".equals(user.getStatus())) {
+	        model.addAttribute("msg", "차단된 회원은 글쓰기를 이용할 수 없습니다.");
+	        return "/common/fail_back";
 	    }
 
 	    return "/board/board_write";
@@ -135,6 +147,11 @@ public class BoardController {
 
 	    if (user == null) {
 	        throw new LoginRequiredException("로그인 사용자 정보를 확인할 수 없습니다.\\n다시 로그인해주세요.");
+	    }
+
+	    if (!"ACTIVE".equals(user.getStatus())) {
+	        model.addAttribute("msg", "차단된 회원은 글쓰기를 이용할 수 없습니다.");
+	        return "/common/fail_back";
 	    }
 
 	    boardDTO.setAuthorMemberId(user.getUserId());
@@ -214,7 +231,6 @@ public class BoardController {
 	            .body(resource);
 	}
 
-	// 수정 페이지
 	@GetMapping("/edit")
 	public String editForm(@RequestParam Long postId,
 	                       HttpSession session,
@@ -222,9 +238,21 @@ public class BoardController {
 	                       RedirectAttributes ra) {
 
 	    String sId = (String) session.getAttribute("sId");
-	    if (sId == null) return "redirect:/user/login";
+	    if (sId == null) {
+	        throw new LoginRequiredException("로그인이 필요한 서비스입니다.\\n로그인 페이지로 이동합니다.");
+	    }
 
 	    MyDTO user = myService.getUser(sId);
+
+	    if (user == null) {
+	        throw new LoginRequiredException("로그인 사용자 정보를 확인할 수 없습니다.\\n다시 로그인해주세요.");
+	    }
+
+	    if (!"ACTIVE".equals(user.getStatus())) {
+	        model.addAttribute("msg", "차단된 회원은 글수정을 이용할 수 없습니다.");
+	        return "/common/fail_back";
+	    }
+
 	    BoardDTO post = boardService.getBoard(postId);
 
 	    if (post == null || !user.getUserId().equals(post.getAuthorMemberId())) {
@@ -234,8 +262,14 @@ public class BoardController {
 
 	    List<FileDTO> fileList = boardService.getBoardFiles(postId);
 
+	    String selectedTagStr = ",";
+	    if (post.getTagList() != null && !post.getTagList().isEmpty()) {
+	        selectedTagStr = "," + String.join(",", post.getTagList()) + ",";
+	    }
+
 	    model.addAttribute("post", post);
 	    model.addAttribute("fileList", fileList);
+	    model.addAttribute("selectedTagStr", selectedTagStr);
 
 	    return "/board/board_edit";
 	}
@@ -246,12 +280,24 @@ public class BoardController {
 	                        @RequestParam(value = "deleteFileIds", required = false) List<Integer> deleteFileIds,
 	                        List<MultipartFile> files,
 	                        HttpSession session,
+	                        Model model,
 	                        RedirectAttributes ra) throws IOException {
 
 	    String sId = (String) session.getAttribute("sId");
-	    if (sId == null) return "redirect:/user/login";
+	    if (sId == null) {
+	        throw new LoginRequiredException("로그인이 필요한 서비스입니다.\\n로그인 페이지로 이동합니다.");
+	    }
 
 	    MyDTO user = myService.getUser(sId);
+
+	    if (user == null) {
+	        throw new LoginRequiredException("로그인 사용자 정보를 확인할 수 없습니다.\\n다시 로그인해주세요.");
+	    }
+
+	    if (!"ACTIVE".equals(user.getStatus())) {
+	        model.addAttribute("msg", "차단된 회원은 글수정을 이용할 수 없습니다.");
+	        return "/common/fail_back";
+	    }
 
 	    boolean result = boardService.updateBoard(boardDTO, deleteFileIds, files, tags, user.getUserId());
 
@@ -282,6 +328,10 @@ public class BoardController {
 	        ra.addFlashAttribute("msg", "본인이 작성한 글만 삭제할 수 있습니다.");
 	        return "redirect:/board/detail?postId=" + postId;
 	    }
+	    
+	    if (!"ACTIVE".equals(user.getStatus())) {
+	        throw new AccessDeniedException("차단된 회원은 이용할 수 없습니다.");
+	    }
 
 	    ra.addFlashAttribute("msg", "게시글이 삭제되었습니다.");
 
@@ -299,6 +349,10 @@ public class BoardController {
 
 	    MyDTO user = myService.getUser(sId);
 	    boolean result = boardService.reportBoard(postId, user.getUserId());
+	    
+	    if (!"ACTIVE".equals(user.getStatus())) {
+	        throw new AccessDeniedException("차단된 회원은 이용할 수 없습니다.");
+	    }
 
 	    ra.addFlashAttribute("msg", result ? "신고가 접수되었습니다." : "신고 처리에 실패했습니다.");
 	    return "redirect:/board/detail?postId=" + postId;

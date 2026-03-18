@@ -91,7 +91,7 @@
 	    </div>
 	
 	    <div id="pdfArea"> 
-	        <h2 style="padding: 10px;">지원자 리스트</h2>
+	        <h2 style="padding: 10px;">지원자 리스트 | 공고명: <strong>${postingTitle}</strong></h2>
 	        <div class="applicant-table-wrap">
 	            <table class="applicant-table">
 	                <thead>

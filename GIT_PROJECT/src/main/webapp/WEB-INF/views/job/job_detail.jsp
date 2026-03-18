@@ -144,34 +144,28 @@
 	<div id="applyModal" class="modal-overlay">
 	    <div class="modal-content">
 	        <div class="modal-header">
-	            <h3>${post.companyName} 입사지원</h3>
+	            <h3>입사지원</h3>
 	            <button class="close-btn" onclick="closeApplyModal()">&times;</button>
 	        </div>
-	       <form action="<c:url value="/job/ApplyAction" />" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-		       <input type="hidden" name="resumeId" id="selectedResumeId" value="">
-		       <input type="hidden" name="jobId" value="${post.jobId}">
-		        <div class="modal-body">
-		            <p class="job-title-mini">${post.title}</p>
-		            	
-		            <div class="resume-section">
-		                <div class="section-header" style="margin-bottom: 10px; font-weight: bold;">
-		                    <span>지원할 이력서 선택</span>
-		                </div>
-		                <div class="resume-card-container" style="max-height: 250px; overflow-y: auto;">
-		                    <c:forEach var="resume" items="${resumeList}">
-		                        <div class="resume-card" onclick="selectResume('${resume.resumeId}', this)">
-		                            <p class="resume-name">${resume.title}</p>
-		                        </div>
-		                    </c:forEach>
-		                    <c:if test="${empty resumeList}">
-		                        <p style="text-align: center; padding: 20px; color: #888;">보유 중인 이력서가 없습니다.</p>
-		                    </c:if>
-		                </div>
-		            </div>
-		        </div>
-	        <div class="modal-footer">
-	            <button type="submit" class="final-apply-btn">입사지원하기</button>
-	        </div>
+	
+	        <form action="<c:url value="/job/ApplyAction" />" method="post" onsubmit="return validateForm()">
+	            <div class="modal-body">
+	                <p class="job-title-mini">${post.title}</p>
+	                <span><b>지원할 이력서 선택</b></span>
+	                <div class="resume-card-container">
+	                    <c:forEach var="resume" items="${resumeList}">
+	                        <div class="resume-card" onclick="selectResume('${resume.resumeId}', this)">
+	                            <p class="resume-name">${resume.title}</p>
+	                        </div>
+	                    </c:forEach>
+	                </div>
+	            </div>
+	
+	            <div class="modal-footer">
+	                <input type="hidden" name="resumeId" id="selectedResumeId" value="">
+	                <input type="hidden" name="jobId" value="${post.jobId}">
+	                <button type="submit" class="final-apply-btn">입사지원하기</button>
+	            </div>
 	        </form>
 	    </div>
 	</div>

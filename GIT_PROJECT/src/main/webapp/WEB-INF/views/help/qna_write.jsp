@@ -1,26 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
     <%@ include file="/WEB-INF/views/inc/head.jspf" %>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .qna-container { max-width: 800px; margin: 50px auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .qna-title { border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 30px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-weight: bold; margin-bottom: 8px; color: #444; }
-        .form-group input[type="text"], .form-group select, .form-group textarea {
-            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-size: 14px;
-        }
-        .form-group textarea { height: 200px; resize: vertical; }
-        .file-upload-section { background: #f9f9f9; padding: 15px; border-radius: 4px; border: 1px dashed #ccc; }
-        .btn-area { text-align: center; margin-top: 30px; display: flex; gap: 10px; justify-content: center; }
-        .btn { padding: 12px 30px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-submit { background: #007bff; color: white; }
-        .btn-submit:hover { background: #0056b3; }
-        .btn-cancel { background: #6c757d; color: white; text-decoration: none; display: inline-block; }
-    </style>
+    <%@ include file="/WEB-INF/views/inc/head.jspf" %>
+    <link href="<c:url value="/resources/css/help/qnaWrite.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<c:choose>

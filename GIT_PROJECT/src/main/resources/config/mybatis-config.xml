@@ -34,6 +34,7 @@
 		<typeAlias type="com.itwillbs.project.resume.dto.ResumeDTO" alias="resume"/>
 		<typeAlias type="com.itwillbs.project.resume.dto.ResumeEducationDTO" alias="resumeEducation"/>
 		<typeAlias type="com.itwillbs.project.resume.dto.ResumeExperienceDTO" alias="resumeExperience"/>
+		<typeAlias type="com.itwillbs.project.help.dto.SupportQnaDTO" alias="supportQnaDTO"/>
 	</typeAliases>
 	
 </configuration>

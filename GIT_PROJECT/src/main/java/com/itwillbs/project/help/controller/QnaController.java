@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.common.dto.FileDTO;
+import com.itwillbs.project.common.exception.BackwardException;
 import com.itwillbs.project.help.dto.SupportQnaDTO;
 import com.itwillbs.project.help.service.QnaService;
 
@@ -34,7 +35,8 @@ public class QnaController {
         if (sId == null) {
         	return "redirect:/user/login";
         }
-        return "/help/qna_write"; // 아까 만든 JSP 경로
+        
+        return "/help/qna_write";
     }
 
     // 2. 문의 등록 처리 (파일 업로드 포함)
@@ -92,6 +94,13 @@ public class QnaController {
         SupportQnaDTO qna = qnaService.getQnaDetail(qnaId);
         List<FileDTO> qnaFiles = qnaService.getFileList(qnaId);
         
+//        System.out.println("sId : " + sId);
+//        System.out.println("writerId : " + writerId);
+//        System.out.println("writerId2 : " + qna.getWriterId());
+        if (sId != qna.getWriterId()) {
+        	throw new BackwardException("비정상적인 접근입니다.");
+        }
+        
         // 2. JSP로 전달
         model.addAttribute("qna", qna); 
         model.addAttribute("qnaFiles", qnaFiles); 
@@ -119,7 +128,7 @@ public class QnaController {
             rttr.addFlashAttribute("error", "삭제 중 오류가 발생했습니다.");
         }
         
-        return "redirect:/help/list"; // 삭제 후 목록으로 이동
+        return "redirect:/my/qna"; // 삭제 후 목록으로 이동
     }
     
 }

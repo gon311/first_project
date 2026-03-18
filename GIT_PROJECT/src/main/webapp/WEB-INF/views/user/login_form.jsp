@@ -62,6 +62,11 @@
 	                        <p id="error">${type != 'C' ? errorMsg : ''}</p>
 	                    </div>
                     </div>
+                    <div class="mb-3">
+						<div class="border rounded-3 p-3 bg-light">
+							<div class="cf-turnstile" data-sitekey="0x4AAAAAACnFvtsMiRr6zWEI"></div>
+						</div>
+					</div>
                 </form>
 
             </div>
@@ -91,14 +96,15 @@
                         	<p id="error">${type == 'C' ? errorMsg : ''}</p>
                         </div>
                     </div>
+                 	<div class="mb-3">
+						<div class="border rounded-3 p-3 bg-light">
+							<div class="cf-turnstile" data-sitekey="0x4AAAAAACnFvtsMiRr6zWEI"></div>
+						</div>
+					</div>
                 </form>
             </div>
             
-			<div class="mb-3">
-				<div class="border rounded-3 p-3 bg-light">
-					<div class="cf-turnstile" data-sitekey="0x4AAAAAACnFvtsMiRr6zWEI"></div>
-				</div>
-			</div>
+
 			
             <div class="text-center text-secondary small mt-5">
                 <a href="<c:url value="/user/find?type=id" />" class="text-decoration-none text-secondary">아이디 찾기</a>

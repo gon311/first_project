@@ -85,13 +85,65 @@
 	
 		<%-- 개별 페이지 자바스크립트 영역 --%>
 		<script type="text/javascript">
-			// 1) 입력창 포커싱 
-			document.addEventListener("DOMContentLoaded", () => {
-			    const input = document.getElementById("inputText");
-			    if (input) input.focus();
-			});
+			// 1) 페이지 로드 시 초기화
+		    document.addEventListener("DOMContentLoaded", () => {
+		        const input = document.getElementById("inputText");
+		        if (input) input.focus();
+	
+		        const copyBtn = document.getElementById("copyBtn");
+		        const output = document.getElementById("outputText");
+	
+		        // 복사하기 버튼 이벤트 등록 
+		        if (copyBtn && output) {
+		            copyBtn.addEventListener("click", async () => {
+		                // div의 경우 innerText, input/textarea의 경우 value 사용
+		                const text = output.innerText || output.value; 
+	
+		                if (!text || text.trim() === "") {
+		                    alert("복사할 내용이 없습니다.");
+		                    return;
+		                }
+	
+		                // 1. HTTPS 전용 복사 프로세스
+		                if (navigator.clipboard && window.isSecureContext) {
+		                    try {
+		                        await navigator.clipboard.writeText(text);
+		                        alert("클립보드에 복사되었습니다.");
+		                        return; 
+		                    } catch (error) {
+		                        console.error("Clipboard API 실패, 대안 시도:", error);
+		                    }
+		                }
+	
+		                // 2. 대안 방식 (HTTP 또는 구형 브라우저)
+		                try {
+		                    const textArea = document.createElement("textarea");
+		                    textArea.value = text;
+		                    textArea.style.position = "fixed";
+		                    textArea.style.left = "-9999px";
+		                    textArea.style.top = "0";
+		                    document.body.appendChild(textArea);
+	
+		                    textArea.focus();
+		                    textArea.select();
+	
+		                    const successful = document.execCommand("copy");
+		                    document.body.removeChild(textArea);
+	
+		                    if (successful) {
+		                        alert("클립보드에 복사되었습니다.");
+		                    } else {
+		                        throw new Error('execCommand 실패');
+		                    }
+		                } catch (err) {
+		                    console.error("모든 복사 시도 실패:", err);
+		                    alert("복사에 실패하였습니다. 직접 선택 후 Ctrl+C를 눌러주세요.");
+		                }
+		            });
+		        }
+		    });
 		
-			// 2) 표절검사 버튼
+			// 2) 문장 다듬기 버튼
 			document.getElementById("runCheck").addEventListener('click', () => {
 				document.getElementById("loadingOverlay").classList.remove("d-none");
 				
@@ -125,7 +177,7 @@
 						
 					} catch(error) {
 						console.error("Error:", error);
-						alert("표절 검사 중 문제가 발생했습니다.");
+						alert("문장 다듬는 중 문제가 발생했습니다.");
 					} finally {
 						document.getElementById("loadingOverlay").classList.add("d-none");
 					}
@@ -133,35 +185,7 @@
 				requestGenerate();
 			});
 			
-			// 3) 복사하기 버튼 
-			document.addEventListener("DOMContentLoaded", () => {
-				const copyBtn = document.getElementById("copyBtn");
-				const correctedResult = document.getElementById("correctedResult");
 			
-				if (copyBtn && correctedResult) {
-					copyBtn.addEventListener("click", async () => {
-						try {
-							const text = correctedResult.innerText;
-							if (!text) {
-								alert("복사할 내용이 없습니다.");
-								return;
-							}
-							await navigator.clipboard.writeText(text);
-							alert("클립보드에 복사되었습니다. Ctrl+V로 붙여넣기 해주세요.");
-						} catch (err) {
-							try {
-								output.select();
-								document.execCommand("copy");
-								alert("클립보드에 복사되었습니다. Ctrl+V로 붙여넣기 해주세요.");
-								window.getSelection().removeAllRanges();
-							} catch (e) {
-								console.error("복사 실패:", err, e);
-								alert("복사에 실패했습니다. 직접 선택 후 Ctrl+C를 눌러 복사해 주세요.");
-							}
-						}
-					});
-				}
-			});
 			
 		</script>
 	</body>

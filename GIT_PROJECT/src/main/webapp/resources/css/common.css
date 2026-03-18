@@ -7,7 +7,7 @@ body {
     /* 내용이 넘칠 경우 스크롤 허용 */
     overflow-x: auto;
     /* 폰트 고정 */
-    font-family: 'Pretendard', sans-serif;
+    font-family: 'Pretendard', sans-serif !important;
 }
 
 main {
@@ -191,6 +191,9 @@ footer.footer .row {
     display: flex;
     flex-wrap: wrap; /* 자리가 없으면 무조건 줄바꿈 */
     margin: 0;
+}
+footer.footer .col-md-5 {
+	text-align: left !important;
 }
 
 .footer-link {

@@ -1,10 +1,10 @@
 @charset "UTF-8";
 
 :root { --primary-color: #0046ff; --bg-color: #f4f7f6; }
-html, body { margin: 0; padding: 0; background-color: var(--bg-color); font-family: 'Apple SD Gothic Neo', sans-serif; }
+html, body { margin: 0; padding: 0; background-color: var(--bg-color); }
 
 main { display: flex; justify-content: center; padding: 60px 20px; }
-.container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 550px; }
+.container-regist-form { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 550px; }
 
 h2 { text-align: center; font-size: 28px; margin-bottom: 30px; }
 
@@ -47,5 +47,3 @@ input:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0
 
 .btn-submit { width: 100%; padding: 20px; background-color: var(--primary-color); color: white; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 40px; }
 .btn-submit:hover { background-color: #0036c7; }
-
-footer { text-align: center; padding: 40px; color: #888; font-size: 13px; }

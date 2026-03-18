@@ -141,40 +141,38 @@
 			</table>
 			
 			<!-- 페이징 -->
-	        <c:if test="${not empty pageInfo and not empty pageInfo.maxPage and pageInfo.maxPage > 0}">
-			    <div class="d-flex justify-content-center mt-5 mb-4">
-			        <nav aria-label="Page navigation">
-			            <ul class="pagination pagination-sm mb-0">
-			                
-			                <li class="page-item ${pageInfo.pageNum eq 1 ? 'disabled' : ''}">
-			                    <a class="page-link" href="<c:url value='/admin/submits?pageNum=${pageInfo.pageNum - 1}&activeTab=${activeTab}' />" aria-label="Previous">
-			                        <span aria-hidden="true">&laquo;</span>
-			                    </a>
-			                </li>
-			
-			                <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
-			                    <li class="page-item ${i eq pageInfo.pageNum ? 'active' : ''}">
-			                        <c:choose>
-			                            <c:when test="${i eq pageInfo.pageNum}">
-			                                <span class="page-link">${i}</span>
-			                            </c:when>
-			                            <c:otherwise>
-			                                <a class="page-link" href="<c:url value='/admin/submits?pageNum=${i}&activeTab=${activeTab}' />">${i}</a>
-			                            </c:otherwise>
-			                        </c:choose>
-			                    </li>
-			                </c:forEach>
-			
-			                <li class="page-item ${pageInfo.pageNum eq pageInfo.maxPage ? 'disabled' : ''}">
-			                    <a class="page-link" href="<c:url value='/admin/submits?pageNum=${pageInfo.pageNum + 1}&activeTab=${activeTab}' />" aria-label="Next">
-			                        <span aria-hidden="true">&raquo;</span>
-			                    </a>
-			                </li>
-			                
-			            </ul>
-			        </nav>
-			    </div>
+			<c:if test="${not empty param.keyword or not empty param.startDate or not empty param.endDate or not empty param.submitStatus}">
+				<c:set var="searchParams" 
+						value="keyword=${param.keyword}&startDate=${param.startDate}&endDate=${param.endDate}&submitStatus=${param.submitStatus}" />
 			</c:if>
+			
+			<c:if test="${not empty pageInfo and not empty pageInfo.maxPage and pageInfo.maxPage > 0}">
+				<nav>
+					<ul class="pagination justify-content-center">
+						<li class="page-item <c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>">
+							<a class="page-link" href="<c:url value="/admin/submits?pageNum=${pageInfo.pageNum - 1}&${searchParams}&activeTab=${activeTab}" />">&laquo;</a>
+						</li>
+						
+						<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+							<li class="page-item <c:if test="${i eq pageInfo.pageNum}">active</c:if>">
+								<c:choose>
+									<c:when test="${i eq pageInfo.pageNum}">
+										<a class="page-link">${i}</a>
+									</c:when>
+									<c:otherwise>
+										<a class="page-link" href="<c:url value="/admin/submits?pageNum=${i}&${searchParams}&activeTab=${activeTab}" />">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</li>
+						</c:forEach>
+						
+						<li class="page-item <c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>">
+							<a class="page-link" href="<c:url value="/admin/submits?pageNum=${pageInfo.pageNum + 1}&${searchParams}&activeTab=${activeTab}" />">&raquo;</a>
+						</li>
+					</ul>
+				</nav>
+			</c:if>
+			
 			
 		</div>
 	

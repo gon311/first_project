@@ -169,9 +169,6 @@ public class StoreController {
 	        return "mismatch"; 
 	    } 
 	    
-	    // (기업회원의 경우) 일반 이용권 보유 유무 조회
-	    MemberProductDTO memberProductDTO = storeService.getMemberProduct(orderInfo.getUserId());
-	     
 	    // 결제 성공 상태(PAID)인 경우
     	if(paymentInfo.getStatus().equals("PAID")) {
 	    	orderInfo.setStatus("PAID");       			// 주문 상태를 PAID로 업데이트
@@ -191,17 +188,20 @@ public class StoreController {
 		    // 결제 테이블에 주문 정보 저장
 		    storeService.setPaymentInfo(paymentDTO);
 		    
+		    // (기업회원의 경우) 일반 이용권 보유 유무 조회
+		    MemberProductDTO memberProductDTO = storeService.getMemberProduct(orderInfo.getUserId());
+		     
+		    // 만약, 일반 이용권을 보유중인 기업회원이 프리미엄 이용권을 구매한 경우 일반 이용권은 소멸됨
+		    if(paymentDTO.getProductId().equals("P-C2") && memberProductDTO != null) {
+		    	storeService.changeUseStatus(memberProductDTO.getPayId());
+		    }
+		    
 		    // 이용권 테이블에 구매자의 이용권 정보 저장
 		    if(orderInfo.getUserType() == 'P') {
 		    	storeService.setUserProduct(paymentDTO);
 		    	storeService.setPassCount(paymentDTO);
 		    } else if(orderInfo.getUserType() == 'C') {
 		    	storeService.setComProduct(paymentDTO);
-		    }
-		    
-		    // 만약, 일반 이용권을 보유중인 기업회원이 프리미엄 이용권을 구매한 경우 일반 이용권은 소멸됨
-		    if(paymentDTO.getProductId().equals("P-C2") && memberProductDTO.getUserId() == paymentDTO.getUserId()) {
-		    	storeService.changeUseStatus(memberProductDTO.getPayId());
 		    }
 	     
 		    return "success";     // 결제 성공 페이지 반환

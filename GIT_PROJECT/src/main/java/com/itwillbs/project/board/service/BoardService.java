@@ -6,6 +6,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -120,8 +121,17 @@ public class BoardService {
 
 		BoardDTO post = boardMapper.selectBoard(boardDTO.getPostId());
 
-		if (post == null) return false;
-		if (!userId.equals(post.getAuthorMemberId())) return false;
+		if (post == null) {
+			return false;
+		}
+
+		if (!userId.equals(post.getAuthorMemberId())) {
+			return false;
+		}
+
+		// 수정 전/후 본문 비교용
+		String oldContent = post.getContent();
+		String newContent = boardDTO.getContent();
 
 		int updateCount = boardMapper.updateBoard(boardDTO);
 		if (updateCount <= 0) {
@@ -132,13 +142,13 @@ public class BoardService {
 		boardMapper.deleteBoardTags(boardDTO.getPostId());
 		saveBoardTags(boardDTO.getPostId(), tags);
 
-		// 삭제할 파일 제거
+		// 체크한 일반 첨부파일만 삭제
 		deleteBoardFiles(deleteFileIds);
-		
-		// 본문 에디터 이미지 삭제
-		deleteEditorImagesFromContent(post.getContent());
 
-		// 새 파일 추가
+		// 수정 전에는 있었지만 수정 후에는 없어진 에디터 이미지만 삭제
+		deleteRemovedEditorImages(oldContent, newContent);
+
+		// 새 일반 첨부파일 추가
 		if (files != null && !files.isEmpty()) {
 			List<FileDTO> fileList = FileUtils.uploadBoardFile(files);
 
@@ -257,6 +267,66 @@ public class BoardService {
 	    if (authorUserId.equals(loginUserId)) return false;
 
 	    return boardMapper.increaseReportReceivedCount(authorUserId) > 0;
+	}
+	
+	
+	
+	// 수정 시: 기존에는 있었지만 새 본문에는 없는 에디터 이미지만 삭제
+	private void deleteRemovedEditorImages(String oldContent, String newContent) {
+		List<FileDTO> oldImages = extractEditorImages(oldContent);
+		List<FileDTO> newImages = extractEditorImages(newContent);
+
+		for (FileDTO oldImg : oldImages) {
+			boolean stillUsed = newImages.stream().anyMatch(newImg ->
+					oldImg.getFilePath().equals(newImg.getFilePath()) &&
+					oldImg.getStoredName().equals(newImg.getStoredName())
+			);
+
+			if (!stillUsed) {
+				try {
+					log.info("수정 후 제거된 에디터 이미지 삭제 - filePath: {}, storedName: {}",
+							oldImg.getFilePath(), oldImg.getStoredName());
+
+					FileUtils.deleteBoardFile(oldImg);
+
+				} catch (Exception e) {
+					log.error("수정 후 제거된 에디터 이미지 삭제 실패", e);
+				}
+			}
+		}
+	}
+	
+	// 본문에서 에디터 이미지 목록 추출
+	private List<FileDTO> extractEditorImages(String content) {
+		List<FileDTO> imageList = new ArrayList<>();
+
+		if (content == null || content.isBlank()) {
+			return imageList;
+		}
+
+		Pattern pattern = Pattern.compile(
+				"/board/image/view\\?filePath=([^\"&]+)(?:&|&amp;)storedName=([^\"'>]+)"
+		);
+
+		Matcher matcher = pattern.matcher(content);
+
+		while (matcher.find()) {
+			try {
+				String filePath   = URLDecoder.decode(matcher.group(1), StandardCharsets.UTF_8.name());
+				String storedName = URLDecoder.decode(matcher.group(2), StandardCharsets.UTF_8.name());
+
+				FileDTO fileDTO = new FileDTO();
+				fileDTO.setFilePath(filePath);
+				fileDTO.setStoredName(storedName);
+
+				imageList.add(fileDTO);
+
+			} catch (Exception e) {
+				log.error("에디터 이미지 파싱 실패", e);
+			}
+		}
+
+		return imageList;
 	}
 
 }

@@ -1,13 +1,10 @@
 package com.itwillbs.project.store.service;
 
-import java.time.LocalDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -22,9 +19,11 @@ import com.itwillbs.project.store.dto.StoreDTO;
 import com.itwillbs.project.store.mapper.StoreMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class StoreService{
 
 	@Autowired
@@ -107,9 +106,8 @@ public class StoreService{
 	}
 	
 	// 결제 조회 api
-	private String SECRET_KEY = "a6ahq9hSCGloLXjNbEEcoxQafWxrTuuUjr0SOFOFNLBUk0hiz8iZIIAQjG1iAnO7W5SkyZFueUu9iyLy";
-//	@Value("${portone.api_key}")
-//	private String SECRET_KEY;
+	@Value("${portone.api_key}")
+	private String SECRET_KEY;
 
     public PortoneDTO getPayment(String paymentId) {
     	// 1️. PortOne 결제 조회 URL 생성
@@ -143,11 +141,11 @@ public class StoreService{
         
     }
 
- // 구직자 회원의 pass_count 추가
-    public void setPassCount(PaymentDTO paymentDTO) {
-        storeMapper.updatePassCount(paymentDTO);
-    }
-    
+
+    // 구직자 이용권 업데이트
+	public void setPassCount(PaymentDTO paymentDTO) {
+		storeMapper.updatePassCount(paymentDTO);
+	}
 
 	
 

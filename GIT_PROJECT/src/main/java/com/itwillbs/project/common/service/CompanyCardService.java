@@ -17,7 +17,7 @@ public class CompanyCardService {
 	private CompanyCardMapper companyCardMapper;
 	
 	@Transactional
-	public List<CompanyCardDTO> getCardList(String type, Long userIdx) {
+	public List<CompanyCardDTO> getCardList(String type, Long userId) {
 		List<CompanyCardDTO> cardList;
 
 		// List에 들어온 광고에 한해서 banner table의 is_display on으로 전환하고, 나머지 모든 광고는 off로 전환 
@@ -31,10 +31,10 @@ public class CompanyCardService {
 				cardList = companyCardMapper.selectPopularCompanies();
 				break;
 			case "bookmark":
-				if(userIdx == null) {
+				if(userId == null) {
 					return Collections.emptyList();
 				}
-				cardList = companyCardMapper.selectBookmarkCompanies(userIdx);
+				cardList = companyCardMapper.selectBookmarkCompanies(userId);
 				break;
 			default : 
 				cardList = companyCardMapper.selectTodayCompanies();

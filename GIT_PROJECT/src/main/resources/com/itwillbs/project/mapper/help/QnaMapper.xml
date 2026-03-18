@@ -4,7 +4,7 @@
   
 <mapper namespace="com.itwillbs.project.help.mapper.QnaMapper">
 	
-    <insert id="insertQna" parameterType="com.itwillbs.project.help.dto.SupportQnaDTO" 
+    <insert id="insertQna" parameterType="supportQnaDTO" 
             useGeneratedKeys="true" keyProperty="qnaId">
         INSERT INTO qna (
             qna_category, qna_title, qna_content, writer_id
@@ -13,7 +13,7 @@
         )
     </insert>
 
-    <insert id="insertFile" parameterType="com.itwillbs.project.common.dto.FileDTO">
+    <insert id="insertFile" parameterType="fileDTO">
         INSERT INTO uploaded_file (
             qna_id, category_idx, origin_name, stored_name, 
             file_path, file_size, file_ext
@@ -23,20 +23,20 @@
         )
     </insert>
     
-    <select id="selectQnaList" resultType="com.itwillbs.project.help.dto.SupportQnaDTO">
+    <select id="selectQnaList" resultType="supportQnaDTO">
 	    SELECT qna_id, qna_category, qna_title, reg_date, re_status
 	    FROM qna
 	    WHERE writer_id = #{writerId} AND is_deleted = 'N'
 	    ORDER BY reg_date DESC
 	</select>
 
-	<select id="selectQnaDetail" parameterType="int" resultType="com.itwillbs.project.help.dto.SupportQnaDTO">
+	<select id="selectQnaDetail" parameterType="int" resultType="supportQnaDTO">
 	    SELECT 
 	        qna_id, 
 	        qna_category, 
 	        qna_title, 
 	        qna_content, 
-	        writer_id, 
+	        writer_id,
 	        reg_date, 
 	        re_status, 
 	        re_date, 

@@ -14,7 +14,7 @@ public interface CompanyCardMapper {
 
 	List<CompanyCardDTO> selectPopularCompanies();
 
-	List<CompanyCardDTO> selectBookmarkCompanies(Long userIdx);
+	List<CompanyCardDTO> selectBookmarkCompanies(Long userId);
 
 	void updateAllDisplayOff();
 

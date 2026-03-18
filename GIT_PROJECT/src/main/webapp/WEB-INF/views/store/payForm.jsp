@@ -174,8 +174,7 @@
     			return false;
     		} 
     		
-    		
-    		// 결제 진행
+    		// 결제 요청
     		const userName = "${orderInfo.userName}";
     		const userPhone = "${orderInfo.phone}";
     		const userEmail = "${orderInfo.email}";
@@ -203,11 +202,10 @@
     			};
     			
     			
-    			// 결제 결과
+    			// 응답 결과
 				const response = await PortOne.requestPayment(paymentParam);
-   	    		console.log("결제 결과 : ", response);
    	    		
-				// 서버에 값 보내기
+				// 서버에 응답 결과 보내기
 				const result = await fetch("<c:url value="/store/payResponse" />", {
     				method: "POST",
     				headers: {
@@ -217,6 +215,7 @@
     					paymentId: response.paymentId
     				})
     			});
+				
 				
 				// 서버의 응답 처리
 				if(result.ok) {

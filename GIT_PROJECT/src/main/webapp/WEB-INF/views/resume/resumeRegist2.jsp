@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<%-- 	<%@ include file="/WEB-INF/views/inc/head.jspf"%> --%>
+	<%@ include file="/WEB-INF/views/inc/head.jspf"%>
     <meta charset="UTF-8">
     <title>이력서 작성</title>
 

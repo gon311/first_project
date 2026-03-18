@@ -27,4 +27,13 @@ public class MyResumeDTO {
 
     // 화면 표시용(문자열 포맷)
     private String updatedAtStr;  // DATE_FORMAT(updated_at, ...) AS updated_at_str
+    
+    // 업종들
+    private String hiddenJob;           // 직종명
+    private String hiddenIndustry;      // 업종명
+    private String hiddenCompanyType;   // 기업형태명
+    private String appliedField;        // 지원직무
+    private String companyName;         // 기업명
+    
+    
 }

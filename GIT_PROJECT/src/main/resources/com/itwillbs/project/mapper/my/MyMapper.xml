@@ -32,6 +32,11 @@
 	  <result property="createdAt"  column="created_at"/>
 	  <result property="updatedAt"  column="updated_at"/>
 	  <result property="isDeleted"  column="is_deleted"/>
+	  
+	  <result property="hiddenJob"         column="hidden_job"/>
+	  <result property="hiddenIndustry"    column="hidden_industry"/>
+	  <result property="hiddenCompanyType" column="hidden_company_type"/>
+	  <result property="companyName"       column="company_name"/>
 	
 	  <result property="updatedAtStr" column="updated_at_str"/>
 	</resultMap>
@@ -334,6 +339,10 @@
 	    , user_id
 	    , title
 	    , status
+	    , hidden_job
+	    , hidden_industry
+	    , hidden_company_type
+	    , company_name
 	    , created_at
 	    , updated_at
 	    , DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i') AS updated_at_str

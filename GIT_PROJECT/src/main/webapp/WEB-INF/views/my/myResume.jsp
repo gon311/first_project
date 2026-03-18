@@ -17,7 +17,7 @@
 <!-- 수정 URL들 -->
 <c:url var="urlMyResume" value="/my/myResume"/>
 <c:url var="urlResumeCreate" value="/resume/regist"/>   <%-- 새 이력서 작성 --%>
-<c:url var="urlResumeEdit" value="/mresume/resumeModify"/>       <%-- 수정 --%>
+<c:url var="urlResumeEdit" value="/resume/resumeModify"/>       <%-- 수정 --%>
 <c:url var="urlResumeDelete" value="/my/resume/delete"/>   <%-- 삭제(나중에 POST) --%>
 <c:url var="urlResumeDetail" value="/resume/resumeView"/>   <%-- 디테일 --%>
 
@@ -103,18 +103,31 @@
 
                         <%-- 메타 정보 --%>
                         <div class="metaRow">
-                          <div class="metaItem">
-                            <i class="bi bi-clock"></i>
-                            <span>최종수정: <c:out value="${r.updatedAtStr}"/></span>
-                          </div>
-
-<%--                           <c:if test="${not empty r.memo}"> --%>
-<!--                             <div class="metaItem"> -->
-<!--                               <i class="bi bi-card-text"></i> -->
-<%--                               <span>메모: <c:out value="${r.memo}"/></span> --%>
-<!--                             </div> -->
-<%--                           </c:if> --%>
-                        </div>
+						  <div class="metaItem">
+						    <i class="bi bi-briefcase"></i>
+						    <span>직종: <c:out value="${empty r.hiddenJob ? '-' : r.hiddenJob}"/></span>
+						  </div>
+						
+						  <div class="metaItem">
+						    <i class="bi bi-building"></i>
+						    <span>업종: <c:out value="${empty r.hiddenIndustry ? '-' : r.hiddenIndustry}"/></span>
+						  </div>
+						
+						  <div class="metaItem">
+						    <i class="bi bi-diagram-3"></i>
+						    <span>기업형태: <c:out value="${empty r.hiddenCompanyType ? '-' : r.hiddenCompanyType}"/></span>
+						  </div>
+						
+						  <div class="metaItem">
+						    <i class="bi bi-bank"></i>
+						    <span>기업명: <c:out value="${empty r.companyName ? '-' : r.companyName}"/></span>
+						  </div>
+						
+						  <div class="metaItem">
+						    <i class="bi bi-clock"></i>
+						    <span>최종수정: <c:out value="${r.updatedAtStr}"/></span>
+						  </div>
+					   </div>
                       </div>
 
                       <%-- 액션 --%>

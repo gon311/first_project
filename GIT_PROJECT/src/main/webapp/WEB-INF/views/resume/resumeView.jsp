@@ -464,6 +464,7 @@
 		<!-- 경력사항 끝. -->
 		
 		<div class="text-center mt-4">
+<%-- 		  <button type="button" class="btn custom-btn me-3" onclick="location.href='<c:url value="/resume/resumeList" />'">목록으로</button> --%>
 		  <button type="button" class="btn custom-btn me-3" onclick="location.href='<c:url value="/my/myResume" />'">목록으로</button>
 		  <!-- View 페이지에서는 목록, 수정 페이지로 이동만 가능. -->
 		  <button type="button" id="btnModify" class="btn custom-btn" onclick="fn_visible()">수정</button>

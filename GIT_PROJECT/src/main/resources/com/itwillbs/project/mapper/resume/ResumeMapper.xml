@@ -222,7 +222,7 @@
         WHERE resume_id = #{resumeId}
     </select>
 	
-	<!-- selectResumeList -->
+	<!-- 리스트 이력서. selectResumeList -->
 	<select id="selectResumeList" resultType="resume">
 		select 
 			 resume_id AS resumeId,
@@ -238,11 +238,12 @@
 		from 
 			resume
 		where
-			user_id = #{userId}	        
+			user_id = #{userId}	    
+		and is_deleted = 0	    
 	
 	</select>
 	
-<!-- 	updateResume -->
+<!-- 수정 이력서.	updateResume -->
 	<update id="updateResume">
 		update 
 			resume

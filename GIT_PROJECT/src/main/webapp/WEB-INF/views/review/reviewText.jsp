@@ -126,6 +126,21 @@
 				}
 				
 				document.addEventListener('DOMContentLoaded', () => {
+					// 1. 서버에서 넘어온 questionCode 값을 자바스크립트 변수에 할당 
+					const savedCode = "${coverLetterDTO.questionCode}";
+					
+					console.log("savedCode : ", savedCode);
+					
+					// 2. 수정 모드인지 확인 
+					if(savedCode && savedCode.trim() !== "") {
+						const selectEl = document.getElementById("questionCode");
+						
+						// select의 value를 변경하면 해당 value를 가진 option이 자동으로 'selected'
+						selectEl.value = savedCode;
+						console.log("이전 선택된 질문 코드를 불러왔습니다: " + savedCode);
+					}
+					
+					// 글자수 계산 
 				    const textarea = document.getElementById('content');
 				    textarea.addEventListener('input', updateCount);
 				    updateCount();

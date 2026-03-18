@@ -71,19 +71,20 @@
 	
 	<select id="selectCoverLetter" resultType="com.itwillbs.project.review.dto.CoverLetterDTO">
 		SELECT 
-			cover_letter_idx
-			, user_id
-			, title
-			, content
-			, industry_idx
-			, job_idx
-			, role_idx
-			, applied_field
-			, company_name
-			, company_idx
-			, career_idx
-			, save_status
-		FROM cover_letter
-		WHERE cover_letter_idx = #{coverLetterIdx}
+				c.cover_letter_idx
+				, c.user_id
+				, c.title
+				, c.content
+				, (select industry_code from industry i where i.industry_idx = c.industry_idx) as industryCode
+			    , (select job_code from job_group g where g.job_idx = c.job_idx) as jobCode
+				, (select role_code from job_role r where r.role_idx = c.role_idx) as roleCode
+				, applied_field
+				, company_name
+				, (select company_code from company_type t where t.company_idx = c.company_idx) as companyCode
+				, (select career_code from career_level l where l.career_idx = c.career_idx) as careerCode
+				, (select question_code from question_category q where q.question_idx = c.question_idx) as questionCode
+				, save_status
+		FROM 	cover_letter c 
+		WHERE 	cover_letter_idx = #{coverLetterIdx}
 	</select>
 </mapper>

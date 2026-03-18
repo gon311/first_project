@@ -19,26 +19,27 @@
         <%-- 카테고리 탭 (기존 유지) --%>
         <ul class="nav nav-tabs border-bottom-0">
             <li class="nav-item">
-            	<button class="nav-link ${userType eq 'all' or empty userType ? 'active fw-bold': '' }"
-            		onclick="location.href='?userType=all'">전체</button>
+            	<button type="button" class="nav-link ${userType eq 'all' or empty userType ? 'active fw-bold': ''}"
+            		onclick="location.href='?userType=all&category=${category}&keyword=${keyword}'">전체</button>
            </li>
            <li class= "nav-item">
-                <button class="nav-link ${userType eq 'user' ? 'active fw-bold' : ''}" 
-                        onclick="location.href='?userType=user'">구직자</button>
+                <button type="button" class="nav-link ${userType eq 'user' ? 'active fw-bold' : ''}" 
+                        onclick="location.href='?userType=user&category=${category}&keyword=${keyword}'">구직자</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link ${userType eq 'com' ? 'active fw-bold' : ''}" 
-                        onclick="location.href='?userType=com'">기업회원</button>
+                <button type="button" class="nav-link ${userType eq 'com' ? 'active fw-bold' : ''}" 
+                        onclick="location.href='?userType=com&category=${category}&keyword=${keyword}'">기업회원</button>
             </li>
         </ul>
 		
         <div class="card shadow-sm" style="border-top-left-radius: 0; border: 1px solid #dee2e6;">
             <div class="card-body p-4">
                 <%-- 검색 영역 --%>
-                <form action='<c:url value = "/admin/contents/FaQ"/>' class="d-flex justify-content-end align-items-end mb-4 gap-2">
+                <form id="faqForm" action='<c:url value = "/admin/contents/FaQ"/>' method="get" class="d-flex justify-content-end align-items-end mb-4 gap-2">
+                	<input type="hidden" name="userType" value="${not empty userType ? userType : 'all'}">                 
 					<div class="col-md-3">
                         <label class="form-label fw-bold small text-muted">질문 카테고리</label>
-                        <select name="category" class="form-select form-select-sm" onchange = "this.form.submit()">
+                        <select name="category" class="form-select form-select-sm" onchange = "submitFaqForm()"> 
                         	<option value="">선택</option>
 			                <option value="account" ${category == 'account' ? 'selected' : ''}>계정/로그인</option>
 			                <option value="service" ${category == 'service' ? 'selected' : ''}>이용문의</option>
@@ -151,6 +152,11 @@
         if (confirm("이 FAQ를 정말 삭제하시겠습니까?")) {
             location.href = "<c:url value='/admin/contents/faqDelete'/>?faqId=" + faqId;
         }
+    }
+    
+    function submitFaqForm() {
+        const form = document.getElementById('faqForm');
+        form.submit();
     }
     </script>
 </body>

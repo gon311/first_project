@@ -1141,6 +1141,15 @@
 			<if test="category !=null and category != '' and category != 'all'">
 				AND category = #{category}
 			</if>
+			<if test="faqId != null">
+	            AND faq_id = #{faqId}
+	        </if>
+	        
+	        <if test="faqId == null">
+	            <if test="keyword != null and keyword != ''">
+	                AND faq_title LIKE CONCAT('%', #{keyword}, '%')
+	            </if>
+            </if>
 
 		</where>
 	</select>
@@ -1170,7 +1179,7 @@
 					<when test = 'category == "service"'>
 						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
 					</when>
-					<when test = 'category == "ect"'>
+					<when test = 'category == "etc"'>
 						AND faq_title LIKE CONCAT('%', #{keyword}, '%')
 					</when>
 				</choose>
@@ -1180,7 +1189,7 @@
 			<if test="category !=null and category != '' and category != 'all'">
 				AND category = #{category}
 			</if>
-				<if test="faqId != null">
+			<if test="faqId != null">
 	            AND faq_id = #{faqId}
 	        </if>
 	        

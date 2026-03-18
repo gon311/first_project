@@ -28,15 +28,15 @@
 	        <ul class="nav nav-tabs border-bottom-0">
 	            <li class="nav-item">
 	            	<button class="nav-link ${userType eq 'all' or empty userType ? 'active fw-bold': '' }"
-	            		onclick="location.href='?userType=all'">전체</button>
+	            		onclick="location.href='?userType=all&category=${category}&keyword=${keyword}'">전체</button>
 	           </li>
 	           <li class= "nav-item">
 	                <button class="nav-link ${userType eq 'user' ? 'active fw-bold' : ''}" 
-	                        onclick="location.href='?userType=user'">구직자</button>
+	                        onclick="location.href='?userType=user&category=${category}&keyword=${keyword }'">구직자</button>
 	            </li>
 	            <li class="nav-item">
 	                <button class="nav-link ${userType eq 'com' ? 'active fw-bold' : ''}" 
-	                        onclick="location.href='?userType=com'">기업회원</button>
+	                        onclick="location.href='?userType=com&category=${category}&keyword=${keyword }'">기업회원</button>
 	            </li>
 	        </ul>
 			
@@ -44,6 +44,7 @@
 	            <div class="card-body p-4">
 	                <%-- 검색 영역 --%>
 	                <form action='<c:url value = "/help/faq"/>' class="d-flex justify-content-end align-items-end mb-4 gap-2">
+   	                	<input type="hidden" name="userType" value="${not empty userType ? userType : 'all'}">                 
 						<div class="col-md-3">
 	                        <label class="form-label fw-bold small text-muted">질문 카테고리</label>
 	                        <select name="category" class="form-select form-select-sm" onchange = "this.form.submit()">

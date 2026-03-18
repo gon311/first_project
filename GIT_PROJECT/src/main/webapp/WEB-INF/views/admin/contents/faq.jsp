@@ -122,7 +122,7 @@
 			            <nav aria-label="Page navigation">
 			                <ul class="pagination pagination-sm m-0">
 			                    <li class="page-item <c:if test="${pageInfoDTO.pageNum eq 1}">disabled</c:if>">
-			                    	<a class="page-link" href="<c:url value="/admin/contents/Board?pageNum=${pageInfoDTO.pageNum - 1}" />">&lt;</a>
+			                    	<a class="page-link" href="<c:url value="/admin/contents/FaQ?pageNum=${pageInfoDTO.pageNum - 1}" />">&lt;</a>
 			                    </li>
 			                    
 			                    <c:forEach var="i" begin="${pageInfoDTO.startPage}" end="${pageInfoDTO.endPage}">

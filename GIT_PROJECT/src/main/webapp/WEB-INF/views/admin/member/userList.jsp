@@ -138,41 +138,39 @@
                     </table>
                     
                     <!-- 전체 회원 페이징 -->
-                    <c:if test="${not empty pageInfo and not empty pageInfo.maxPage and pageInfo.maxPage > 0}">
-					    <div class="d-flex justify-content-center mt-5 mb-4">
-					        <nav aria-label="User Management Page navigation">
-					            <ul class="pagination pagination-sm mb-0">
-					                
-					                <li class="page-item ${pageInfo.pageNum eq 1 ? 'disabled' : ''}">
-					                    <a class="page-link" href="<c:url value='/admin/users?pageNum=${pageInfo.pageNum - 1}&activeTab=${activeTab}' />" aria-label="Previous">
-					                        <span aria-hidden="true">&laquo;</span>
-					                    </a>
-					                </li>
-					
-					                <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
-					                    <li class="page-item ${i eq pageInfo.pageNum ? 'active' : ''}">
-					                        <c:choose>
-					                            <c:when test="${i eq pageInfo.pageNum}">
-					                                <span class="page-link fw-bold">${i}</span>
-					                            </c:when>
-					                            <c:otherwise>
-					                                <a class="page-link" href="<c:url value='/admin/users?pageNum=${i}&activeTab=${activeTab}' />">${i}</a>
-					                            </c:otherwise>
-					                        </c:choose>
-					                    </li>
-					                </c:forEach>
-					
-					                <li class="page-item ${pageInfo.pageNum eq pageInfo.maxPage ? 'disabled' : ''}">
-					                    <a class="page-link" href="<c:url value='/admin/users?pageNum=${pageInfo.pageNum + 1}&activeTab=${activeTab}' />" aria-label="Next">
-					                        <span aria-hidden="true">&raquo;</span>
-					                    </a>
-					                </li>
-					                
-					            </ul>
-					        </nav>
-					    </div>
+                    <c:if test="${not empty param.keyword or not empty param.type or not empty param.status}">
+						<c:set var="searchParams" 
+								value="keyword=${param.keyword}&type=${param.type}&status=${param.status}" />
 					</c:if>
 					
+					<c:if test="${not empty pageInfo and not empty pageInfo.maxPage and pageInfo.maxPage > 0}">
+						<nav>
+							<ul class="pagination justify-content-center">
+								<li class="page-item <c:if test="${pageInfo.pageNum eq 1}">disabled</c:if>">
+									<a class="page-link" href="<c:url value="/admin/users?pageNum=${pageInfo.pageNum - 1}&${searchParams}&activeTab=${activeTab}" />">&laquo;</a>
+								</li>
+								
+								<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+									<li class="page-item <c:if test="${i eq pageInfo.pageNum}">active</c:if>">
+										<c:choose>
+											<c:when test="${i eq pageInfo.pageNum}">
+												<a class="page-link">${i}</a>
+											</c:when>
+											<c:otherwise>
+												<a class="page-link" href="<c:url value="/admin/users?pageNum=${i}&${searchParams}&activeTab=${activeTab}" />">${i}</a>
+											</c:otherwise>
+										</c:choose>
+									</li>
+								</c:forEach>
+								
+								<li class="page-item <c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if>">
+									<a class="page-link" href="<c:url value="/admin/users?pageNum=${pageInfo.pageNum + 1}&${searchParams}&activeTab=${activeTab}" />">&raquo;</a>
+								</li>
+							</ul>
+						</nav>
+					</c:if>
+                    
+                    
                 </div>
             </div>
 
@@ -299,41 +297,38 @@
                     </table>
                     
                     <!-- 탈퇴회원 페이징 -->
-			        <c:if test="${not empty withdrawPageInfo and not empty withdrawPageInfo.maxPage and withdrawPageInfo.maxPage > 0}">
-					    <div class="d-flex justify-content-center mt-5 mb-4">
-					        <nav aria-label="User Withdrawal Page navigation">
-					            <ul class="pagination pagination-sm mb-0">
-					                
-					                <li class="page-item ${withdrawPageInfo.pageNum eq 1 ? 'disabled' : ''}">
-					                    <a class="page-link" href="<c:url value='/admin/users?pageNum=${withdrawPageInfo.pageNum - 1}&activeTab=${activeTab}' />" aria-label="Previous">
-					                        <span aria-hidden="true">&laquo;</span>
-					                    </a>
-					                </li>
-					
-					                <c:forEach var="i" begin="${withdrawPageInfo.startPage}" end="${withdrawPageInfo.endPage}">
-					                    <li class="page-item ${i eq withdrawPageInfo.pageNum ? 'active' : ''}">
-					                        <c:choose>
-					                            <c:when test="${i eq withdrawPageInfo.pageNum}">
-					                                <span class="page-link fw-bold">${i}</span>
-					                            </c:when>
-					                            <c:otherwise>
-					                                <a class="page-link" href="<c:url value='/admin/users?pageNum=${i}&activeTab=${activeTab}' />">${i}</a>
-					                            </c:otherwise>
-					                        </c:choose>
-					                    </li>
-					                </c:forEach>
-					
-					                <li class="page-item ${withdrawPageInfo.pageNum eq withdrawPageInfo.maxPage ? 'disabled' : ''}">
-					                    <a class="page-link" href="<c:url value='/admin/users?pageNum=${withdrawPageInfo.pageNum + 1}&activeTab=${activeTab}' />" aria-label="Next">
-					                        <span aria-hidden="true">&raquo;</span>
-					                    </a>
-					                </li>
-					                
-					            </ul>
-					        </nav>
-					    </div>
+                    <c:if test="${not empty param.keyword or not empty param.startDate or not empty param.endDate}">
+						<c:set var="searchParams" 
+								value="keyword=${param.keyword}&startDate=${param.startDate}&endDate=${param.endDate}" />
 					</c:if>
-                   
+					
+					<c:if test="${not empty withdrawPageInfo and not empty withdrawPageInfo.maxPage and withdrawPageInfo.maxPage > 0}">
+						<nav>
+							<ul class="pagination justify-content-center">
+								<li class="page-item <c:if test="${withdrawPageInfo.pageNum eq 1}">disabled</c:if>">
+									<a class="page-link" href="<c:url value="/admin/users?pageNum=${withdrawPageInfo.pageNum - 1}&${searchParams}&activeTab=${activeTab}" />">&laquo;</a>
+								</li>
+								
+								<c:forEach var="i" begin="${withdrawPageInfo.startPage}" end="${withdrawPageInfo.endPage}">
+									<li class="page-item <c:if test="${i eq withdrawPageInfo.pageNum}">active</c:if>">
+										<c:choose>
+											<c:when test="${i eq withdrawPageInfo.pageNum}">
+												<a class="page-link">${i}</a>
+											</c:when>
+											<c:otherwise>
+												<a class="page-link" href="<c:url value="/admin/users?pageNum=${i}&${searchParams}&activeTab=${activeTab}" />">${i}</a>
+											</c:otherwise>
+										</c:choose>
+									</li>
+								</c:forEach>
+								
+								<li class="page-item <c:if test="${withdrawPageInfo.pageNum eq withdrawPageInfo.maxPage}">disabled</c:if>">
+									<a class="page-link" href="<c:url value="/admin/users?pageNum=${withdrawPageInfo.pageNum + 1}&${searchParams}&activeTab=${activeTab}" />">&raquo;</a>
+								</li>
+							</ul>
+						</nav>
+					</c:if>
+                    
                 </div>
                 
             </div>

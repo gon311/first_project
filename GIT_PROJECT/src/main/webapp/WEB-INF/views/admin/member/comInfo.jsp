@@ -72,23 +72,7 @@
 								</dd>
 							</c:if>
 
-							<dt class="col-4 text-secondary py-2">상태</dt>
-							<dd class="col-8 py-2">${com.status}</dd>
-
 						</dl>
-
-						<div class="text-end mt-4">
-							<c:if test="${com.status eq '활성'}">
-								<button type="button" id="block" class="btn btn-danger btn-sm" onclick="block(${com.userId})">
-									차단
-								</button>
-							</c:if>
-							<c:if test="${com.status eq '차단'}">
-								<button type="button" id="active" class="btn btn-outline-danger btn-sm" onclick="block(${com.userId})">
-									차단 해제
-								</button>
-							</c:if>
-						</div>
 
 					</div>
 
@@ -330,23 +314,6 @@
 
 	</main>
 
-	<script>
-	
-	function block(userId) {
-		if(document.getElementById("block")) {
-			if(confirm("차단하시겠습니까?")) {
-				document.getElementById("block").innerText = "차단 해제";
-				location.href="<c:url value='/admin/coms/block' />" + "?userId=" + userId;
-			}
-		} else {
-			if(confirm("차단 해제하시겠습니까?")) {
-				document.getElementById("active").innerText = "차단";
-				location.href="<c:url value='/admin/coms/unblock' />" + "?userId=" + userId;
-			}
-		}
-
-	}
-	</script>
 
 </body>
 </html>

@@ -79,9 +79,9 @@
 		    <section class="faq-section">
 		        <h3>
 		        	<c:choose>
-		        		<c:when test="${category eq 'account'}">계정/로그인 질문 TOP 10</c:when>
-		        		<c:when test="${category eq 'service'}">이용문의 질문 TOP 10</c:when>
-		        		<c:when test="${category eq 'error'}">오류보고 질문 TOP 10</c:when>
+		        		<c:when test="${category eq 'account'}">계정/로그인 질문 TOP 5</c:when>
+		        		<c:when test="${category eq 'service'}">이용문의 질문 TOP 5</c:when>
+		        		<c:when test="${category eq 'error'}">오류보고 질문 TOP 5</c:when>
 		        		<c:otherwise>자주 묻는 질문 TOP 5 </c:otherwise>
 		        	</c:choose>
 		        	<small style="font-size:14px; color:#4485ff; cursor:pointer;">

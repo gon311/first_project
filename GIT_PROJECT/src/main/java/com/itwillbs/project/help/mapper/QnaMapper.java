@@ -21,4 +21,6 @@ public interface QnaMapper {
 	SupportQnaDTO selectQnaDetail(int qnaId);
 	
 	void deleteQna(int qnaId);
+
+	List<FileDTO> getFileList(int qnaId);
 }

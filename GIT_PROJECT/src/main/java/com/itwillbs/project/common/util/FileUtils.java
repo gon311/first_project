@@ -300,5 +300,67 @@ public class FileUtils {
 
         return subDir;
     }
-    
+  
+ // [ 이력서 사진 업로드 ]
+    public static FileDTO uploadResumePhoto(MultipartFile file, String uploadBaseLocation) throws IOException {
+
+        if(file == null || file.isEmpty()) {
+            return null;
+        }
+
+        // 날짜 디렉토리 생성
+        String subDir = createResumeDirectories(uploadBaseLocation);
+
+        String originName = file.getOriginalFilename();
+        String fileExt = originName.substring(originName.lastIndexOf(".") + 1);
+        String storedName = UUID.randomUUID().toString().substring(24) + "_" + originName;
+
+        // 실제 서버 저장 경로
+        Path uploadDirectory = Paths.get(uploadBaseLocation, "resume", subDir)
+                .toAbsolutePath()
+                .normalize();
+
+        if(!Files.exists(uploadDirectory)) {
+            Files.createDirectories(uploadDirectory);
+        }
+
+        Path uploadPath = uploadDirectory.resolve(storedName);
+        file.transferTo(uploadPath);
+
+        FileDTO fileDTO = new FileDTO();
+        fileDTO.setOriginName(originName);
+        fileDTO.setStoredName(storedName);
+        fileDTO.setFileSize(file.getSize());
+        fileDTO.setFileExt(fileExt);
+
+        // 웹 접근 경로
+        // 예: /resources/images/resume/2026/03/16
+        fileDTO.setFilePath("/resources/images/resume/" + subDir);
+
+        System.out.println("uploadBaseLocation = " + uploadBaseLocation);
+        System.out.println("uploadDirectory = " + uploadDirectory);
+
+        return fileDTO;
+    }
+
+
+    // 이력서 전용 디렉토리 생성
+    private static String createResumeDirectories(String uploadBaseLocation) throws IOException {
+
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
+        String subDir = today.format(dtf);
+
+        Path uploadPath = Paths.get(uploadBaseLocation, "resume", subDir)
+                .toAbsolutePath()
+                .normalize();
+
+        if(!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        return subDir;
+    }
+
 }

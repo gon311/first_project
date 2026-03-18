@@ -16,7 +16,14 @@
     </style>
 </head>
 <body>
-<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+	<c:choose>
+        <c:when test="${userType == 'P' || empty sessionScope.userType}">
+			<%@ include file="/WEB-INF/views/inc/header.jspf" %>
+        </c:when>
+        <c:otherwise>
+            <%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
+        </c:otherwise>
+    </c:choose>
 
 <div class="list-container">
     <h2>내 문의 내역</h2>

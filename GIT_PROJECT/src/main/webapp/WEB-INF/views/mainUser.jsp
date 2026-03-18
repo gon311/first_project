@@ -59,11 +59,14 @@
 		</section>
 		
 		<section class="sec02">
-		<!-- AI 자소서 첨삭 시작 버튼  -->
-			<div class="btnAi">
-				<input type="button" id="btn04" value="AI 자소서 첨삭 시작" 
-				onclick="location.href='<c:url value="/review/registForm" />'">
-			</div>
+		    <div class="ai-banner-content">
+		        <h3>"당신만의 특별한 스토리를 완성하세요"</h3>
+		        <p>복잡한 자소서 작성, 이제 AI가 실시간으로 첨삭해 드립니다.</p>
+		        <div class="btnAi">
+		            <input type="button" id="btn04" value="AI 자소서 첨삭 시작하기" 
+		                   onclick="location.href='<c:url value="/review/registForm" />'">
+		        </div>
+		    </div>
 		</section>
 			
 		</main>

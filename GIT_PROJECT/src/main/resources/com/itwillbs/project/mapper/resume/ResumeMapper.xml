@@ -3,6 +3,33 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.project.resume.mapper.ResumeMapper">
+
+	<!-- 	이력서 사진 업로드. -->
+	<!-- 	insertResumePhoto(FileDTO fileDTO) -->
+	<insert id="insertResumePhoto" parameterType="fileDTO" useGeneratedKeys="true" keyProperty="fileId">
+		INSERT INTO uploaded_file
+	    (
+	        resume_id,
+	        category_idx,
+	        origin_name,
+	        stored_name,
+	        file_path,
+	        file_size,
+	        file_ext,
+	        reg_date
+	    )
+	    VALUES
+	    (
+	        #{resumeId},
+	        #{categoryIdx},
+	        #{originName},
+	        #{storedName},
+	        #{filePath},
+	        #{fileSize},
+	        #{fileExt},
+	        NOW()
+	    )
+	</insert>
 	
 	<!-- 	이력서 저장 - 학력정보. -->
 	<!-- 	insertResumeEdu(ResumeEducationDTO eduDTO) -->
@@ -163,7 +190,16 @@
 	        #{exemptionReason}
 	    );   
 	</insert>	
-	
+
+	<!-- 이력서의 사진정보 : selectResumePhoto -->
+	<select id="selectResumePhoto" resultType="fileDTO" parameterType="int">
+	    SELECT *
+	    FROM uploaded_file
+	    WHERE resume_id = #{resumeId}
+	      AND category_idx = 1  -- 이력서 사진
+	    ORDER BY file_id ASC
+	    LIMIT 1
+	</select>	
 
 	<!-- 이력서의 상세정보 : selectResume -->
 	<select id="selectResume" resultType="resume">
@@ -254,6 +290,14 @@
 	<delete id="deleteResumeExp" parameterType="int">
 		DELETE FROM resume_experience
     	WHERE resume_id = #{resumeId}
+	</delete>
+	
+	<!-- 사진 삭제	deleteUpPhoto(int resumeId); -->
+	<delete id="deleteUpPhoto" parameterType="int">
+		DELETE FROM uploaded_file
+		WHERE resume_id = #{resumeId}
+		AND category_idx = 1
+	
 	</delete>
 		 	
 </mapper>

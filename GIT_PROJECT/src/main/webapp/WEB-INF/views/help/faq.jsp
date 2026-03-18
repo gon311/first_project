@@ -43,7 +43,7 @@
 	        <div class="card shadow-sm" style="border-top-left-radius: 0; border: 1px solid #dee2e6;">
 	            <div class="card-body p-4">
 	                <%-- 검색 영역 --%>
-	                <form action='<c:url value = "/admin/contents/FaQ"/>' class="d-flex justify-content-end align-items-end mb-4 gap-2">
+	                <form action='<c:url value = "/help/faq"/>' class="d-flex justify-content-end align-items-end mb-4 gap-2">
 						<div class="col-md-3">
 	                        <label class="form-label fw-bold small text-muted">질문 카테고리</label>
 	                        <select name="category" class="form-select form-select-sm" onchange = "this.form.submit()">
@@ -131,7 +131,7 @@
 				                    <c:forEach var="i" begin="${pageInfoDTO.startPage}" end="${pageInfoDTO.endPage}">
 										<c:choose>
 											<c:when test="${i eq pageInfoDTO.pageNum}">
-												<a class="page-link">${i}</a>
+												<a class="page-link active">${i}</a>
 											</c:when>
 											<c:otherwise>
 												<a class="page-link" href="<c:url value="/admin/contents/FaQ?pageNum=${i}" />">${i}</a>

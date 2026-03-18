@@ -1,9 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+// 세션 체크 
+	if(session.getAttribute("sId") == null) {
+%>
+	<script>
+		alert("로그인이 필요한 서비스입니다.");
+		location.href="<c:url value='/user/login' />";
+	</script>
+<%
+		return;
+	}
+
+%>
 <!DOCTYPE html>
 <html>
 	<head>
+		<title>맞춤법 검사</title>
 		<%@ include file="/WEB-INF/views/inc/head.jspf"%>
 		<%-- 현재 페이지 전용 CSS 영역--%>
 		<link href="<c:url value="/resources/css/review/spellCheck.css" />" rel="stylesheet" type="text/css">

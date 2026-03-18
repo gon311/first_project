@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.itwillbs.project.common.dto.FileDTO;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -77,6 +79,9 @@ public class ResumeDTO {
     
     private List<ResumeEducationDTO> educationList;
     private List<ResumeExperienceDTO> experienceList;
+    
+ // 이력서 사진 1개만 사용
+    //private FileDTO photo;
 }
 
 //status VARCHAR(20) NOT NULL DEFAULT 'COMPLETE',      -- 상태 (예: DRAFT=미완성, COMPLETE=완성 등)

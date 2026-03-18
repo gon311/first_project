@@ -37,6 +37,8 @@
 	<result property="isScrapped" column="isScrapped" />
 	</resultMap>
 	
+	<!-- =================================================== -->
+	<!-- 공고 등록 -->
 	<insert id="insertJob" useGeneratedKeys="true" keyProperty="jobId">
 	    INSERT INTO JOB_POSTING (
 	        comp_id 
@@ -94,16 +96,34 @@
 	        1                )
 	</insert>	
 	
-	<select id="getExistingRegions" resultType="map">
-	    SELECT DISTINCT 
-	        SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 1) as city
-	        , SUBSTRING_INDEX(SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 2), ' ', -1) as district
-	    FROM JOB_POSTING
-	    WHERE post_status = 1
-	   	  AND post_check = 2
-	      AND address IS NOT NULL
+	<!-- =================================================== -->
+	<!-- 공고 이용권 확인 -->
+	<select id="checkActiveProduct" resultType="int">
+	    SELECT COUNT(*)
+	    FROM com_product
+	    WHERE user_id = #{userId}
+	    
+<!--  기업 이용권 만료 시 상태 변경 확인용으로 주석 처리 -->
+	      AND end_date > CURDATE()
+	      AND use_status = 'active'
 	</select>
 	
+	<!-- 공고 상세보기 페이지의 이력서 가져오기 -->
+	<select id="getMyResume" resultType="Resume">
+	    SELECT
+	    	resume_id
+	    	, title
+	        , name_kor
+	    FROM
+	        resume
+	    WHERE
+	        user_id = #{userIdx}
+	    ORDER BY
+	        resume_id DESC
+	</select>
+	
+	<!-- =================================================== -->
+	<!-- 공고 상세보기, 수정페이지에서 재사용 -->
 	<select id="getJobListDetail" parameterType="long" resultMap="JobResultMap">
 		SELECT 
 			p.job_id
@@ -138,56 +158,48 @@
 		FROM job_posting p JOIN user_company c
 		ON p.comp_id = c.user_id
 		WHERE p.job_id = #{jobId}
+        AND p.close_date >= now()
 	</select>
 	
-	<select id="getMyResume" resultType="Resume">
-	    SELECT
-	    	resume_id
-	    	, title
-	        , name_kor
-	    FROM
-	        resume
-	    WHERE
-	        user_id = #{userIdx}
-	    ORDER BY
-	        resume_id DESC
+	<!-- =================================================== -->
+	<!-- 공고 상세보기 파일 관련, 수정페이지에서 수정 시 재사용 -->
+	<select id="selectFileList" resultType="fileDTO">
+	    SELECT 
+	        file_id AS fileId,
+	        job_id AS idx,              
+	        category_idx AS categoryIdx,
+	        origin_name AS originName,
+	        stored_name AS storedName,
+	        file_path AS filePath,
+	        file_size AS fileSize,
+	        file_ext AS fileExt
+	    FROM uploaded_file
+	    WHERE job_id = #{jobId}
 	</select>
 	
-	<insert id="insertApplication" parameterType="application">
-		INSERT INTO job_application (
-          job_id
-        , user_id
-        , resume_id
-        , app_step
-        , is_favorite
-        , apply_date
-    ) VALUES (
-          #{jobId}
-        , #{userId}
-        , #{resumeId}
-        , DEFAULT
-        , DEFAULT
-        , NOW()
-    )
-	</insert>
-	
-	<select id="checkAlreadyApplied" resultType="int" parameterType="application">
-	    SELECT COUNT(*)
-	    FROM job_application 
-	    WHERE job_id = #{jobId} 
-	    AND user_id = #{userId}
+	<!-- =================================================== -->
+	<!-- 공고 수정 기능(DB 파일 정보 조회) -->
+	<select id="selectFile" resultType="fileDTO">
+	    SELECT 
+	        file_id as fileId,
+	        origin_name as originName,
+	        stored_name as storedName,
+	        file_path as filePath,
+	        file_size as fileSize,
+	        file_ext as fileExt
+	    FROM uploaded_file
+	    WHERE file_id = #{fileId}
 	</select>
 	
-	<insert id="insertBookmark" parameterType="map">
-	    INSERT INTO job_bookmark (user_id, job_id)
-	    VALUES (#{userIdx}, #{jobId})
-	</insert>
-	
-	<delete id="deleteBookmark" parameterType="map">
-	    DELETE FROM job_bookmark 
-	    WHERE user_id = #{userIdx} AND job_id = #{jobId}
+	<!-- =================================================== -->
+	<!-- 공고 수정 기능(DB 파일 삭제 기능) -->
+	<delete id="deleteFile">
+	    DELETE FROM uploaded_file 
+	    WHERE file_id = #{fileId}
 	</delete>
 	
+	<!-- =================================================== -->
+	<!-- DB에 새 파일 정보 저장 -->
 	<insert id="insertBoardFiles">
 		<selectKey keyProperty="categoryIdx" resultType="int" order="BEFORE">
 			SELECT category_idx
@@ -217,6 +229,8 @@
 		</foreach>
 	</insert>
 	
+	<!-- =================================================== -->
+	<!-- 공고 텍스트 정보 업데이트 -->
 	<update id="updateJob" parameterType="job">
 	    UPDATE job_posting
 	    SET 
@@ -257,108 +271,64 @@
 	      AND comp_id = #{compId}
 	</update>
 	
-	<select id="selectFile" resultType="fileDTO">
-	    SELECT 
-	        file_id as fileId,
-	        origin_name as originName,
-	        stored_name as storedName,
-	        file_path as filePath,
-	        file_size as fileSize,
-	        file_ext as fileExt
-	    FROM uploaded_file
-	    WHERE file_id = #{fileId}
+	<!-- =================================================== -->
+	<!-- 공고 지원내역 확인 -->
+	<select id="checkAlreadyApplied" resultType="int" parameterType="application">
+	    SELECT COUNT(*)
+	    FROM job_application 
+	    WHERE job_id = #{jobId} 
+	    AND user_id = #{userId}
 	</select>
 	
-	<select id="selectFileList" resultType="fileDTO">
-	    SELECT 
-	        file_id AS fileId,
-	        job_id AS idx,              
-	        category_idx AS categoryIdx,
-	        origin_name AS originName,
-	        stored_name AS storedName,
-	        file_path AS filePath,
-	        file_size AS fileSize,
-	        file_ext AS fileExt
-	    FROM uploaded_file
-	    WHERE job_id = #{jobId}
-	</select>
+	<!-- 공고 지원하기 -->
+	<insert id="insertApplication" parameterType="application">
+		INSERT INTO job_application (
+          job_id
+        , user_id
+        , resume_id
+        , app_step
+        , is_favorite
+        , apply_date
+    ) VALUES (
+          #{jobId}
+        , #{userId}
+        , #{resumeId}
+        , DEFAULT
+        , DEFAULT
+        , NOW()
+    )
+	</insert>
 	
-	<delete id="deleteFile">
-	    DELETE FROM uploaded_file 
-	    WHERE file_id = #{fileId}
+	<!-- =================================================== -->
+	<!-- 공고 관심 등록 -->
+	<insert id="insertBookmark" parameterType="map">
+	    INSERT INTO job_bookmark (user_id, job_id)
+	    VALUES (#{userIdx}, #{jobId})
+	</insert>
+	
+	<!-- 공고 관심 삭제 -->
+	<delete id="deleteBookmark" parameterType="map">
+	    DELETE FROM job_bookmark 
+	    WHERE user_id = #{userIdx} AND job_id = #{jobId}
 	</delete>
 	
+	<!-- =================================================== -->
+	<!-- 지원자 관리 -->
 	<update id="updateApplicationStatus">
 	    UPDATE job_application
 	    SET app_step = #{appStep}
 	    WHERE app_id = #{appId}
 	</update>
 	
+	<!-- 지원자 관심등록 -->
 	<update id="updateApplicationFavorite">
 	    UPDATE job_application
 	    SET is_favorite = #{isFavorite}
 	    WHERE app_id = #{appId}
 	</update>
 	
-	<select id="getPostingTitle" resultType="string">
-		SELECT title
-		FROM JOB_POSTING
-		WHERE job_id = #{jobId}
-	</select>
-	
-	<select id="checkActiveProduct" resultType="int">
-	    SELECT COUNT(*)
-	    FROM com_product
-	    WHERE user_id = #{userId}
-	    
-<!-- 	    기업 이용권 만료 시 상태 변경 확인용으로 주석 처리 -->
-	      AND end_date > CURDATE()
-	      AND use_status = 'active'
-	</select>
-	
-	<select id="getJobListCount" resultType="int">
-	    SELECT COUNT(*)
-	    FROM JOB_POSTING j 
-	    JOIN USER_COMPANY u ON j.comp_id = u.user_id
-	    <where>
-	        <if test="q != null and q != ''">
-	            AND (j.title LIKE CONCAT('%', #{q}, '%') 
-	                 OR u.company_name LIKE CONCAT('%', #{q}, '%')
-	                 OR j.field LIKE CONCAT('%', #{q}, '%'))
-	        </if>
-	
-	        <if test="expType != null and expType != ''">
-	            <choose>
-	                <when test="expType == 'new'">
-	                    AND (j.exp_type = 'new' OR j.exp_type = 'newCareer')
-	                </when>
-	                <when test="expType == 'career'">
-	                    AND (j.exp_type = 'career' OR j.exp_type = 'newCareer' OR j.exp_year IS NULL)
-	                </when>
-	            </choose>
-	        </if>
-	
-	        <if test="selectedItems != null and selectedItems.size > 0">
-	            AND (
-	                <foreach item="item" collection="selectedItems" separator=" OR ">
-	                    j.address LIKE CONCAT('%', #{item}, '%') OR j.field LIKE CONCAT('%', #{item}, '%') 
-	                </foreach>
-	            )
-	        </if>
-	
-	        <if test="eduType != null and eduType != ''">
-	            <choose>
-	                <when test='eduType == "학력무관"'>
-	                    AND j.edu = '학력무관'
-	                </when>
-	                <otherwise>
-	                    AND (j.edu = #{eduType} OR j.edu = '학력무관')
-	                </otherwise>
-	            </choose>
-	        </if>
-	    </where>
-	</select>
-	
+	<!-- =================================================== -->
+	<!-- 공고 리스트 조회 (q 파라미터 추가) -->
 	<select id="getJobListPaging" resultMap="JobResultMap">
 	    SELECT 
 	        j.job_id, 
@@ -384,6 +354,8 @@
 	    LEFT OUTER JOIN job_bookmark b 
 	        ON j.job_id = b.job_id AND b.user_id = #{userIdx}
 	    <where>
+	    	AND post_check = 2
+	    	AND close_date >= now()
 	        <if test="q != null and q != ''">
 	            AND (j.title LIKE CONCAT('%', #{q}, '%') 
 	                 OR u.company_name LIKE CONCAT('%', #{q}, '%')
@@ -424,6 +396,67 @@
 	    LIMIT #{offset}, #{size}
 	</select>
 	
+	<!-- 검색 결과에 따른 전체 공고 수 조회 (페이징 계산용) -->
+	<select id="getJobListCount" resultType="int">
+	    SELECT COUNT(*)
+	    FROM JOB_POSTING j 
+	    JOIN USER_COMPANY u ON j.comp_id = u.user_id
+	    <where>
+	    	AND post_check = 2
+	    	AND close_date >= now()
+	        <if test="q != null and q != ''">
+	            AND (j.title LIKE CONCAT('%', #{q}, '%') 
+	                 OR u.company_name LIKE CONCAT('%', #{q}, '%')
+	                 OR j.field LIKE CONCAT('%', #{q}, '%'))
+	        </if>
+	
+	        <if test="expType != null and expType != ''">
+	            <choose>
+	                <when test="expType == 'new'">
+	                    AND (j.exp_type = 'new' OR j.exp_type = 'newCareer')
+	                </when>
+	                <when test="expType == 'career'">
+	                    AND (j.exp_type = 'career' OR j.exp_type = 'newCareer' OR j.exp_year IS NULL)
+	                </when>
+	            </choose>
+	        </if>
+	
+	        <if test="selectedItems != null and selectedItems.size > 0">
+	            AND (
+	                <foreach item="item" collection="selectedItems" separator=" OR ">
+	                    j.address LIKE CONCAT('%', #{item}, '%') OR j.field LIKE CONCAT('%', #{item}, '%') 
+	                </foreach>
+	            )
+	        </if>
+	
+	        <if test="eduType != null and eduType != ''">
+	            <choose>
+	                <when test='eduType == "학력무관"'>
+	                    AND j.edu = '학력무관'
+	                </when>
+	                <otherwise>
+	                    AND (j.edu = #{eduType} OR j.edu = '학력무관')
+	                </otherwise>
+	            </choose>
+	        </if>
+	    </where>
+	</select>
+	
+	<!-- =================================================== -->
+	<!-- 공고 리스트의 주소 카테고리 기능 -->
+	<select id="getExistingRegions" resultType="map">
+	    SELECT DISTINCT 
+	        SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 1) as city
+	        , SUBSTRING_INDEX(SUBSTRING_INDEX(TRIM(REGEXP_REPLACE(address, '^[0-9\\s\\[\\],-]+', '')), ' ', 2), ' ', -1) as district
+	    FROM JOB_POSTING
+	    WHERE post_status = 1
+	   	  AND post_check = 2
+          AND close_date >= now()
+	      AND address IS NOT NULL
+	</select>
+	
+	<!-- =================================================== -->
+	<!-- 지원자 목록 조회 (페이징 및 필터 적용) -->
 	<select id="getApplicantListPaging" resultType="map">
 	    SELECT * FROM (
 	        SELECT 
@@ -467,6 +500,8 @@
 	    LIMIT #{offset}, #{size}
 	</select>
 	
+	<!-- =================================================== -->
+	<!-- 필터링된 지원자 전체 수 조회 (페이징용) -->
 	<select id="getApplicantCount" resultType="int">
 	    SELECT COUNT(*)
 	    FROM JOB_APPLICATION a
@@ -493,6 +528,27 @@
 	    </where>
 	</select>
 	
+	<!-- =================================================== -->
+	<!-- 전형 단계별 카운트 조회 (상단 탭용) -->
+	<select id="getApplicantStatusCounts" resultType="map">
+	    SELECT 
+	        app_step, 
+	        COUNT(*) as cnt
+	    FROM job_application
+	    WHERE job_id = #{jobId}
+	    GROUP BY app_step
+	</select>
+	
+	<!-- =================================================== -->
+	<!-- 공고 제목 가져오기 (기존 유지) -->
+	<select id="getPostingTitle" resultType="string">
+		SELECT title
+		FROM JOB_POSTING
+		WHERE job_id = #{jobId}
+	</select>
+	
+	<!-- =================================================== -->
+	
 <!-- 	<select id="getApplicantStatusCounts" resultType="map"> -->
 <!-- 	    SELECT app_step, COUNT(*) as cnt -->
 <!-- 	    FROM job_application a -->
@@ -516,13 +572,5 @@
 <!-- 		</where> -->
 <!-- 	    GROUP BY app_step -->
 <!-- 	</select> -->
-	<select id="getApplicantStatusCounts" resultType="map">
-	    SELECT 
-	        app_step, 
-	        COUNT(*) as cnt
-	    FROM job_application
-	    WHERE job_id = #{jobId}
-	    GROUP BY app_step
-	</select>
 	
 </mapper>

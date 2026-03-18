@@ -99,7 +99,7 @@ public class ReviewController {
 		return "/review/reviewSpellCheck";
 	}
 	
-	// 5) 표절 검사 페이지 이동
+	// 5) 문장 다듬기 페이지 이동
 	@GetMapping("/copyCheck")
 	public String copyCheck() {
 		

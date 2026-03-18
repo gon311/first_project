@@ -167,7 +167,14 @@
 														<fmt:formatDate value="${job.closeDate}" pattern="yyyy/MM/dd"/>
 													</td>
 													<td>
-														<c:if test="${job.postStatus == 1}">모집중</c:if>
+														<c:choose>
+															<c:when test="${job.postStatus == 1}">
+																모집중
+															</c:when>
+															<c:otherwise>
+																마감
+															</c:otherwise>
+														</c:choose>
 													</td>
 												</tr>
 											</c:forEach>

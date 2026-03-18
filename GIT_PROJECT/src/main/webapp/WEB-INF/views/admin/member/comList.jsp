@@ -291,7 +291,7 @@
                                     <td>
                                    	  <!-- 탈퇴일로부터 3년이 지난 경우 삭제 버튼 활성화 -->
                                     	<c:choose>
-                                    		<c:when test="${(tDay - wDate) < 1095}">
+                                    		<c:when test="${(tDay - wDate) > 1095}">
 		                                        <button class="btn btn-danger" onclick="deleteUser(${withdraw.userId})">삭제</button>
                                     		</c:when>
                                     		<c:otherwise>

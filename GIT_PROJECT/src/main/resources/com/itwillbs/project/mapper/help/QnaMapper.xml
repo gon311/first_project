@@ -36,7 +36,7 @@
 	        qna_category, 
 	        qna_title, 
 	        qna_content, 
-	        writer_id, 
+	        writer_id,
 	        reg_date, 
 	        re_status, 
 	        re_date, 

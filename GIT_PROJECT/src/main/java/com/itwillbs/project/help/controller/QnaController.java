@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.project.common.dto.FileDTO;
+import com.itwillbs.project.common.exception.BackwardException;
 import com.itwillbs.project.help.dto.SupportQnaDTO;
 import com.itwillbs.project.help.service.QnaService;
 
@@ -82,24 +83,23 @@ public class QnaController {
     }
     
     @GetMapping("/detail")
-    public String qnaDetail(@RequestParam("qnaId") int qnaId, 
-    		@RequestParam("writerId") int writerId, 
-    		RedirectAttributes rttr, Model model, HttpSession session) {
+    public String qnaDetail(@RequestParam("qnaId") int qnaId, Model model, HttpSession session) {
     	Long sId = (Long) session.getAttribute("userIdx");
         
         if (sId == null) {
         	return "redirect:/user/login";
         }
-        System.out.println("sId" + sId);
-        System.out.println("writerId" + writerId);
-        
-        if (writerId != sId) {
-        	rttr.addFlashAttribute("message", "비정상적인 접근입니다.");
-        }
         
         // 1. qnaId로 DB에서 게시글 정보 가져오기
         SupportQnaDTO qna = qnaService.getQnaDetail(qnaId);
         List<FileDTO> qnaFiles = qnaService.getFileList(qnaId);
+        
+//        System.out.println("sId : " + sId);
+//        System.out.println("writerId : " + writerId);
+//        System.out.println("writerId2 : " + qna.getWriterId());
+        if (sId != qna.getWriterId()) {
+        	throw new BackwardException("비정상적인 접근입니다.");
+        }
         
         // 2. JSP로 전달
         model.addAttribute("qna", qna); 

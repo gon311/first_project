@@ -18,8 +18,8 @@
 	    </c:otherwise>
 	</c:choose>
 
-    <main>
-		<div class="container">
+    <main class="regist-form">
+		<div class="container-regist-form">
             <h2>회원가입</h2>
 
             <div class="signup-tabs">

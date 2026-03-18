@@ -6,8 +6,13 @@ pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="/WEB-INF/views/inc/head.jspf" %>
-	<link href="<c:url value ="/resources/css/admin.css" />" rel="stylesheet" type="text/css">
+<%@ include file="/WEB-INF/views/inc/head.jspf" %>
+<link href="<c:url value ="/resources/css/admin.css" />" rel="stylesheet" type="text/css">
+<meta charset="UTF-8">
+<script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	
 <title>채용 공고 상세 페이지</title>
 </head>
@@ -73,7 +78,7 @@ pageEncoding="UTF-8"%>
                             <span class="text-secondary fw-bold" style="width: 100px;">근무지역</span>
                             <span class="text-dark">
                                 ${jobPostDTO.address}
-                                <a href="#map" class="btn btn-sm btn-outline-primary ms-2 py-0">지도보기</a>
+	           					 <a href="#map" onclick="scrollToMap(event)" style="cursor:pointer; color:#007bff; margin-left:5px;">[지도]</a>
                             </span>
                         </div>
                     </div>
@@ -89,39 +94,41 @@ pageEncoding="UTF-8"%>
                     </div>
                 </div>
 
-                <div class="mt-5 p-4 bg-white border rounded">
-                    <h5 class="fw-bold mb-4"><i class="fa-solid fa-image me-2 text-primary"></i>직무 관련 이미지 및 첨부파일</h5>
-                    <div class="row g-3">
-                        <c:choose>
-                            <c:when test="${not empty detailFile}">
-                                <c:forEach var="file" items="${detailFile}">
-                                    <div class="col-12">
-                                        <c:choose>
-                                            <c:when test="${file.fileExt.contains('image') || file.fileExt.contains('jpg') || file.fileExt.contains('png')}">
-                                                <img src="/upload/board/${file.filePath}/${file.storedName}" 
-                                                     class="img-fluid rounded border shadow-sm mb-3" 
-                                                     alt="${file.originName}" style="max-height: 600px;">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <div class="list-group">
-                                                    <a href="/upload/board/${file.filePath}/${file.storedName}" 
-                                                       download="${file.originName}" 
-                                                       class="list-group-item list-group-item-action">
-                                                        <i class="fa-regular fa-file-pdf me-2 text-danger"></i> ${file.originName} (다운로드)
-                                                    </a>
-                                                </div>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                </c:forEach>
-                            </c:when>
-                            <c:otherwise>
-                                <p class="text-muted small">등록된 상세 이미지가 없습니다.</p>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
-            </div>
+		        <div class="file-attachments" style="margin-top:25px; padding:15px; background:#f9f9f9; border-radius:8px;">
+				    <h4 style="margin-bottom:15px;"><i class="fa-solid fa-image"></i> 직무 관련 이미지/첨부</h4>
+				    <c:choose>
+				        <c:when test="${not empty detailFile}">
+				            <div class="file-preview-container" style="display: flex; flex-wrap: wrap; gap: 15px;">
+				                <c:forEach var="file" items="${detailFile}">
+				                    <div class="file-item" style="width: 100%;">
+				                        <%-- 파일이 이미지인 경우 (간단하게 확장자나 DB의 contentType으로 구분) --%>
+				                        <c:choose>
+				                            <c:when test="${file.fileExt.contains('image') || file.fileExt.contains('jpg') || file.fileExt.contains('png')}">
+				                                <div style="margin-bottom: 10px;">
+				                                    <img src="/upload/board/${file.filePath}/${file.storedName}" 
+				                                         alt="${file.originName}" 
+				                                         style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+				                                </div>
+				                            </c:when>
+				                            <c:otherwise>
+				                                <%-- 이미지가 아닌 일반 파일은 기존처럼 링크로 표시 --%>
+				                                <a href="/upload/board/${file.filePath}/${file.storedName}" 
+				                                   download="${file.originName}" 
+				                                   style="color:#007bff; text-decoration:none; display: block; padding: 10px; border: 1px dashed #ccc;">
+				                                    <i class="fa-regular fa-file-lines"></i> ${file.originName} (다운로드)
+				                                </a>
+				                            </c:otherwise>
+				                        </c:choose>
+				                    </div>
+				                </c:forEach>
+				            </div>
+				        </c:when>
+				        <c:otherwise>
+				            <p style="color:#999; font-size:0.9em;">등록된 이미지가 없습니다.</p>
+				        </c:otherwise>
+				    </c:choose>
+				</div>
+			</div>
         </div>
 
         <div class="row g-4">
@@ -129,7 +136,10 @@ pageEncoding="UTF-8"%>
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-body">
                         <h5 class="fw-bold mb-3">위치 정보</h5>
-                        <div id="map"></div>
+			            <div id="map" class="map-area">
+	                <p><i class="fa-solid fa-location-dot"></i> 지도 API 연결 영역 (근무지 위치)</p>
+	            </div>
+
                     </div>
                 </div>
             </div>

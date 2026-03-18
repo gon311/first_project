@@ -686,6 +686,21 @@
 		DELETE FROM job_posting
 		WHERE job_id = #{jobId}
 	</delete>
+	
+	<!-- 채용공고 조회 파일 -->
+	<select id="selectFileList" resultType="fileDTO">
+	    SELECT 
+	        file_id AS fileId,
+	        job_id AS idx,              
+	        category_idx AS categoryIdx,
+	        origin_name AS originName,
+	        stored_name AS storedName,
+	        file_path AS filePath,
+	        file_size AS fileSize,
+	        file_ext AS fileExt
+	    FROM uploaded_file
+	    WHERE job_id = #{jobId}
+	</select>
 
 	
 	<!-- ================================================================================== -->

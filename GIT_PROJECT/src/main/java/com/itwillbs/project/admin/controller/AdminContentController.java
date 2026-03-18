@@ -148,15 +148,16 @@ public class AdminContentController {
 	}
 //	채용공고 상세조회
 	@GetMapping("/JobPostDetail")
-	public String jobPostDetail(@RequestParam("jobId") int jobId, Model model) {
+	public String jobPostDetail(@RequestParam("jobId") long jobId, Model model) {
 		JobPostDTO jobPostDTO = adminService.getJobPostDetail(jobId);
+		List<FileDTO> detailFile = adminService.getFileList(jobId);
 		model.addAttribute("jobPostDTO", jobPostDTO);
 		
 		return "admin/contents/jobPostDetail";
 	}
 	
 	@GetMapping("/JobPostDelete")
-	public String jobPostDelete(@RequestParam("jobId") int jobId){
+	public String jobPostDelete(@RequestParam("jobId") long jobId){
 		adminService.deleteJobPost(jobId);
 		
 		return "redirect:/admin/contents/JobPost";

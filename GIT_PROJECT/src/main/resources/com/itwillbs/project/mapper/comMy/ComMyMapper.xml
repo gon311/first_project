@@ -9,11 +9,26 @@
 ============================== -->
 	<!-- ComMyDTO -->
 	<resultMap id="userMap" type="com.itwillbs.project.comMy.dto.ComMyDTO">
-	  <id     property="userId"   column="user_id" />
-	  <result property="email"    column="email" />
-	  <result property="userName" column="user_name" />
-	  <result property="phone"    column="phone" />
-	  <result property="userType" column="user_type" />
+		<id     property="userId"         column="user_id" />
+		<result property="email"          column="email" />
+		<result property="userName"       column="user_name" />
+		<result property="phone"          column="phone" />
+		<result property="userType"       column="user_type" />
+
+		<!-- 기업 상세정보 -->
+		<result property="bizRegNo"       column="biz_reg_no" />
+		<result property="companyName"    column="company_name" />
+		<result property="ceoName"        column="ceo_name" />
+		<result property="companyAddress" column="company_address" />
+		<result property="passCount"      column="pass_count" />
+
+		<!-- 이용권 정보 -->
+		<result property="payId"          column="pay_id" />
+		<result property="productId"      column="product_id" />
+		<result property="productName"    column="product_name" />
+		<result property="startDate"      column="start_date" />
+		<result property="endDate"        column="end_date" />
+		<result property="useStatus"      column="use_status" />
 	</resultMap>
 	
 	<!-- ComJobRowDTO -->
@@ -121,9 +136,34 @@
      result: ComMyDTO
 ============================== -->
 	<select id="selectUser" parameterType="string" resultMap="userMap">
-		SELECT user_id, email, user_name, phone, user_type
-		FROM user
-		WHERE email = #{sId}
+		SELECT
+			u.user_id,
+			u.email,
+			u.user_name,
+			u.phone,
+			u.user_type,
+
+			uc.biz_reg_no,
+			uc.company_name,
+			uc.ceo_name,
+			uc.company_address,
+			uc.pass_count,
+
+			cp.pay_id,
+			cp.product_id,
+			p.product_name,
+			cp.start_date,
+			cp.end_date,
+			cp.use_status
+		FROM user u
+		LEFT JOIN user_company uc
+			ON u.user_id = uc.user_id
+		LEFT JOIN com_product cp
+			ON u.user_id = cp.user_id
+		   AND cp.use_status = 'active'
+		LEFT JOIN product p
+			ON cp.product_id = p.product_id
+		WHERE u.email = #{sId}
 	</select>
 	
 <!-- ==============================
@@ -132,10 +172,14 @@
      result: int (affected rows)
 ============================== -->
 	<update id="updateUser" parameterType="com.itwillbs.project.comMy.dto.ComMyDTO">
-		 UPDATE user
-		 SET user_name = #{userName},
-		     phone = #{phone}
-		 WHERE email = #{email}
+		UPDATE user u
+		JOIN user_company uc ON u.user_id = uc.user_id
+		SET u.user_name = #{userName},
+		    u.phone = #{phone},
+		    uc.company_name = #{companyName},
+		    uc.ceo_name = #{ceoName},
+		    uc.company_address = #{companyAddress}
+		WHERE u.email = #{email}
 	</update>
 	
 <!-- ==============================

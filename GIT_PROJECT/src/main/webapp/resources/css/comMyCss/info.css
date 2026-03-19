@@ -1,63 +1,355 @@
 @charset "UTF-8";
-  body { background:#f6f7fb; }
 
-  .mypage-wrap{ min-height: 100vh; }
+body {
+	background: #f6f7fb;
+}
 
-  /* Sidebar */
-  .mySidebar{
-    background:#fff;
-    border-right:1px solid #e9edf3;
-    min-height: 100vh;
-  }
-  .mySidebar-inner{
-    position: sticky;
-    top: 0;               /* 헤더가 fixed면 여기만 px로 조정 */
-    padding: 18px 14px;
-  }
-  .mySidebar-brand{ padding: 6px 8px 16px; display:flex; align-items:center; gap:10px; }
-  .brandText{ font-weight:900; letter-spacing:-.4px; color:#2563eb; font-size:1.2rem; }
+.mypage-wrap {
+	min-height: 100vh;
+}
 
-  .myNav{ display:flex; flex-direction:column; gap:4px; }
-  .myNav-link{
-    display:flex; align-items:center; gap:10px;
-    padding:10px 10px; border-radius:10px;
-    text-decoration:none; color:#334155; font-weight:600;
-    position:relative;
-  }
-  .myNav-link i{ font-size:1.05rem; color:#94a3b8; width:20px; text-align:center; }
-  .myNav-link:hover{ background:#f3f6fb; }
+/* Sidebar */
+.mySidebar {
+	background: #fff;
+	border-right: 1px solid #e9edf3;
+	min-height: 100vh;
+}
 
-  .myNav-link.active{
-    background:#eaf2ff; color:#1d4ed8; font-weight:800;
-  }
-  .myNav-link.active i{ color:#1d4ed8; }
-  .myNav-link.active::before{
-    content:""; position:absolute; left:-6px; top:10px; bottom:10px;
-    width:3px; border-radius:999px; background:#1d4ed8;
-  }
+.mySidebar-inner {
+	position: sticky;
+	top: 0;
+	padding: 18px 14px;
+}
 
-  /* Content */
-  .myContent{ padding:22px 22px; }
-  .myContent-inner{
-    background:#fff; border:1px solid #eef2f7; border-radius:16px;
-    box-shadow:0 10px 30px rgba(15,23,42,.04);
-    padding:18px; min-height: calc(100vh - 80px);
-  }
-  .page-title{ font-size:1.45rem; font-weight:900; letter-spacing:-.5px; margin:0; }
-  .page-desc{ color:#6b7280; font-size:.92rem; margin-top:4px; }
-  .top-actions .btn{ border-radius:12px; padding:.6rem .9rem; font-weight:700; }
+.mySidebar-brand {
+	padding: 6px 8px 16px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
 
-  .info-grid{
-    margin-top:14px;
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:14px;
-  }
-  .info-card{
-    border:1px solid #eef2f7;
-    border-radius:14px;
-    padding:14px;
-    background:#fff;
-  }
-  .info-label{ color:#6b7280; font-size:.85rem; margin-bottom:6px; font-weight:700; }
-  .info-value{ font-weight:800; color:#111827; }
+.brandText {
+	font-weight: 900;
+	letter-spacing: -.4px;
+	color: #2563eb;
+	font-size: 1.2rem;
+}
+
+.myNav {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.myNav-link {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 10px;
+	border-radius: 10px;
+	text-decoration: none;
+	color: #334155;
+	font-weight: 600;
+	position: relative;
+}
+
+.myNav-link i {
+	font-size: 1.05rem;
+	color: #94a3b8;
+	width: 20px;
+	text-align: center;
+}
+
+.myNav-link:hover {
+	background: #f3f6fb;
+}
+
+.myNav-link.active {
+	background: #eaf2ff;
+	color: #1d4ed8;
+	font-weight: 800;
+}
+
+.myNav-link.active i {
+	color: #1d4ed8;
+}
+
+.myNav-link.active::before {
+	content: "";
+	position: absolute;
+	left: -6px;
+	top: 10px;
+	bottom: 10px;
+	width: 3px;
+	border-radius: 999px;
+	background: #1d4ed8;
+}
+
+/* Content */
+.myContent {
+	padding: 22px 22px;
+}
+
+.myContent-inner {
+	background: #fff;
+	border: 1px solid #eef2f7;
+	border-radius: 16px;
+	box-shadow: 0 10px 30px rgba(15, 23, 42, .04);
+	padding: 18px;
+	min-height: calc(100vh - 80px);
+}
+
+.page-title {
+	font-size: 1.45rem;
+	font-weight: 900;
+	letter-spacing: -.5px;
+	margin: 0;
+}
+
+.page-desc {
+	color: #6b7280;
+	font-size: .92rem;
+	margin-top: 4px;
+}
+
+.top-actions .btn {
+	border-radius: 12px;
+	padding: .6rem .9rem;
+	font-weight: 700;
+}
+
+.info-grid {
+	margin-top: 14px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 14px;
+}
+
+.info-card {
+	border: 1px solid #eef2f7;
+	border-radius: 14px;
+	padding: 14px;
+	background: #fff;
+}
+
+.info-card-wide {
+	grid-column: 1 / -1;
+}
+
+.info-label {
+	color: #6b7280;
+	font-size: .85rem;
+	margin-bottom: 6px;
+	font-weight: 700;
+}
+
+.info-value {
+	font-weight: 800;
+	color: #111827;
+	word-break: break-word;
+	line-height: 1.6;
+}
+
+/* 이용권 박스 */
+.ticket-box {
+	margin-top: 24px;
+	padding: 18px 20px;
+	border: 1px solid #e5edf8;
+	border-radius: 20px;
+	background: #f8fbff;
+}
+
+.ticket-box-head {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 12px;
+}
+
+.ticket-title {
+	margin: 0;
+	font-size: 1.35rem;
+	font-weight: 900;
+	color: #111827;
+	line-height: 1.2;
+}
+
+.ticket-desc {
+	margin: 6px 0 0;
+	font-size: 0.92rem;
+	color: #6b7280;
+}
+
+.ticket-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 72px;
+	height: 32px;
+	padding: 0 14px;
+	border-radius: 999px;
+	font-size: 0.88rem;
+	font-weight: 800;
+}
+
+.ticket-badge.active {
+	background: #e7f6ee;
+	color: #15803d;
+}
+
+.ticket-badge.expired {
+	background: #f3f4f6;
+	color: #6b7280;
+}
+
+.ticket-badge.empty {
+	background: #eff6ff;
+	color: #2563eb;
+}
+
+.ticket-card-main {
+	display: grid;
+	grid-template-columns: 1fr 1.05fr;
+	gap: 16px;
+	align-items: stretch;
+	margin-top: 6px;
+}
+
+.ticket-card-left,
+.ticket-card-right {
+	min-width: 0;
+}
+
+.ticket-label {
+	font-size: 0.88rem;
+	font-weight: 700;
+	color: #4b5563;
+	margin-bottom: 6px;
+}
+
+.ticket-product {
+	font-size: 1.55rem;
+	font-weight: 900;
+	color: #111827;
+	line-height: 1.2;
+	margin-bottom: 8px;
+}
+
+.ticket-subtext {
+	font-size: 0.92rem;
+	font-weight: 600;
+	color: #6b7280;
+	margin-bottom: 14px;
+}
+
+.ticket-count-box {
+	width: 320px;
+	min-height: 136px;
+	padding: 18px 18px;
+	border-radius: 18px;
+	background: #2f66e3;
+	color: #fff;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	box-sizing: border-box;
+	box-shadow: 0 10px 24px rgba(47, 102, 227, 0.18);
+}
+
+.ticket-count-label {
+	font-size: 0.9rem;
+	font-weight: 700;
+	opacity: 0.95;
+	margin-bottom: 10px;
+}
+
+.ticket-period-date {
+	font-size: 1.18rem;
+	font-weight: 900;
+	line-height: 1.35;
+	letter-spacing: -0.3px;
+	word-break: keep-all;
+}
+
+.ticket-period-sep {
+	font-size: 1rem;
+	font-weight: 800;
+	opacity: 0.92;
+	margin: 8px 0;
+}
+
+.ticket-info-card {
+	height: 100%;
+	min-height: 136px;
+	padding: 18px 20px;
+	border: 1px solid #dbe4f0;
+	border-radius: 18px;
+	background: #ffffff;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	box-sizing: border-box;
+}
+
+.ticket-info-title {
+	font-size: 0.98rem;
+	font-weight: 800;
+	color: #374151;
+	margin-bottom: 8px;
+}
+
+.ticket-info-text {
+	font-size: 0.96rem;
+	font-weight: 600;
+	color: #111827;
+	line-height: 1.65;
+	word-break: keep-all;
+}
+
+.ticket-guide {
+	margin-top: 14px;
+	padding: 12px 14px;
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
+	background: #ffffff;
+	font-size: 0.92rem;
+	font-weight: 600;
+	color: #475569;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+	.myContent {
+		padding: 14px;
+	}
+
+	.info-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.info-card-wide {
+		grid-column: auto;
+	}
+
+	.ticket-box-head {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.ticket-card-main {
+		grid-template-columns: 1fr;
+	}
+
+	.ticket-count-box {
+		width: 100%;
+	}
+
+	.ticket-product {
+		font-size: 1.4rem;
+	}
+
+	.ticket-period-date {
+		font-size: 1.05rem;
+	}
+}

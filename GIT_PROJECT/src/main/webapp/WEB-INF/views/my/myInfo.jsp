@@ -117,7 +117,7 @@
 							</c:choose>
 						</div>
 					</div>
-
+									
 					<div class="info-card">
 						<div class="info-label">회원유형</div>
 						<div class="info-value">
@@ -132,6 +132,94 @@
 
 				</div>
 
+				<div class="ticket-box">
+					<div class="ticket-box-head">
+						<div>
+							<h3 class="ticket-title">보유 이용권</h3>
+							<p class="ticket-desc">현재 사용 가능한 이용권 정보를 확인할 수 있습니다.</p>
+						</div>
+				
+						<div class="ticket-status-wrap">
+							<c:choose>
+								<c:when test="${loginUser.useStatus eq 'active'}">
+									<span class="ticket-badge active">사용중</span>
+								</c:when>
+								<c:when test="${loginUser.useStatus eq 'expired'}">
+									<span class="ticket-badge expired">만료</span>
+								</c:when>
+								<c:otherwise>
+									<span class="ticket-badge empty">없음</span>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+				
+					<div class="ticket-card-main">
+						<div class="ticket-card-left">
+							<div class="ticket-label">현재 이용권</div>
+							<div class="ticket-product">
+								<c:choose>
+									<c:when test="${not empty loginUser.productName}">
+										${loginUser.productName}
+									</c:when>
+									<c:otherwise>이용권 없음</c:otherwise>
+								</c:choose>
+							</div>
+							<div class="ticket-subtext">현재 사용 중인 대표 이용권입니다.</div>
+				
+							<div class="ticket-count-box">
+								<div class="ticket-count-label">남은 횟수</div>
+								<div class="ticket-count">
+									<c:choose>
+										<c:when test="${not empty loginUser.remainingCount}">
+											${loginUser.remainingCount}<span>회</span>
+										</c:when>
+										<c:otherwise>
+											0<span>회</span>
+										</c:otherwise>
+									</c:choose>
+								</div>
+							</div>
+						</div>
+				
+						<div class="ticket-card-right">
+							<div class="ticket-info-card">
+								<div class="ticket-info-title">이용 안내</div>
+								<div class="ticket-info-text">
+									<c:choose>
+										<c:when test="${loginUser.useStatus eq 'active'}">
+											현재 이용 가능한 횟수가 남아 있습니다.<br>
+											필요한 서비스 이용 시 자동으로 차감됩니다.
+										</c:when>
+										<c:when test="${loginUser.useStatus eq 'expired'}">
+											남은 횟수가 없어 이용권이 만료되었습니다.<br>
+											추가 이용이 필요하면 새 이용권을 구매해주세요.
+										</c:when>
+										<c:otherwise>
+											현재 보유 중인 이용권이 없습니다.<br>
+											이용권 구매 후 서비스를 사용할 수 있습니다.
+										</c:otherwise>
+									</c:choose>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+					<div class="ticket-guide">
+						<c:choose>
+							<c:when test="${loginUser.useStatus eq 'active'}">
+								사용 가능한 이용권이 정상적으로 등록되어 있습니다.
+							</c:when>
+							<c:when test="${loginUser.useStatus eq 'expired'}">
+								이용권 사용 가능 횟수가 모두 소진되었습니다.
+							</c:when>
+							<c:otherwise>
+								현재 등록된 이용권 정보가 없습니다.
+							</c:otherwise>
+						</c:choose>
+					</div>
+				</div>			
+			
 			</div>
 		</section>
 

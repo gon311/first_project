@@ -63,8 +63,8 @@
 	                                <select class="form-select" name="type" >
 	                                    <option value="" <c:if test="${param.type eq ''}">selected</c:if>>전체</option>
 	                                    <option value="basic" <c:if test="${param.type eq 'basic'}">selected</c:if>>기본</option>
-	                                    <option value="P-C1" <c:if test="${param.type eq 'P-C1'}">selected</c:if>>일반</option>
-	                                    <option value="P-C2" <c:if test="${param.type eq 'P-C2'}">selected</c:if>>프리미엄</option>
+	                                    <option value="P-C1" <c:if test="${param.type eq 'P-C1'}">selected</c:if>>일반 이용권</option>
+	                                    <option value="P-C2" <c:if test="${param.type eq 'P-C2'}">selected</c:if>>프리미엄 이용권</option>
 	                                </select>
 	                            </div>
 	
@@ -135,7 +135,16 @@
 	                                <td>${com.email}</td>
 	                                <td>${com.bizRegNo}</td>
 	                                <td>${com.phone}</td>
-	                                <td>${com.userType}</td>
+	                                <td>
+	                                	<c:choose>
+                                    		<c:when test="${empty com.productName}">
+                                    			기본
+                                    		</c:when>
+                                    		<c:otherwise>
+                                    			${com.productName}
+                                    		</c:otherwise>
+                                    	</c:choose>
+                                    </td>
 	                                <td>${com.status}</td>
 	                            </tr>
 	                        </c:forEach>

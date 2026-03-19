@@ -65,7 +65,6 @@
 		                        <select class="form-select form-select-sm" name="payStatus">
 		                            <option value="" <c:if test="${param.payStatus eq ''}">selected</c:if>>전체</option>
 		                            <option value="paid" <c:if test="${param.payStatus eq 'paid'}">selected</c:if>>결제완료</option>
-		                            <option value="ready" <c:if test="${param.payStatus eq 'ready'}">selected</c:if>>입금대기</option>
 		                            <option value="cancelled" <c:if test="${param.payStatus eq 'cancelled'}">selected</c:if>>결제취소</option>
 		                        </select>
 		                    </div>

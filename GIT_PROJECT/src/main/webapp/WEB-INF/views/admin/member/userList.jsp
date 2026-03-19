@@ -130,7 +130,16 @@
                                     <td>${user.userName}</td>
                                     <td>${user.email}</td>
                                     <td>${user.phone}</td>
-                                    <td>${user.userType}</td>
+                                    <td>
+                                    	<c:choose>
+                                    		<c:when test="${empty user.productName}">
+                                    			기본
+                                    		</c:when>
+                                    		<c:otherwise>
+                                    			${user.productName}
+                                    		</c:otherwise>
+                                    	</c:choose>
+                                    </td>
                                     <td>${user.status}</td>
                                 </tr>
                             </c:forEach>

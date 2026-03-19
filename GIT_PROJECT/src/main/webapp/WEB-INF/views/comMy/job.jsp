@@ -176,5 +176,12 @@
 </main>
 
 <%@ include file="/WEB-INF/views/inc/footer.jspf" %>
+
+<script type="text/javascript">
+    var msg = "${msg}";
+    if (msg && msg !== "") {
+        alert(msg);
+    }
+</script>
 </body>
 </html>

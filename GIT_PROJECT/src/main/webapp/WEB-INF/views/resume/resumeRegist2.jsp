@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<%-- 	<%@ include file="/WEB-INF/views/inc/head.jspf"%> --%>
+	<%@ include file="/WEB-INF/views/inc/head.jspf"%>
     <meta charset="UTF-8">
     <title>이력서 작성</title>
 
@@ -109,26 +109,30 @@
 
                         <div class="col-md-6">
                             <label class="form-label">이름</label>
-                            <input type="text" value="${resume.nameKor}" name="nameKor" class="form-control">
+                            <input type="text" value="${resume.nameKor}" name="nameKor" class="form-control" required>
+                            <span class="error-msg">* 필수</span>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">생년월일</label>
-                            <input type="date" value="${resume.birthDate}" name="birthDate" class="form-control">
+                            <input type="date" value="${resume.birthDate}" name="birthDate" class="form-control" required>
+                            <span class="error-msg">* 필수</span>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">이름(영문)</label>
                             <input type="text" value="${resume.nameEng}" name="nameEng" class="form-control">
+                            <span class="error-msg">* 필수</span>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">성별</label>
-                            <select name="gender" class="form-select">
-                                <option selected>-선택-</option>
+                            <select name="gender" class="form-select" required>
+                                <option value="" ${empty resume.gender ? 'selected' : ''}>-선택-</option>
                                 <option value="남" ${resume.gender == '남' ? 'selected' : ''}>남</option>
                                 <option value="여" ${resume.gender == '여' ? 'selected' : ''}>여</option>
                             </select>
+                            <span class="error-msg">* 필수 선택 항목입니다.</span>
                         </div>
 
 						<div class="col-md-6">

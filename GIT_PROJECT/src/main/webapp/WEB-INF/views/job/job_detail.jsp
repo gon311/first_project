@@ -14,7 +14,7 @@
 </head>
 <body>
 	<c:choose>
-        <c:when test="${userType == 'P' || empty sessionScope.userType}">
+        <c:when test="${userType == 'P' || sessionScope.memberType == 'user'}">
 			<%@ include file="/WEB-INF/views/inc/header.jspf" %>
         </c:when>
         <c:otherwise>

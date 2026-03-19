@@ -1,5 +1,23 @@
 @charset "UTF-8";
 
+/* 필수 입력 시작 */
+/* 기본적으로 에러 메시지는 숨김 */
+    .error-msg {
+        display: none;
+        color: #dc3545; /* 부트스트랩 danger 색상 */
+        font-size: 0.875em;
+        margin-top: 0.25rem;
+    }
+
+    /* input이나 select가 '필수 값 미입력(invalid)' 상태일 때, 바로 뒤의 .error-msg를 보여줌 */
+    /* 단, 사용자가 한 번도 건드리지 않았을 때부터 빨간색이 뜨는 걸 방지하려면 :invalid만 쓰기보다 
+       폼 제출 시점에 클래스를 제어하는 방식이 더 깔끔합니다. */
+    .form-control:invalid + .error-msg,
+    .form-select:invalid + .error-msg {
+        display: block;
+    }
+/* 필수 입력 끝.*/
+
 body {
     background-color: #f8f9fa;
 }

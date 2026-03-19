@@ -19,6 +19,10 @@
 	  <result property="country"   column="country" />
 	  <result property="profileUrl" column="profile_url" />
 	  <result property="status"    column="status" />
+	  <result property="remainingCount" column="remaining_count" />
+	  <result property="useStatus"      column="use_status" />
+	  <result property="productId"      column="product_id" />
+	  <result property="productName"    column="product_name" />
 	</resultMap>
 	
 	<!-- MyResumeDTO -->
@@ -271,10 +275,19 @@
 	        up.gender,
 	        up.birth_date,
 	        up.country,
-	        up.profile_url
+	        up.profile_url,
+	        usp.remaining_count,
+	        usp.use_status,
+	        usp.product_id,
+	        p.product_name
 	    FROM user u
 	    LEFT JOIN user_person up
 	        ON u.user_id = up.user_id
+	    LEFT JOIN user_product usp
+	        ON u.user_id = usp.user_id
+	       AND usp.use_status = 'active'
+	    LEFT JOIN product p
+	        ON usp.product_id = p.product_id
 	    WHERE u.email = #{sId}
 	</select>
 

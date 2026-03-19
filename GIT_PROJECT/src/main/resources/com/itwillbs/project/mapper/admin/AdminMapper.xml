@@ -430,7 +430,7 @@
 		and
 			post_check = 2
 	</select>
-	
+     	
 	<!-- 기업 탈퇴회원 전체 목록 갯수 조회 -->
 	<select id="selectComWithdrawListCount" resultType="int">
 		select 

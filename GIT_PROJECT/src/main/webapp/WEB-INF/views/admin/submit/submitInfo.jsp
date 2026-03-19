@@ -125,7 +125,17 @@
 								<dd class="col-sm-9">${submit.probation}</dd>
 
 								<dt class="col-sm-3 text-secondary">경력</dt>
-								<dd class="col-sm-9">${submit.expType}(${submit.expYear})</dd>
+								<dd class="col-sm-9">
+									<c:choose>
+										<c:when test="${submit.expType eq 'new'}">
+											신입
+										</c:when>
+										<c:otherwise>
+											경력
+										</c:otherwise>
+									</c:choose>
+									(${submit.expYear})
+								</dd>
 
 								<dt class="col-sm-3 text-secondary">학력</dt>
 								<dd class="col-sm-9">${submit.edu}</dd>

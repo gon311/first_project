@@ -58,12 +58,14 @@
 							    <c:choose>
 							        <%-- 이미지인 경우 --%>
 							        <c:when test="${file.fileExt.contains('image') || file.fileExt.contains('jpg') || file.fileExt.contains('png')}">
-							            <div class="file-item img-item"> <img src="/upload/qna/${file.filePath}/${file.storedName}" alt="${file.originName}">
+							            <div class="file-item img-item"> <img src="<c:url value='/help/image/view'/>?filePath=${file.filePath}&storedName=${file.storedName}"
+							            									alt="${file.originName}">
+							            									
 							            </div>
 							        </c:when>
 							        <%-- 일반 파일인 경우 --%>
 							        <c:otherwise>
-									    <a href="/upload/qna/${file.filePath}/${file.storedName}" 
+									    <a href="<c:url value='/help/download'/>?filePath=${file.filePath}&storedName=${file.storedName}"
 									       download="${file.originName}" 
 									       class="file-download-link">
 									        <i class="fa-regular fa-file-lines"></i>

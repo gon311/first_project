@@ -88,18 +88,15 @@
 				            <div class="file-preview-container" style="display: flex; flex-wrap: wrap; gap: 15px;">
 				                <c:forEach var="file" items="${detailFile}">
 				                    <div class="file-item" style="width: 100%;">
-				                        <%-- 파일이 이미지인 경우 (간단하게 확장자나 DB의 contentType으로 구분) --%>
 				                        <c:choose>
 				                            <c:when test="${file.fileExt.contains('image') || file.fileExt.contains('jpg') || file.fileExt.contains('png')}">
 				                                <div style="margin-bottom: 10px;">
-										            <%-- 컨트롤러 매핑인 /board/image/view 를 사용합니다 --%>
 										            <img src="<c:url value='/board/image/view'/>?filePath=${file.filePath}&storedName=${file.storedName}" 
 										                 alt="${file.originName}" 
 										                 style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
 										        </div>
 				                            </c:when>
 				                            <c:otherwise>
-				                                <%-- 이미지가 아닌 일반 파일은 기존처럼 링크로 표시 --%>
 				                                <a href="<c:url value='/board/download'/>?filePath=${file.filePath}&storedName=${file.storedName}"
 				                                   download="${file.originName}" 
 				                                   style="color:#007bff; text-decoration:none; display: block; padding: 10px; border: 1px dashed #ccc;">

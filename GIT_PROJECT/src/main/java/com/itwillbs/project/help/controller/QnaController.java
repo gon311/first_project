@@ -5,6 +5,11 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.project.board.service.BoardService;
 import com.itwillbs.project.common.dto.FileDTO;
+import com.itwillbs.project.common.dto.FileResourceDTO;
 import com.itwillbs.project.common.exception.BackwardException;
+import com.itwillbs.project.common.util.FileUtils;
 import com.itwillbs.project.help.dto.SupportQnaDTO;
 import com.itwillbs.project.help.service.QnaService;
 
@@ -26,6 +35,9 @@ public class QnaController {
 
     @Autowired
     private QnaService qnaService;
+    
+    @Autowired
+	private BoardService boardService;
 
     // 1. 문의 작성 페이지 이동
     @GetMapping("/QnAWrite")
@@ -52,12 +64,9 @@ public class QnaController {
 	        return "redirect:/user/login";
 	    }
 	    
-//    	System.out.println("전달된 데이터: " + qna.toString());
-    	
         qna.setWriterId(sId);
-
+        
         try {
-            // 서비스에서 글 저장 + 파일 저장을 하나의 트랜잭션으로 처리
             qnaService.registerQna(qna, files);
             rttr.addFlashAttribute("message", "문의가 성공적으로 접수되었습니다.");
         } catch (Exception e) {
@@ -130,5 +139,40 @@ public class QnaController {
         
         return "redirect:/my/qna"; // 삭제 후 목록으로 이동
     }
+    
+    @GetMapping("/image/view")
+	public ResponseEntity<Resource> viewEditorImage(@RequestParam String filePath,
+	                                                @RequestParam String storedName) {
+    	
+    	System.out.println("11111111 : " + filePath);
+    	System.out.println("22222222 : " + storedName);
+	    FileDTO fileDTO = new FileDTO();
+	    fileDTO.setFilePath(filePath);
+	    fileDTO.setStoredName(storedName);
+
+	    FileResourceDTO fileResourceDTO = FileUtils.getImageResource(fileDTO);
+	    Resource resource = fileResourceDTO.getResource();
+
+	    return ResponseEntity.ok()
+	            .contentType(fileResourceDTO.getContentType())
+	            .body(resource);
+	}
+    
+    @GetMapping("/download")
+	public ResponseEntity<Resource> downloadFile(@RequestParam Integer fileId) {
+	    FileDTO fileDTO = boardService.getFileById(fileId);
+
+	    if (fileDTO == null) {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "파일 정보가 없습니다.");
+	    }
+
+	    FileResourceDTO fileResourceDTO = FileUtils.getFileResource(fileDTO);
+	    Resource resource = fileResourceDTO.getResource();
+
+	    return ResponseEntity.ok()
+	            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+	            .header(HttpHeaders.CONTENT_DISPOSITION, fileResourceDTO.getContentDisposition().toString())
+	            .body(resource);
+	}
     
 }

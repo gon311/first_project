@@ -77,6 +77,10 @@ ChatGPT API를 활용하여 **자기소개서를 자동 분석하고 첨삭 피�
 
 ### AI / API
 - OpenAI ChatGPT API
+- Portone API
+- chart.js API
+- cloudflare Turnstile API
+- 공공데이터포털 API
 
 ### Tools
 - Git / GitHub 

@@ -45,7 +45,7 @@
 	        </div>
 	        <c:choose>
 		        <%-- 상태가 '모집중(1)'일 때만 버튼 활성화 --%>
-		        <c:when test="${post.postStatus == 1 && sessionScope.userType ne 'C' && post.postCheck == 2}">
+		        <c:when test="${post.postStatus == 1 && sessionScope.userType ne 'C' && sessionScope.userType ne 'A' && post.postCheck == 2}">
 		            <button type="button" class="apply-btn" id="applyBtn" onclick="checkResumeAndApply()">입사지원</button>
 		        </c:when>
 		        

@@ -64,11 +64,13 @@
                 <div class="menu">
 
                     <c:if test="${isOwner or sessionScope.userType eq 'A'}">
-
+                    
+					<c:if test="${isOwner}">
                         <a class="btn-ghost"
                            href="${urlBoardEdit}?postId=${post.postId}">
                             수정
                         </a>
+					</c:if>
 
                         <form action="${urlBoardDelete}"
                               method="post"

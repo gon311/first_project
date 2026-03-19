@@ -144,13 +144,11 @@ public class QnaController {
 	public ResponseEntity<Resource> viewEditorImage(@RequestParam String filePath,
 	                                                @RequestParam String storedName) {
     	
-    	System.out.println("11111111 : " + filePath);
-    	System.out.println("22222222 : " + storedName);
 	    FileDTO fileDTO = new FileDTO();
 	    fileDTO.setFilePath(filePath);
 	    fileDTO.setStoredName(storedName);
 
-	    FileResourceDTO fileResourceDTO = FileUtils.getImageResource(fileDTO);
+	    FileResourceDTO fileResourceDTO = FileUtils.getImageQna(fileDTO);
 	    Resource resource = fileResourceDTO.getResource();
 
 	    return ResponseEntity.ok()
@@ -165,7 +163,7 @@ public class QnaController {
 	    if (fileDTO == null) {
 	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "파일 정보가 없습니다.");
 	    }
-
+	    
 	    FileResourceDTO fileResourceDTO = FileUtils.getFileResource(fileDTO);
 	    Resource resource = fileResourceDTO.getResource();
 

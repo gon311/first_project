@@ -162,7 +162,6 @@ public class FileUtils {
     public static List<FileDTO> uploadQnaFile(List<MultipartFile> files) throws IOException {
         // QNA 전용 디렉토리 생성 호출
         String filePath = createQnaDirectories();
-        
         List<FileDTO> fileList = new ArrayList<FileDTO>();
         
         for(MultipartFile mFile : files ) {
@@ -171,14 +170,9 @@ public class FileUtils {
             String originName = mFile.getOriginalFilename();
             String fileExt = originName.substring(originName.lastIndexOf(".") + 1);
             String storedName = UUID.randomUUID().toString().substring(24) + "_" + originName;
-            
             // [중요] qnaFileLocation(/qna)을 사용하도록 경로 설정
             Path uploadDirectory = Paths.get(uploadBaseLocation, qnaFileLocation, filePath).toAbsolutePath().normalize();
-            
             // 디렉토리가 없으면 생성 (안전장치)
-            if(!Files.exists(uploadDirectory)) {
-                Files.createDirectories(uploadDirectory);
-            }
             
             Path uploadPath = uploadDirectory.resolve(storedName);
             mFile.transferTo(uploadPath);
@@ -193,6 +187,35 @@ public class FileUtils {
             fileList.add(fileDTO);
         }
         return fileList;
+    }
+    
+    public static FileResourceDTO getImageQna(FileDTO fileDTO) {
+        try {
+            Path uploadPath = Paths.get(
+                    uploadBaseLocation,
+                    qnaFileLocation,
+                    fileDTO.getFilePath(),
+                    fileDTO.getStoredName()
+            ).toAbsolutePath().normalize();
+
+            Resource resource = new FileSystemResource(uploadPath);
+
+            if (!resource.exists() || !resource.isReadable()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다");
+            }
+
+            String contentType = Files.probeContentType(uploadPath);
+
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+
+            return new FileResourceDTO(resource, null, contentType);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 조회 실패");
+        }
     }
 
     // [추가] QNA 전용 디렉토리 생성 로직

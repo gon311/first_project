@@ -689,9 +689,25 @@
 	
 	<!-- 채용공고 삭제 -->
 	<delete id="deleteJobPost">
-		DELETE FROM job_posting
+		UPDATE job_posting
+		SET post_status = 0
 		WHERE job_id = #{jobId}
 	</delete>
+	
+	<!-- 채용공고 조회 파일 -->
+	<select id="selectFileList" resultType="fileDTO">
+	    SELECT 
+	        file_id AS fileId,
+	        job_id AS idx,              
+	        category_idx AS categoryIdx,
+	        origin_name AS originName,
+	        stored_name AS storedName,
+	        file_path AS filePath,
+	        file_size AS fileSize,
+	        file_ext AS fileExt
+	    FROM uploaded_file
+	    WHERE job_id = #{jobId}
+	</select>
 
 	
 	<!-- ================================================================================== -->
@@ -728,7 +744,6 @@
 			j.comp_id = c.user_id
 		where
 			1=1
-
 			<if test="startDate != null and !startDate.equals('')	 and endDate != null and !endDate.equals('')">
 				and 
 					date(j.reg_date) between #{startDate} and #{endDate}
@@ -1124,6 +1139,7 @@
 		FROM 
 			faq
 		<where>
+			status = 'active'
 			<if test="userType != null and userType != '' and userType != 'all'">
 				AND user_type=#{userType}
 			</if>
@@ -1171,6 +1187,7 @@
 		FROM
 			faq
 		<where>
+			status = 'active'
 			<if test="userType != null and userType != '' and userType != 'all'">
 				AND user_type=#{userType}
 			</if>
@@ -1227,8 +1244,13 @@
 		)
 	</insert>
 	<delete id ="deleteFaq">
-		DELETE FROM faq
-		WHERE faq_id = #{faqId}
+		UPDATE 
+			faq
+		SET 
+			status = 'deleted'
+		WHERE 
+			faq_id = #{faqId}
+		
 	</delete>
 	<update id = "updateFaq">
 		UPDATE
@@ -1503,6 +1525,8 @@
 	    ORDER BY 
 	    	label ASC
 	</select>
+	
+	<!-- 주간 총 매출액  -->
 	<select id="getTotalRevenueStats" resultType="map">
    		SELECT 
         	DATE_FORMAT(pay_date, '%m-%d') AS label

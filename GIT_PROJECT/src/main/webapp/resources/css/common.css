@@ -113,7 +113,7 @@ main {
 
 /* 메가 메뉴 컨테이너 - 아이시 화이트 */
 .mega-menu-content {
-    display: none;
+    display: none !important; 
     position: absolute;
     top: 100%; 
     left: 0;
@@ -178,19 +178,11 @@ main {
 
 
 /* footer 영역 */
-/* 1. 푸터 기본 배경 및 폰트 설정 */
-footer.footer {
-    background-color: #1B263B !important;
-    color: #FFFFFF !important;
-    padding: 60px 0 !important;
-    min-width: 100% !important; /* 바디의 1200px에 갇히지 않게 해제 */
-}
 
-/* 2. 부트스트랩의 row가 겹치는 걸 방지하는 핵심 설정 */
-footer.footer .row {
-    display: flex;
-    flex-wrap: wrap; /* 자리가 없으면 무조건 줄바꿈 */
-    margin: 0;
+footer.footer {
+    background-color: #1B263B !important; /* 세련된 딥 네이비 */
+    color: #FFFFFF !important;           /* 흰색 글자 */
+    padding: 60px 0;
 }
 footer.footer .col-md-5 {
 	text-align: left !important;
@@ -204,35 +196,4 @@ footer.footer .col-md-5 {
 .footer-link:hover {
     color: #FFFFFF !important;           /* 호버 시 흰색으로 강조 */
     text-decoration: underline;
-}
-
-/* 3. 특정 해상도 이하에서 겹침 원천 차단 (미디어 쿼리) */
-/* 1200px 미만으로 내려가면 바로 세로 정렬로 전환 */
-@media (max-width: 1200px) {
-    footer.footer .container {
-        max-width: 100% !important;
-        padding: 0 30px;
-    }
-
-    /* 로고, 정보, 링크 세 구역을 모두 가로 100%로 강제 지정 */
-    footer.footer .col-md-2,
-    footer.footer .col-md-5 {
-        flex: 0 0 100% !important;
-        max-width: 100% !important;
-        width: 100% !important;
-        text-align: center !important; 
-        margin-bottom: 30px !important;
-    }
-
-    /* 오른쪽 끝에 붙어있던 링크들을 중앙으로 */
-    footer.footer .text-md-end {
-        text-align: center !important;
-    }
-
-    /* 링크들이 너무 길어질 경우 대비 */
-    .footer-link {
-        display: inline-block;
-        margin: 5px 2px;
-        white-space: nowrap; /* 글자가 중간에 잘리지 않게 */
-    }
 }

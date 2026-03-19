@@ -1,8 +1,6 @@
 package com.itwillbs.project.admin.service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -262,6 +260,8 @@ public class AdminService{
 	public List<JobPostDTO> getJobPostInfo(long userId) {
 		return adminMapper.selectJobPostInfo(userId); 
 	}
+
+
 	
 	//======================================================================================
 	// 공지사항 리스트 조회 (DTO 파라미터로 사용)
@@ -302,20 +302,25 @@ public class AdminService{
 	}
 	
 	public int getJobPostTotalCount(SearchDTO searchDTO) {
-
 		return adminMapper.getJobPostTotalCount(searchDTO);
 	}
 
 
 	// 채용공고 상세 조회
-	public JobPostDTO getJobPostDetail(int jobId) {
+	public JobPostDTO getJobPostDetail(long jobId) {
 		return adminMapper.getJobPostById(jobId);
 	}
 	
 	// 채용공고 삭제
-	public void deleteJobPost(int jobId) {
+	public void deleteJobPost(long jobId) {
 		adminMapper.deleteJobPost(jobId);
 	}
+	// 채용공고 조회 업로드 파일
+	public List<FileDTO> getFileList(long jobId) {
+		
+		return adminMapper.selectFileList(jobId);
+	}
+
 
 	//======================================================================================
 	// 결제 내역 전체 목록 조회
@@ -633,20 +638,6 @@ public class AdminService{
 	    return result;
 	}
 
-
-
-
-
-
-
-	
-	
-
-	
-
-	
-
-	
 
 
 

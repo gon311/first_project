@@ -69,7 +69,7 @@
 								href="<c:url value='/job/JobPosting' />">공고 등록</a>
 							</li>
 							<li>
-								<a class="dropdown-item" href="<c:url value='/comMy/job' />">내 공고</a>
+								<a class="dropdown-item" href="<c:url value='/job/JobManagement' />">내 공고</a>
 							</li>
 						</ul></li>
 

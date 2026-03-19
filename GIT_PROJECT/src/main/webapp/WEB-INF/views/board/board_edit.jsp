@@ -81,7 +81,7 @@
           </div>
 
           <div class="counter">
-            <span id="contentCount">0</span>/5000자
+          	<span id="contentCount">0</span>/5000자
           </div>
         </div>
 

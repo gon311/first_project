@@ -139,9 +139,12 @@ public interface AdminMapper {
 	List<JobPostDTO> getJobPostList(SearchDTO searchDTO);
 	
 //	채용공고 상세 조회
-	JobPostDTO getJobPostById(int jobId);
+	JobPostDTO getJobPostById(long jobId);
 	
-	void deleteJobPost(int jobId);
+	void deleteJobPost(long jobId);
+	
+	List<FileDTO> selectFileList(long jobId);
+
 	
 	//========================================================================
 	// 결제 목록 전체 갯수 조회
@@ -294,6 +297,7 @@ public interface AdminMapper {
 
 //	자유게시판 게시글 삭제	
 	void deleteBoard(long postId);
+
 
 
 

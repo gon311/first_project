@@ -26,10 +26,6 @@
 		 			<when test ='type == "title"'>
 		 				AND notice_title LIKE CONCAT('%', #{keyword}, '%')
 		 			</when>
-		 			
-		 			<when test = 'type == "status"'>
-		 				AND status = #{keyword}
-		 			</when>
 		 			<when test = 'type == "userType"'>
 		 				AND user_type = #{keyword}
 		 			</when>

@@ -55,12 +55,13 @@
 	<update id="updateContent">
 		UPDATE cover_letter
 		SET 
-			question_idx = (SELECT 	question_idx
-							FROM 	question_category
-							WHERE 	question_code = #{questionCode})
-			, content = #{content}
-			, save_status = #{saveStatus}
-			, ai_generated = #{aiGenerated} 
+			title 			= #{title}
+			,question_idx 	= (SELECT 	question_idx
+								FROM 	question_category
+								WHERE 	question_code = #{questionCode})
+			, content 		= #{content}
+			, save_status 	= #{saveStatus}
+			, ai_generated 	= #{aiGenerated} 
 		WHERE cover_letter_idx = #{coverLetterIdx}
 	</update>
 	

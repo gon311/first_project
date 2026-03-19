@@ -75,6 +75,8 @@ public class ReviewController {
 	// 3) 3단계 저장
 	@PostMapping("/save")
 	public String reviewSave(CoverLetterDTO coverLetterDTO, Model model) {
+		log.info("수정된 제목: " + coverLetterDTO.getTitle());
+	    log.info("글 번호(IDX): " + coverLetterDTO.getCoverLetterIdx());
 		
 		reviewService.saveTotal(coverLetterDTO); // 2단계에서 작성된 내용 sql 테이블에 update 반영
 		

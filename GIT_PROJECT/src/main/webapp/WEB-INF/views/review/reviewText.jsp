@@ -18,6 +18,10 @@
 			
 			<form action="<c:url value="/review/save" />" name="registText"
 				id="registText" method="post" novalidate>
+				
+				<input type="hidden" id="coverLetterIdx" name="coverLetterIdx" value="${coverLetterDTO.coverLetterIdx}">
+				<input type="hidden" name="userId" value="${coverLetterDTO.userId}">
+				
 				<div class="card shadow-sm review-card">
 					<div class="card-body p-4">
 	
@@ -26,7 +30,7 @@
 							<label for="title" class="form-label fw-semibold">자소서 제목<span
 								class="text-danger">*</span></label> <input type="text"
 								class="form-control" id="title" name="title"
-								value="${coverLetterDTO.title}" placeholder="제목을 입력해 주세요." required>
+								value="${coverLetterDTO.title}" required>
 						</div>
 						
 						<!-- 질문 선택 -->
@@ -60,7 +64,7 @@
 						</div>
 	
 						<!-- 글자수 -->
-						<div class="text-count mb-2">
+						<div class="text-count mb-2 text-end">
 							글자수 체크(공백 포함) <span id="charCount">0</span>자
 						</div>
 	
@@ -89,9 +93,7 @@
 	
 					</div>
 				</div>
-				
-				<%-- select문에서 사용할 coverLetterIdx --%>
-				<input type="hidden" id="coverLetterIdx" name="coverLetterIdx" value="${coverLetterDTO.coverLetterIdx}">
+								
 				<%-- ai 생성 여부  --%>
 				<input type="hidden" id="aiGenerated" name="aiGenerated" value="0">
 				<%-- 최종저장 status --%>

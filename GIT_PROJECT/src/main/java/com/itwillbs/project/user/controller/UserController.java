@@ -353,8 +353,7 @@ public class UserController {
 		    ra.addFlashAttribute("msg", "비밀번호가 변경되었습니다.");
 		    return "user/login_form";
 		} else {
-		    ra.addFlashAttribute("errorMsg", "현재 비밀번호와 동일한 비밀번호는 사용하실 수 없습니다.");
-		    return "user/find_pw";
+		    throw new BackwardException("현재 비밀번호와 동일한 비밀번호는 사용하실 수 없습니다.");
 		}
 	}
 	

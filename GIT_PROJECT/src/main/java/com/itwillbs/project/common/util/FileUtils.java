@@ -26,11 +26,11 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class FileUtils {
 	// 업로드에 사용될 기본 경로들을 필드에 저장
-	private static final String uploadBaseLocation = "/upload";
+//	private static final String uploadBaseLocation = "/upload";
+	private static final String uploadBaseLocation = "../upload";
 	private static final String boardFileLocation = "/board";
 	private static final String qnaFileLocation = "/qna";
 	private static final String editorFileLocation = "/editor";
-	
 //	private static final String noticeFileLocation = "/notice";
 	
 	// 파일 업로드 처리

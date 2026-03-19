@@ -683,7 +683,8 @@
 	
 	<!-- 채용공고 삭제 -->
 	<delete id="deleteJobPost">
-		DELETE FROM job_posting
+		UPDATE job_posting
+		SET post_status = 0
 		WHERE job_id = #{jobId}
 	</delete>
 	
@@ -1133,6 +1134,7 @@
 		FROM 
 			faq
 		<where>
+			status = 'active'
 			<if test="userType != null and userType != '' and userType != 'all'">
 				AND user_type=#{userType}
 			</if>
@@ -1171,6 +1173,7 @@
 		FROM
 			faq
 		<where>
+			status = 'active'
 			<if test="userType != null and userType != '' and userType != 'all'">
 				AND user_type=#{userType}
 			</if>
@@ -1227,8 +1230,13 @@
 		)
 	</insert>
 	<delete id ="deleteFaq">
-		DELETE FROM faq
-		WHERE faq_id = #{faqId}
+		UPDATE 
+			faq
+		SET 
+			status = 'deleted'
+		WHERE 
+			faq_id = #{faqId}
+		
 	</delete>
 	<update id = "updateFaq">
 		UPDATE
@@ -1503,7 +1511,10 @@
 	    ORDER BY 
 	    	label ASC
 	</select>
+	
+	<!-- 주간 총 매출액  -->
 	<select id="getTotalRevenueStats" resultType="map">
+	
    		SELECT 
         	DATE_FORMAT(pay_date, '%m-%d') AS label
         	,  SUM(pay_price) AS value                  		

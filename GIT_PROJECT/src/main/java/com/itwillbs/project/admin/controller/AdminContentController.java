@@ -34,7 +34,7 @@ public class AdminContentController {
 			SearchDTO searchDTO,
 			Model model) {
 		
-		int listLimit = 10;
+		int listLimit = 5;
 		int pageListLimit = 5; 
 		
 		int listCount = adminService.getNoitceTotalCount(searchDTO);
@@ -150,8 +150,10 @@ public class AdminContentController {
 	@GetMapping("/JobPostDetail")
 	public String jobPostDetail(@RequestParam("jobId") long jobId, Model model) {
 		JobPostDTO jobPostDTO = adminService.getJobPostDetail(jobId);
+		
 		List<FileDTO> detailFile = adminService.getFileList(jobId);
 		model.addAttribute("jobPostDTO", jobPostDTO);
+		model.addAttribute("detailFile", detailFile);
 		
 		return "admin/contents/jobPostDetail";
 	}

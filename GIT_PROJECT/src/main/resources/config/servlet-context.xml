@@ -36,7 +36,7 @@
 		<beans:property name="defaultEncoding" value="UTF-8" />
 	</beans:bean>	
 	
-	
+	<!-- 관리자외 접근 권한 제한 설정 -->
 	<mvc:interceptors>
 	    <mvc:interceptor>
 	        <mvc:mapping path="/admin/**"/> 

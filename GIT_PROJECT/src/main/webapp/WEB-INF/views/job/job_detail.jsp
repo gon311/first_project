@@ -100,7 +100,7 @@
 				                            </c:when>
 				                            <c:otherwise>
 				                                <%-- 이미지가 아닌 일반 파일은 기존처럼 링크로 표시 --%>
-				                                <a href="/upload/board/${file.filePath}/${file.storedName}" 
+				                                <a href="<c:url value='/board/download'/>?filePath=${file.filePath}&storedName=${file.storedName}"
 				                                   download="${file.originName}" 
 				                                   style="color:#007bff; text-decoration:none; display: block; padding: 10px; border: 1px dashed #ccc;">
 				                                    <i class="fa-regular fa-file-lines"></i> ${file.originName} (다운로드)

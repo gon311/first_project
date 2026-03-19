@@ -80,7 +80,7 @@ ChatGPT API를 활용하여 **자기소개서를 자동 분석하고 첨삭 피�
 - Portone API
 - chart.js API
 - cloudflare Turnstile API
-- 공공데이터포털 API
+- 사업자등록정보 진위확인 및 상태조회 서비스 API (공공데이터포털)
 
 ### Tools
 - Git / GitHub 

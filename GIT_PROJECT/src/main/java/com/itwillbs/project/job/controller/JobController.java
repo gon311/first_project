@@ -270,7 +270,8 @@ public class JobController {
 	
 	@GetMapping("/ApplicantManage")
 	public String applicantManage(
-	        @ModelAttribute("cond") JobCond cond, 
+	        @ModelAttribute("cond") JobCond cond,
+	        String jobId,
 	        BindingResult bindingResult, 
 	        @RequestParam(value = "page", defaultValue = "1") int pageVal, 
 	        @RequestParam(value = "size", defaultValue = "10") int sizeVal, 
@@ -280,14 +281,20 @@ public class JobController {
 	    Long compId = (Long) session.getAttribute("userIdx");
 	    String userType = (String) session.getAttribute("userType");
 	    if (compId == null || !"C".equals(userType)) return "redirect:/user/login";
-
+	    
+	    int jId = (int) jobService.getJobId(jobId);
+	    
+	    if(compId != jId) {
+	    	throw new BackwardException("잘못된 접근입니다!");
+	    }
+	    
 	    // [핵심 로직]
 	    // 스프링이 'page'라는 파라미터를 cond.page(객체)에 담으려다 실패했더라도,
 	    // 우리가 @RequestParam으로 가로챈 숫자(pageVal)를 수동으로 꽂아넣습니다.
 	    cond.setUserId(compId);
 	    cond.getPage().setPage(pageVal);
 	    cond.getPage().setSize(sizeVal);
-
+	    
 	    // 서비스 호출
 	    List<JobApplicationDTO> applicantList = jobService.getApplicantListPaging(cond);
 	    int totalCount = jobService.getApplicantCount(cond);

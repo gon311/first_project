@@ -549,6 +549,13 @@
 	
 	<!-- =================================================== -->
 	
+	<select id="getJobId" resultType="int">
+		select comp_id
+		FROM job_posting 
+		WHERE job_id = #{jobId};
+	</select>
+	
+	
 <!-- 	<select id="getApplicantStatusCounts" resultType="map"> -->
 <!-- 	    SELECT app_step, COUNT(*) as cnt -->
 <!-- 	    FROM job_application a -->

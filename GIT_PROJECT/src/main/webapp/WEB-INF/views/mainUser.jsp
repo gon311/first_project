@@ -134,10 +134,8 @@
 			    try {
 			        const response = await fetch("<c:url value='/card/list'/>?type=" + type);
 			        const companyList = await response.json();
-			        
-			        const targetElement = document.getElementById(targetId);
 
-			        renderCompanyCards(companyList, targetElement);
+			        renderCompanyCards(companyList, targetId);
 			        
 			    } catch(e) {
 			        console.error("기업 데이터 로딩 실패", e);

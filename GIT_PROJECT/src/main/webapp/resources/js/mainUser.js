@@ -23,7 +23,6 @@ function renderCompanyCards(companyList, targetId){
     	return; 
     }
  	// 3. 카드 생성 및 삽입 (상위 6개)
-    let htmlContent = ""; // 성능을 위해 문자열에 담았다가 한 번에 삽입
     companyList.slice(0,6).forEach(company => {
     	const jobId = company.jobId;
     	const title = company.title;

@@ -89,9 +89,15 @@ public class JobController {
 	public String edit(HttpSession session, Model model,
 			@RequestParam("jobId") Long jobId) {
 		String sId = (String) session.getAttribute("userType");
+		Long userIdx = (Long) session.getAttribute("userIdx");
 	    if (sId == null || !"C".equals(sId)) {
 	        return "redirect:/user/login";
 	    }
+	    int jId = (int) jobService.getJobId(jobId);
+	    if(userIdx != jId) {
+	    	throw new BackwardException("잘못된 접근입니다!");
+	    }
+	    
 	    JobDTO jobDTO = jobService.getJobListDetail(jobId);
 	    List<FileDTO> fileList = jobService.getFileList(jobId);
 	    model.addAttribute("job", jobDTO);
@@ -114,7 +120,7 @@ public class JobController {
 	    if (userIdx == null || !"C".equals(userType)) {
 	        return "redirect:/user/login";
 	    }
-
+	    
 	    // 2. DTO에 필요한 정보 세팅 (누락 방지)
 	    jobDTO.setJobId(jobId);
 	    jobDTO.setCompId(userIdx); // 자신의 공고만 수정할 수 있도록 조건으로 사용
@@ -161,6 +167,8 @@ public class JobController {
 		Long userId = (Long)session.getAttribute("userIdx");
 		applicationDTO.setUserId(userId);
 		if (sId == null || !"P".equals(sId)) return "redirect:/user/login";
+		
+		
 		
 		if(resumeId == null) {
 			throw new BackwardException("잘못된 접근입니다!");
@@ -271,7 +279,7 @@ public class JobController {
 	@GetMapping("/ApplicantManage")
 	public String applicantManage(
 	        @ModelAttribute("cond") JobCond cond,
-	        String jobId,
+	        @RequestParam("jobId") Long jobId,
 	        BindingResult bindingResult, 
 	        @RequestParam(value = "page", defaultValue = "1") int pageVal, 
 	        @RequestParam(value = "size", defaultValue = "10") int sizeVal, 

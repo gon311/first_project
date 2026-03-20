@@ -187,9 +187,9 @@ public class JobService {
     public String getPostingTitle(Long jobId) {
         return jobMapper.getPostingTitle(jobId);
     }
+	public int getJobId(Long jobId) {
+		return jobMapper.getJobId(jobId);
+	}
 	// ===================================================
-    public int getJobId(String jobId) {
-    	return jobMapper.getJobId(jobId);
-    }
 
 }

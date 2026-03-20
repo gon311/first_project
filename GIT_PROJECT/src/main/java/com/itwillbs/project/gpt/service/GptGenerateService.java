@@ -44,7 +44,7 @@ public class GptGenerateService {
 		PassCheckDTO passCheckDTO = generateMapper.selectCount(userId);  // status 정보 가져옴 
 		
 		// 예외 처리 
-		if(passCheckDTO == null || "expired".equals(passCheckDTO.getUseStatus()) || passCheckDTO.getRemainingCount() <= 0) {
+		if(passCheckDTO == null || passCheckDTO.getPassCount() <= 0) {
 			return false;
 		}
 		

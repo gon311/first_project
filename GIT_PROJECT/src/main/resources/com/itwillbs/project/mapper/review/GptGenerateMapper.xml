@@ -31,9 +31,8 @@
 	<!-- 구직자 이용권 status 확인 -->
 	<select id="selectCount" resultType="com.itwillbs.project.gpt.dto.PassCheckDTO">
 		SELECT 
-			remaining_count
-			, use_status
-		FROM user_product
+			pass_count
+		FROM user_person
 		WHERE user_id = #{userId}
 	</select>
 	
@@ -44,7 +43,7 @@
 		WHERE 	user_id = #{userId}
 	</update>
 	
-	<!-- 패스권 횟수 차감 user_product update -->
+	<!-- 패스권 남은 횟수 차감 user_product update -->
 	<update id="updateProductRemain">
 		UPDATE	user_product
 		SET		remaining_count = remaining_count -1

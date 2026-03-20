@@ -175,6 +175,11 @@
 			}
 			
 		}
+		
+	    var msg = "${msg}";
+	    if (msg && msg !== "") {
+	        alert(msg);
+	    }
 	</script>
 </body>
 </html>

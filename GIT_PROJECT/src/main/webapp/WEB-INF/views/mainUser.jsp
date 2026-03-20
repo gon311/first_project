@@ -34,14 +34,6 @@
 				           🔥 인기 기업
 				        </button>
 				    </li>
-				    <c:if test="${!empty sessionScope.sId}">
-					    <li class="nav-item">
-					        <button data-type ="bookmark" class="company-btn nav-link" data-bs-toggle="pill" 
-					        data-bs-target="#bookmark">
-					            찜한 기업
-					        </button>
-					    </li>
-				    </c:if>
 				</ul>
 			</div>
 			<div class="card-slider">
@@ -51,6 +43,32 @@
 				        <!-- 카드 AJAX 생성 -->
 				    </div>
 				
+				    <div class="swiper-button-next"></div>
+				    <div class="swiper-button-prev"></div>
+				
+				</div>
+			</div>
+		</section>
+		<section class="sec01-sub">
+			<div class="ad-menu-sub">
+				<ul class="nav nav-pills mb-3" id="jobTabsSub">
+					<c:if test="${!empty sessionScope.sId}">
+					    <li class="nav-item">
+					        <button data-type ="bookmark" class="company-btn nav-link" data-bs-toggle="pill" 
+					        data-bs-target="#bookmark">
+					           ✨ 찜한 공고
+					        </button>
+					    </li>
+				    </c:if>
+				</ul>
+			</div>
+			<div class="card-slider">
+				<div class="swiper companySwiper">
+
+				    <div id="companyCardAreaSub" class="swiper-wrapper">
+				        <!-- 카드 AJAX 생성 -->
+				    </div>
+
 				    <div class="swiper-button-next"></div>
 				    <div class="swiper-button-prev"></div>
 				
@@ -77,11 +95,24 @@
 		<script src="<c:url value="/resources/js/mainUser.js" />"></script>
 		<script type="text/javascript">
 			let track;
+			let track2;
 			let swiper;
 			
 			// 페이지 로드 
 			document.addEventListener("DOMContentLoaded", () => {
 				track = document.getElementById("companyCardArea");
+				track2 = document.getElementById("companyCardAreaSub")
+				
+				// 이벤트 등록 
+				initEvents();
+
+				// 초기 데이터 
+				loadCompanies("today", "companyCardArea");
+				
+				//찜한 기업 데이터 출력 
+				if(${not empty sessionScope.sId}) {
+					loadCompanies("bookmark", "companyCardAreaSub");
+				}
 				
 				// 카드 클릭 → 상세 페이지 이동 
 				track.addEventListener("click", e => {
@@ -92,24 +123,19 @@
 				    location.href = "<c:url value='/job/JobDetail?jobId=' />" + jobId;
 				});
 				
-				// 이벤트 등록 
-				initEvents();
-
-				// 초기 데이터 
-				loadCompanies("today");
 				
 			});
 			
 			
 			// 기업 리스트 요청
-			async function loadCompanies(type){
-				console.log("loadCompanies 실행", type);
+			async function loadCompanies(type, targetId){
+				console.log("loadCompanies 실행", type, "Target: ", targetId);
 	
 			    try {
 			        const response = await fetch("<c:url value='/card/list'/>?type=" + type);
 			        const companyList = await response.json();
 
-			        renderCompanyCards(companyList);
+			        renderCompanyCards(companyList, targetId);
 			        
 			    } catch(e) {
 			        console.error("기업 데이터 로딩 실패", e);
@@ -121,18 +147,19 @@
 			// Swiper 초기화 
 			function initSwiper(){
 
-			    if(swiper){
-			        swiper.destroy(true,true);
-			    }
-			
-			    swiper = new Swiper(".companySwiper", {
-			        slidesPerView: 3,
-			        spaceBetween: 10,
-			
-			        navigation: {
-			            nextEl: ".swiper-button-next",
-			            prevEl: ".swiper-button-prev"
-			        }
+				// 모든 스와이퍼 요소를 순회하며 각각 초기화
+			    document.querySelectorAll(".companySwiper").forEach(el => {
+			        // 이미 생성된 인스턴스가 있다면 파괴 후 재생성 (갱신을 위해)
+			        if (el.swiper) el.swiper.destroy(true, true);
+
+			        new Swiper(el, {
+			            slidesPerView: 3,
+			            spaceBetween: 10,
+			            navigation: {
+			                nextEl: el.querySelector(".swiper-button-next"),
+			                prevEl: el.querySelector(".swiper-button-prev")
+			            }
+			        });
 			    });
 			
 			}
@@ -140,19 +167,21 @@
 			// 메뉴 버튼 클릭
 			function initEvents(){
 
-			    document
-			    .querySelectorAll(".company-btn")
-			    .forEach(button => {
+				document.querySelectorAll(".company-btn").forEach(button => {
+			        button.addEventListener("click", function() {
+			            const type = this.dataset.type; // 'today', 'popular', 'bookmark' 중 하나
 
-			        button.addEventListener("click", function(){
+			            // 1. 목적지(targetId) 결정 로직 추가
+			            let targetId;
+			            if (type === 'bookmark') {
+			                targetId = "companyCardAreaSub";
+			            } else {
+			                targetId = "companyCardArea";
+			            }
 
-			            const type =
-			            this.dataset.type;
-
-			            loadCompanies(type);
-
+			            // 2. 결정된 targetId를 함께 전달
+			            loadCompanies(type, targetId);
 			        });
-
 			    });
 
 			}

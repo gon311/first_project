@@ -136,7 +136,8 @@
 							<!-- 세부 직종 -->
 							<div class="row g-2 align-items-center">
 								<div class="col-12 col-sm-6 col-md-4">
-									<label for="jobRole" class="form-label mb-1">세부 직종</label> <select
+									<label for="jobRole" class="form-label mb-1">세부 직종 <span
+								class="text-danger">*</span></label> <select
 										id="roleCode" name="roleCode" class="form-select" disabled
 										required>
 										<option value="default" disabled selected>세부 직종을 선택하세요</option>

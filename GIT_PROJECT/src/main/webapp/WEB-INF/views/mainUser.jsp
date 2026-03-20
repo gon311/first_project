@@ -34,11 +34,29 @@
 				           🔥 인기 기업
 				        </button>
 				    </li>
-				    <c:if test="${!empty sessionScope.sId}">
+				</ul>
+			</div>
+			<div class="card-slider">
+				<div class="swiper companySwiper">
+
+				    <div id="companyCardArea" class="swiper-wrapper">
+				        <!-- 카드 AJAX 생성 -->
+				    </div>
+				
+				    <div class="swiper-button-next"></div>
+				    <div class="swiper-button-prev"></div>
+				
+				</div>
+			</div>
+		</section>
+		<section class="sec01-sub">
+			<div class="ad-menu-sub">
+				<ul class="nav nav-pills mb-3" id="jobTabsSub">
+					<c:if test="${!empty sessionScope.sId}">
 					    <li class="nav-item">
 					        <button data-type ="bookmark" class="company-btn nav-link" data-bs-toggle="pill" 
 					        data-bs-target="#bookmark">
-					            찜한 기업
+					           ✨ 찜한 기업
 					        </button>
 					    </li>
 				    </c:if>
@@ -47,7 +65,7 @@
 			<div class="card-slider">
 				<div class="swiper companySwiper">
 
-				    <div id="companyCardArea" class="swiper-wrapper">
+				    <div id="companyCardAreaSub" class="swiper-wrapper">
 				        <!-- 카드 AJAX 생성 -->
 				    </div>
 				
@@ -77,11 +95,24 @@
 		<script src="<c:url value="/resources/js/mainUser.js" />"></script>
 		<script type="text/javascript">
 			let track;
+			let track2;
 			let swiper;
 			
 			// 페이지 로드 
 			document.addEventListener("DOMContentLoaded", () => {
 				track = document.getElementById("companyCardArea");
+				track2 = document.getElementById("companyCardAreaSub")
+				
+				// 이벤트 등록 
+				initEvents();
+
+				// 초기 데이터 
+				loadCompanies("today", "companyCardArea");
+				
+				//찜한 기업 데이터 출력 
+				if(${not empty sessionScope.sId}) {
+					loadCompanies("bookmark", "companyCardAreaSub");
+				}
 				
 				// 카드 클릭 → 상세 페이지 이동 
 				track.addEventListener("click", e => {
@@ -92,24 +123,21 @@
 				    location.href = "<c:url value='/job/JobDetail?jobId=' />" + jobId;
 				});
 				
-				// 이벤트 등록 
-				initEvents();
-
-				// 초기 데이터 
-				loadCompanies("today");
 				
 			});
 			
 			
 			// 기업 리스트 요청
-			async function loadCompanies(type){
-				console.log("loadCompanies 실행", type);
+			async function loadCompanies(type, targetId){
+				console.log("loadCompanies 실행", type, "Target: ", targetId);
 	
 			    try {
 			        const response = await fetch("<c:url value='/card/list'/>?type=" + type);
 			        const companyList = await response.json();
+			        
+			        const targetElement = document.getElementById(targetId);
 
-			        renderCompanyCards(companyList);
+			        renderCompanyCards(companyList, targetElement);
 			        
 			    } catch(e) {
 			        console.error("기업 데이터 로딩 실패", e);

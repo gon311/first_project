@@ -110,26 +110,15 @@ public class StoreService{
 	private String SECRET_KEY;
 
     public PortoneDTO getPayment(String paymentId) {
-    	// 1️. PortOne 결제 조회 URL 생성
-        // paymentId를 포함해서 PortOne 서버에서 해당 결제 정보를 조회
         String url = "https://api.portone.io/payments/" + paymentId;
  
-        // 2️. RestTemplate 생성
-        // Spring에서 HTTP 요청을 보내고 응답을 받을 때 사용
         RestTemplate restTemplate = new RestTemplate();
          
-        // 3️. HTTP 헤더 세팅
-        // PortOne API는 Secret Key 기반 인증 필요
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "PortOne " + SECRET_KEY);
  
-        // 4️. HTTP 요청 객체 생성
-        // GET 요청 시 바디는 필요 없지만 헤더를 포함하기 위해 HttpEntity 사용
         HttpEntity<Void> entity = new HttpEntity<>(null, headers);
-
         
-        // 5️. RestTemplate로 GET 요청 실행
-        // exchange() 메소드: URL, HTTP 메소드, HttpEntity(헤더+바디), 반환 타입 지정
         try {
             ResponseEntity<PortoneDTO> response = restTemplate.exchange(url, HttpMethod.GET, entity, PortoneDTO.class);
             return response.getBody();

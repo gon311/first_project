@@ -87,6 +87,7 @@ public interface JobMapper {
 	// 공고 제목 가져오기 (기존 유지)
 	String getPostingTitle(Long jobId);
 	// ===================================================
+	int getJobId(String jobId);
 
     
 }

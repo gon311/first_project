@@ -19,6 +19,8 @@
 	</c:choose>
 
     <main class="container">
+    	<br>
+    	<br>
         <div class="find-id-container">
             <h3 class="fw-bold mb-2">아이디를 ${userIdList.size() }개 찾았어요</h3>
             <p class="text-muted mb-4">비밀번호를 잊으셨다면 아이디를 선택 후<br>'비밀번호 찾기'를 눌러 주세요.</p>
@@ -59,6 +61,8 @@
                 <a href="<c:url value="/help/helpWord" />" class="help-link">도움이 필요하신가요?</a>
             </div>
         </div>
+        <br>
+        <br>
     </main>
 
     <%@ include file="/WEB-INF/views/inc/footer.jspf" %>

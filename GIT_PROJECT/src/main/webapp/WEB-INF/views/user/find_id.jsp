@@ -25,13 +25,13 @@
 
             <form action="<c:url value='/user/findPw' />" method="get">
                 <div class="id-list-group">
-					<c:forEach var="userId" items="${userIdList}">
+					<c:forEach var="userId" items="${userIdList}" varStatus="st">
 						<label class="id-item w-100 m-0">
 	                        <span class="id-info">
 	                            <span class="user-icon">👤</span>
 	                            <span class="fw-bold">${userId.email}</span>
 	                        </span>
-	                        <input type="radio" name="email" value="${userId.email}">
+	                        <input type="radio" name="email" value="${userId.email}" ${st.first ? 'checked' : ''}>
 	                    </label>
 					</c:forEach>
                 </div>

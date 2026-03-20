@@ -48,4 +48,12 @@ public class BoardDTO {
 
 		return createdAt.format(formatter);
 	}
+	
+	public String getDisplayDateTextCreate() {
+	    if (createdAt == null) return "";
+	    
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+	    return createdAt.format(formatter);
+	}
+	
 }

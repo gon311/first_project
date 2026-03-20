@@ -22,7 +22,7 @@
 <!-- 		휴대폰 조합 저장 -->
 			<input type="hidden" name="phone" id="final-phone"> 
 	
-		    <div class="container">
+		    <div class="container1">
 		        <nav class="tab-nav">
 		            <button type="button" class="tab-btn active" onclick="switchTab('id')" id="tab-btn-id">아이디 찾기</button>
 		            <button type="button" class="tab-btn" onclick="switchTab('pw')" id="tab-btn-pw">비밀번호 찾기</button>

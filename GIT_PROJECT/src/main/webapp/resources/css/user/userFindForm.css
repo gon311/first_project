@@ -6,7 +6,7 @@ body { background-color: #f5f6f7; color: #333; font-size: 14px; }
 input, select, button { outline: none; vertical-align: middle; }
 
 /* [레이아웃] */
-.container { width: 1500px; margin: 50px auto; background: #fff; padding: 40px; border: 1px solid #ddd; }
+.container1 { width: 1500px; margin: 50px auto; background: #fff; padding: 40px; border: 1px solid #ddd; }
 
 /* [탭 메뉴] */
 .tab-nav { display: flex; margin-bottom: 30px; border-bottom: 2px solid #0055ff; }

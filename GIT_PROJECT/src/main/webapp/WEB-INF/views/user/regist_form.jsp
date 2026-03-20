@@ -266,6 +266,8 @@
             
             document.getElementById("btn-" + type + "-send").textContent = "재발송";
             alert("인증 메일을 발송했습니다. 메일이 도착하기까지 최대 2~3분 정도 소요될 수 있습니다.");
+            document.getElementById(type + "-verify-area").style.display = 'block';
+            
 			async function mailRequestCorrectContent() {
 				try {
 					const response = await fetch("<c:url value="/api/sendCode" />", { // 요청 주소
@@ -280,9 +282,6 @@
 						throw new Error("오류 발생!");
 					}
 					const result = await response.json();
-					
-					alert("인증번호를 입력해주세요.");
-		            document.getElementById(type + "-verify-area").style.display = 'block';
 					
 		            if(type == "phone") {
 						document.getElementById("phone-code").value = result.authCode;
@@ -320,6 +319,7 @@
 		            msgEl.innerText = "인증번호가 일치하지 않습니다.";
 		            msgEl.className = "verify-msg msg-error";
 		        }
+	            document.getElementById("btn-" + type + "-send").disabled = result.success;
 		    })
 		    .catch(error => {
 		        alert("인증 확인 중 오류가 발생했습니다.");

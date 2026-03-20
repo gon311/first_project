@@ -67,7 +67,7 @@ public class JobController {
 	    // 만약 이용권이 없으면 페이지 로딩 전에 알림창을 띄우고 돌려보냄
 	    if (!isActive) {
 	    	rt.addFlashAttribute("msg", "이용권이 만료되었습니다. 이용권 결제 후 공고 등록이 가능합니다.");
-	    	return "redirect:/job/JobList"; // 뒤로가기를 시키거나 구매페이지로 리다이렉트
+	    	return "redirect:/store/cstore"; // 뒤로가기를 시키거나 구매페이지로 리다이렉트
 	    }
 	    model.addAttribute("isActive", isActive);
 	    

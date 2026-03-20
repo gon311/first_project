@@ -315,10 +315,12 @@ public class JobController {
 			        return "redirect:/resume/list";
 			 }
 			 ResumeDTO resume = resumeService.getResumeInfo(resumeId);
-
+			 FileDTO photo = resumeService.getResumePhoto(resumeId); 
+			 
 			 if (resume == null) {
 		        return "redirect:/resume/list";
 			 }
+			 model.addAttribute("photo", photo);
 			 model.addAttribute("resume", resume);
 			 
 			 return "job/job_resume_view";

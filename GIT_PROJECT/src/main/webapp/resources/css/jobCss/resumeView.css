@@ -1,125 +1,92 @@
 @charset "UTF-8";
-
-/* 기본 배경 및 폰트 설정 */
-.resume-body {
-    background-color: #f4f6fa; /* 사람인 특유의 연한 회색 배경 */
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-    color: #333;
+body.resume-body {
+    background-color: #f4f7fa !important;
+    font-family: 'Pretendard', sans-serif;
 }
 
-/* 중앙 메인 폼 컨테이너 */
-.main-form {
+/* 2. 본문 영역: 헤더/푸터와 겹치지 않게 .main-form 클래스 내부만 조절 */
+.resume-body .main-form {
     background-color: #ffffff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    padding: 50px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     margin-top: 30px;
     margin-bottom: 50px;
 }
 
-/* 섹션 카드 디자인 */
-.section-card {
-    border: none;
-    border-bottom: 1px solid #eee;
+/* 3. 섹션 카드: 부트스트랩 기본 카드 스타일을 이 페이지 본문에서만 변경 */
+.main-form .section-card {
+    border: none !important;
+    border-bottom: 1px solid #eee !important;
+    border-radius: 0 !important;
     margin-bottom: 40px !important;
 }
 
-.section-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #111;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #444; /* 강조 라인 */
-    margin-bottom: 25px;
+/* 4. 섹션 타이틀: 메뉴 글씨와 겹치지 않도록 .section-title 아래에만 적용 */
+.main-form .section-title {
     background: none !important;
-    text-align: left !important; /* 중앙 정렬 해제 */
+    border-bottom: 2px solid #222 !important;
+    color: #222 !important;
+    font-size: 1.4rem !important;
+    font-weight: 800 !important;
+    padding: 10px 0 !important;
+    text-align: left !important; /* 가운데 정렬 해제 */
 }
 
-/* 입력창 라벨 */
-.resume-label, .form-label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #666;
-    margin-bottom: 8px;
+/* 5. 라벨(항목명): 본문 내의 라벨만 스타일 부여 */
+.main-form .resume-label, 
+.main-form .form-label {
+    color: #666 !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    margin-bottom: 10px !important;
+    display: inline-block !important;
 }
 
-/* Input & Select 커스텀 */
-.form-control, .form-select {
-    border: 1px solid #dce2f0;
-    padding: 12px 15px;
-    border-radius: 4px;
-    font-size: 15px;
-    transition: all 0.2s;
+/* 6. 데이터 출력 영역 (form-control-plaintext): 가장 중요한 본문 내용 스타일 */
+.main-form .form-control-plaintext {
+    background-color: #f9f9f9 !important; /* 데이터 영역 구분 */
+    border: 1px solid #e9ecef !important;
+    border-radius: 8px !important;
+    padding: 12px 15px !important;
+    font-size: 1.05rem !important;
+    color: #333 !important;
+    min-height: 48px !important;
+    margin-bottom: 5px !important;
 }
 
-.form-control:focus, .form-select:focus {
-    border-color: #4876ef;
-    box-shadow: 0 0 0 3px rgba(72, 118, 239, 0.1);
-    outline: none;
+/* 7. 프로필 이미지 박스 */
+.main-form .profile-box {
+    width: 150px;
+    height: 190px;
+    background-color: #f1f3f5;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin: 0 auto;
 }
 
-/* 프로필 사진 박스 */
-.profile-box {
-    width: 120px;
-    height: 150px;
-    background-color: #f8f9fa;
-    border: 1px solid #e1e1e1;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
+/* 8. 경력/학력 아이템 간격 */
+.main-form .experience-item {
+    padding: 20px 0;
 }
 
-.profile-box::after {
-    content: '사진';
-    color: #ccc;
-    font-size: 14px;
+/* 9. 하단 버튼 영역 */
+.main-form .btn-outline-secondary {
+    border: 2px solid #adb5bd !important;
+    color: #495057 !important;
+    border-radius: 30px !important;
+    font-weight: 700 !important;
+    transition: all 0.3s ease;
 }
 
-/* 주소 입력창 (반반 배치) */
-.address-half {
-    flex: 1;
-}
-
-/* 버튼 디자인 */
-.custom-btn {
-    background-color: #4876ef; /* 사람인 포인트 블루 */
-    color: white;
-    padding: 12px 40px;
-    font-weight: 600;
-    border-radius: 4px;
-    border: none;
-    transition: background 0.2s;
-}
-
-.custom-btn:hover {
-    background-color: #365bc7;
-    color: white;
-}
-
-.btn-outline-secondary {
-    border-color: #dce2f0;
-    color: #666;
-}
-
-/* 하단 목록 버튼 */
-.btn-secondary {
-    background-color: #888;
-    border: none;
+.main-form .btn-outline-secondary:hover {
+    background-color: #495057 !important;
+    color: #fff !important;
 }
 
 /* 반응형 모바일 대응 */
 @media (max-width: 768px) {
     .main-form {
-        padding: 20px;
-    }
-    .section-title {
-        font-size: 18px;
+        padding: 25px !important;
     }
 }
-
-/* 간격 조절용 */
-.mb-3 { margin-bottom: 1.5rem !important; }
-.gap-2 { gap: 10px !important; }

@@ -111,9 +111,10 @@ main {
     position: relative;
 }
 
+
 /* 메가 메뉴 컨테이너 - 아이시 화이트 */
 .mega-menu-content {
-    display: none !important; 
+    display: none; 
     position: absolute;
     top: 100%; 
     left: 0;
@@ -131,6 +132,7 @@ main {
 /* 활성화 상태 */
 .mega-menu-content.active {
     display: block !important;
+   	visibility: visible !important;
 }
 
 /* 내부 레이아웃 */
@@ -176,7 +178,6 @@ main {
     font-weight: 500;
 }
 
-
 /* footer 영역 */
 
 footer.footer {
@@ -196,4 +197,11 @@ footer.footer .col-md-5 {
 .footer-link:hover {
     color: #FFFFFF !important;           /* 호버 시 흰색으로 강조 */
     text-decoration: underline;
+}
+
+#megaMenu.active {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background-color: #F8F9FB !important;
 }

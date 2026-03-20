@@ -155,19 +155,42 @@
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
     const toggleBtn = document.getElementById('toggleAllBtn');
-    const megaMenu = document.getElementById('megaMenu');
+    const megaMenu = document.querySelector('#megaMenu');
 
     if (toggleBtn && megaMenu) {
+    	// 1. 버튼 클릭 이벤트
         toggleBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            // active 클래스를 넣었다 뺐다 함으로써 보이게/안보이게 조절
-            megaMenu.classList.toggle('active');
-        });
+        	e.preventDefault();
+        	e.stopPropagation();
+            
+        	const hasActive = megaMenu.classList.contains('active');
 
+        	if (hasActive) {
+		        megaMenu.classList.remove('active');
+		        console.log("명령: active 제거됨");
+		    } else {
+		        // 제거 시도함이 떴었다면, 강제로 한번 더 지웠다가 다시 넣는 '새로고침' 전략
+		        megaMenu.classList.remove('active'); 
+		        // 약간의 시간차를 두어 브라우저가 변화를 인지하게 함
+		        setTimeout(() => {
+		            megaMenu.classList.add('active');
+		            console.log("명령: active 강제 주입 완료");
+		            console.log("현재 클래스 리스트:", megaMenu.className);
+		        }, 0);
+		    }
+        	
+        });
+    	
+     // 2. 메뉴 내부 클릭 시에는 닫히지 않게 보호
+        megaMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    	
         // 메뉴 외부 클릭 시 닫힘
         document.addEventListener('click', function(e) {
-            if (!megaMenu.contains(e.target) && e.target !== toggleBtn) {
+        	if (megaMenu.classList.contains('active')) {
                 megaMenu.classList.remove('active');
+                console.log("외부 클릭으로 닫힘");
             }
         });
     }

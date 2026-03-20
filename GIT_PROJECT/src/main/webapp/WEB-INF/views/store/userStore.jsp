@@ -41,9 +41,14 @@
                                     <li class="fs-6 text-dark fw-semibold">✔ AI를 활용한 자소서 첨삭 시</li>
                                     <li class="fs-6 text-dark fw-semibold">추가적인 첨삭을 통해 퀄리티 향상</li>
                                 </ul>
-                                <p class="small text-muted text-center mb-0">
-                                    기본 첨삭 5회 + 10회 추가 제공
+                                
+                                <p class="text-primary text-center mb-0">
+                                    기본 제공 5회 + 10회 추가
                                 </p>
+                                <p class="small text-muted text-center mb-0">
+                                    ※ 가입 후 최초 구매 시 적용되는 횟수입니다
+                                </p>
+                                
                                 <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">5,000원</span>
@@ -65,9 +70,13 @@
                                     <li class="fs-6 text-dark fw-semibold">추가적인 첨삭을 통해 퀄리티 향상</li>
                                 </ul>
 
-                                <p class="small text-muted text-center mb-0">
-                                    기본 첨삭 5회 + 30회 추가 제공
+                                <p class="text-primary text-center mb-0">
+                                    기본 제공 5회 + 30회 추가
                                 </p>
+                                <p class="small text-muted text-center mb-0">
+                                    ※ 가입 후 최초 구매 시 적용되는 횟수입니다
+                                </p>
+                                
                                 <hr class="mt-1 mb-2">
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">8,000원</span>
@@ -88,9 +97,14 @@
                                     <li class="fs-6 text-dark fw-semibold">✔ AI를 활용한 자소서 첨삭 시</li>
                                     <li class="fs-6 text-dark fw-semibold">추가적인 첨삭을 통해 퀄리티 향상</li>
                                 </ul>
-                                <p class="small text-muted text-center mb-0">
-                                    기본 첨삭 5회 + 60회 추가 제공
+                                
+                                <p class="text-primary text-center mb-0">
+                                    기본 제공 5회 + 60회 추가
                                 </p>
+                                <p class="small text-muted text-center mb-0">
+                                    ※ 가입 후 최초 구매 시 적용되는 횟수입니다
+                                </p>
+                                
                                 <hr class="mt-1 mb-2"> 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="fs-4 fw-bold text-primary">15,000원</span>
@@ -110,8 +124,8 @@
 				    </p>
 				    <ul class="list-unstyled fs-6 text-dark fw-normal mb-5 text-center">
 				        <li class="mb-2">✔ 보유한 이용권 횟수 내에서 자유롭게 첨삭 서비스를 이용할 수 있습니다.</li>
-				        <li class="mb-2">✔ 이용권은 기본 제공 횟수와 추가 구매 횟수를 합산하여 사용 가능합니다.</li>
-				        <li class="mb-2">✔ 모든 이용권 횟수가 차감되면 더 이상 첨삭 서비스를 이용할 수 없습니다.</li>
+				        <li class="mb-2">✔ 가입 시 기본으로 제공되는 횟수와 추가 구매 횟수를 합산하여 사용 가능합니다.</li>
+				        <li class="mb-2">✔ 모든 이용 횟수가 차감되면 더 이상 첨삭 서비스를 이용할 수 없습니다.</li>
 				        <li class="mb-2">✔ 추가 이용을 원할 경우 새로운 이용권을 구매해야 합니다.</li>
 				    </ul>
 				    <p class="small text-muted text-center">

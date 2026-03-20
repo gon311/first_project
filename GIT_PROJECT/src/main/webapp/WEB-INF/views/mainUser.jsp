@@ -56,7 +56,7 @@
 					    <li class="nav-item">
 					        <button data-type ="bookmark" class="company-btn nav-link" data-bs-toggle="pill" 
 					        data-bs-target="#bookmark">
-					           ✨ 찜한 기업
+					           ✨ 찜한 공고
 					        </button>
 					    </li>
 				    </c:if>
@@ -68,7 +68,7 @@
 				    <div id="companyCardAreaSub" class="swiper-wrapper">
 				        <!-- 카드 AJAX 생성 -->
 				    </div>
-				
+
 				    <div class="swiper-button-next"></div>
 				    <div class="swiper-button-prev"></div>
 				
@@ -147,18 +147,19 @@
 			// Swiper 초기화 
 			function initSwiper(){
 
-			    if(swiper){
-			        swiper.destroy(true,true);
-			    }
-			
-			    swiper = new Swiper(".companySwiper", {
-			        slidesPerView: 3,
-			        spaceBetween: 10,
-			
-			        navigation: {
-			            nextEl: ".swiper-button-next",
-			            prevEl: ".swiper-button-prev"
-			        }
+				// 모든 스와이퍼 요소를 순회하며 각각 초기화
+			    document.querySelectorAll(".companySwiper").forEach(el => {
+			        // 이미 생성된 인스턴스가 있다면 파괴 후 재생성 (갱신을 위해)
+			        if (el.swiper) el.swiper.destroy(true, true);
+
+			        new Swiper(el, {
+			            slidesPerView: 3,
+			            spaceBetween: 10,
+			            navigation: {
+			                nextEl: el.querySelector(".swiper-button-next"),
+			                prevEl: el.querySelector(".swiper-button-prev")
+			            }
+			        });
 			    });
 			
 			}
@@ -166,19 +167,21 @@
 			// 메뉴 버튼 클릭
 			function initEvents(){
 
-			    document
-			    .querySelectorAll(".company-btn")
-			    .forEach(button => {
+				document.querySelectorAll(".company-btn").forEach(button => {
+			        button.addEventListener("click", function() {
+			            const type = this.dataset.type; // 'today', 'popular', 'bookmark' 중 하나
 
-			        button.addEventListener("click", function(){
+			            // 1. 목적지(targetId) 결정 로직 추가
+			            let targetId;
+			            if (type === 'bookmark') {
+			                targetId = "companyCardAreaSub";
+			            } else {
+			                targetId = "companyCardArea";
+			            }
 
-			            const type =
-			            this.dataset.type;
-
-			            loadCompanies(type);
-
+			            // 2. 결정된 targetId를 함께 전달
+			            loadCompanies(type, targetId);
 			        });
-
 			    });
 
 			}

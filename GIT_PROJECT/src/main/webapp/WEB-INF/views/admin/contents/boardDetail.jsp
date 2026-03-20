@@ -55,8 +55,7 @@
 	                        <div class="mb-1">
 	                            <span class="fw-bold text-primary">${comment.authorMemberId}</span>
 	                            <small class="text-muted ms-2">
-	                            	<fmt:parseDate var="createDate" value="${comment.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-	                                <fmt:formatDate value="${createDate}" pattern="yyyy-MM-dd HH:mm:ss" />
+	                            	${comment.strCreatedAt}
 	                            </small>
 	                            <c:if test="${comment.status == 'DELETED'}">
 	                                <span class="badge bg-danger ms-2">삭제됨</span>

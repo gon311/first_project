@@ -141,7 +141,7 @@
 										</thead>
 										<tbody>
 											<c:forEach var="job" varStatus="status" items="${jobPostlist}">
-												<tr class="clickable-row" onclick="location.href='<c:url value="/job/JobDetail?jobId=${job.jobId}"/>'">
+												<tr class="clickable-row" onclick="location.href='<c:url value="/admin/contents/JobPostDetail?jobId=${job.jobId}"/>'">
 													<td>${status.count}</td>
 													<td class="text-ellipsis">${job.title}</td>
 													<td>${job.field}</td>
@@ -184,7 +184,7 @@
 										</thead>
 							 			<tbody>
 										<c:forEach var="free" varStatus="status" items="${freeList}">
-											<tr class="clickable-row" onclick="location.href='<c:url value="/board/detail?postId=${free.postId}" />'">
+											<tr class="clickable-row" onclick="location.href='<c:url value="/admin/contents/boardDetail?postId=${free.postId}" />'">
 												<td>${status.count}</td>
 												<td>${free.boardType}</td> 
 												<td class="text-ellipsis">${free.title}</td>
@@ -231,7 +231,7 @@
 										</thead>
 							 			<tbody>
 											<c:forEach var="comment" varStatus="status" items="${commentList}">
-												<tr class="clickable-row" onclick="location.href='<c:url value="/board/detail/?postId=${comment.postId}" />'">
+												<tr class="clickable-row" onclick="location.href='<c:url value="/admin/contents/boardDetail?postId=${comment.postId}" />'">
 													<td>${status.count}</td>
 													<td class="text-ellipsis">${comment.title}</td>
 													<td class="text-ellipsis">${comment.content}</td>

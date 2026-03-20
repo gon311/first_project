@@ -16,11 +16,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.itwillbs.project.comMy.dto.ComJobRowDTO;
 import com.itwillbs.project.comMy.dto.ComMyDTO;
 import com.itwillbs.project.comMy.dto.JobCond;
+import com.itwillbs.project.comMy.dto.MyQnaDTO;
 import com.itwillbs.project.comMy.dto.PasswordChangeDTO;
 import com.itwillbs.project.comMy.dto.PaymentCond;
 import com.itwillbs.project.comMy.dto.PaymentDTO;
+import com.itwillbs.project.comMy.dto.QnaCond;
 import com.itwillbs.project.comMy.service.ComMyService;
 import com.itwillbs.project.common.paging.PageRes;
+
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -310,6 +313,46 @@ public class ComMyController {
 	    
 
 	    return "/comMy/payment";
+	}
+	
+	
+	// 문의 내역
+	// 내 문의 내역
+	@GetMapping("/qna")
+	public String qnaList(HttpSession session,
+	                      Model model,
+	                      @RequestParam(defaultValue = "all") String status,
+	                      @RequestParam(defaultValue = "") String q,
+	                      @RequestParam(defaultValue = "1") int page,
+	                      @RequestParam(defaultValue = "5") int size) {
+
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) return "redirect:/user/login";
+
+	    model.addAttribute("currentMenu", "qna");
+
+	    ComMyDTO user = comMyService.getUser(sId);
+	    model.addAttribute("loginUser", user);
+	  
+	    QnaCond cond = new QnaCond();
+	    cond.setUserId(user.getUserId());
+	    cond.setStatus(status);
+	    cond.setQ(q);
+	    cond.getPage().setPage(page);
+	    cond.getPage().setSize(size);
+
+	    List<MyQnaDTO> qnaList = comMyService.getQnaList(cond);
+	    int total = comMyService.getQnaCount(cond);
+
+	    PageRes pager = PageRes.of(cond.getPage(), total);
+
+	    model.addAttribute("qnaList", qnaList);
+	    model.addAttribute("pager", pager);
+
+	    model.addAttribute("status", status);
+	    model.addAttribute("q", q);
+
+	    return "/comMy/qna";
 	}
 	
 

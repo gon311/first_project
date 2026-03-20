@@ -32,6 +32,7 @@ public class MyDTO {
 	private String genderName;   // 남성 / 여성 / 선택안함
 	
 	private Integer remainingCount;   // 남은 이용권 횟수
+	private Integer passCount;   // 이용권 횟수
 	private String useStatus;         // active / expired
 	private String productId;         // 상품 ID
 	private String productName;       // 상품명

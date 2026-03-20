@@ -36,6 +36,7 @@ public class QnaController {
     @Autowired
     private QnaService qnaService;
     
+    
     @Autowired
 	private BoardService boardService;
 
@@ -73,7 +74,11 @@ public class QnaController {
             e.printStackTrace();
             rttr.addFlashAttribute("error", "등록 중 오류가 발생했습니다.");
         }
-
+        
+        if ("C".equals(session.getAttribute("userType"))) {
+            return "redirect:/comMy/qna";
+        }
+        
         return "redirect:/my/qna"; // 문의 내역 리스트로 이동
     }
     
@@ -137,6 +142,9 @@ public class QnaController {
             rttr.addFlashAttribute("error", "삭제 중 오류가 발생했습니다.");
         }
         
+        if ("C".equals(session.getAttribute("userType"))) {
+            return "redirect:/comMy/qna";
+        }
         return "redirect:/my/qna"; // 삭제 후 목록으로 이동
     }
     

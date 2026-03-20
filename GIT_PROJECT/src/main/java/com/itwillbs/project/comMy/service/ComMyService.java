@@ -18,8 +18,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.itwillbs.project.comMy.dto.ComJobRowDTO;
 import com.itwillbs.project.comMy.dto.ComMyDTO;
 import com.itwillbs.project.comMy.dto.JobCond;
+import com.itwillbs.project.comMy.dto.MyQnaDTO;
 import com.itwillbs.project.comMy.dto.PaymentCond;
 import com.itwillbs.project.comMy.dto.PaymentDTO;
+import com.itwillbs.project.comMy.dto.QnaCond;
 import com.itwillbs.project.comMy.mapper.ComMyMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -156,6 +158,18 @@ public class ComMyService {
 	public int getJopManagementCount(JobCond cond) {
 		return comMyMapper.getJopManagementCount(cond);
 	}
+	
+	// 문의내역
+	public List<MyQnaDTO> getQnaList(QnaCond cond) {
+	    return comMyMapper.selectQnaList(cond);
+	}
+
+	public int getQnaCount(QnaCond cond) {
+	    return comMyMapper.selectQnaCount(cond);
+	}
+	
+	
+	
 }
 
 

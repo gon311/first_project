@@ -7,7 +7,7 @@
 <c:url var="urlComMyJob" value="/comMy/job"/>
 <c:url var="urlPayment" value="/comMy/payment"/>
 <c:url var="urlComMy" value="/comMy/comMy"/>
-<c:url var="urlComMy" value="/comMy/comMy"/>
+<c:url var="urlQna" value="/comMy/qna"/>
 
 
 
@@ -30,6 +30,10 @@
       
       <a class="myNav-link ${currentMenu=='payment' ? 'active' : ''}" href="${urlPayment}">
         <i class="bi bi-file-earmark-text"></i><span>결제 내역</span>
+      </a>
+      
+      <a class="myNav-link ${currentMenu=='qna' ? 'active' : ''}" href="${urlQna}">
+        <i class="bi bi-file-earmark-text"></i><span>문의 내역</span>
       </a>
       
       

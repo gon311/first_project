@@ -171,8 +171,8 @@
 								<div class="ticket-count-label">남은 횟수</div>
 								<div class="ticket-count">
 									<c:choose>
-										<c:when test="${not empty loginUser.remainingCount}">
-											${loginUser.remainingCount}<span>회</span>
+										<c:when test="${not empty loginUser.passCount}">
+											${loginUser.passCount}<span>회</span>
 										</c:when>
 										<c:otherwise>
 											0<span>회</span>

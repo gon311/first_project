@@ -23,6 +23,7 @@
 	  <result property="useStatus"      column="use_status" />
 	  <result property="productId"      column="product_id" />
 	  <result property="productName"    column="product_name" />
+	  <result property="passCount"    column="pass_count" />
 	</resultMap>
 	
 	<!-- MyResumeDTO -->
@@ -276,6 +277,7 @@
 	        up.birth_date,
 	        up.country,
 	        up.profile_url,
+	        up.pass_count,
 	        usp.remaining_count,
 	        usp.use_status,
 	        usp.product_id,

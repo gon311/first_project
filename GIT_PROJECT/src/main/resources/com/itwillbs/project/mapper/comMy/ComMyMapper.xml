@@ -63,6 +63,22 @@
 		<result property="payDateText" 	   column="pay_date_text"/>
 	</resultMap>
 	
+	<!-- MyQnaDTO -->
+	<resultMap id="qnaMap" type="com.itwillbs.project.comMy.dto.MyQnaDTO">
+	    <id     property="qnaId"        column="qna_id"/>
+	    <result property="qnaCategory"  column="qna_category"/>
+	    <result property="qnaTitle"     column="qna_title"/>
+	    <result property="qnaContent"   column="qna_content"/>
+	    <result property="writerId"     column="writer_id"/>
+	    <result property="regDate"      column="reg_date"/>
+	    <result property="reStatus"     column="re_status"/>
+	    <result property="reDate"       column="re_date"/>
+	    <result property="reContent"    column="re_content"/>
+	    <result property="isDeleted"    column="is_deleted"/>
+	    <result property="regDateText"  column="reg_date_text"/>
+	    <result property="statusText"   column="status_text"/>
+	</resultMap>
+	
    
    <!-- =========================
        공통 where 조건
@@ -126,6 +142,24 @@
   <!-- 검색어: 상품명 기준 -->
   <if test="q != null and q != ''">
     AND pr.product_name LIKE CONCAT('%', #{q}, '%')
+  </if>
+</sql>
+
+<!-- 문의내역 -->
+<sql id="qnaWhere">
+  WHERE q.writer_id = #{userId}
+    AND q.is_deleted = 'N'
+
+  <if test="status != null and status != '' and status != 'all'">
+    AND q.re_status = #{status}
+  </if>
+
+  <if test="q != null and q != ''">
+    AND (
+         q.qna_title LIKE CONCAT('%', #{q}, '%')
+      OR q.qna_content LIKE CONCAT('%', #{q}, '%')
+      OR q.qna_category LIKE CONCAT('%', #{q}, '%')
+    )
   </if>
 </sql>
 
@@ -305,6 +339,47 @@
 
   <include refid="paymentWhere"/>
 </select>
+
+<!-- ==============================
+    문의 내역
+     parameter:QnaCond.java
+     result: 
+============================== -->	
+	<select id="selectQnaList"
+	        parameterType="com.itwillbs.project.comMy.dto.QnaCond"
+	        resultMap="qnaMap">
+	  SELECT
+	      q.qna_id
+	    , q.qna_category
+	    , q.qna_title
+	    , q.qna_content
+	    , q.writer_id
+	    , q.reg_date
+	    , q.re_status
+	    , q.re_date
+	    , q.re_content
+	    , q.is_deleted
+	    , DATE_FORMAT(q.reg_date, '%Y-%m-%d') AS reg_date_text
+	    , CASE
+	        WHEN q.re_status = 'completed' THEN '답변완료'
+	        ELSE '답변대기'
+	      END AS status_text
+	  FROM qna q
+	
+	  <include refid="qnaWhere"/>
+	
+	  ORDER BY q.qna_id DESC
+	  LIMIT #{page.offset, jdbcType=INTEGER}, #{page.safeSize, jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectQnaCount"
+	        parameterType="com.itwillbs.project.comMy.dto.QnaCond"
+	        resultType="int">
+	  SELECT COUNT(*)
+	  FROM qna q
+	
+	  <include refid="qnaWhere"/>
+	</select>	
 
 
 </mapper>

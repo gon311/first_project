@@ -8,8 +8,10 @@ import org.apache.ibatis.annotations.Param;
 import com.itwillbs.project.comMy.dto.ComJobRowDTO;
 import com.itwillbs.project.comMy.dto.ComMyDTO;
 import com.itwillbs.project.comMy.dto.JobCond;
+import com.itwillbs.project.comMy.dto.MyQnaDTO;
 import com.itwillbs.project.comMy.dto.PaymentCond;
 import com.itwillbs.project.comMy.dto.PaymentDTO;
+import com.itwillbs.project.comMy.dto.QnaCond;
 
 @Mapper
 public interface ComMyMapper {
@@ -40,6 +42,10 @@ public interface ComMyMapper {
 	int getJopPostingCount(JobCond cond);
 	
 	int getJopManagementCount(JobCond cond);
+	
+	// 문의내역
+	List<MyQnaDTO> selectQnaList(QnaCond cond);
+	int selectQnaCount(QnaCond cond);
 	
 	
 	

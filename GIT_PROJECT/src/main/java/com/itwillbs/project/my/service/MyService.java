@@ -253,6 +253,7 @@ public class MyService {
 	public int getQnaCount(QnaCond cond) {
 	    return myMapper.selectQnaCount(cond);
 	}
+
 	
 
 

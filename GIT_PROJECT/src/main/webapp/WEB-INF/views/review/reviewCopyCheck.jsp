@@ -91,12 +91,12 @@
 		        if (input) input.focus();
 	
 		        const copyBtn = document.getElementById("copyBtn");
-		        const output = document.getElementById("outputText");
+		        const output = document.getElementById("correctedResult");
 	
 		        // 복사하기 버튼 이벤트 등록 
 		        if (copyBtn && output) {
 		            copyBtn.addEventListener("click", async () => {
-		                // div의 경우 innerText, input/textarea의 경우 value 사용
+		                
 		                const text = output.innerText || output.value; 
 	
 		                if (!text || text.trim() === "") {

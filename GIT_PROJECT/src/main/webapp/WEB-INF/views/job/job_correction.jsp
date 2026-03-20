@@ -9,7 +9,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/inc/headerCom.jspf" %>
 	<main>
-		<div class="container">
+		<div class="container1">
 		    <form action="<c:url value="/job/jobCorrection" />" method="post" enctype="multipart/form-data">
 		        
 		        <div class="form-group">

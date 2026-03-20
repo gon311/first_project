@@ -69,6 +69,7 @@
 	            <li><a class="dropdown-item" href="<c:url value='/review/registForm' />">자소서 첨삭</a></li>
 	            <li><a class="dropdown-item" href="<c:url value='/review/spellCheck' />">맞춤법 검사</a></li>
 	            <li><a class="dropdown-item" href="<c:url value='/review/copyCheck' />">문장 다듬기</a></li>
+	            <li><a class="dropdown-item" href="<c:url value='/my/myReview' />">내 자소서</a></li>
 	          </ul>
 	        </li>
 	
@@ -130,6 +131,7 @@
 		                <li><a href="<c:url value='/review/registForm' />">자소서 첨삭</a></li>
 		                <li><a href="<c:url value='/review/spellCheck' />">맞춤법 검사</a></li>
 		                <li><a href="<c:url value='/review/copyCheck' />">문장 다듬기</a></li>
+		                <li><a href="<c:url value='/my/myReview' />">내 자소서</a></li>
 		            </ul>
 		        </div>
 		        <div class="menu-group">

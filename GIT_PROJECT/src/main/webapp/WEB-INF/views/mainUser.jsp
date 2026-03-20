@@ -37,7 +37,7 @@
 				</ul>
 			</div>
 			<div class="card-slider">
-				<div class="swiper companySwiper">
+				<div class="swiper companySwiper px-5">
 
 				    <div id="companyCardArea" class="swiper-wrapper">
 				        <!-- 카드 AJAX 생성 -->
@@ -63,7 +63,7 @@
 				</ul>
 			</div>
 			<div class="card-slider">
-				<div class="swiper companySwiper">
+				<div class="swiper companySwiper px-5">
 
 				    <div id="companyCardAreaSub" class="swiper-wrapper">
 				        <!-- 카드 AJAX 생성 -->

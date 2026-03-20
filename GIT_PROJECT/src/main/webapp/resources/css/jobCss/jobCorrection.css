@@ -19,7 +19,7 @@ header + hr {
    메인 컨테이너 (공고등록과 동일)
 ========================= */
 
-.container {
+.container1 {
     max-width: 900px;
     background: #fff;
     padding: 30px;

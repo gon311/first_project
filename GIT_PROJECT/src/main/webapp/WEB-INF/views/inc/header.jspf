@@ -102,7 +102,7 @@
 	          </a>
 	          <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownBoard" id="submenu-board">
 	            <li><a class="dropdown-item" href="<c:url value='/board' />">자유게시판</a></li>
-	            <li><a class="dropdown-item" href="<c:url value='#' />">면접후기</a></li>
+	            <li><a class="dropdown-item" href="<c:url value='/board?category=INTERVIEW_REVIEW' />">면접후기</a></li>
 	          </ul>
 	        </li>
 	

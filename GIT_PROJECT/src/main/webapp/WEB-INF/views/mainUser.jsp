@@ -114,14 +114,23 @@
 					loadCompanies("bookmark", "companyCardAreaSub");
 				}
 				
-				// 카드 클릭 → 상세 페이지 이동 
-				track.addEventListener("click", e => {
+				// 공통 클릭 핸들러 함수 → 상세 페이지 이동 
+				const handleCardClick = e => {
 				    const card = e.target.closest(".company-card");
 				    if(!card) return;
 
 				    const jobId = card.dataset.id;
 				    location.href = "<c:url value='/job/JobDetail?jobId=' />" + jobId;
-				});
+				};
+				
+				// 상단 슬라이더 이벤트 등록
+				track.addEventListener("click", handleCardClick);
+				
+				// 하단 슬라이더 이벤트 등록 추가 
+				if(track2) {
+					track2.addEventListener("click", handleCardClick);
+					
+				}
 				
 				
 			});

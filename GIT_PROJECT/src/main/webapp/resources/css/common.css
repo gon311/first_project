@@ -30,7 +30,7 @@ main {
 }
 
 /* 1. 메인 메뉴 링크 스타일 */
-.nav-link {
+.navbar-nav .nav-link {
     color: #1A365D !important; /* 너무 쨍한 파란색보다 깊이감 있는 다크 네이비 */
     font-weight: 600;
     transition: color 0.2s ease-in-out;
@@ -176,6 +176,67 @@ main {
     color: #0047AB !important; /* 호버 시 포인트 블루 */
     padding-left: 5px; /* 살짝 옆으로 움직이는 효과 */
     font-weight: 500;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block !important; /* 안 보일 경우를 대비해 강제 적용 */
+  width: 54px; 
+  height: 28px;
+  margin: 0 5px;
+}
+
+/* 실제 체크박스 숨기기 */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #483D8B; /* 안 보일 땐 이 색상을 더 어둡게 바꿔보세요 (#bbb) */
+  transition: .4s;
+  border-radius: 34px;
+  border: 1px solid #ccc; /* 테두리를 추가해 가독성 확보 */
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* 원이 입체적으로 보이게 */
+}
+
+input:checked + .slider { background-color: #483D8B; } /* 메인 테마색 */
+input:checked + .slider:before { transform: translateX(26px); }
+
+.label-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: #999;
+  transition: all 0.3s;
+}
+
+/* 활성화된 텍스트 스타일 */
+.label-text.active {
+  color: #483D8B; /* 포인트 컬러 */
+  font-weight: bold;
 }
 
 /* footer 영역 */

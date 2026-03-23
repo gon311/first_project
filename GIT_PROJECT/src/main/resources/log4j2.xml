@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Log4j2 설정 파일 -->
 <Configuration>
-	<!-- <Properties> 태그 사용하여 각 로그 설정에서 사용할 속성값 정의 -->
-	<!-- <Property> 태그의 name 속성에 변수명처럼 사용할 이름 지정하고 태그 사이에 속성값 지정 -->
 	<Properties>
 		<!-- <Property> 태그오 name 속성값 layoutPattern 지정 후 로그메세지 형식 문자 패턴 지정 -->
 <!-- 		<Property name="layoutPattern">%d{yyyy-MM-dd HH:mm:ss} %-5p [%c] %m%n</Property> -->
@@ -95,9 +93,6 @@
 		<!-- 기본 출력되는 시스템 로그(별도의 대상을 지정하지 않은 모든 로그)를 담당 -->
 		<Root level="INFO">
 <!-- 		<Root level="DEBUG"> -->
-			<AppenderRef ref="console" />
-			<AppenderRef ref="rollingFile" />
-			<AppenderRef ref="rollingFileForErrorLevel" />
 		</Root>
 		
 		<!-- 2. 여기서부터 현재 프로젝트(애플리케이션) 내의 각 로그 대상 지정 -->
@@ -106,20 +101,44 @@
 <!-- 		<Logger name="com.itwillbs.mvc_board" level="DEBUG" additivity="false"> -->
 			<AppenderRef ref="console" />
 			<AppenderRef ref="rollingFile" />
-			<AppenderRef ref="rollingFileForErrorLevel" />
 		</Logger>
 		
 		<!-- 2) log4jdbc 를 활용한 SQL 로그 출력 -->
 		<!-- 주의! log4jdbc.log4j2.properties 파일 필수! -->
-		<!-- 2-1) jdbc.sqltiming 로그 : 실행되는 SQL 구문 + 실행에 소용된 시간(밀리초)을 포함하는 로그 -->
-		<Logger name="jdbc.sqltiming" level="INFO" additivity="false">
-			<AppenderRef ref="console" />
+		<!-- 1. jdbc.sqlonly 로그 : SQL 쿼리 문장에 대한 로그(전달인자 포함한 전체 문장 출력해줌) -->
+		<Logger name="jdbc.sqlonly" level="OFF" additivity="false">
+			<AppenderRef ref="console"></AppenderRef>
 		</Logger>
 		
-		<!-- 2-2) jdbc.resultsettable 로그 : SELECT 구문 실행 결과(데이터테이블 = ResultSet 객체 내용)에 대한 로그 -->
-		<Logger name="jdbc.resultsettable" level="INFO" additivity="false">
-			<AppenderRef ref="console" />
+		<!-- 2. jdbc.sqltiming 로그 : sqlonly 로그 + 실행에 소용된 시간(밀리초)을 포함하는 로그 -->
+		<Logger name="jdbc.sqltiming" level="INFO" additivity="false">
+			<AppenderRef ref="console"></AppenderRef>
+			<AppenderRef ref="rollingFileForSQL"></AppenderRef>
 		</Logger>
+		
+		
+		<!-- 3. jdbc.audit 로그 : JDBC 호출 정보에 대한 로그(ResultSet 결과 제외) => 내용 많음 -->
+		<Logger name="jdbc.audit" level="OFF" additivity="false">
+			<AppenderRef ref="console"></AppenderRef>
+		</Logger>
+		
+		<!-- 4. jdbc.resultset 로그 : ResultSet 객체 내용을 포함한 JDBC 호출 정보에 대한 로그 => 내용 많음 -->
+		<Logger name="jdbc.resultset" level="OFF" additivity="false">
+			<AppenderRef ref="console"></AppenderRef>
+		</Logger>
+		
+		<!-- 5. jdbc.resultsettable 로그 : SELECT 구문 실행 결과(데이터 테이블 = ResultSet 객체 내용) 에 대한 로그 -->
+		<Logger name="jdbc.resultsettable" level="INFO" additivity="false">
+			<AppenderRef ref="console"></AppenderRef>
+			<AppenderRef ref="rollingFileForSQL"></AppenderRef>
+		</Logger>
+		
+		<!-- 6. jdbc.connection 로그 : DB 커넥션(Connection 객체) 관련 이벤트(ex. opened, closed, commit, rollback 등) -->
+		<Logger name="jdbc.connection" level="OFF" additivity="false">
+			<AppenderRef ref="console"></AppenderRef>
+			<AppenderRef ref="rollingFileForSQL"></AppenderRef>
+		</Logger>
+		
 		
 	</Loggers>
 </Configuration>

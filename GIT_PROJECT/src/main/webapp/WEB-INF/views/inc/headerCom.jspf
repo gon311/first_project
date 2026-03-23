@@ -5,43 +5,47 @@
 <header>
 	<%-- 상단: 로고 + 로그인/회원가입/마이페이지/로그아웃 --%>
 	<section id="header-upper">
-		<nav class="navbar navbar-expand-lg navbar-dark px-3">
-			<!-- 좌측: 브랜드 -->
-			<a href="<c:url value="/mainCom" />">
-			    <img src="<c:url value="/resources/images/logo.png" />" 
-				         alt="로고" 
-				         class="img-fluid" 
-				         id="logo"
-				         style="width: 180px; height: auto; margin-top: 12px;">
-	         </a>
-			<!-- 우측: 인증 관련 메뉴 -->
-			<ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
-				<c:choose>
-					<c:when test="${empty sessionScope.sId}">
-						<li class="nav-item"><a class="nav-link"
-							href="<c:url value='/user/login' />">로그인</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="<c:url value='/user/regist' />">회원가입</a></li>
-						<li class="nav-item">
-							<a class="nav-link" href="<c:url value='/' />">개인회원</a>	
-				        </li>	
-					</c:when>
-					<c:otherwise>
-						<li class="nav-item">
-							<a class="nav-link"
-							href="<c:url value='/my' />">${sessionScope.userName} 님</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link"
-							href="javascript:void(0)" onclick="requestLogout()">로그아웃</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="<c:url value='/' />">개인홈</a>	
-						</li>
-					</c:otherwise>
-				</c:choose>
-			</ul>
-		</nav>
+	  <nav class="navbar navbar-expand-lg px-3">
+	    <a href="<c:url value="/" />">
+	      <img src="<c:url value="/resources/images/logo.png" />" 
+	           alt="로고" 
+	           id="logo"
+	           style="width: 180px; height: auto; margin-top: 12px;">
+	    </a>
+	
+	   <div class="ms-auto d-flex flex-column align-items-end">
+  
+		  <div class="toggle-container d-flex align-items-center justify-content-end gap-3">
+		    <span id="label-personal" class="label-text">개인회원</span>
+		    <label class="switch">
+		      <input type="checkbox" id="member-toggle">
+		      <span class="slider"></span>
+		    </label>
+		    <span id="label-company" class="label-text">기업회원</span>
+		  </div>
+		
+		  <ul class="navbar-nav flex-row gap-4 align-items-center">
+		    <c:choose>
+		      <c:when test="${empty sessionScope.sId}">
+		        <li class="nav-item">
+		          <a class="nav-link" href="<c:url value='/user/login' />">로그인</a>
+		        </li>
+		        <li class="nav-item">
+		          <a class="nav-link btn btn-outline-primary px-3" href="<c:url value='/user/regist' />" style="border-radius: 20px;">회원가입</a>
+		        </li>
+		      </c:when>
+		      <c:otherwise>
+		        <li class="nav-item">
+		          <a class="nav-link p-0" href="<c:url value='/my' />" style="font-size: 16px;">${sessionScope.userName} 님</a>
+		        </li>
+		        <li class="nav-item">
+		          <a class="nav-link text-danger" href="javascript:void(0)" onclick="requestLogout()">로그아웃</a>
+		        </li>
+		      </c:otherwise>
+		    </c:choose>
+		  </ul>
+		</div>
+	  </nav>
 	</section>
 
 	<%-- 하단: 메인 메뉴 바 + 전체 메뉴 버튼 --%>
@@ -69,7 +73,7 @@
 								href="<c:url value='/job/JobPosting' />">공고 등록</a>
 							</li>
 							<li>
-								<a class="dropdown-item" href="<c:url value='/job/JobManagement' />">내 공고</a>
+								<a class="dropdown-item" href="<c:url value='/comMy/job' />">내 공고</a>
 							</li>
 						</ul></li>
 
@@ -105,7 +109,7 @@
 							<ul class="list-unstyled">
 								<li><a href="<c:url value='/job/JobList' />">채용공고</a></li>
 								<li><a href="<c:url value='/job/JobPosting' />">공고 등록</a></li>
-								<li><a href="<c:url value='/job/JobManagement' />">내 공고</a></li>
+								<li><a href="<c:url value='/comMy/job' />">내 공고</a></li>
 							</ul>
 						</div>
 
@@ -124,6 +128,41 @@
 </header>
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
+	const toggle = document.getElementById("member-toggle");
+    const labelPersonal = document.getElementById("label-personal");
+    const labelcompany = document.getElementById("label-company");
+
+    if (!toggle) return;
+
+    // [Step 1] 현재 주소 확인
+    const iscompanyURL = window.location.pathname.includes('mainCom');
+    // [Step 2] 저장된 모드 확인
+    const savedMode = localStorage.getItem('viewMode');
+
+    // [Step 3] 상태 결정 (URL이 기업홈이면 무조건 기업모드, 아니면 저장된 값 따름)
+    if (iscompanyURL || savedMode === 'company') {
+        toggle.checked = true;
+        labelcompany.classList.add('active');
+        labelPersonal.classList.remove('active');
+        // URL이 기업홈인데 저장값이 없다면 저장해줌 (동기화)
+        if(iscompanyURL) localStorage.setItem('viewMode', 'company');
+    } else {
+        toggle.checked = false;
+        labelPersonal.classList.add('active');
+        labelcompany.classList.remove('active');
+    }
+
+    // [Step 4] 토글 클릭 시 동작
+    toggle.addEventListener('change', function() {
+        if(this.checked) {
+            localStorage.setItem('viewMode', 'company');
+            location.href = "<c:url value='/mainCom' />";
+        } else {
+            localStorage.setItem('viewMode', 'personal');
+            location.href = "<c:url value='/' />";
+        }
+    });
+ 	    
     const toggleBtn = document.getElementById('toggleAllBtn');
     const megaMenu = document.querySelector('#megaMenu');
 
